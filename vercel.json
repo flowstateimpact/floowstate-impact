@@ -1,0 +1,14 @@
+{
+  "redirects": [
+    {
+      "source": "/links",
+      "destination": "https://linktr.ee/flowstateimpact",
+      "permanent": false
+    },
+    {
+      "source": "/links/",
+      "destination": "https://linktr.ee/flowstateimpact",
+      "permanent": false
+    }
+  ]
+}
