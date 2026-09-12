@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FlowStãte Impact | Agentic Operations</title>
     
-    <!-- Core Styling & Animation -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
@@ -18,7 +17,6 @@
         .lenis.lenis-smooth { scroll-behavior: auto; }
         .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
         .lenis.lenis-stopped { overflow: hidden; }
-        .lenis.lenis-scrolling iframe { pointer-events: none; }
         
         body { 
             background-color: #000000; 
@@ -28,343 +26,352 @@
             font-feature-settings: "cv02", "cv03", "cv04", "cv11";
         }
 
-        /* Performance Utilities */
-        .will-change-transform { will-change: transform; }
-        
-        /* Kinetic Typography Masking */
-        .reveal-mask { overflow: hidden; display: block; }
-        .reveal-text { 
-            display: block; 
-            transform: translateY(110%); 
-            opacity: 0; 
+        /* Fluid Massive Typography */
+        .text-huge {
+            font-size: clamp(4rem, 9vw, 12rem);
+            line-height: 0.85;
+            letter-spacing: -0.04em;
         }
 
-        /* Architectural Borders */
-        .border-architectural { border: 1px solid rgba(255, 255, 255, 0.08); }
-        .border-architectural-t { border-top: 1px solid rgba(255, 255, 255, 0.08); }
-        .border-architectural-b { border-bottom: 1px solid rgba(255, 255, 255, 0.08); }
+        .text-massive {
+            font-size: clamp(5rem, 12vw, 16rem);
+            line-height: 0.8;
+            letter-spacing: -0.05em;
+        }
 
-        /* Sleek Hover Underline */
-        .hover-underline {
+        /* Animation Masks */
+        .reveal-mask { overflow: hidden; display: block; padding-bottom: 0.1em; margin-bottom: -0.1em; }
+        .reveal-text { display: block; transform: translateY(110%); opacity: 0; }
+        
+        /* Video Theater */
+        .video-container {
+            clip-path: polygon(5% 5%, 95% 5%, 95% 95%, 5% 95%);
+            transition: clip-path 0.1s ease;
+        }
+
+        /* Magnetic Button Base */
+        .magnetic-wrap {
+            display: inline-block;
             position: relative;
         }
-        .hover-underline::after {
-            content: '';
-            position: absolute;
-            width: 100%; transform: scaleX(0); height: 1px; bottom: 0; left: 0;
-            background-color: #E59214;
-            transform-origin: bottom right;
-            transition: transform 0.4s cubic-bezier(0.86, 0, 0.07, 1);
-        }
-        .hover-underline:hover::after {
-            transform: scaleX(1);
-            transform-origin: bottom left;
+        .magnetic-inner {
+            display: inline-flex;
+            pointer-events: none;
+            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        /* Custom Card Hover */
-        .deployment-card {
-            transition: background-color 0.4s ease, border-color 0.4s ease;
+        /* Hover Lines */
+        .hover-line { position: relative; }
+        .hover-line::after {
+            content: ''; position: absolute;
+            width: 100%; transform: scaleX(0); height: 2px; bottom: -4px; left: 0;
+            background-color: #E59214; transform-origin: bottom right;
+            transition: transform 0.5s cubic-bezier(0.86, 0, 0.07, 1);
         }
-        .deployment-card:hover {
-            background-color: #080808;
-            border-color: rgba(229, 146, 20, 0.4);
-        }
+        .hover-line:hover::after { transform: scaleX(1); transform-origin: bottom left; }
+
+        /* Architectural Borders */
+        .border-t-architectural { border-top: 1px solid rgba(255, 255, 255, 0.1); }
+        .border-b-architectural { border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
     </style>
 </head>
-<body class="antialiased selection:bg-[#E59214] selection:text-black font-sans relative">
+<body class="antialiased selection:bg-[#E59214] selection:text-black font-sans">
 
     <!-- NAVIGATION -->
-    <nav class="fixed top-0 w-full p-6 md:p-10 flex justify-between items-center z-50 pointer-events-none transition-all duration-300 mix-blend-difference">
-        <div class="flex items-center gap-4 nav-element">
-            <div class="flex flex-col items-start leading-none pointer-events-auto">
-                <span class="text-2xl md:text-3xl font-black tracking-tight text-white uppercase">FlowStãte</span>
-                <span class="text-[0.65rem] md:text-sm font-bold tracking-[0.3em] text-[#E59214] uppercase">Impact</span>
-            </div>
+    <nav class="fixed top-0 w-full p-8 md:p-12 flex justify-between items-center z-50 mix-blend-difference pointer-events-none">
+        <div class="flex flex-col items-start leading-none nav-fade opacity-0 pointer-events-auto">
+            <span class="text-3xl md:text-4xl font-black tracking-tighter text-white uppercase">FlowStãte</span>
+            <span class="text-xs md:text-sm font-bold tracking-[0.4em] text-[#E59214] uppercase mt-1">Impact</span>
         </div>
         
-        <div class="flex items-center gap-4 md:gap-8 pointer-events-auto">
-            <a href="http://www.flowstateimpact.com/links" target="_blank" class="nav-element hidden md:flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white hover:text-[#E59214] transition-colors hover-underline pb-1">
-                Video & Photo Portfolio <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
+        <div class="flex items-center gap-8 pointer-events-auto nav-fade opacity-0">
+            <a href="http://www.flowstateimpact.com/links" target="_blank" class="hidden md:flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-white hover-line">
+                Portfolio <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
             </a>
-            <a href="#contact" class="nav-element border border-white/20 px-6 py-3 text-xs font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-colors duration-300 rounded-sm">
-                Deploy Team
+            <a href="#contact" class="magnetic-wrap" data-strength="30">
+                <div class="magnetic-area absolute -inset-6 z-10 cursor-pointer pointer-events-auto"></div>
+                <div class="magnetic-inner bg-white text-black px-6 py-4 text-xs font-black uppercase tracking-widest hover:bg-[#E59214] transition-colors duration-300">
+                    Deploy Team
+                </div>
             </a>
         </div>
     </nav>
 
-    <!-- HERO SECTION -->
-    <section class="hero-section relative h-screen w-full flex items-end pb-24 px-6 md:px-16 overflow-hidden bg-[#000]">
-        <!-- Video Background with Smooth Gradient Fade -->
-        <div class="absolute inset-0 z-0 h-[110%] -top-[5%] will-change-transform video-wrapper">
-            <video 
-                id="hero-video" autoplay muted loop playsinline preload="metadata"
-                class="w-full h-full object-cover opacity-60"
-            >
-                <source src="FSI-FILM-FINAL.mp4" type="video/mp4" />
-            </video>
-            <!-- Heavy black gradient at bottom to seamlessly blend into the next section -->
-            <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
-            <!-- Horizontal gradient for text readability -->
-            <div class="absolute inset-0 bg-gradient-to-r from-black via-black/20 to-transparent w-full md:w-2/3"></div>
-        </div>
-
-        <div class="relative z-10 w-full max-w-7xl mx-auto">
-            <div class="mb-6 nav-element opacity-0">
-                <span class="text-[#E59214] text-xs font-bold uppercase tracking-widest flex items-center gap-2">
+    <!-- TYPOGRAPHIC HERO -->
+    <section class="h-screen w-full flex flex-col justify-center px-6 md:px-16 pt-20">
+        <div class="max-w-[95vw] mx-auto w-full">
+            <div class="mb-8 nav-fade opacity-0">
+                <span class="text-[#E59214] text-sm font-bold uppercase tracking-widest flex items-center gap-3">
                     <span class="w-2 h-2 rounded-full bg-[#E59214] animate-pulse"></span> Agentic Operations
                 </span>
             </div>
             
-            <h1 class="text-5xl md:text-7xl lg:text-[6.5rem] font-black uppercase tracking-tighter leading-[0.9] mb-8 text-white max-w-5xl">
+            <h1 class="text-huge font-black uppercase text-white mb-12">
                 <span class="reveal-mask"><span class="reveal-text">Now your business</span></span>
                 <span class="reveal-mask"><span class="reveal-text text-[#E59214]">can afford a</span></span>
                 <span class="reveal-mask"><span class="reveal-text">whole department.</span></span>
             </h1>
             
-            <div class="reveal-mask mb-12">
-                <p class="reveal-text text-lg md:text-xl text-gray-400 font-light max-w-2xl leading-relaxed">
-                    One stop for strategy, branding, marketing, design, content, and IT. <br class="hidden md:block"/>
-                    Human led. Agentic AI assisted. A fraction of the cost.
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-10 border-t-architectural pt-8 reveal-mask">
+                <p class="reveal-text text-xl md:text-3xl text-gray-400 font-light max-w-3xl leading-snug">
+                    One stop for strategy, branding, marketing, design, content, and IT. <strong class="text-white font-medium">Human led. Agentic AI assisted.</strong> A fraction of the cost.
                 </p>
+                <div class="reveal-text flex gap-4 w-full md:w-auto">
+                    <a href="http://www.flowstateimpact.com/links" target="_blank" class="magnetic-wrap w-full md:w-auto" data-strength="50">
+                        <div class="magnetic-area absolute -inset-6 z-10 cursor-pointer pointer-events-auto"></div>
+                        <div class="magnetic-inner w-full flex items-center justify-center gap-3 border border-white/20 text-white px-10 py-5 text-sm font-bold uppercase tracking-widest hover:border-[#E59214] hover:text-[#E59214] transition-colors duration-300">
+                            View Portfolio <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                        </div>
+                    </a>
+                </div>
             </div>
-            
-            <div class="flex flex-col sm:flex-row items-center gap-6 reveal-mask">
-                <a href="#contact" class="reveal-text w-full sm:w-auto bg-white text-black px-8 py-4 text-xs md:text-sm font-black uppercase tracking-widest hover:bg-[#E59214] transition-colors duration-300 flex items-center justify-center gap-3 rounded-sm">
-                    Initialize Setup <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                </a>
-                <a href="http://www.flowstateimpact.com/links" target="_blank" class="reveal-text w-full sm:w-auto border border-white/20 text-white px-8 py-4 text-xs md:text-sm font-bold uppercase tracking-widest hover:border-[#E59214] hover:text-[#E59214] transition-colors duration-300 flex items-center justify-center gap-3 rounded-sm">
-                    Video & Photo Portfolio <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
-                </a>
+        </div>
+    </section>
+
+    <!-- CINEMATIC VIDEO THEATER (No overlapping text) -->
+    <section class="relative h-[150vh] w-full bg-black py-20" id="theater-section">
+        <div class="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
+            <div class="video-container w-full h-full relative" id="main-video">
+                <!-- Video plays cleanly so its built-in text is fully readable -->
+                <video 
+                    autoplay muted loop playsinline preload="metadata"
+                    class="w-full h-full object-cover"
+                >
+                    <source src="FSI-FILM-FINAL.mp4" type="video/mp4" />
+                </video>
             </div>
         </div>
     </section>
 
     <!-- THE CONTROL ROOM -->
-    <section class="py-32 px-6 md:px-16 relative z-10 bg-[#000] border-architectural-t">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16">
+    <section class="py-40 px-6 md:px-16 relative z-10 bg-[#000]">
+        <div class="max-w-[90vw] mx-auto">
+            <h2 class="text-sm font-bold text-[#E59214] tracking-[0.4em] uppercase mb-12 info-fade">The Control Room</h2>
             
-            <!-- Left Info -->
-            <div class="lg:col-span-5 flex flex-col justify-between">
-                <div>
-                    <h2 class="text-xs font-bold text-[#E59214] tracking-[0.3em] uppercase mb-6 info-fade">The Control Room</h2>
-                    <h3 class="text-4xl md:text-6xl font-black uppercase tracking-tight mb-8 leading-[0.9] info-fade text-white">
-                        83 Agents.<br/>Written Like People.
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-20">
+                <div class="lg:col-span-7">
+                    <h3 class="text-[clamp(3rem,6vw,7rem)] font-black uppercase tracking-tighter mb-10 leading-[0.85] text-white info-fade">
+                        83 Agents.<br/>Written Like <span class="text-[#E59214]">People.</span>
                     </h3>
-                    <p class="text-base md:text-lg text-gray-400 font-light leading-relaxed mb-6 info-fade">
-                        They are written, not set up. Each one has a name, one job, a temperament, and a way of working. <strong class="text-white font-medium">56 of them make the work</strong>, or say whether it is good enough. <strong class="text-white font-medium">27 of them gather facts.</strong>
+                    <p class="text-2xl md:text-4xl text-gray-400 font-light leading-tight mb-8 info-fade max-w-4xl">
+                        They are written, not set up. Each one has a name, one job, a temperament, and a way of working. <strong class="text-white">56 of them make the work. 27 of them gather facts.</strong>
                     </p>
-                    <p class="text-base md:text-lg text-gray-400 font-light leading-relaxed info-fade">
+                    <p class="text-xl md:text-2xl text-gray-500 font-light leading-relaxed info-fade max-w-3xl">
                         Every correction we make is kept, and they work differently the next time because of it. Three of them exist purely to reject subpar work.
                     </p>
                 </div>
-            </div>
 
-            <!-- Right Doors -->
-            <div class="lg:col-span-6 lg:col-start-7">
-                <h4 class="text-xs font-bold uppercase tracking-widest text-gray-500 mb-8 info-fade flex items-center gap-2">
-                    <span class="w-8 h-[1px] bg-gray-500 inline-block"></span> Nothing leaves until it passes five doors
-                </h4>
-                
-                <div id="doors-container" class="border-architectural-t border-architectural-b border-l border-r border-white/5">
-                    {[
-                        { num: "01", title: "Strangers Read It", desc: "Checked for clarity outside the bubble." },
-                        { num: "02", title: "It Gets A Mark", desc: "Scored against core brand parameters." },
-                        { num: "03", title: "Three Can Say No", desc: "Sent back for being copied, stale, or boring." },
-                        { num: "04", title: "Five Try To Break It", desc: "Stress-tested for logical and visual flaws." },
-                        { num: "05", title: "One Last Look", desc: "Final human-led taste engine sign-off." }
-                    ].map((door, index) => `
-                    <div class="door-step group flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-8 p-6 md:p-8 border-b border-white/5 last:border-b-0 hover:bg-[#050505] transition-colors duration-300">
-                        <span class="text-[#E59214] text-xl font-black leading-none">${door.num}</span>
-                        <div class="flex-1">
-                            <h5 class="text-lg md:text-xl font-bold uppercase tracking-wide text-white mb-1">${door.title}</h5>
-                            <p class="text-sm text-gray-500 font-light">${door.desc}</p>
+                <div class="lg:col-span-5 lg:pl-10">
+                    <h4 class="text-sm font-bold uppercase tracking-widest text-white mb-10 pb-8 border-b-architectural info-fade">
+                        Nothing leaves until it passes five doors
+                    </h4>
+                    
+                    <div id="doors-container">
+                        {[
+                            { num: "01", title: "Strangers Read It", desc: "Checked for clarity outside the bubble." },
+                            { num: "02", title: "It Gets A Mark", desc: "Scored against core brand parameters." },
+                            { num: "03", title: "Three Can Say No", desc: "Sent back for being copied, stale, or boring." },
+                            { num: "04", title: "Five Try To Break It", desc: "Stress-tested for logical and visual flaws." },
+                            { num: "05", title: "One Last Look", desc: "Final human-led taste engine sign-off." }
+                        ].map((door, index) => `
+                        <div class="door-step flex flex-col md:flex-row md:items-start gap-4 md:gap-8 py-8 border-b-architectural last:border-b-0 group">
+                            <span class="text-[#E59214] text-2xl font-black leading-none mt-1 group-hover:scale-110 transition-transform">${door.num}</span>
+                            <div>
+                                <h5 class="text-2xl font-black uppercase tracking-wide text-white mb-2">${door.title}</h5>
+                                <p class="text-base text-gray-500 font-light">${door.desc}</p>
+                            </div>
                         </div>
+                        `).join('')}
                     </div>
-                    `).join('')}
                 </div>
             </div>
-            
         </div>
     </section>
 
-    <!-- CUSTOM TIERS -->
-    <section class="tier-section py-32 px-6 md:px-16 bg-[#050505] relative z-10 border-architectural-t">
-        <div class="max-w-7xl mx-auto flex flex-col lg:flex-row items-center gap-16">
+    <!-- CUSTOM TIERS (Massive Scale) -->
+    <section class="tier-section py-40 px-6 md:px-16 bg-[#050505] relative z-10 border-t-architectural overflow-hidden">
+        <div class="max-w-[90vw] mx-auto">
+            <h2 class="text-massive font-black uppercase tracking-tighter mb-16 leading-[0.8] text-white">
+                Keep a room <br/><span class="text-[#E59214]">of your own.</span>
+            </h2>
             
-            <div class="w-full lg:w-1/2">
-                <h2 class="text-4xl md:text-6xl font-black uppercase tracking-tight mb-6 leading-[0.9] text-white">
-                    Keep a room <br/><span class="text-[#E59214]">of your own.</span>
-                </h2>
-                <p class="text-lg text-gray-400 font-light mb-12 max-w-lg leading-relaxed">
-                    We write the workers for your business, put your name on every card, and hand you the keys. It runs on your own subscription. You keep the engine.
-                </p>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 relative z-10">
+                <div class="bg-black p-12 md:p-20 border border-white/10 hover:border-[#E59214]/50 transition-colors duration-500 flex flex-col justify-between min-h-[40vh]">
+                    <div>
+                        <span class="text-[#E59214] text-sm font-bold uppercase tracking-widest mb-6 block">Tier 01</span>
+                        <h4 class="text-white text-4xl md:text-5xl font-black uppercase tracking-tighter mb-6">Creator</h4>
+                    </div>
+                    <p class="text-xl md:text-2xl text-gray-400 font-light leading-relaxed max-w-md">Streamlined agentic pipelines optimized for rapid content generation, visual branding, and design output.</p>
+                </div>
                 
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    <div class="border-architectural p-8 hover:border-[#E59214]/50 transition-colors duration-300 bg-black">
-                        <h4 class="text-white text-lg font-black uppercase tracking-wider mb-3">Creator Tier</h4>
-                        <p class="text-sm text-gray-500 font-light leading-relaxed">Streamlined agentic pipelines optimized for rapid content generation, visual branding, and design output.</p>
+                <div class="bg-[#E59214] p-12 md:p-20 flex flex-col justify-between min-h-[40vh] text-black hover:bg-white transition-colors duration-500">
+                    <div>
+                        <span class="text-black/50 text-sm font-bold uppercase tracking-widest mb-6 block">Tier 02</span>
+                        <h4 class="text-black text-4xl md:text-5xl font-black uppercase tracking-tighter mb-6">Ultimate</h4>
                     </div>
-                    <div class="border border-[#E59214] p-8 bg-[#E59214]/5">
-                        <h4 class="text-[#E59214] text-lg font-black uppercase tracking-wider mb-3">Ultimate Tier</h4>
-                        <p class="text-sm text-gray-400 font-light leading-relaxed">Full-scale enterprise department automation. Deep data analysis, workflow integration, and bespoke operations.</p>
-                    </div>
+                    <p class="text-xl md:text-2xl font-medium leading-relaxed max-w-md">Full-scale enterprise department automation. Deep data analysis, workflow integration, and bespoke operations.</p>
                 </div>
             </div>
             
-            <div class="w-full lg:w-1/2 flex justify-center lg:justify-end">
-                <div class="tier-roi text-[10rem] md:text-[18rem] lg:text-[22rem] font-black tracking-tighter leading-none text-[#111] select-none">
-                    10x
-                </div>
+            <!-- Giant Background Text -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[30vw] font-black tracking-tighter leading-none text-white/5 whitespace-nowrap pointer-events-none select-none tier-roi">
+                10x ROI
             </div>
-            
         </div>
     </section>
 
-    <!-- ACTIVE DEPLOYMENTS (Separated Grid) -->
-    <section id="portfolio" class="py-32 px-6 md:px-16 bg-[#000] relative z-10 border-architectural-t">
-        <div class="max-w-7xl mx-auto">
-            
-            <div class="flex flex-col md:flex-row md:items-end justify-between mb-16 gap-6">
-                <div>
-                    <h2 class="text-xs font-bold text-[#E59214] tracking-[0.3em] uppercase mb-3">Active Deployments</h2>
-                    <h3 class="text-3xl md:text-5xl font-black uppercase tracking-tight text-white leading-[0.9]">Our Client<br/>Ecosystem</h3>
-                </div>
-                <a href="http://www.flowstateimpact.com/links" target="_blank" class="border border-white/20 text-white px-6 py-3 text-xs font-bold uppercase tracking-widest hover:border-[#E59214] hover:text-[#E59214] transition-colors duration-300 inline-flex items-center gap-2 rounded-sm w-fit">
-                    View Video Portfolio <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
+    <!-- ACTIVE DEPLOYMENTS (Premium Full-Bleed Grid) -->
+    <section id="portfolio" class="py-40 bg-[#000] relative z-10 border-t-architectural">
+        <div class="px-6 md:px-16 max-w-[90vw] mx-auto mb-20">
+            <h2 class="text-sm font-bold text-[#E59214] tracking-[0.4em] uppercase mb-6">Active Deployments</h2>
+            <div class="flex flex-col md:flex-row justify-between items-end gap-10">
+                <h3 class="text-5xl md:text-7xl font-black uppercase tracking-tighter text-white leading-[0.85]">Ecosystem<br/>Partners</h3>
+                <a href="http://www.flowstateimpact.com/links" target="_blank" class="magnetic-wrap" data-strength="40">
+                    <div class="magnetic-area absolute -inset-6 z-10 cursor-pointer pointer-events-auto"></div>
+                    <div class="magnetic-inner flex items-center gap-3 border border-white/20 text-white px-8 py-4 text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-colors duration-300">
+                        View Linktree <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </div>
                 </a>
             </div>
+        </div>
             
-            <!-- High-Level Partners -->
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
-                <!-- Akij Dynamics (Consultancy Partner) -->
-                <div class="deployment-card border-architectural bg-[#020202] p-10 flex flex-col justify-between h-full group relative overflow-hidden">
-                    <div class="absolute top-0 right-0 w-32 h-32 bg-[#E59214] rounded-full filter blur-[80px] opacity-10 group-hover:opacity-20 transition-opacity duration-500"></div>
-                    <div>
-                        <span class="inline-block bg-[#E59214] text-black px-3 py-1 text-[10px] font-black uppercase tracking-widest mb-6">Business Consultation Partner</span>
-                        <h3 class="text-3xl font-black uppercase tracking-tight text-white mb-4">Akij Dynamics</h3>
-                        <p class="text-gray-400 font-light leading-relaxed text-sm md:text-base">Our strategic consultancy partner. Co-developing custom AI layers to manage deep data analysis and scale enterprise operations, strictly directed by human judgment.</p>
-                    </div>
-                </div>
-                
-                <!-- Lumiere -->
-                <div class="deployment-card border-architectural bg-[#020202] p-10 flex flex-col justify-between h-full">
-                    <div>
-                        <span class="inline-block border border-white/20 text-gray-400 px-3 py-1 text-[10px] font-bold uppercase tracking-widest mb-6">Video Production</span>
-                        <h3 class="text-3xl font-black uppercase tracking-tight text-white mb-4">Lumiere Narratives</h3>
-                        <p class="text-gray-400 font-light leading-relaxed text-sm md:text-base">Engineered a high-end, aesthetic, film-inspired AI pipeline for high fashion concepts. Executing complex physics, including bespoke mist transitions for cinematic web environments.</p>
-                    </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 border-t-architectural border-b-architectural">
+            
+            <!-- Akij Dynamics (Featured) -->
+            <div class="deployment-card md:col-span-2 border-b-architectural bg-black p-10 md:p-20 hover:bg-[#050505] transition-colors duration-500">
+                <div class="max-w-5xl">
+                    <span class="inline-block bg-[#E59214] text-black px-4 py-2 text-xs font-black uppercase tracking-widest mb-8">Business Consultation Partner</span>
+                    <h3 class="text-4xl md:text-6xl font-black uppercase tracking-tighter text-white mb-6">Akij Dynamics</h3>
+                    <p class="text-xl md:text-3xl text-gray-400 font-light leading-snug">Our strategic consultancy partner. Co-developing custom AI layers to manage deep data analysis and scale enterprise operations, strictly directed by human judgment.</p>
                 </div>
             </div>
+            
+            <!-- Lumiere -->
+            <div class="deployment-card border-b-architectural md:border-b-0 md:border-r border-white/10 bg-black p-10 md:p-20 hover:bg-[#050505] transition-colors duration-500">
+                <span class="inline-block border border-white/20 text-gray-400 px-4 py-2 text-[10px] font-bold uppercase tracking-widest mb-8">Video Production</span>
+                <h3 class="text-4xl md:text-5xl font-black uppercase tracking-tighter text-white mb-6">Lumiere Narratives</h3>
+                <p class="text-lg md:text-xl text-gray-400 font-light leading-relaxed">Engineered a high-end, aesthetic, film-inspired AI pipeline for high fashion concepts. Executing complex physics, including bespoke mist transitions.</p>
+            </div>
 
-            <!-- The Grid (Akij Brands & Ecosystem) -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                
-                <!-- Akij Ecosystem -->
-                <div class="deployment-card border-architectural bg-[#020202] p-8">
-                    <span class="text-[#E59214] text-[10px] font-bold uppercase tracking-widest mb-4 block">Enterprise AI</span>
-                    <h3 class="text-xl font-black uppercase tracking-tight text-white mb-2">Akij Electric Mobility</h3>
-                    <p class="text-gray-500 font-light text-sm">Agentic frameworks deployed for operational scale and data automation.</p>
-                </div>
-                
-                <div class="deployment-card border-architectural bg-[#020202] p-8">
-                    <span class="text-[#E59214] text-[10px] font-bold uppercase tracking-widest mb-4 block">Enterprise AI</span>
-                    <h3 class="text-xl font-black uppercase tracking-tight text-white mb-2">Akij Pharmaceuticals</h3>
-                    <p class="text-gray-500 font-light text-sm">Custom AI layers managing analytical workflows and procedural structuring.</p>
-                </div>
-                
-                <div class="deployment-card border-architectural bg-[#020202] p-8">
-                    <span class="text-[#E59214] text-[10px] font-bold uppercase tracking-widest mb-4 block">Enterprise AI</span>
-                    <h3 class="text-xl font-black uppercase tracking-tight text-white mb-2">Akij Aviation</h3>
-                    <p class="text-gray-500 font-light text-sm">Logistical and systemic automation directed by strict human judgment constraints.</p>
-                </div>
-                
-                <div class="deployment-card border-architectural bg-[#020202] p-8">
-                    <span class="text-[#E59214] text-[10px] font-bold uppercase tracking-widest mb-4 block">Enterprise AI</span>
-                    <h3 class="text-xl font-black uppercase tracking-tight text-white mb-2">Akij Plus</h3>
-                    <p class="text-gray-500 font-light text-sm">Deep data analysis agents tailored for commercial ecosystem optimization.</p>
-                </div>
+            <!-- Leadership -->
+            <div class="deployment-card bg-black p-10 md:p-20 hover:bg-[#050505] transition-colors duration-500">
+                <span class="inline-block border border-white/20 text-gray-400 px-4 py-2 text-[10px] font-bold uppercase tracking-widest mb-8">Logistics & Strategy</span>
+                <h3 class="text-4xl md:text-5xl font-black uppercase tracking-tighter text-white mb-6">Kaiqi & Changfu Events</h3>
+                <p class="text-lg md:text-xl text-gray-400 font-light leading-relaxed">Automated scheduling, scripting, and logistical mapping for high-level leadership summits, multi-hour exhibitions, and formal dinners.</p>
+            </div>
+        </div>
 
-                <!-- Events -->
-                <div class="deployment-card border-architectural bg-[#020202] p-8">
-                    <span class="text-white text-[10px] font-bold uppercase tracking-widest mb-4 block opacity-50">Logistics & Strategy</span>
-                    <h3 class="text-xl font-black uppercase tracking-tight text-white mb-2">Kaiqi & Changfu Events</h3>
-                    <p class="text-gray-500 font-light text-sm">Automated scheduling and logistical mapping for high-level leadership summits and exhibitions.</p>
-                </div>
+        <!-- The Smaller Grid (Akij Brands & Ecosystem) -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border-b-architectural">
+            
+            <div class="deployment-card border-b sm:border-b-0 sm:border-r border-white/10 p-10 hover:bg-[#050505] transition-colors duration-300">
+                <span class="text-[#E59214] text-[10px] font-bold uppercase tracking-widest mb-4 block">Enterprise AI</span>
+                <h3 class="text-2xl font-black uppercase tracking-tighter text-white mb-4">Akij Electric Mobility</h3>
+            </div>
+            
+            <div class="deployment-card border-b sm:border-b-0 lg:border-r border-white/10 p-10 hover:bg-[#050505] transition-colors duration-300">
+                <span class="text-[#E59214] text-[10px] font-bold uppercase tracking-widest mb-4 block">Enterprise AI</span>
+                <h3 class="text-2xl font-black uppercase tracking-tighter text-white mb-4">Akij Pharmaceuticals</h3>
+            </div>
+            
+            <div class="deployment-card border-b sm:border-b-0 sm:border-r border-white/10 p-10 hover:bg-[#050505] transition-colors duration-300">
+                <span class="text-[#E59214] text-[10px] font-bold uppercase tracking-widest mb-4 block">Enterprise AI</span>
+                <h3 class="text-2xl font-black uppercase tracking-tighter text-white mb-4">Akij Aviation</h3>
+            </div>
+            
+            <div class="deployment-card p-10 hover:bg-[#050505] transition-colors duration-300">
+                <span class="text-[#E59214] text-[10px] font-bold uppercase tracking-widest mb-4 block">Enterprise AI</span>
+                <h3 class="text-2xl font-black uppercase tracking-tighter text-white mb-4">Akij Plus</h3>
+            </div>
+        </div>
 
-                <!-- Growth Partners -->
-                <div class="deployment-card border-architectural bg-[#020202] p-8">
-                    <span class="text-white text-[10px] font-bold uppercase tracking-widest mb-4 block opacity-50">Brand Automation</span>
-                    <h3 class="text-xl font-black uppercase tracking-tight text-white mb-2">Gunoboti</h3>
-                    <p class="text-gray-500 font-light text-sm">Full-stack creative pipeline executing high-yield branding assets.</p>
-                </div>
-
-                <div class="deployment-card border-architectural bg-[#020202] p-8">
-                    <span class="text-white text-[10px] font-bold uppercase tracking-widest mb-4 block opacity-50">Brand Automation</span>
-                    <h3 class="text-xl font-black uppercase tracking-tight text-white mb-2">Grafiti</h3>
-                    <p class="text-gray-500 font-light text-sm">Deploying agent-driven design systems for rapid market deployment.</p>
-                </div>
-
-                <div class="deployment-card border-architectural bg-[#020202] p-8">
-                    <span class="text-white text-[10px] font-bold uppercase tracking-widest mb-4 block opacity-50">Brand Automation</span>
-                    <h3 class="text-xl font-black uppercase tracking-tight text-white mb-2">Nexus</h3>
-                    <p class="text-gray-500 font-light text-sm">Operational automation tailored for scalable agency workflows.</p>
-                </div>
-
-                <div class="deployment-card border-architectural bg-[#020202] p-8">
-                    <span class="text-white text-[10px] font-bold uppercase tracking-widest mb-4 block opacity-50">Brand Automation</span>
-                    <h3 class="text-xl font-black uppercase tracking-tight text-white mb-2">Terracotta</h3>
-                    <p class="text-gray-500 font-light text-sm">Delivering enterprise-grade marketing output at a fraction of traditional cost.</p>
-                </div>
-
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 border-b-architectural">
+            <div class="deployment-card border-b sm:border-b-0 sm:border-r border-white/10 p-10 hover:bg-[#050505] transition-colors duration-300">
+                <span class="text-gray-500 text-[10px] font-bold uppercase tracking-widest mb-4 block">Brand Automation</span>
+                <h3 class="text-2xl font-black uppercase tracking-tighter text-white mb-4">Gunoboti</h3>
+            </div>
+            
+            <div class="deployment-card border-b sm:border-b-0 lg:border-r border-white/10 p-10 hover:bg-[#050505] transition-colors duration-300">
+                <span class="text-gray-500 text-[10px] font-bold uppercase tracking-widest mb-4 block">Brand Automation</span>
+                <h3 class="text-2xl font-black uppercase tracking-tighter text-white mb-4">Grafiti</h3>
+            </div>
+            
+            <div class="deployment-card border-b sm:border-b-0 sm:border-r border-white/10 p-10 hover:bg-[#050505] transition-colors duration-300">
+                <span class="text-gray-500 text-[10px] font-bold uppercase tracking-widest mb-4 block">Brand Automation</span>
+                <h3 class="text-2xl font-black uppercase tracking-tighter text-white mb-4">Nexus</h3>
+            </div>
+            
+            <div class="deployment-card p-10 hover:bg-[#050505] transition-colors duration-300">
+                <span class="text-gray-500 text-[10px] font-bold uppercase tracking-widest mb-4 block">Brand Automation</span>
+                <h3 class="text-2xl font-black uppercase tracking-tighter text-white mb-4">Terracotta</h3>
             </div>
         </div>
     </section>
 
-    <!-- THE HUMAN LAYER -->
-    <section class="py-24 px-6 md:px-16 border-architectural-t bg-[#050505] relative z-10">
-        <div class="max-w-7xl mx-auto">
-            <h2 class="text-xs font-bold text-[#E59214] tracking-[0.3em] uppercase mb-12">The Human Layer</h2>
+    <!-- THE HUMAN LAYER (BUG FIXED & HARDCODED) -->
+    <section class="py-40 px-6 md:px-16 bg-[#000] relative z-10">
+        <div class="max-w-[90vw] mx-auto">
+            <h2 class="text-sm font-bold text-[#E59214] tracking-[0.4em] uppercase mb-16">The Human Layer</h2>
             
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/10 border-architectural overflow-hidden">
-                {[
-                    { name: 'Asif Farid', role: 'MD & CTO' },
-                    { name: 'Nafia Islam Faria', role: 'CEO' },
-                    { name: 'Sarowar Jahan', role: 'CMO' },
-                    { name: 'Muaz Rakin', role: 'CSO & CFO' }
-                ].map((person) => `
-                <div class="bg-black p-10 text-center hover:bg-[#020202] transition-colors duration-300">
-                    <h3 class="text-lg md:text-xl font-black uppercase text-white mb-1">${person.name}</h3>
-                    <p class="text-[#E59214] text-[10px] font-bold tracking-widest uppercase">${person.role}</p>
+            <!-- Completely hardcoded pure HTML grid to prevent any JS rendering bugs -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-white/10 border border-white/10">
+                
+                <!-- Person 1 -->
+                <div class="bg-black p-12 text-center hover:bg-[#050505] transition-colors duration-300">
+                    <h3 class="text-2xl font-black uppercase text-white mb-2">Asif Farid</h3>
+                    <p class="text-[#E59214] text-xs font-bold tracking-widest uppercase">MD & CTO</p>
                 </div>
-                `).join('')}
+
+                <!-- Person 2 -->
+                <div class="bg-black p-12 text-center hover:bg-[#050505] transition-colors duration-300">
+                    <h3 class="text-2xl font-black uppercase text-white mb-2">Nafia Islam Faria</h3>
+                    <p class="text-[#E59214] text-xs font-bold tracking-widest uppercase">CEO</p>
+                </div>
+
+                <!-- Person 3 -->
+                <div class="bg-black p-12 text-center hover:bg-[#050505] transition-colors duration-300">
+                    <h3 class="text-2xl font-black uppercase text-white mb-2">Sarowar Jahan</h3>
+                    <p class="text-[#E59214] text-xs font-bold tracking-widest uppercase">CMO</p>
+                </div>
+
+                <!-- Person 4 -->
+                <div class="bg-black p-12 text-center hover:bg-[#050505] transition-colors duration-300">
+                    <h3 class="text-2xl font-black uppercase text-white mb-2">Muaz Rakin</h3>
+                    <p class="text-[#E59214] text-xs font-bold tracking-widest uppercase">CSO & CFO</p>
+                </div>
+
             </div>
         </div>
     </section>
 
     <!-- CONTACT SECTION -->
-    <section id="contact" class="py-32 px-6 md:px-16 border-architectural-t bg-[#000] relative z-10">
-        <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-12">
+    <section id="contact" class="py-40 px-6 md:px-16 border-t-architectural bg-[#000] relative z-10">
+        <div class="max-w-[90vw] mx-auto flex flex-col lg:flex-row justify-between gap-20">
             
-            <div>
-                <h2 class="text-4xl md:text-6xl font-black uppercase tracking-tight text-white mb-6 leading-[0.9]">Initialize<br/><span class="text-[#E59214]">Your Team.</span></h2>
-                <p class="text-gray-400 font-light max-w-sm">Reach out to our hub in Dhaka or London to begin structuring your custom agentic department.</p>
+            <div class="w-full lg:w-1/2">
+                <h2 class="text-huge font-black uppercase tracking-tighter text-white mb-10 leading-[0.85]">
+                    Initialize<br/><span class="text-[#E59214]">Your Team.</span>
+                </h2>
+                <p class="text-2xl text-gray-400 font-light max-w-xl leading-relaxed">Reach out to our hub in Dhaka or London to begin structuring your custom agentic department.</p>
             </div>
             
-            <div class="flex flex-col gap-6 w-full md:w-auto">
-                <a href="mailto:asif@flowstateimpact.com" class="border-architectural p-8 hover:border-[#E59214] transition-colors duration-300 group bg-[#020202] flex items-center gap-6 min-w-[300px]">
-                    <i data-lucide="mail" class="w-6 h-6 text-gray-500 group-hover:text-[#E59214] transition-colors"></i>
-                    <div>
-                        <span class="text-gray-500 text-[10px] font-bold tracking-widest uppercase block mb-1">Email Us</span>
-                        <span class="text-lg font-medium text-white group-hover:text-[#E59214] transition-colors">asif@flowstateimpact.com</span>
+            <div class="w-full lg:w-1/2 flex flex-col justify-end gap-6">
+                <a href="mailto:asif@flowstateimpact.com" class="magnetic-wrap w-full" data-strength="20">
+                    <div class="magnetic-area absolute -inset-2 z-10 cursor-pointer pointer-events-auto"></div>
+                    <div class="magnetic-inner w-full flex flex-col md:flex-row md:items-center justify-between p-10 border border-white/10 hover:bg-white hover:text-black transition-colors duration-500 group bg-[#020202]">
+                        <span class="text-gray-500 group-hover:text-black text-xs font-bold tracking-widest uppercase mb-4 md:mb-0 transition-colors">Email Us</span>
+                        <span class="text-2xl md:text-4xl font-black tracking-tighter">asif@flowstateimpact.com</span>
                     </div>
                 </a>
                 
-                <div class="border-architectural p-8 hover:border-[#E59214] transition-colors duration-300 group bg-[#020202] flex items-center gap-6 min-w-[300px]">
-                    <i data-lucide="phone" class="w-6 h-6 text-gray-500 group-hover:text-[#E59214] transition-colors"></i>
-                    <div>
-                        <span class="text-gray-500 text-[10px] font-bold tracking-widest uppercase block mb-1">Call The Hub</span>
-                        <span class="text-lg font-medium text-white block">01616 119242</span>
-                        <span class="text-lg font-medium text-white block">01627 935350</span>
+                <div class="magnetic-wrap w-full" data-strength="20">
+                    <div class="magnetic-area absolute -inset-2 z-10 cursor-pointer pointer-events-auto"></div>
+                    <div class="magnetic-inner w-full flex flex-col md:flex-row md:items-center justify-between p-10 border border-white/10 hover:bg-[#E59214] hover:text-black transition-colors duration-500 group bg-[#020202]">
+                        <span class="text-gray-500 group-hover:text-black text-xs font-bold tracking-widest uppercase mb-4 md:mb-0 transition-colors">Call The Hub</span>
+                        <div class="text-right">
+                            <span class="text-2xl md:text-4xl font-black tracking-tighter block mb-2">01616 119242</span>
+                            <span class="text-2xl md:text-4xl font-black tracking-tighter block">01627 935350</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -373,19 +380,18 @@
     </section>
 
     <!-- FOOTER -->
-    <footer class="py-8 px-6 md:px-16 bg-[#000] border-architectural-t flex flex-col md:flex-row justify-between items-center text-[10px] tracking-widest text-gray-600 uppercase relative z-10">
+    <footer class="py-12 px-6 md:px-16 bg-[#000] border-t-architectural flex flex-col md:flex-row justify-between items-center text-xs tracking-widest text-gray-600 uppercase relative z-10">
         <p>FlowStãte Impact © 2026</p>
-        <p class="mt-4 md:mt-0">Dhaka • London</p>
+        <p class="mt-4 md:mt-0 hover:text-white transition-colors cursor-pointer">Dhaka • London</p>
     </footer>
 
-    <!-- LOGIC & ANIMATION SCRIPTS -->
+    <!-- LOGIC & PHYSICS SCRIPTS -->
     <script>
-        // Render Icons
         lucide.createIcons();
 
-        // 1. Lenis Smooth Scroll (Optimized Physics)
+        // 1. Lenis Smooth Scroll (Silky Physics)
         const lenis = new Lenis({ 
-            duration: 1.2, 
+            duration: 1.5, 
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
             wheelMultiplier: 1,
             touchMultiplier: 2
@@ -393,47 +399,62 @@
         function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
         requestAnimationFrame(raf);
 
-        // 2. Sync GSAP
         gsap.registerPlugin(ScrollTrigger);
         lenis.on('scroll', ScrollTrigger.update);
         gsap.ticker.add((time) => { lenis.raf(time * 1000) });
         gsap.ticker.lagSmoothing(0);
 
-        // 3. Crisp Typography Reveal (Hero)
-        const heroTl = gsap.timeline({ defaults: { ease: "power4.out" } });
-        
-        heroTl.to(".nav-element", { y: 0, opacity: 1, duration: 1.2, stagger: 0.1, delay: 0.2 })
-              .to(".reveal-text", { y: "0%", opacity: 1, duration: 1.2, stagger: 0.1 }, "-=0.8");
+        // 2. Cinematic Typography Reveal
+        const heroTl = gsap.timeline({ defaults: { ease: "expo.out" } });
+        heroTl.to(".nav-fade", { y: 0, opacity: 1, duration: 1.5, stagger: 0.1, delay: 0.3 })
+              .to(".reveal-text", { y: "0%", opacity: 1, duration: 1.8, stagger: 0.12 }, "-=1.2");
 
-        // 4. Parallax Video (Hardware Accelerated)
-        gsap.to(".video-wrapper", {
-            yPercent: 15, ease: "none",
-            scrollTrigger: { trigger: ".hero-section", start: "top top", end: "bottom top", scrub: true }
+        // 3. The Video Theater Scroll Effect (Expands as you scroll)
+        gsap.to(".video-container", {
+            clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
+            ease: "none",
+            scrollTrigger: {
+                trigger: "#theater-section",
+                start: "top bottom",
+                end: "center center",
+                scrub: true
+            }
         });
 
-        // 5. Staggered Content Reveals
+        // 4. Staggered Content Reveals
         gsap.fromTo(".info-fade", 
-            { y: 30, opacity: 0 }, 
-            { y: 0, opacity: 1, stagger: 0.1, duration: 1, ease: "power3.out", scrollTrigger: { trigger: ".info-fade", start: "top 85%" } }
+            { y: 60, opacity: 0 }, 
+            { y: 0, opacity: 1, stagger: 0.1, duration: 1.5, ease: "expo.out", scrollTrigger: { trigger: ".info-fade", start: "top 85%" } }
         );
 
-        // 6. 5 Doors Scrub Animation
         gsap.fromTo(".door-step", 
-            { x: -30, opacity: 0 }, 
-            { x: 0, opacity: 1, stagger: 0.1, ease: "power2.out", scrollTrigger: { trigger: "#doors-container", start: "top 85%", end: "bottom 60%", scrub: 1 } }
+            { y: 40, opacity: 0 }, 
+            { y: 0, opacity: 1, stagger: 0.15, duration: 1, ease: "power3.out", scrollTrigger: { trigger: "#doors-container", start: "top 80%" } }
         );
 
-        // 7. Tier ROI Parallax
         gsap.fromTo(".tier-roi", 
-            { x: 100, opacity: 0 }, 
-            { x: 0, opacity: 1, scrollTrigger: { trigger: ".tier-section", start: "top 80%", end: "bottom 20%", scrub: 1.5 } }
+            { scale: 0.8, opacity: 0 }, 
+            { scale: 1, opacity: 1, scrollTrigger: { trigger: ".tier-section", start: "top 70%", end: "bottom 30%", scrub: 1.5 } }
         );
+
+        // 5. Magnetic Buttons Logic
+        const magneticElements = document.querySelectorAll('.magnetic-wrap');
         
-        // 8. Grid Cards Stagger Reveal
-        gsap.fromTo(".deployment-card", 
-            { y: 40, opacity: 0 }, 
-            { y: 0, opacity: 1, stagger: 0.05, duration: 0.8, ease: "power3.out", scrollTrigger: { trigger: "#portfolio", start: "top 80%" } }
-        );
+        magneticElements.forEach((el) => {
+            const inner = el.querySelector('.magnetic-inner');
+            const strength = el.getAttribute('data-strength') || 30;
+
+            el.addEventListener('mousemove', (e) => {
+                const rect = el.getBoundingClientRect();
+                const x = ((e.clientX - rect.left) / rect.width - 0.5) * strength;
+                const y = ((e.clientY - rect.top) / rect.height - 0.5) * strength;
+                gsap.to(inner, { x: x, y: y, duration: 0.6, ease: "power3.out" });
+            });
+
+            el.addEventListener('mouseleave', () => {
+                gsap.to(inner, { x: 0, y: 0, duration: 0.8, ease: "elastic.out(1, 0.3)" });
+            });
+        });
     </script>
 </body>
 </html>
