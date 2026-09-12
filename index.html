@@ -4,212 +4,367 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>FlowStãte Impact | Agentic Operations</title>
+    
+    <!-- Core Styling & Animation -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
     
+    <!-- Premium Iconography -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    
     <style>
+        /* Smooth Scroll Engine */
         html.lenis { height: auto; }
         .lenis.lenis-smooth { scroll-behavior: auto; }
         .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
         .lenis.lenis-stopped { overflow: hidden; }
         .lenis.lenis-scrolling iframe { pointer-events: none; }
-        body { background-color: #050505; color: #f3f4f6; overflow-x: hidden; }
+        
+        body { 
+            background-color: #050505; 
+            color: #f3f4f6; 
+            overflow-x: hidden; 
+        }
+
+        /* Architectural Grid & Film Grain Textures */
+        .bg-grid {
+            background-image: 
+                linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px), 
+                linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+        .noise-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none;
+            z-index: 9999;
+            opacity: 0.25;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Animation Utilities */
         .video-wrapper { will-change: transform; transform: translateZ(0); }
         .reveal-mask { overflow: hidden; display: inline-block; vertical-align: top; }
         .reveal-text { display: inline-block; transform: translateY(100%); opacity: 0; }
-        .media-loaded { opacity: 0.4; transition: opacity 1.5s cubic-bezier(0.16, 1, 0.3, 1); }
+        .media-loaded { opacity: 0.6; transition: opacity 2s cubic-bezier(0.16, 1, 0.3, 1); }
+        
+        /* Glassmorphism for readable text over video */
+        .glass-panel {
+            background: radial-gradient(circle, rgba(5,5,5,0.7) 0%, rgba(5,5,5,0.4) 100%);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
     </style>
 </head>
-<body class="antialiased selection:bg-[#E59214] selection:text-black font-sans">
+<body class="antialiased selection:bg-[#E59214] selection:text-black font-sans bg-grid">
+    
+    <!-- Film Grain Overlay -->
+    <div class="noise-overlay"></div>
 
-    <nav class="fixed top-0 w-full p-8 flex justify-between items-center z-50 mix-blend-difference pointer-events-none">
+    <!-- NAVIGATION -->
+    <nav class="fixed top-0 w-full p-6 md:p-8 flex justify-between items-center z-50 mix-blend-difference pointer-events-none">
         <div class="flex items-center gap-4 nav-element">
             <div class="flex flex-col items-start leading-none pointer-events-auto">
-                <span class="text-3xl font-black tracking-tight text-white uppercase">FlowStãte</span>
-                <span class="text-sm font-bold tracking-[0.3em] text-[#E59214] uppercase">Impact</span>
+                <span class="text-2xl md:text-3xl font-black tracking-tight text-white uppercase">FlowStãte</span>
+                <span class="text-[0.65rem] md:text-sm font-bold tracking-[0.3em] text-[#E59214] uppercase">Impact</span>
             </div>
         </div>
-        <a href="mailto:asif@flowstateimpact.com" class="nav-element pointer-events-auto text-sm font-bold uppercase tracking-widest border border-white/20 px-6 py-3 hover:bg-white hover:text-black transition-colors duration-500">
-            Initialize Department
+        <a href="http://www.flowstateimpact.com/links" target="_blank" class="nav-element pointer-events-auto flex items-center gap-2 text-xs md:text-sm font-bold uppercase tracking-widest border border-white/20 px-4 md:px-6 py-3 hover:bg-[#E59214] hover:border-[#E59214] hover:text-black transition-all duration-300 bg-black/50 backdrop-blur-md">
+            <span>Linktree</span>
+            <i data-lucide="external-link" class="w-4 h-4"></i>
         </a>
     </nav>
 
+    <!-- HERO SECTION -->
     <section class="hero-section relative h-screen w-full flex items-center justify-center overflow-hidden bg-black">
         <div class="video-wrapper absolute inset-0 z-0 h-[120%] -top-[10%]">
             <video 
                 id="hero-video" autoplay muted loop playsinline preload="metadata"
-                class="w-full h-full object-cover opacity-0 media-loaded"
+                class="w-full h-full object-cover opacity-0 media-loaded mix-blend-screen"
             >
                 <source src="FSI-FILM-FINAL.mp4" type="video/mp4" />
             </video>
-            <div class="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-[#050505]"></div>
+            <!-- Heavy gradient to ensure text readability -->
+            <div class="absolute inset-0 bg-gradient-to-b from-[#050505]/80 via-transparent to-[#050505]"></div>
         </div>
 
-        <div class="relative z-10 text-center px-6 max-w-6xl mt-20">
-            <h1 class="text-5xl md:text-8xl font-black uppercase tracking-tighter leading-[0.9] mb-8 text-white flex flex-col items-center">
+        <div class="relative z-10 text-center px-6 max-w-6xl mt-16 glass-panel py-12 md:py-16 rounded-3xl border border-white/5 shadow-2xl">
+            <div class="mb-6 flex justify-center nav-element opacity-0">
+                <span class="border border-[#E59214]/30 bg-[#E59214]/10 text-[#E59214] px-4 py-1.5 rounded-full text-xs font-bold uppercase tracking-widest flex items-center gap-2">
+                    <i data-lucide="cpu" class="w-4 h-4"></i> Agentic Operations
+                </span>
+            </div>
+            <h1 class="text-4xl md:text-7xl lg:text-8xl font-black uppercase tracking-tighter leading-[0.9] mb-8 text-white flex flex-col items-center">
                 <span class="reveal-mask"><span class="reveal-text">Now your business</span></span>
                 <span class="reveal-mask"><span class="reveal-text">can afford a</span></span>
                 <span class="reveal-mask"><span class="reveal-text text-[#E59214]">whole department.</span></span>
             </h1>
-            <div class="reveal-mask mt-4">
-                <p class="reveal-text text-xl md:text-2xl text-gray-400 font-light max-w-3xl mx-auto">
+            <div class="reveal-mask mt-4 mb-10">
+                <p class="reveal-text text-lg md:text-2xl text-gray-300 font-light max-w-3xl mx-auto leading-relaxed">
                     One stop for strategy, branding, marketing, design, content, and IT. <br class="hidden md:block"/>
-                    Human led, Agentic AI assisted. A fraction of the cost.
+                    Human led. Agentic AI assisted. A fraction of the cost.
                 </p>
+            </div>
+            
+            <!-- Hero Action Buttons -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 reveal-mask">
+                <a href="http://www.flowstateimpact.com/links" target="_blank" class="reveal-text w-full sm:w-auto bg-[#E59214] text-black px-8 py-4 font-black uppercase tracking-widest hover:bg-white transition-colors duration-300 flex items-center justify-center gap-3">
+                    Initialize Setup <i data-lucide="arrow-right" class="w-5 h-5"></i>
+                </a>
+                <a href="#portfolio" class="reveal-text w-full sm:w-auto border border-white/20 bg-black/50 text-white px-8 py-4 font-bold uppercase tracking-widest hover:border-[#E59214] hover:text-[#E59214] transition-colors duration-300 flex items-center justify-center gap-3">
+                    View Deployments <i data-lucide="folder-open" class="w-5 h-5"></i>
+                </a>
             </div>
         </div>
     </section>
 
-    <section class="py-40 px-8 md:px-16 border-t border-white/10 relative bg-[#050505] z-10">
-        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20">
+    <!-- THE CONTROL ROOM -->
+    <section class="py-32 px-6 md:px-16 border-t border-white/5 relative z-10 bg-gradient-to-b from-[#050505] to-black">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24">
             <div class="info-block">
-                <h2 class="text-xs font-bold text-[#E59214] tracking-[0.3em] uppercase mb-4 info-fade">The Control Room</h2>
-                <h3 class="text-4xl md:text-6xl font-black uppercase tracking-tight mb-8 leading-none info-fade">
+                <div class="flex items-center gap-3 mb-6 info-fade">
+                    <i data-lucide="network" class="text-[#E59214] w-6 h-6"></i>
+                    <h2 class="text-xs font-bold text-[#E59214] tracking-[0.3em] uppercase">The Control Room</h2>
+                </div>
+                <h3 class="text-4xl md:text-6xl font-black uppercase tracking-tight mb-8 leading-none info-fade text-white">
                     83 Agents.<br/>Written Like People.
                 </h3>
                 <p class="text-lg text-gray-400 mb-6 font-light leading-relaxed info-fade">
-                    They are written, not set up. Each one has a name, one job, a temperament, and a way of working. 56 of them make the work, or say whether it is good enough. 27 of them gather facts.
+                    They are written, not set up. Each one has a name, one job, a temperament, and a way of working. <strong class="text-white">56 of them make the work</strong>, or say whether it is good enough. <strong class="text-white">27 of them gather facts.</strong>
                 </p>
                 <p class="text-lg text-gray-400 font-light leading-relaxed info-fade">
-                    Every correction we make is kept, and they work differently the next time because of it. They disagree with each other. Three of them exist only to stop bad work.
+                    Every correction we make is kept, and they work differently the next time because of it. They disagree with each other. Three of them exist purely to reject subpar work.
                 </p>
             </div>
 
+            <!-- THE 5 DOORS (Iconography enhanced) -->
             <div id="doors-container" class="flex flex-col justify-center space-y-4">
-                <h4 class="text-sm font-bold uppercase tracking-widest text-white mb-4 border-b border-white/10 pb-4 info-fade">Nothing leaves until it passes five doors</h4>
-                <div class="door-step flex items-start gap-6 p-6 bg-black border border-white/10 transition-colors duration-500">
-                    <span class="text-[#E59214] text-2xl font-black leading-none">01</span>
-                    <div><h5 class="text-lg font-bold uppercase tracking-wide text-white">Strangers Read It</h5></div>
+                <h4 class="text-sm font-bold uppercase tracking-widest text-white mb-4 border-b border-white/10 pb-4 info-fade flex items-center gap-2">
+                    <i data-lucide="shield-check" class="w-5 h-5 text-[#E59214]"></i> Nothing leaves until it passes five doors
+                </h4>
+                
+                <div class="door-step group flex items-center gap-6 p-6 bg-black/50 border border-white/5 hover:border-[#E59214]/50 hover:bg-black transition-all duration-500 backdrop-blur-sm">
+                    <span class="text-[#E59214] text-2xl font-black leading-none opacity-50 group-hover:opacity-100 transition-opacity">01</span>
+                    <div class="flex-1"><h5 class="text-lg font-bold uppercase tracking-wide text-white">Strangers Read It</h5></div>
+                    <i data-lucide="users" class="text-gray-600 group-hover:text-[#E59214] transition-colors"></i>
                 </div>
-                <div class="door-step flex items-start gap-6 p-6 bg-black border border-white/10 transition-colors duration-500">
-                    <span class="text-[#E59214] text-2xl font-black leading-none">02</span>
-                    <div><h5 class="text-lg font-bold uppercase tracking-wide text-white">It Gets A Mark</h5></div>
+                <div class="door-step group flex items-center gap-6 p-6 bg-black/50 border border-white/5 hover:border-[#E59214]/50 hover:bg-black transition-all duration-500 backdrop-blur-sm">
+                    <span class="text-[#E59214] text-2xl font-black leading-none opacity-50 group-hover:opacity-100 transition-opacity">02</span>
+                    <div class="flex-1"><h5 class="text-lg font-bold uppercase tracking-wide text-white">It Gets A Mark</h5></div>
+                    <i data-lucide="target" class="text-gray-600 group-hover:text-[#E59214] transition-colors"></i>
                 </div>
-                <div class="door-step flex items-start gap-6 p-6 bg-black border border-white/10 transition-colors duration-500">
-                    <span class="text-[#E59214] text-2xl font-black leading-none">03</span>
-                    <div><h5 class="text-lg font-bold uppercase tracking-wide text-white">Three Can Say No</h5></div>
+                <div class="door-step group flex items-center gap-6 p-6 bg-black/50 border border-white/5 hover:border-[#E59214]/50 hover:bg-black transition-all duration-500 backdrop-blur-sm">
+                    <span class="text-[#E59214] text-2xl font-black leading-none opacity-50 group-hover:opacity-100 transition-opacity">03</span>
+                    <div class="flex-1"><h5 class="text-lg font-bold uppercase tracking-wide text-white">Three Can Say No</h5></div>
+                    <i data-lucide="x-octagon" class="text-gray-600 group-hover:text-[#E59214] transition-colors"></i>
                 </div>
-                <div class="door-step flex items-start gap-6 p-6 bg-black border border-white/10 transition-colors duration-500">
-                    <span class="text-[#E59214] text-2xl font-black leading-none">04</span>
-                    <div><h5 class="text-lg font-bold uppercase tracking-wide text-white">Five Try To Break It</h5></div>
+                <div class="door-step group flex items-center gap-6 p-6 bg-black/50 border border-white/5 hover:border-[#E59214]/50 hover:bg-black transition-all duration-500 backdrop-blur-sm">
+                    <span class="text-[#E59214] text-2xl font-black leading-none opacity-50 group-hover:opacity-100 transition-opacity">04</span>
+                    <div class="flex-1"><h5 class="text-lg font-bold uppercase tracking-wide text-white">Five Try To Break It</h5></div>
+                    <i data-lucide="hammer" class="text-gray-600 group-hover:text-[#E59214] transition-colors"></i>
                 </div>
-                <div class="door-step flex items-start gap-6 p-6 bg-black border border-white/10 transition-colors duration-500">
-                    <span class="text-[#E59214] text-2xl font-black leading-none">05</span>
-                    <div><h5 class="text-lg font-bold uppercase tracking-wide text-white">One Last Look</h5></div>
+                <div class="door-step group flex items-center gap-6 p-6 bg-black/50 border border-white/5 hover:border-[#E59214]/50 hover:bg-black transition-all duration-500 backdrop-blur-sm">
+                    <span class="text-[#E59214] text-2xl font-black leading-none opacity-50 group-hover:opacity-100 transition-opacity">05</span>
+                    <div class="flex-1"><h5 class="text-lg font-bold uppercase tracking-wide text-white">One Last Look</h5></div>
+                    <i data-lucide="eye" class="text-gray-600 group-hover:text-[#E59214] transition-colors"></i>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="tier-section py-40 px-8 md:px-16 bg-[#E59214] text-black relative z-10 overflow-hidden">
+    <!-- CUSTOM TIERS -->
+    <section class="tier-section py-32 px-6 md:px-16 bg-[#E59214] text-black relative z-10 overflow-hidden shadow-[0_0_50px_rgba(229,146,20,0.1)]">
         <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
             <div class="tier-content">
                 <h2 class="text-4xl md:text-6xl font-black uppercase tracking-tight mb-6 leading-none">
                     Keep a room <br/> of your own.
                 </h2>
-                <p class="text-xl font-medium mb-8 max-w-lg">
-                    We write the workers for your business, your name on every card, and hand you the keys. It runs on your own subscription. You keep it.
+                <p class="text-xl font-bold mb-10 max-w-lg opacity-80">
+                    We write the workers for your business, put your name on every card, and hand you the keys. It runs on your own subscription. You keep the engine.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-4">
-                    <div class="bg-black text-white p-8 w-full transform transition-transform hover:-translate-y-2 duration-500">
-                        <h4 class="text-[#E59214] font-bold uppercase tracking-wider mb-2">Creator Tier</h4>
-                        <p class="text-sm text-gray-400">Streamlined agentic pipelines for rapid content, branding, and design output.</p>
+                    <div class="bg-black text-white p-8 w-full shadow-xl transform transition-all hover:-translate-y-2 duration-500 rounded-lg">
+                        <i data-lucide="zap" class="text-[#E59214] mb-4 w-8 h-8"></i>
+                        <h4 class="text-[#E59214] font-black uppercase tracking-wider mb-2">Creator Tier</h4>
+                        <p class="text-sm text-gray-400 font-medium">Streamlined agentic pipelines optimized for rapid content generation, visual branding, and design output.</p>
                     </div>
-                    <div class="bg-black text-white p-8 w-full border border-black hover:border-white transition-all transform hover:-translate-y-2 duration-500">
-                        <h4 class="text-[#E59214] font-bold uppercase tracking-wider mb-2">Ultimate Tier</h4>
-                        <p class="text-sm text-gray-400">Full-scale enterprise department automation. Deep data analysis and bespoke workflows.</p>
+                    <div class="bg-black text-white p-8 w-full shadow-xl border border-black hover:border-white transition-all transform hover:-translate-y-2 duration-500 rounded-lg">
+                        <i data-lucide="building-2" class="text-[#E59214] mb-4 w-8 h-8"></i>
+                        <h4 class="text-[#E59214] font-black uppercase tracking-wider mb-2">Ultimate Tier</h4>
+                        <p class="text-sm text-gray-400 font-medium">Full-scale enterprise department automation. Deep data analysis, workflow integration, and bespoke operations.</p>
                     </div>
                 </div>
             </div>
-            <div class="tier-roi text-[8rem] md:text-[14rem] font-black tracking-tighter leading-none text-black/10 flex justify-end">
+            <div class="tier-roi text-[10rem] md:text-[16rem] font-black tracking-tighter leading-none text-black/10 flex justify-end select-none">
                 10x
             </div>
         </div>
     </section>
 
-    <section class="py-40 px-8 md:px-16 bg-[#050505]">
+    <!-- PORTFOLIO / ACTIVE DEPLOYMENTS -->
+    <section id="portfolio" class="py-32 px-6 md:px-16 bg-[#050505] relative z-10 border-t border-white/5">
         <div class="max-w-7xl mx-auto">
-            <h2 class="text-xs font-bold text-[#E59214] tracking-[0.3em] uppercase mb-16">Active Deployments</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                <div class="group border border-white/10 bg-black p-10 hover:border-[#E59214] transition-all">
-                    <h3 class="text-3xl font-black uppercase tracking-tight text-white mb-2">Lumiere Narratives</h3>
-                    <p class="text-[#E59214] text-sm font-bold uppercase tracking-widest mb-6">AI Video Production Pipeline</p>
-                    <p class="text-gray-400 font-light">Built a high-end, aesthetic, film-inspired AI pipeline for high fashion concepts. Utilizing advanced generative models to execute complex physics, including custom mist transitions for their cinematic website intro.</p>
+            <div class="flex items-center gap-3 mb-16 justify-center md:justify-start">
+                <i data-lucide="briefcase" class="text-[#E59214] w-6 h-6"></i>
+                <h2 class="text-xs font-bold text-[#E59214] tracking-[0.3em] uppercase">Active Deployments</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Lumiere -->
+                <div class="group relative border border-white/10 bg-black/60 p-10 hover:border-[#E59214] transition-all duration-500 overflow-hidden backdrop-blur-sm">
+                    <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-30 transition-opacity">
+                        <i data-lucide="film" class="w-24 h-24 text-white"></i>
+                    </div>
+                    <h3 class="text-3xl font-black uppercase tracking-tight text-white mb-2 relative z-10">Lumiere Narratives</h3>
+                    <p class="text-[#E59214] text-xs font-bold uppercase tracking-widest mb-6 relative z-10">AI Video Production Pipeline</p>
+                    <p class="text-gray-400 font-light leading-relaxed relative z-10">Engineered a high-end, aesthetic, film-inspired AI pipeline for high fashion concepts. Utilizing advanced generative models to execute complex physics, including bespoke mist transitions for their cinematic web environment.</p>
                 </div>
-                <div class="group border border-white/10 bg-black p-10 hover:border-[#E59214] transition-all">
-                    <h3 class="text-3xl font-black uppercase tracking-tight text-white mb-2">Akij Dynamics</h3>
-                    <p class="text-[#E59214] text-sm font-bold uppercase tracking-widest mb-6">Enterprise Consultancy Partners</p>
-                    <p class="text-gray-400 font-light">Deploying agentic frameworks across Akij Electric Mobility, Pharmaceuticals, Aviation, and Akij Plus. Our custom AI layers manage deep data analysis and enterprise scale, directed by human judgment.</p>
+                
+                <!-- Akij -->
+                <div class="group relative border border-white/10 bg-black/60 p-10 hover:border-[#E59214] transition-all duration-500 overflow-hidden backdrop-blur-sm">
+                    <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-30 transition-opacity">
+                        <i data-lucide="bar-chart-3" class="w-24 h-24 text-white"></i>
+                    </div>
+                    <h3 class="text-3xl font-black uppercase tracking-tight text-white mb-2 relative z-10">Akij Dynamics</h3>
+                    <p class="text-[#E59214] text-xs font-bold uppercase tracking-widest mb-6 relative z-10">Enterprise Consultancy Partners</p>
+                    <p class="text-gray-400 font-light leading-relaxed relative z-10">Deploying agentic frameworks across Akij Electric Mobility, Pharmaceuticals, Aviation, and Akij Plus. Custom AI layers manage deep data analysis and scale enterprise operations, strictly directed by human judgment.</p>
                 </div>
-                <div class="group border border-white/10 bg-black p-10 hover:border-[#E59214] transition-all">
-                    <h3 class="text-3xl font-black uppercase tracking-tight text-white mb-2">Leadership Summits</h3>
-                    <p class="text-[#E59214] text-sm font-bold uppercase tracking-widest mb-6">Kaiqi & Changfu Events</p>
-                    <p class="text-gray-400 font-light">Automated scheduling and logistical mapping for high-level leadership speeches, multi-hour exhibitions, and formal dinner coordination using our organizational agent swarm.</p>
+                
+                <!-- Events -->
+                <div class="group relative border border-white/10 bg-black/60 p-10 hover:border-[#E59214] transition-all duration-500 overflow-hidden backdrop-blur-sm">
+                    <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-30 transition-opacity">
+                        <i data-lucide="calendar-check" class="w-24 h-24 text-white"></i>
+                    </div>
+                    <h3 class="text-3xl font-black uppercase tracking-tight text-white mb-2 relative z-10">Leadership Summits</h3>
+                    <p class="text-[#E59214] text-xs font-bold uppercase tracking-widest mb-6 relative z-10">Kaiqi & Changfu Events</p>
+                    <p class="text-gray-400 font-light leading-relaxed relative z-10">Automated scheduling, scripting, and logistical mapping for high-level leadership speeches, multi-hour exhibitions, and formal dinner coordination using our organizational agent swarm.</p>
                 </div>
-                <div class="group border border-white/10 bg-black p-10 hover:border-[#E59214] transition-all">
-                    <h3 class="text-3xl font-black uppercase tracking-tight text-white mb-2">Ecosystem Partners</h3>
-                    <p class="text-[#E59214] text-sm font-bold uppercase tracking-widest mb-6">Brand & Growth Automation</p>
-                    <p class="text-gray-400 font-light">Executing full-stack creative and operational pipelines for Gunoboti, Grafiti, Nexus, and Terracotta. Delivering a fraction of the cost with 3-5x the speed.</p>
+                
+                <!-- Ecosystem -->
+                <div class="group relative border border-white/10 bg-black/60 p-10 hover:border-[#E59214] transition-all duration-500 overflow-hidden backdrop-blur-sm">
+                    <div class="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-30 transition-opacity">
+                        <i data-lucide="layers" class="w-24 h-24 text-white"></i>
+                    </div>
+                    <h3 class="text-3xl font-black uppercase tracking-tight text-white mb-2 relative z-10">Ecosystem Partners</h3>
+                    <p class="text-[#E59214] text-xs font-bold uppercase tracking-widest mb-6 relative z-10">Brand & Growth Automation</p>
+                    <p class="text-gray-400 font-light leading-relaxed relative z-10">Executing full-stack creative and operational pipelines for Gunoboti, Grafiti, Nexus, and Terracotta. Delivering enterprise-grade output at a fraction of traditional cost with 3-5x the speed.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <section class="py-32 px-8 md:px-16 border-t border-white/10 bg-black">
+    <!-- THE HUMAN LAYER -->
+    <section class="py-24 px-6 md:px-16 border-t border-white/5 bg-black relative z-10">
         <div class="max-w-7xl mx-auto">
-            <h2 class="text-xs font-bold text-[#E59214] tracking-[0.3em] uppercase mb-16 text-center">The Human Layer</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div class="border border-white/10 p-8 text-center group hover:border-[#E59214] transition-colors">
-                    <h3 class="text-xl font-black uppercase text-white mb-1">Asif Farid</h3>
+            <div class="flex items-center gap-3 mb-16 justify-center">
+                <i data-lucide="fingerprint" class="text-[#E59214] w-6 h-6"></i>
+                <h2 class="text-xs font-bold text-[#E59214] tracking-[0.3em] uppercase text-center">The Human Layer</h2>
+            </div>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="border border-white/5 bg-[#050505] p-8 text-center group hover:border-[#E59214] hover:bg-black transition-all duration-300">
+                    <h3 class="text-xl font-black uppercase text-white mb-2">Asif Farid</h3>
                     <p class="text-[#E59214] text-xs font-bold tracking-widest uppercase">MD & CTO</p>
                 </div>
-                <div class="border border-white/10 p-8 text-center group hover:border-[#E59214] transition-colors">
-                    <h3 class="text-xl font-black uppercase text-white mb-1">Nafia Islam Faria</h3>
+                <div class="border border-white/5 bg-[#050505] p-8 text-center group hover:border-[#E59214] hover:bg-black transition-all duration-300">
+                    <h3 class="text-xl font-black uppercase text-white mb-2">Nafia Islam Faria</h3>
                     <p class="text-[#E59214] text-xs font-bold tracking-widest uppercase">CEO</p>
                 </div>
-                <div class="border border-white/10 p-8 text-center group hover:border-[#E59214] transition-colors">
-                    <h3 class="text-xl font-black uppercase text-white mb-1">Sarowar Jahan</h3>
+                <div class="border border-white/5 bg-[#050505] p-8 text-center group hover:border-[#E59214] hover:bg-black transition-all duration-300">
+                    <h3 class="text-xl font-black uppercase text-white mb-2">Sarowar Jahan</h3>
                     <p class="text-[#E59214] text-xs font-bold tracking-widest uppercase">CMO</p>
                 </div>
-                <div class="border border-white/10 p-8 text-center group hover:border-[#E59214] transition-colors">
-                    <h3 class="text-xl font-black uppercase text-white mb-1">Muaz Rakin</h3>
+                <div class="border border-white/5 bg-[#050505] p-8 text-center group hover:border-[#E59214] hover:bg-black transition-all duration-300">
+                    <h3 class="text-xl font-black uppercase text-white mb-2">Muaz Rakin</h3>
                     <p class="text-[#E59214] text-xs font-bold tracking-widest uppercase">CSO & CFO</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="py-12 px-8 md:px-16 bg-[#050505] border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-xs tracking-widest text-gray-600 uppercase">
+    <!-- CONTACT SECTION -->
+    <section class="py-24 px-6 md:px-16 border-t border-[#E59214]/20 bg-[#050505] relative z-10">
+        <div class="max-w-4xl mx-auto text-center">
+            <h2 class="text-3xl md:text-5xl font-black uppercase tracking-tight text-white mb-12">Deploy Your Team</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
+                <a href="mailto:asif@flowstateimpact.com" class="flex flex-col items-center justify-center p-8 border border-white/10 hover:border-[#E59214] transition-colors group bg-black rounded-xl">
+                    <i data-lucide="mail" class="w-8 h-8 text-gray-500 group-hover:text-[#E59214] mb-4 transition-colors"></i>
+                    <span class="text-[#E59214] text-xs font-bold tracking-widest uppercase mb-2">Email Us</span>
+                    <span class="text-lg md:text-xl font-medium text-white group-hover:text-[#E59214] transition-colors">asif@flowstateimpact.com</span>
+                </a>
+                
+                <div class="flex flex-col items-center justify-center p-8 border border-white/10 hover:border-[#E59214] transition-colors group bg-black rounded-xl">
+                    <i data-lucide="phone" class="w-8 h-8 text-gray-500 group-hover:text-[#E59214] mb-4 transition-colors"></i>
+                    <span class="text-[#E59214] text-xs font-bold tracking-widest uppercase mb-2">Call The Hub</span>
+                    <span class="text-lg md:text-xl font-medium text-white">01616 119242</span>
+                    <span class="text-lg md:text-xl font-medium text-white">01627 935350</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="py-8 px-6 md:px-16 bg-black border-t border-white/5 flex flex-col md:flex-row justify-between items-center text-xs tracking-widest text-gray-600 uppercase relative z-10">
         <p>FlowStãte Impact © 2026</p>
         <p class="mt-4 md:mt-0">Dhaka • London</p>
     </footer>
 
+    <!-- LOGIC & ANIMATION SCRIPTS -->
     <script>
-        const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
+        // Render Lucide Icons
+        lucide.createIcons();
+
+        // Initialize Lenis Smooth Scroll
+        const lenis = new Lenis({ 
+            duration: 1.2, 
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) 
+        });
         function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
         requestAnimationFrame(raf);
 
+        // Sync GSAP with Lenis
         gsap.registerPlugin(ScrollTrigger);
         lenis.on('scroll', ScrollTrigger.update);
         gsap.ticker.add((time) => { lenis.raf(time * 1000) });
         gsap.ticker.lagSmoothing(0);
 
+        // Video Load Fade-In
         const video = document.getElementById('hero-video');
-        video.addEventListener('canplaythrough', () => { video.classList.add('opacity-40'); });
+        video.addEventListener('canplaythrough', () => { 
+            video.classList.remove('opacity-0');
+        });
 
+        // Hero Timelines (More dynamic staggers)
         const heroTl = gsap.timeline({ defaults: { ease: "power4.out" } });
-        heroTl.to(".nav-element", { y: 0, opacity: 1, duration: 1, stagger: 0.2, delay: 0.2 })
-              .to(".reveal-text", { y: "0%", opacity: 1, duration: 1.2, stagger: 0.15 }, "-=0.8");
+        heroTl.to(".nav-element", { y: 0, opacity: 1, duration: 1, stagger: 0.15, delay: 0.2 })
+              .to(".reveal-text", { y: "0%", opacity: 1, duration: 1.2, stagger: 0.1 }, "-=0.8");
 
+        // Parallax Video
         gsap.to(".video-wrapper", {
             yPercent: 20, ease: "none",
             scrollTrigger: { trigger: ".hero-section", start: "top top", end: "bottom top", scrub: true }
         });
-        gsap.fromTo(".info-fade", { y: 40, opacity: 0 }, { y: 0, opacity: 1, stagger: 0.1, duration: 1, ease: "power3.out", scrollTrigger: { trigger: ".info-block", start: "top 80%" } });
-        gsap.fromTo(".door-step", { x: -50, opacity: 0, scale: 0.95 }, { x: 0, opacity: 1, scale: 1, stagger: 0.1, ease: "power2.out", scrollTrigger: { trigger: "#doors-container", start: "top 85%", end: "bottom 60%", scrub: 1 } });
-        gsap.fromTo(".tier-roi", { x: 100, opacity: 0 }, { x: 0, opacity: 1, scrollTrigger: { trigger: ".tier-section", start: "top 80%", end: "bottom 20%", scrub: 1.5 } });
+
+        // Content Fades
+        gsap.fromTo(".info-fade", 
+            { y: 40, opacity: 0 }, 
+            { y: 0, opacity: 1, stagger: 0.1, duration: 1, ease: "power3.out", scrollTrigger: { trigger: ".info-block", start: "top 80%" } }
+        );
+
+        // 5 Doors Scrub Animation
+        gsap.fromTo(".door-step", 
+            { x: -50, opacity: 0 }, 
+            { x: 0, opacity: 1, stagger: 0.1, ease: "power2.out", scrollTrigger: { trigger: "#doors-container", start: "top 85%", end: "bottom 50%", scrub: 1 } }
+        );
+
+        // ROI Text Parallax
+        gsap.fromTo(".tier-roi", 
+            { x: 100, opacity: 0 }, 
+            { x: 0, opacity: 1, scrollTrigger: { trigger: ".tier-section", start: "top 80%", end: "bottom 20%", scrub: 1.5 } }
+        );
     </script>
 </body>
 </html>
