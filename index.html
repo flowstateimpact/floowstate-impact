@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="antialiased">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>FlowStãte Impact | Specialized Intelligence</title>
     
-    <!-- Next-Gen Architecture Dependencies -->
+    <!-- Dependencies -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
@@ -13,266 +13,243 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700;900&display=swap');
-
-        :root {
-            --amber: #E59214;
-            --black: #030303;
-            --surface: #0a0a0a;
-        }
-
-        body { 
-            background-color: var(--black); 
-            color: #ffffff; 
-            overflow-x: hidden;
-            font-family: 'Inter', sans-serif;
-            cursor: none; 
-            -webkit-font-smoothing: antialiased;
-        }
-
-        /* Fluid Engine */
+        /* Fluid Engine & Resets */
         html.lenis { height: auto; }
         .lenis.lenis-smooth { scroll-behavior: auto; }
         .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
         .lenis.lenis-stopped { overflow: hidden; }
 
-        /* Custom Magnetic Cursor */
-        .cursor-dot {
-            position: fixed; top: 0; left: 0; width: 6px; height: 6px;
-            background-color: var(--amber); border-radius: 50%;
-            pointer-events: none; z-index: 10000;
-            transform: translate(-50%, -50%);
-        }
-        .cursor-ring {
-            position: fixed; top: 0; left: 0; width: 40px; height: 40px;
-            border: 1px solid rgba(229,146,20,0.5); border-radius: 50%;
-            pointer-events: none; z-index: 9999;
-            transform: translate(-50%, -50%);
-            transition: width 0.3s, height 0.3s, background-color 0.3s, border-color 0.3s;
-            mix-blend-mode: difference;
-        }
-        .hover-active .cursor-ring {
-            width: 80px; height: 80px;
-            background-color: rgba(229,146,20,0.1);
-            border-color: transparent;
+        :root {
+            --bg: #020202;
+            --surface: #0a0a0a;
+            --accent: #E59214;
         }
 
-        /* Preloader */
-        #preloader {
-            position: fixed; inset: 0; background: var(--black); z-index: 99999;
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
+        body { 
+            background-color: var(--bg); 
+            color: #ffffff; 
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
-        .loader-text { font-family: monospace; font-size: 0.8rem; color: var(--amber); letter-spacing: 0.2em; overflow: hidden;}
+
+        /* Fluid Typography (Perfect Mobile-to-Desktop Scaling) */
+        .text-fluid-hero { font-size: clamp(3rem, 10vw, 12rem); line-height: 0.85; letter-spacing: -0.05em; }
+        .text-fluid-h2 { font-size: clamp(2.5rem, 6vw, 6rem); line-height: 0.9; letter-spacing: -0.03em; }
+        .text-fluid-h3 { font-size: clamp(2rem, 4vw, 4rem); line-height: 1; letter-spacing: -0.02em; }
         
-        /* Typography Scaling */
-        .text-hero { font-size: clamp(3rem, 8vw, 10rem); line-height: 0.85; letter-spacing: -0.05em; }
-        .text-outline { color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.2); }
-        .text-outline:hover { color: var(--amber); -webkit-text-stroke: 0px; transition: color 0.4s; }
-
-        /* Utility Masks */
-        .reveal-mask { overflow: hidden; display: inline-block; vertical-align: top; }
-        .reveal-y { transform: translateY(110%); }
-
-        /* The Canvas Network */
-        #neural-network { position: absolute; inset: 0; z-index: 0; opacity: 0.5; pointer-events: none; }
-
-        /* Horizontal Scroll Architecture */
-        .horizontal-wrap { width: 400vw; height: 100vh; display: flex; flex-wrap: nowrap; }
-        .h-panel { width: 100vw; height: 100vh; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden;}
-        
-        /* Faceless Team Cards */
-        .team-card {
-            position: relative; overflow: hidden;
-            background: var(--surface);
-            border: 1px solid rgba(255,255,255,0.05);
+        /* The 83 Agent Grid Matrix */
+        #agent-matrix {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(20px, 1fr));
+            gap: 4px; width: 100%;
         }
-        .team-initial {
-            position: absolute; right: -10%; bottom: -10%;
-            font-size: 15rem; font-weight: 900; line-height: 1;
-            color: rgba(255,255,255,0.02);
-            transition: color 0.5s, transform 0.5s;
+        @media (min-width: 768px) {
+            #agent-matrix { grid-template-columns: repeat(auto-fill, minmax(40px, 1fr)); gap: 8px; }
         }
-        .team-card:hover .team-initial { color: rgba(229,146,20,0.05); transform: scale(1.1); }
+        .agent-node {
+            aspect-ratio: 1; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05);
+            transition: background 0.5s ease, border-color 0.5s ease, transform 0.2s ease;
+            border-radius: 2px;
+        }
+        .agent-node.active {
+            background: var(--accent); border-color: var(--accent);
+            transform: scale(1.1); transition: background 0s, border-color 0s, transform 0s;
+            box-shadow: 0 0 20px rgba(229,146,20,0.5);
+        }
 
-        /* Glassmorphism overlays */
-        .glass { background: rgba(10,10,10,0.4); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border-bottom: 1px solid rgba(255,255,255,0.05); }
+        /* Stacking Card Physics */
+        .stack-card {
+            position: sticky; top: 0;
+            height: 100vh; width: 100%;
+            display: flex; align-items: center; justify-content: center;
+            will-change: transform;
+            transform-origin: center top;
+        }
+        .stack-card-inner {
+            width: 100%; height: 100%;
+            display: flex; flex-col;
+            background: var(--bg);
+            box-shadow: 0 -20px 50px rgba(0,0,0,0.8);
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
 
+        /* Video Mask Reveal */
+        .video-reveal-container {
+            clip-path: inset(10% 5% 10% 5% round 20px);
+            will-change: clip-path;
+        }
+        @media (max-width: 768px) {
+            .video-reveal-container { clip-path: inset(20% 0% 20% 0% round 0px); }
+        }
+
+        /* Film Grain (Extremely Subtle Premium Feel) */
+        .film-grain {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            pointer-events: none; z-index: 9999; opacity: 0.03;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* Button Hover Magic */
+        .btn-magnetic { overflow: hidden; position: relative; }
+        .btn-magnetic::before {
+            content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 0%;
+            background-color: var(--accent); transition: height 0.4s cubic-bezier(0.86, 0, 0.07, 1); z-index: -1;
+        }
+        .btn-magnetic:hover::before { height: 100%; }
+        .btn-magnetic:hover { color: #000; border-color: var(--accent); }
     </style>
 </head>
-<body class="antialiased">
+<body class="bg-[#020202]">
 
-    <!-- Preloader Boot Sequence -->
-    <div id="preloader">
-        <div class="loader-text mb-4" id="load-status">SYSTEM.BOOT()</div>
-        <div class="w-64 h-[1px] bg-white/10 relative overflow-hidden">
-            <div class="absolute top-0 left-0 h-full bg-[#E59214] w-0" id="load-bar"></div>
-        </div>
-    </div>
+    <div class="film-grain"></div>
 
-    <!-- Magnetic Cursors -->
-    <div class="cursor-dot"></div>
-    <div class="cursor-ring"></div>
-
-    <!-- NAVIGATION (Glassmorphism) -->
-    <nav class="fixed top-0 w-full p-6 md:p-10 flex justify-between items-center z-50 glass pointer-events-none opacity-0" id="main-nav">
-        <div class="flex flex-col items-start leading-none pointer-events-auto hover-trigger">
+    <!-- NAVIGATION (Mix-Blend) -->
+    <nav class="fixed top-0 w-full px-6 py-6 md:px-12 md:py-8 flex justify-between items-center z-50 mix-blend-difference pointer-events-none">
+        <div class="flex flex-col items-start leading-none pointer-events-auto">
             <span class="text-2xl md:text-3xl font-black tracking-tighter text-white uppercase">FlowStãte</span>
-            <span class="text-[0.6rem] md:text-xs font-bold tracking-[0.5em] text-[#E59214] uppercase mt-1">Impact</span>
+            <span class="text-[0.6rem] md:text-[0.7rem] font-bold tracking-[0.4em] text-[#E59214] uppercase mt-1">Impact</span>
         </div>
         
         <div class="flex items-center gap-6 pointer-events-auto">
-            <a href="http://www.flowstateimpact.com/links" target="_blank" class="hidden md:flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white hover:text-[#E59214] transition-colors hover-trigger">
-                Archives <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+            <a href="http://www.flowstateimpact.com/links" target="_blank" class="hidden md:flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white hover:text-[#E59214] transition-colors">
+                Portfolio <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
             </a>
-            <a href="#command" class="hover-trigger flex items-center gap-3 bg-white text-black px-6 py-3 text-[10px] md:text-xs font-black uppercase tracking-widest hover:bg-[#E59214] transition-all duration-500 rounded-sm">
-                Command The Swarm <span class="w-2 h-2 rounded-full bg-black animate-pulse"></span>
+            <a href="#command" class="btn-magnetic border border-white/20 text-white px-6 py-3 text-[10px] md:text-xs font-black uppercase tracking-widest transition-all duration-300 z-10 flex items-center gap-2 rounded-full backdrop-blur-sm bg-white/5">
+                Deploy Team <div class="w-1.5 h-1.5 bg-[#E59214] rounded-full animate-pulse"></div>
             </a>
         </div>
     </nav>
 
-    <!-- 1. THE MONOLITH HERO -->
-    <section class="relative h-screen w-full flex items-center px-6 md:px-16 overflow-hidden bg-black" id="hero">
-        <canvas id="neural-network"></canvas>
-
-        <div class="relative z-10 w-full max-w-[95vw] mx-auto pointer-events-none mt-20">
+    <!-- 1. TYPOGRAPHIC INTRO (Massive, uncompromising statement) -->
+    <section class="min-h-screen w-full flex flex-col justify-center px-6 md:px-12 pt-32 pb-20 relative z-10">
+        <div class="max-w-[100vw] w-full">
             <div class="overflow-hidden mb-6">
-                <p class="hero-reveal text-[#E59214] text-xs font-bold uppercase tracking-[0.3em] flex items-center gap-3">
-                    [ Deployment 01: Specialized Intelligence ]
-                </p>
+                <span class="gsap-reveal inline-block text-[#E59214] text-xs md:text-sm font-bold uppercase tracking-[0.3em]">
+                    [ The AI Operating System for Agencies & Brands ]
+                </span>
             </div>
             
-            <h1 class="text-hero font-black uppercase text-white mb-10 flex flex-col pointer-events-auto">
-                <span class="reveal-mask"><span class="hero-reveal inline-block">Absolute</span></span>
-                <span class="reveal-mask"><span class="hero-reveal inline-block text-outline">Scale.</span></span>
-                <span class="reveal-mask"><span class="hero-reveal inline-block text-[#E59214]">Zero Payroll.</span></span>
+            <h1 class="text-fluid-hero font-black uppercase text-white mb-8 flex flex-col">
+                <span class="overflow-hidden"><span class="gsap-reveal inline-block">Now Your</span></span>
+                <span class="overflow-hidden"><span class="gsap-reveal inline-block text-white/30">Business Can</span></span>
+                <span class="overflow-hidden"><span class="gsap-reveal inline-block text-[#E59214]">Afford It All.</span></span>
             </h1>
-            
-            <div class="flex flex-col md:flex-row justify-between md:items-end gap-10 border-t border-white/10 pt-8 pointer-events-auto">
-                <div class="reveal-mask">
-                    <p class="hero-reveal text-lg md:text-2xl text-gray-400 font-light max-w-2xl leading-relaxed">
-                        We orchestrate entire departments—strategy, design, content, and code. Directed by absolute human taste, executed by an agentic swarm. <strong class="text-white">You don't hire a team. You command an ecosystem.</strong>
-                    </p>
-                </div>
-                <div class="reveal-mask">
-                    <a href="#theater" class="hero-reveal hover-trigger flex items-center justify-center gap-3 w-16 h-16 rounded-full border border-white/20 hover:border-[#E59214] hover:bg-[#E59214]/10 transition-all duration-500 text-white hover:text-[#E59214]">
-                        <i data-lucide="arrow-down" class="w-5 h-5"></i>
-                    </a>
-                </div>
+
+            <div class="overflow-hidden max-w-3xl">
+                <p class="gsap-reveal text-lg md:text-2xl text-gray-400 font-light leading-relaxed">
+                    We orchestrate entire departments—strategy, branding, design, content, and IT. <strong class="text-white font-medium">Directed by human taste. Executed by an agentic swarm.</strong>
+                </p>
             </div>
         </div>
     </section>
 
-    <!-- 2. THE CINEMATIC LOCK (PINNED SCROLL) -->
-    <section id="theater" class="bg-black relative">
-        <!-- GSAP will pin this container, forcing the video to stay on screen while expanding -->
-        <div class="h-screen w-full flex items-center justify-center overflow-hidden sticky top-0" id="video-pin">
-            <div class="w-full md:w-[80vw] h-[50vh] md:h-[80vh] relative overflow-hidden rounded-none md:rounded-3xl" id="video-frame">
-                <!-- Fallback overlay for texture -->
+    <!-- 2. THE CINEMATIC EXPANSION (Scroll to reveal full screen video) -->
+    <section class="h-[200vh] relative bg-black" id="video-sequence">
+        <div class="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
+            <!-- Container starts as a cinematic strip, scales to full screen on scroll -->
+            <div class="video-reveal-container w-full h-full relative">
+                <!-- Fallback gradient to ensure no harsh edges -->
                 <div class="absolute inset-0 bg-black/20 z-10 pointer-events-none"></div>
-                <!-- Object-cover ensures it fills the cinematic frame flawlessly on mobile and desktop -->
-                <video autoplay muted loop playsinline preload="metadata" class="absolute inset-0 w-full h-full object-cover z-0 filter contrast-125 saturate-50">
+                <video autoplay muted loop playsinline class="w-full h-full object-cover">
                     <source src="FSI-FILM-FINAL.mp4" type="video/mp4" />
                 </video>
             </div>
         </div>
     </section>
 
-    <!-- 3. THE ARCHITECTURE OF INTELLIGENCE -->
-    <section class="py-32 md:py-48 px-6 md:px-16 bg-[#030303] relative z-10 border-t border-white/5">
-        <div class="max-w-[95vw] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-20">
-            <div>
-                <h2 class="text-[#E59214] text-xs font-bold uppercase tracking-[0.4em] mb-8 fade-up"><i data-lucide="network" class="inline w-4 h-4 mr-2 mb-1"></i> System Architecture</h2>
-                <h3 class="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-8 text-white fade-up leading-[0.85]">
-                    83 Agents.<br/><span class="text-outline">One Mind.</span>
-                </h3>
-                <p class="text-xl md:text-3xl text-gray-400 font-light leading-relaxed mb-8 fade-up">
-                    They aren't just algorithms. They possess temperaments, specializations, and memory. <strong class="text-white">56 generate reality. 27 process the intelligence.</strong>
-                </p>
-                <p class="text-lg text-gray-500 font-light leading-relaxed pl-6 border-l border-[#E59214] fade-up">
-                    Three of them exist purely as absolute firewalls—assassins of generic work. They stop anything stale, derivative, or uninspired from ever reaching your desk.
-                </p>
-            </div>
+    <!-- 3. THE 83 AGENT MATRIX (Interactive Grid) -->
+    <section class="py-32 md:py-48 px-6 md:px-12 bg-[#020202] relative z-10">
+        <div class="max-w-screen-2xl mx-auto flex flex-col lg:flex-row gap-20 items-center">
             
-            <!-- Quality Assurance Matrix -->
-            <div class="flex flex-col justify-center">
-                <p class="text-xs font-bold uppercase tracking-widest text-white/50 mb-8 border-b border-white/10 pb-4 fade-up">Quality Assurance Matrix (The 5 Doors)</p>
+            <div class="w-full lg:w-5/12">
+                <h2 class="text-fluid-h2 font-black uppercase tracking-tighter mb-8 text-white leading-[0.85] gsap-fade">
+                    83 Agents.<br/><span class="text-white/30">One Mind.</span>
+                </h2>
+                <p class="text-lg md:text-2xl text-gray-400 font-light leading-relaxed mb-8 gsap-fade">
+                    A bespoke swarm of specialized intelligence. <strong class="text-white">56 generate the work. 27 gather the intelligence.</strong> They debate. They adapt. Every correction rewrites their methodology.
+                </p>
                 
-                {[
-                    { n: "01", t: "Strangers Read It", d: "Validated for pure clarity outside the brand echo chamber." },
-                    { n: "02", t: "It Gets A Mark", d: "Algorithmic scoring against strict aesthetic and logic parameters." },
-                    { n: "03", t: "Three Can Say No", d: "Autonomous rejection of anything derivative or boring." },
-                    { n: "04", t: "Five Try To Break It", d: "Hostile stress-testing to isolate system or logic flaws." },
-                    { n: "05", t: "One Last Look", d: "Final human-led taste engine sign-off. Tech directed by art." }
-                ].map((door) => `
-                <div class="flex items-start gap-6 py-6 border-b border-white/5 group hover-trigger fade-up">
-                    <span class="text-[#E59214] font-black text-xl md:text-2xl pt-1 opacity-50 group-hover:opacity-100 transition-opacity">${door.n}</span>
-                    <div>
-                        <h4 class="text-xl md:text-2xl font-black uppercase text-white mb-2 group-hover:text-[#E59214] transition-colors">${door.t}</h4>
-                        <p class="text-sm text-gray-500 font-light">${door.d}</p>
-                    </div>
+                <div class="space-y-6 mt-12 border-l border-[#E59214]/30 pl-6">
+                    <h3 class="text-sm font-bold text-white uppercase tracking-widest gsap-fade">The 5 Doors of Quality</h3>
+                    <ul class="space-y-4">
+                        <li class="text-gray-400 font-light text-sm md:text-base gsap-fade"><strong class="text-white">01.</strong> Strangers Read It (Clarity check)</li>
+                        <li class="text-gray-400 font-light text-sm md:text-base gsap-fade"><strong class="text-white">02.</strong> It Gets A Mark (Brand alignment)</li>
+                        <li class="text-gray-400 font-light text-sm md:text-base gsap-fade"><strong class="text-white">03.</strong> Three Can Say No (Anti-derivative firewall)</li>
+                        <li class="text-gray-400 font-light text-sm md:text-base gsap-fade"><strong class="text-white">04.</strong> Five Try To Break It (Logic stress-test)</li>
+                        <li class="text-gray-400 font-light text-sm md:text-base gsap-fade"><strong class="text-white">05.</strong> One Last Look (Human taste sign-off)</li>
+                    </ul>
                 </div>
-                `).join('')}
             </div>
+
+            <div class="w-full lg:w-7/12">
+                <div class="p-6 md:p-12 border border-white/5 bg-[#050505] rounded-3xl shadow-2xl relative overflow-hidden group">
+                    <div class="absolute inset-0 bg-gradient-to-br from-[#E59214]/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000 pointer-events-none"></div>
+                    <div class="flex justify-between items-center mb-8">
+                        <span class="text-xs font-bold text-gray-500 uppercase tracking-widest flex items-center gap-2">
+                            <i data-lucide="cpu" class="w-4 h-4"></i> Swarm Network
+                        </span>
+                        <span class="text-xs font-mono text-[#E59214]">ACTIVE_NODES: 83</span>
+                    </div>
+                    <!-- The Interactive Matrix -->
+                    <div id="agent-matrix"></div>
+                </div>
+            </div>
+
         </div>
     </section>
 
-    <!-- 4. HORIZONTAL SCROLL JOURNEY (CLIENT ECOSYSTEM) -->
-    <section id="portfolio-journey" class="bg-black relative z-10 overflow-hidden">
-        <div class="absolute top-12 left-6 md:left-16 z-20 pointer-events-none mix-blend-difference">
-            <h2 class="text-[#E59214] text-xs font-bold uppercase tracking-[0.4em] drop-shadow-md">Active Deployments</h2>
+    <!-- 4. PARALLAX STACKING PORTFOLIO (Flawless Mobile & Desktop) -->
+    <section class="bg-black relative pb-32" id="portfolio-stack">
+        <div class="px-6 md:px-12 py-20 sticky top-0 z-0 bg-gradient-to-b from-black via-black to-transparent h-40 flex items-center">
+            <h2 class="text-xs md:text-sm font-bold text-[#E59214] tracking-[0.4em] uppercase">Active Deployments</h2>
         </div>
 
-        <!-- The Track -->
-        <div class="horizontal-wrap" id="h-track">
+        <div id="cards-container" class="relative z-10">
             
-            <!-- Panel 1: Akij -->
-            <div class="h-panel relative hover-trigger">
-                <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover opacity-40 grayscale hover:grayscale-0 hover:opacity-70 transition-all duration-700" alt="Akij">
-                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
-                <div class="relative z-10 w-[80vw] mx-auto flex flex-col md:flex-row items-end justify-between gap-10">
-                    <div>
-                        <span class="px-3 py-1 border border-[#E59214] text-[#E59214] text-[10px] font-bold uppercase tracking-widest mb-6 inline-block backdrop-blur-md">Business Consultation</span>
-                        <h3 class="text-[clamp(3rem,8vw,8rem)] font-black uppercase text-white leading-none tracking-tighter mb-4">Akij <br/><span class="text-outline">Dynamics</span></h3>
-                        <p class="text-lg md:text-2xl text-gray-300 font-light max-w-2xl">Co-developing custom AI layers to manage deep data analysis and scale enterprise operations under strict human parameters.</p>
+            <!-- Card 1: Akij -->
+            <div class="stack-card">
+                <div class="stack-card-inner flex flex-col md:flex-row">
+                    <div class="w-full md:w-1/2 p-10 md:p-20 flex flex-col justify-center">
+                        <span class="w-fit border border-white/20 text-white px-3 py-1 text-[10px] font-bold uppercase tracking-widest mb-6 rounded-full">Consultancy Partner</span>
+                        <h3 class="text-fluid-h2 font-black uppercase tracking-tighter text-white mb-6">Akij Dynamics</h3>
+                        <p class="text-lg md:text-2xl text-gray-400 font-light">Co-developing custom AI layers to manage deep data analysis and scale enterprise operations under strict human parameters.</p>
                     </div>
-                    <i data-lucide="bar-chart" class="w-16 h-16 text-white/20"></i>
+                    <div class="w-full md:w-1/2 h-64 md:h-full bg-cover bg-center grayscale opacity-60" style="background-image: url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop');"></div>
                 </div>
             </div>
 
-            <!-- Panel 2: Lumiere -->
-            <div class="h-panel relative hover-trigger">
-                <img src="https://images.unsplash.com/photo-1601134994276-808605d8f344?q=80&w=1964&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover opacity-40 grayscale hover:grayscale-0 hover:opacity-70 transition-all duration-700" alt="Lumiere">
-                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
-                <div class="relative z-10 w-[80vw] mx-auto flex flex-col md:flex-row items-end justify-between gap-10">
-                    <div>
-                        <span class="px-3 py-1 border border-white text-white text-[10px] font-bold uppercase tracking-widest mb-6 inline-block backdrop-blur-md">Computational Video</span>
-                        <h3 class="text-[clamp(3rem,8vw,8rem)] font-black uppercase text-white leading-none tracking-tighter mb-4">Lumiere <br/><span class="text-outline">Narratives</span></h3>
-                        <p class="text-lg md:text-2xl text-gray-300 font-light max-w-2xl">Engineered an aesthetic, film-inspired AI pipeline for high fashion. Executing complex physics, including bespoke mist transitions.</p>
+            <!-- Card 2: Lumiere -->
+            <div class="stack-card">
+                <div class="stack-card-inner flex flex-col md:flex-row bg-[#050505]">
+                    <div class="w-full md:w-1/2 p-10 md:p-20 flex flex-col justify-center">
+                        <span class="w-fit border border-white/20 text-white px-3 py-1 text-[10px] font-bold uppercase tracking-widest mb-6 rounded-full">Computational Video</span>
+                        <h3 class="text-fluid-h2 font-black uppercase tracking-tighter text-white mb-6">Lumiere Narratives</h3>
+                        <p class="text-lg md:text-2xl text-gray-400 font-light">Engineered an aesthetic, film-inspired AI pipeline for high fashion. Executing complex physics, including bespoke mist transitions.</p>
                     </div>
-                    <i data-lucide="film" class="w-16 h-16 text-white/20"></i>
+                    <div class="w-full md:w-1/2 h-64 md:h-full bg-cover bg-center grayscale opacity-60" style="background-image: url('https://images.unsplash.com/photo-1601134994276-808605d8f344?q=80&w=1964&auto=format&fit=crop');"></div>
                 </div>
             </div>
 
-            <!-- Panel 3: Events -->
-            <div class="h-panel relative hover-trigger">
-                <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2070&auto=format&fit=crop" class="absolute inset-0 w-full h-full object-cover opacity-40 grayscale hover:grayscale-0 hover:opacity-70 transition-all duration-700" alt="Events">
-                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
-                <div class="relative z-10 w-[80vw] mx-auto flex flex-col md:flex-row items-end justify-between gap-10">
-                    <div>
-                        <span class="px-3 py-1 border border-white text-white text-[10px] font-bold uppercase tracking-widest mb-6 inline-block backdrop-blur-md">Logistics Array</span>
-                        <h3 class="text-[clamp(3rem,8vw,8rem)] font-black uppercase text-white leading-none tracking-tighter mb-4">Kaiqi & <br/><span class="text-outline">Changfu</span></h3>
-                        <p class="text-lg md:text-2xl text-gray-300 font-light max-w-2xl">Automated scheduling, scripting, and logistical mapping for high-level summits, multi-hour exhibitions, and formal dinners.</p>
+            <!-- Card 3: Events -->
+            <div class="stack-card">
+                <div class="stack-card-inner flex flex-col md:flex-row bg-[#080808]">
+                    <div class="w-full md:w-1/2 p-10 md:p-20 flex flex-col justify-center">
+                        <span class="w-fit border border-white/20 text-white px-3 py-1 text-[10px] font-bold uppercase tracking-widest mb-6 rounded-full">Logistics Array</span>
+                        <h3 class="text-fluid-h2 font-black uppercase tracking-tighter text-white mb-6">Kaiqi & Changfu</h3>
+                        <p class="text-lg md:text-2xl text-gray-400 font-light">Automated scheduling, scripting, and logistical mapping for high-level summits, multi-hour exhibitions, and formal dinners.</p>
                     </div>
-                    <i data-lucide="globe" class="w-16 h-16 text-white/20"></i>
+                    <div class="w-full md:w-1/2 h-64 md:h-full bg-cover bg-center grayscale opacity-60" style="background-image: url('https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2070&auto=format&fit=crop');"></div>
                 </div>
             </div>
 
-            <!-- Panel 4: Outro -->
-            <div class="h-panel relative bg-[#E59214] text-black">
-                <div class="relative z-10 w-[80vw] mx-auto text-center flex flex-col items-center justify-center">
-                    <h3 class="text-[clamp(3rem,8vw,8rem)] font-black uppercase leading-none tracking-tighter mb-10">Witness<br/>The Output.</h3>
-                    <a href="http://www.flowstateimpact.com/links" target="_blank" class="hover-trigger bg-black text-white px-10 py-5 text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-colors flex items-center gap-3">
-                        Enter Video & Photo Archives <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            <!-- Card 4: Ecosystem View -->
+            <div class="stack-card">
+                <div class="stack-card-inner bg-[#E59214] text-black flex flex-col items-center justify-center p-10 text-center">
+                    <h3 class="text-fluid-h2 font-black uppercase tracking-tighter mb-8">Brand Automation <br/>Ecosystem</h3>
+                    <p class="text-xl md:text-3xl font-medium max-w-3xl mb-12">Full-stack operational pipelines for Gunoboti, Grafiti, Nexus, and Terracotta. Delivering enterprise-grade output at 5x speed.</p>
+                    <a href="http://www.flowstateimpact.com/links" target="_blank" class="bg-black text-white px-10 py-5 text-sm md:text-base font-black uppercase tracking-widest hover:bg-white hover:text-black transition-colors duration-300 rounded-full flex items-center gap-3">
+                        Enter Archives <i data-lucide="arrow-right" class="w-4 h-4"></i>
                     </a>
                 </div>
             </div>
@@ -280,127 +257,136 @@
         </div>
     </section>
 
-    <!-- 5. FACELESS HUMAN LAYER (Data-Art Style) -->
-    <section class="py-40 bg-[#050505] relative z-10 border-t border-white/5">
-        <div class="max-w-[95vw] mx-auto px-6 md:px-16 mb-16">
-            <h2 class="text-[#E59214] text-xs font-bold uppercase tracking-[0.4em] mb-4 flex items-center gap-3">
-                <i data-lucide="fingerprint" class="w-4 h-4"></i> The Human Layer
-            </h2>
-            <p class="text-gray-400 font-light max-w-md">Intelligence scaled by machines. Directed by absolute human taste.</p>
-        </div>
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-white/5">
-            {[
-                { name: 'Asif Farid', role: 'MD & CTO', initial: 'A' },
-                { name: 'Nafia Islam Faria', role: 'CEO', initial: 'N' },
-                { name: 'Sarwar Jahan', role: 'CMO', initial: 'S' },
-                { name: 'Muaz Rakin', role: 'CSO & CFO', initial: 'M' }
-            ].map((person) => `
-            <div class="team-card h-[400px] p-8 flex flex-col justify-between hover-trigger group">
-                <span class="team-initial">${person.initial}</span>
-                <div class="relative z-10">
-                    <div class="w-8 h-8 rounded-full border border-white/20 flex items-center justify-center mb-4 group-hover:border-[#E59214] group-hover:bg-[#E59214]/10 transition-colors">
-                        <i data-lucide="power" class="w-3 h-3 text-white/50 group-hover:text-[#E59214]"></i>
-                    </div>
+    <!-- 5. TIERS (Massive Split Screen) -->
+    <section class="bg-[#020202] relative z-10 border-t border-white/10">
+        <div class="grid grid-cols-1 lg:grid-cols-2">
+            
+            <div class="p-12 md:p-24 lg:border-r border-white/10 flex flex-col justify-between min-h-[70vh] group hover:bg-[#050505] transition-colors duration-500">
+                <div>
+                    <span class="text-[#E59214] text-xs font-bold uppercase tracking-widest border border-[#E59214] px-3 py-1 rounded-full mb-10 inline-block">Tier 01</span>
+                    <h4 class="text-fluid-h3 font-black uppercase tracking-tighter text-white mb-6">Creator Room</h4>
+                    <p class="text-lg md:text-xl text-gray-400 font-light leading-relaxed max-w-md">Streamlined agentic pipelines optimized for rapid content generation, visual branding, and high-frequency design output.</p>
                 </div>
-                <div class="relative z-10">
-                    <h3 class="text-2xl font-black uppercase text-white mb-1 group-hover:text-[#E59214] transition-colors">${person.name}</h3>
-                    <p class="text-gray-500 text-xs font-bold tracking-widest uppercase">${person.role}</p>
+                <div class="mt-12">
+                    <i data-lucide="zap" class="w-12 h-12 text-[#E59214] opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500"></i>
                 </div>
             </div>
-            `).join('')}
+
+            <div class="p-12 md:p-24 flex flex-col justify-between min-h-[70vh] group bg-white/5 hover:bg-[#E59214] transition-colors duration-500">
+                <div>
+                    <span class="text-white group-hover:text-black group-hover:border-black text-xs font-bold uppercase tracking-widest border border-white/30 px-3 py-1 rounded-full mb-10 inline-block transition-colors">Tier 02</span>
+                    <h4 class="text-fluid-h3 font-black uppercase tracking-tighter text-white group-hover:text-black mb-6 transition-colors">Ultimate Dept</h4>
+                    <p class="text-lg md:text-xl text-gray-400 group-hover:text-black/80 font-light leading-relaxed max-w-md transition-colors">Full-scale enterprise department automation. Deep data analysis, workflow integration, and bespoke operational swarms.</p>
+                </div>
+                <div class="mt-12 flex justify-between items-end">
+                    <i data-lucide="globe-2" class="w-12 h-12 text-white group-hover:text-black opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500"></i>
+                    <span class="text-6xl md:text-8xl font-black text-white/10 group-hover:text-black/20 tracking-tighter transition-colors">10x</span>
+                </div>
+            </div>
+
         </div>
     </section>
 
-    <!-- 6. CONTACT / COMMAND -->
-    <section id="command" class="py-40 px-6 md:px-16 bg-black relative z-10 border-t border-white/10 overflow-hidden">
-        <div class="max-w-[95vw] mx-auto flex flex-col lg:flex-row justify-between gap-20 relative z-10">
+    <!-- 6. THE HUMAN LAYER (Brutalist Typography, No Faces) -->
+    <section class="py-32 px-6 md:px-12 bg-black border-t border-white/5">
+        <div class="max-w-screen-2xl mx-auto">
+            <h2 class="text-xs md:text-sm font-bold text-gray-500 tracking-[0.4em] uppercase mb-16 flex items-center gap-3">
+                <i data-lucide="fingerprint" class="w-4 h-4 text-[#E59214]"></i> The Human Layer
+            </h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-16">
+                <!-- MD & CTO -->
+                <div class="border-b border-white/10 pb-8 hover:border-[#E59214] transition-colors duration-500 group">
+                    <h3 class="text-4xl md:text-6xl font-black uppercase tracking-tighter text-white mb-2 group-hover:text-[#E59214] transition-colors">Asif Farid</h3>
+                    <div class="flex items-center justify-between">
+                        <p class="text-gray-500 text-xs font-bold tracking-widest uppercase">Managing Director & CTO</p>
+                        <span class="text-white/5 font-black text-6xl leading-none group-hover:text-[#E59214]/10 transition-colors">AF</span>
+                    </div>
+                </div>
+
+                <!-- CEO -->
+                <div class="border-b border-white/10 pb-8 hover:border-[#E59214] transition-colors duration-500 group">
+                    <h3 class="text-4xl md:text-6xl font-black uppercase tracking-tighter text-white mb-2 group-hover:text-[#E59214] transition-colors">Nafia Islam Faria</h3>
+                    <div class="flex items-center justify-between">
+                        <p class="text-gray-500 text-xs font-bold tracking-widest uppercase">Chief Executive Officer</p>
+                        <span class="text-white/5 font-black text-6xl leading-none group-hover:text-[#E59214]/10 transition-colors">NF</span>
+                    </div>
+                </div>
+
+                <!-- CMO -->
+                <div class="border-b border-white/10 pb-8 hover:border-[#E59214] transition-colors duration-500 group">
+                    <h3 class="text-4xl md:text-6xl font-black uppercase tracking-tighter text-white mb-2 group-hover:text-[#E59214] transition-colors">Sarwar Jahan</h3>
+                    <div class="flex items-center justify-between">
+                        <p class="text-gray-500 text-xs font-bold tracking-widest uppercase">Chief Marketing Officer</p>
+                        <span class="text-white/5 font-black text-6xl leading-none group-hover:text-[#E59214]/10 transition-colors">SJ</span>
+                    </div>
+                </div>
+
+                <!-- CSO & CFO -->
+                <div class="border-b border-white/10 pb-8 hover:border-[#E59214] transition-colors duration-500 group">
+                    <h3 class="text-4xl md:text-6xl font-black uppercase tracking-tighter text-white mb-2 group-hover:text-[#E59214] transition-colors">Muaz Rakin</h3>
+                    <div class="flex items-center justify-between">
+                        <p class="text-gray-500 text-xs font-bold tracking-widest uppercase">CSO & CFO</p>
+                        <span class="text-white/5 font-black text-6xl leading-none group-hover:text-[#E59214]/10 transition-colors">MR</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 7. COMMAND (Footer / Contact) -->
+    <section id="command" class="py-32 md:py-48 px-6 md:px-12 bg-[#020202] relative z-10 border-t border-[#E59214]/20">
+        <div class="max-w-screen-2xl mx-auto flex flex-col lg:flex-row justify-between gap-16 lg:gap-24">
             
             <div class="w-full lg:w-1/2">
-                <h2 class="text-[clamp(4rem,7vw,10rem)] font-black uppercase tracking-tighter text-white mb-10 leading-[0.85]">
-                    Command<br/><span class="text-outline">The Swarm.</span>
+                <h2 class="text-fluid-h2 font-black uppercase tracking-tighter text-white mb-8 leading-[0.85]">
+                    Command<br/><span class="text-white/30">The Swarm.</span>
                 </h2>
-                <p class="text-xl text-gray-400 font-light max-w-lg leading-relaxed">Stop hiring isolated roles. Plug an entire autonomous department directly into your business infrastructure today.</p>
+                <p class="text-xl md:text-2xl text-gray-400 font-light max-w-lg leading-relaxed">Stop hiring isolated roles. Plug an entire autonomous department directly into your business infrastructure today.</p>
             </div>
             
             <div class="w-full lg:w-1/2 flex flex-col justify-end gap-6">
-                <!-- Creator Tier Contact -->
-                <div class="border border-white/10 bg-[#050505] p-10 hover:border-[#E59214] transition-colors duration-500 hover-trigger group">
-                    <div class="flex justify-between items-start mb-12">
-                        <span class="text-[#E59214] text-[10px] font-bold uppercase tracking-widest bg-[#E59214]/10 px-3 py-1">Tier 01: Creator</span>
-                        <i data-lucide="zap" class="text-gray-600 group-hover:text-[#E59214] transition-colors"></i>
+                <!-- Email Protocol -->
+                <a href="mailto:asif@flowstateimpact.com" class="btn-magnetic w-full border border-white/10 bg-[#050505] p-8 md:p-12 flex flex-col md:flex-row justify-between md:items-center rounded-2xl group transition-colors">
+                    <div class="mb-4 md:mb-0 relative z-10">
+                        <span class="text-[#E59214] group-hover:text-black text-xs font-bold uppercase tracking-widest mb-2 block transition-colors">Email Command</span>
+                        <span class="text-2xl md:text-4xl font-black tracking-tighter text-white group-hover:text-black transition-colors">asif@flowstateimpact.com</span>
                     </div>
-                    <a href="mailto:asif@flowstateimpact.com" class="block">
-                        <span class="text-3xl md:text-4xl font-black tracking-tighter text-white group-hover:text-[#E59214] transition-colors block mb-2">asif@flowstateimpact.com</span>
-                        <span class="text-gray-500 text-xs uppercase tracking-widest">Initialize Email Protocol &rarr;</span>
-                    </a>
-                </div>
+                    <i data-lucide="arrow-up-right" class="w-8 h-8 text-gray-600 group-hover:text-black transition-colors relative z-10"></i>
+                </a>
                 
-                <!-- Ultimate Tier Contact -->
-                <div class="border border-white/10 bg-[#050505] p-10 hover:border-white transition-colors duration-500 hover-trigger group">
-                    <div class="flex justify-between items-start mb-12">
-                        <span class="text-white text-[10px] font-bold uppercase tracking-widest bg-white/10 px-3 py-1">Tier 02: Ultimate</span>
-                        <i data-lucide="globe" class="text-gray-600 group-hover:text-white transition-colors"></i>
+                <!-- Telecom -->
+                <div class="w-full border border-white/10 bg-[#050505] p-8 md:p-12 flex flex-col md:flex-row justify-between md:items-center rounded-2xl">
+                    <div class="mb-4 md:mb-0">
+                        <span class="text-gray-500 text-xs font-bold uppercase tracking-widest mb-2 block">Direct Telecom</span>
+                        <div class="flex flex-col">
+                            <span class="text-2xl md:text-4xl font-black tracking-tighter text-white hover:text-[#E59214] transition-colors cursor-none">01616 119242</span>
+                            <span class="text-2xl md:text-4xl font-black tracking-tighter text-gray-400 hover:text-[#E59214] transition-colors cursor-none">01627 935350</span>
+                        </div>
                     </div>
-                    <div>
-                        <span class="text-3xl md:text-4xl font-black tracking-tighter text-white block mb-1">01616 119242</span>
-                        <span class="text-3xl md:text-4xl font-black tracking-tighter text-gray-500 block mb-6">01627 935350</span>
-                        <span class="text-gray-500 text-xs uppercase tracking-widest">Call The Hub directly &rarr;</span>
-                    </div>
+                    <i data-lucide="phone" class="w-8 h-8 text-gray-600"></i>
                 </div>
             </div>
             
         </div>
     </section>
 
-    <!-- FOOTER -->
-    <footer class="py-12 px-6 md:px-16 bg-[#000] flex flex-col md:flex-row justify-between items-center text-[10px] tracking-widest text-gray-600 uppercase relative z-10 border-t border-white/5">
-        <p>FlowStãte Impact © 2026</p>
-        <p class="mt-4 md:mt-0 hover:text-white transition-colors">Dhaka Hub • London Hub</p>
+    <!-- FOOTER MINIMAL -->
+    <footer class="py-8 px-6 md:px-12 bg-black flex flex-col md:flex-row justify-between items-center text-[10px] md:text-xs tracking-widest text-gray-600 uppercase border-t border-white/5">
+        <p class="mb-4 md:mb-0">FlowStãte Impact © 2026</p>
+        <p>Dhaka Hub • London Hub</p>
     </footer>
 
-    <!-- CORE LOGIC ENGINE -->
+    <!-- CORE LOGIC & PHYSICS -->
     <script>
         lucide.createIcons();
 
-        // 1. Boot Sequence (Preloader)
-        const bootTl = gsap.timeline();
-        bootTl.to("#load-bar", { width: "100%", duration: 1.2, ease: "power4.inOut" })
-              .to("#load-status", { text: "SYSTEM.READY()", duration: 0.1, onComplete: () => {
-                  document.getElementById('load-status').innerText = "SYSTEM.READY()";
-              }})
-              .to("#preloader", { yPercent: -100, duration: 0.8, ease: "expo.inOut", delay: 0.2 })
-              .to("#main-nav", { opacity: 1, duration: 1 }, "-=0.4")
-              .fromTo(".hero-reveal", { y: 100, opacity: 0 }, { y: 0, opacity: 1, duration: 1.5, stagger: 0.1, ease: "expo.out" }, "-=0.6");
-
-        // 2. Custom Magnetic Cursor
-        const cursorDot = document.querySelector('.cursor-dot');
-        const cursorRing = document.querySelector('.cursor-ring');
-        
-        let mouseX = window.innerWidth / 2;
-        let mouseY = window.innerHeight / 2;
-        let ringX = mouseX;
-        let ringY = mouseY;
-
-        // Use gsap quickTo for buttery smooth 60fps cursor following
-        const xSetDot = gsap.quickTo(cursorDot, "x", {duration: 0.1, ease: "power3"});
-        const ySetDot = gsap.quickTo(cursorDot, "y", {duration: 0.1, ease: "power3"});
-        const xSetRing = gsap.quickTo(cursorRing, "x", {duration: 0.5, ease: "power3"});
-        const ySetRing = gsap.quickTo(cursorRing, "y", {duration: 0.5, ease: "power3"});
-
-        window.addEventListener("mousemove", e => {
-            xSetDot(e.clientX); ySetDot(e.clientY);
-            xSetRing(e.clientX); ySetRing(e.clientY);
+        // 1. Lenis Smooth Scroll (Hardware Accelerated)
+        const lenis = new Lenis({ 
+            duration: 1.2, 
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+            touchMultiplier: 2 // Better mobile feel
         });
-
-        // Hover States
-        document.querySelectorAll('.hover-trigger').forEach(el => {
-            el.addEventListener('mouseenter', () => document.body.classList.add('hover-active'));
-            el.addEventListener('mouseleave', () => document.body.classList.remove('hover-active'));
-        });
-
-        // 3. Lenis Smooth Scroll
-        const lenis = new Lenis({ duration: 1.5, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
         function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
         requestAnimationFrame(raf);
         
@@ -409,131 +395,95 @@
         gsap.ticker.add((time) => { lenis.raf(time * 1000) });
         gsap.ticker.lagSmoothing(0);
 
-        // 4. THE CINEMATIC LOCK (Video Pinning)
-        // Pins the video container, scales the video up to full bleed as you scroll down
-        gsap.to("#video-frame", {
-            width: "100vw",
-            height: "100vh",
-            borderRadius: "0px",
-            ease: "none",
-            scrollTrigger: {
-                trigger: "#theater",
-                start: "top top",
-                end: "+=100%", // Pin for the height of the screen
-                pin: true,
-                scrub: 1
-            }
-        });
-
-        // Remove contrast filter as it scales
-        gsap.to("#video-frame video", {
-            filter: "contrast(100%) saturate(100%)",
-            ease: "none",
-            scrollTrigger: {
-                trigger: "#theater",
-                start: "top top",
-                end: "+=100%",
-                scrub: true
-            }
-        });
-
-        // 5. HORIZONTAL SCROLL JOURNEY (Portfolio)
-        const hTrack = document.getElementById("h-track");
-        let panels = gsap.utils.toArray(".h-panel");
+        // 2. The 83 Agent Matrix Logic
+        const matrixContainer = document.getElementById('agent-matrix');
+        const numAgents = 83; // Exact lore number
         
-        gsap.to(panels, {
-            xPercent: -100 * (panels.length - 1),
-            ease: "none",
-            scrollTrigger: {
-                trigger: "#portfolio-journey",
-                pin: true,
-                scrub: 1,
-                // Snap forces it to lock onto each project panel seamlessly
-                snap: 1 / (panels.length - 1),
-                end: () => "+=" + hTrack.offsetWidth
-            }
-        });
+        // Generate nodes
+        for (let i = 0; i < numAgents; i++) {
+            let node = document.createElement('div');
+            node.classList.add('agent-node');
+            matrixContainer.appendChild(node);
+        }
 
-        // 6. Content Reveal Animations
-        gsap.utils.toArray(".fade-up").forEach(elem => {
-            gsap.fromTo(elem, { y: 50, opacity: 0 }, {
-                y: 0, opacity: 1, duration: 1.2, ease: "expo.out",
-                scrollTrigger: { trigger: elem, start: "top 85%" }
+        // Add interactive ripple effect
+        const nodes = document.querySelectorAll('.agent-node');
+        matrixContainer.addEventListener('mousemove', (e) => {
+            const rect = matrixContainer.getBoundingClientRect();
+            const mouseX = e.clientX - rect.left;
+            const mouseY = e.clientY - rect.top;
+
+            nodes.forEach(node => {
+                const nodeRect = node.getBoundingClientRect();
+                const nodeX = nodeRect.left - rect.left + (nodeRect.width / 2);
+                const nodeY = nodeRect.top - rect.top + (nodeRect.height / 2);
+                
+                // Calculate distance
+                const dist = Math.sqrt(Math.pow(mouseX - nodeX, 2) + Math.pow(mouseY - nodeY, 2));
+                
+                if (dist < 80) { // Radius of activation
+                    node.classList.add('active');
+                    // Random delay to turn off creates a "data processing" look
+                    setTimeout(() => node.classList.remove('active'), 300 + Math.random() * 500);
+                }
             });
         });
 
-        // 7. ADVANCED WEBGL-STYLE CANVAS SWARM
-        const canvas = document.getElementById('neural-network');
-        const ctx = canvas.getContext('2d');
-        let width, height;
-        let particles = [];
-        
-        function resize() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resize);
-        resize();
-
-        // Create the 83 agents
-        for (let i = 0; i < 83; i++) {
-            particles.push({
-                x: Math.random() * width,
-                y: Math.random() * height,
-                vx: (Math.random() - 0.5) * 1.5,
-                vy: (Math.random() - 0.5) * 1.5,
-                size: Math.random() * 2 + 1
+        // 3. Cinematic Video Expansion Physics
+        // On mobile, the clip-path inset starts at 20%. On desktop, 10%. We animate it to 0% to fill the screen.
+        let mm = gsap.matchMedia();
+        mm.add("(min-width: 768px)", () => {
+            gsap.to(".video-reveal-container", {
+                clipPath: "inset(0% 0% 0% 0% round 0px)",
+                ease: "none",
+                scrollTrigger: {
+                    trigger: "#video-sequence",
+                    start: "top top",
+                    end: "+=100%", // Pin for full screen height
+                    scrub: true,
+                    pin: true,
+                    invalidateOnRefresh: true
+                }
             });
-        }
-
-        let currentMouse = { x: -1000, y: -1000 };
-        window.addEventListener('mousemove', (e) => {
-            currentMouse.x = e.clientX;
-            currentMouse.y = e.clientY;
+        });
+        mm.add("(max-width: 767px)", () => {
+            gsap.to(".video-reveal-container", {
+                clipPath: "inset(0% 0% 0% 0% round 0px)",
+                ease: "none",
+                scrollTrigger: {
+                    trigger: "#video-sequence",
+                    start: "top top",
+                    end: "+=50%", 
+                    scrub: true,
+                    pin: true,
+                    invalidateOnRefresh: true
+                }
+            });
         });
 
-        function draw() {
-            ctx.clearRect(0, 0, width, height);
-            
-            for (let i = 0; i < particles.length; i++) {
-                let p = particles[i];
-                p.x += p.vx; p.y += p.vy;
-                
-                // Wrap screen
-                if (p.x < 0) p.x = width; if (p.x > width) p.x = 0;
-                if (p.y < 0) p.y = height; if (p.y > height) p.y = 0;
-                
-                // Mouse repulsion (Intelligent scatter)
-                let dx = currentMouse.x - p.x;
-                let dy = currentMouse.y - p.y;
-                let dist = Math.sqrt(dx*dx + dy*dy);
-                if (dist < 200) {
-                    p.x -= (dx / dist) * 2;
-                    p.y -= (dy / dist) * 2;
-                }
+        // 4. Parallax Card Stacking (Portfolio)
+        const cards = gsap.utils.toArray('.stack-card');
+        cards.forEach((card, i) => {
+            ScrollTrigger.create({
+                trigger: card,
+                start: "top top",
+                pin: true,
+                pinSpacing: false, // This is what allows them to overlap
+                invalidateOnRefresh: true
+            });
+        });
 
-                // Draw Nodes
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-                ctx.fillStyle = i % 5 === 0 ? '#E59214' : 'rgba(255,255,255,0.3)';
-                ctx.fill();
+        // 5. Hero & Scroll Reveal Animations
+        const heroTl = gsap.timeline({ delay: 0.5 });
+        heroTl.to(".gsap-reveal", { y: "0%", opacity: 1, duration: 1.5, stagger: 0.1, ease: "power4.out" });
 
-                // Draw Network Lines
-                for (let j = i + 1; j < particles.length; j++) {
-                    let p2 = particles[j];
-                    let dDist = Math.sqrt(Math.pow(p.x - p2.x, 2) + Math.pow(p.y - p2.y, 2));
-                    if (dDist < 120) {
-                        ctx.beginPath();
-                        ctx.moveTo(p.x, p.y);
-                        ctx.lineTo(p2.x, p2.y);
-                        ctx.strokeStyle = `rgba(255, 255, 255, ${0.15 - dDist/800})`;
-                        ctx.stroke();
-                    }
-                }
-            }
-            requestAnimationFrame(draw);
-        }
-        draw();
+        gsap.utils.toArray('.gsap-fade').forEach(el => {
+            gsap.fromTo(el, { y: 40, opacity: 0 }, {
+                y: 0, opacity: 1, duration: 1.2, ease: "power3.out",
+                scrollTrigger: { trigger: el, start: "top 85%" }
+            });
+        });
+
     </script>
 </body>
 </html>
