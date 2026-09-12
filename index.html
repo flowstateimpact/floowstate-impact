@@ -24,396 +24,378 @@
             color: #ffffff; 
             overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
-            font-feature-settings: "cv02", "cv03", "cv04", "cv11";
-            cursor: default;
+            cursor: none; /* Custom cursor takes over */
         }
 
-        /* Typography & Outlines */
-        .text-huge { font-size: clamp(4rem, 10vw, 13rem); line-height: 0.85; letter-spacing: -0.04em; }
-        .text-outline {
-            color: transparent;
-            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.4);
-            transition: color 0.4s ease, -webkit-text-stroke 0.4s ease;
+        /* Custom Cursor */
+        .cursor-dot, .cursor-outline {
+            position: fixed; top: 0; left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%; z-index: 9999;
+            pointer-events: none;
         }
-        .text-outline:hover { color: #E59214; -webkit-text-stroke: 0px; }
-
-        /* Animation Masks */
+        .cursor-dot {
+            width: 8px; height: 8px;
+            background-color: #E59214;
+        }
+        .cursor-outline {
+            width: 40px; height: 40px;
+            border: 1px solid rgba(229,146,20,0.5);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+        
+        /* Typography */
+        .text-huge { font-size: clamp(3.5rem, 9vw, 11rem); line-height: 0.85; letter-spacing: -0.04em; }
         .reveal-mask { overflow: hidden; display: block; padding-bottom: 0.1em; margin-bottom: -0.1em; }
         .reveal-text { display: block; transform: translateY(110%); opacity: 0; }
         
         /* Agent Swarm Canvas */
         #agent-swarm {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 0; pointer-events: auto; opacity: 0.6;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0; pointer-events: none; opacity: 0.8;
         }
 
-        /* Magnetic Custom Cursor Reveal for Projects */
-        .project-hover-reveal {
-            position: fixed;
-            top: 0; left: 0;
-            width: 450px; height: 550px;
-            pointer-events: none;
-            opacity: 0; transform: scale(0.8);
-            z-index: 40;
+        /* Image Overlays for Emotion */
+        .img-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.9) 100%);
+            z-index: 1;
+        }
+
+        /* Horizontal Scroll Projects */
+        .horizontal-scroll-wrapper {
+            width: 400vw; /* 4 panels */
+            height: 100vh;
+            display: flex;
+            flex-wrap: nowrap;
+        }
+        .project-panel {
+            width: 100vw; height: 100vh;
+            position: relative;
+            display: flex; align-items: flex-end;
+            padding: 5% 8%;
             background-size: cover; background-position: center;
-            border-radius: 20px;
-            overflow: hidden;
-            will-change: transform, opacity;
-            box-shadow: 0 30px 60px rgba(0,0,0,0.5);
-            /* Amber cinematic tint over images */
-            border: 1px solid rgba(229,146,20,0.2);
         }
-        .project-hover-reveal::after {
+        
+        /* Interactive Elements */
+        .hover-target { cursor: none; }
+        
+        /* Tiers & Cards */
+        .bg-img-card {
+            background-size: cover; background-position: center;
+            position: relative; overflow: hidden;
+        }
+        .bg-img-card::before {
             content: ''; position: absolute; inset: 0;
-            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            background: rgba(0,0,0,0.6); transition: background 0.5s ease; z-index: 0;
         }
-
-        /* Project List Rows */
-        .project-row {
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            transition: padding 0.4s ease, background-color 0.4s ease;
-        }
-        .project-row:hover {
-            padding-left: 2rem; padding-right: 2rem;
-            background-color: rgba(229,146,20,0.05);
-            border-bottom-color: #E59214;
-        }
-        .project-row:hover h3 { color: #E59214; }
-
-        /* Magnetic Button Base */
-        .magnetic-wrap { display: inline-block; position: relative; }
-        .magnetic-inner {
-            display: inline-flex; pointer-events: none;
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        /* Architectural Borders */
-        .border-t-architectural { border-top: 1px solid rgba(255, 255, 255, 0.1); }
-        .border-b-architectural { border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
+        .bg-img-card:hover::before { background: rgba(0,0,0,0.3); }
+        .card-content { position: relative; z-index: 10; }
     </style>
 </head>
 <body class="antialiased selection:bg-[#E59214] selection:text-black font-sans">
 
-    <!-- Global Floating Project Reveal -->
-    <div class="project-hover-reveal"></div>
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
 
     <!-- NAVIGATION -->
-    <nav class="fixed top-0 w-full p-8 md:p-12 flex justify-between items-center z-50 mix-blend-difference pointer-events-none">
-        <div class="flex flex-col items-start leading-none nav-fade opacity-0 pointer-events-auto">
-            <span class="text-3xl md:text-4xl font-black tracking-tighter text-white uppercase">FlowStãte</span>
-            <span class="text-xs md:text-sm font-bold tracking-[0.4em] text-[#E59214] uppercase mt-1">Impact</span>
+    <nav class="fixed top-0 w-full p-6 md:p-10 flex justify-between items-center z-50 mix-blend-difference pointer-events-none">
+        <div class="flex flex-col items-start leading-none nav-fade opacity-0 pointer-events-auto hover-target" id="logo">
+            <span class="text-2xl md:text-4xl font-black tracking-tighter text-white uppercase">FlowStãte</span>
+            <span class="text-[0.65rem] md:text-sm font-bold tracking-[0.4em] text-[#E59214] uppercase mt-1">Impact</span>
         </div>
         
-        <div class="flex items-center gap-8 pointer-events-auto nav-fade opacity-0">
-            <a href="http://www.flowstateimpact.com/links" target="_blank" class="hidden md:flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-white hover:text-[#E59214] transition-colors relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-full after:h-[2px] after:bg-[#E59214] after:scale-x-0 hover:after:scale-x-100 after:transition-transform after:origin-left">
-                Video Portfolio <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+        <div class="flex items-center gap-6 md:gap-10 pointer-events-auto nav-fade opacity-0">
+            <a href="http://www.flowstateimpact.com/links" target="_blank" class="hidden md:flex items-center gap-2 text-sm font-bold uppercase tracking-widest text-white hover:text-[#E59214] transition-colors hover-target group">
+                <span class="relative overflow-hidden inline-block">
+                    Portfolio
+                    <span class="absolute left-0 bottom-0 w-full h-[2px] bg-[#E59214] -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></span>
+                </span>
+                <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
             </a>
-            <a href="#contact" class="magnetic-wrap" data-strength="40">
-                <div class="absolute -inset-6 z-10 cursor-pointer pointer-events-auto magnetic-area"></div>
-                <div class="magnetic-inner bg-white text-black px-8 py-4 text-xs font-black uppercase tracking-widest hover:bg-[#E59214] transition-colors duration-300">
-                    Deploy Team
-                </div>
+            <a href="#contact" class="hover-target border border-white/20 bg-black/20 backdrop-blur-md text-white px-6 md:px-8 py-3 md:py-4 text-xs font-black uppercase tracking-widest hover:bg-[#E59214] hover:text-black hover:border-[#E59214] transition-all duration-300">
+                Deploy Team
             </a>
         </div>
     </nav>
 
-    <!-- TYPOGRAPHIC HERO W/ SWARM CANVAS -->
-    <section class="relative h-screen w-full flex flex-col justify-center px-6 md:px-16 pt-20 overflow-hidden bg-black">
-        <!-- Interactive 83 Agent Canvas -->
+    <!-- IMMERSIVE HERO W/ 3D SWARM -->
+    <section class="relative h-screen w-full flex flex-col justify-center px-6 md:px-16 pt-10 overflow-hidden bg-[#020202]">
         <canvas id="agent-swarm"></canvas>
 
         <div class="max-w-[95vw] mx-auto w-full relative z-10 pointer-events-none">
-            <div class="mb-8 nav-fade opacity-0 pointer-events-auto inline-block">
-                <span class="border border-[#E59214]/30 bg-black/50 backdrop-blur-md text-[#E59214] px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest flex items-center gap-3">
-                    <span class="w-2 h-2 rounded-full bg-[#E59214] animate-pulse"></span> Specialized Intelligence Ecosystem
-                </span>
-            </div>
-            
-            <h1 class="text-huge font-black uppercase text-white mb-12 mix-blend-difference pointer-events-auto">
+            <h1 class="text-huge font-black uppercase text-white mb-8 mix-blend-difference">
                 <span class="reveal-mask"><span class="reveal-text">Now your business</span></span>
-                <span class="reveal-mask"><span class="reveal-text text-outline">can afford a</span></span>
-                <span class="reveal-mask"><span class="reveal-text text-[#E59214]">whole department.</span></span>
+                <span class="reveal-mask"><span class="reveal-text text-[#E59214]">can afford a</span></span>
+                <span class="reveal-mask"><span class="reveal-text">whole department.</span></span>
             </h1>
             
-            <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-10 border-t-architectural pt-8 reveal-mask pointer-events-auto">
-                <p class="reveal-text text-xl md:text-3xl text-gray-300 font-light max-w-4xl leading-snug bg-black/40 backdrop-blur-sm p-4 rounded-lg">
-                    We don't just automate. We orchestrate. Strategy, branding, design, and IT—driven by human taste, executed by agentic scale. <strong class="text-white font-medium">A fraction of the cost. Limitless potential.</strong>
+            <div class="flex flex-col md:flex-row justify-between items-start md:items-end gap-10 border-t border-white/10 pt-8 reveal-mask pointer-events-auto">
+                <p class="reveal-text text-xl md:text-3xl text-gray-300 font-light max-w-4xl leading-snug">
+                    Strategy, branding, design, and IT. Driven by human taste, executed by agentic scale. <strong class="text-white font-medium">A fraction of the cost. Limitless potential.</strong>
                 </p>
                 <div class="reveal-text w-full md:w-auto">
-                    <a href="#portfolio" class="magnetic-wrap w-full" data-strength="50">
-                        <div class="absolute -inset-6 z-10 cursor-pointer pointer-events-auto magnetic-area"></div>
-                        <div class="magnetic-inner w-full flex items-center justify-center gap-3 border border-white/20 bg-black/50 backdrop-blur-md text-white px-10 py-5 text-sm font-bold uppercase tracking-widest hover:border-[#E59214] hover:text-[#E59214] transition-colors duration-300">
-                            Explore Deployments <i data-lucide="arrow-down" class="w-4 h-4"></i>
-                        </div>
+                    <a href="#projects" class="hover-target w-full flex items-center justify-center gap-3 border border-white/20 bg-white/5 backdrop-blur-md text-white px-10 py-5 text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-colors duration-300">
+                        Explore Ecosystem <i data-lucide="arrow-down" class="w-4 h-4"></i>
                     </a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CINEMATIC THEATER (Pure Video Block) -->
-    <section class="relative h-[150vh] w-full bg-[#050505]" id="theater-section">
-        <div class="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden bg-black">
-            <div class="w-full h-full relative" id="main-video" style="clip-path: polygon(10% 10%, 90% 10%, 90% 90%, 10% 90%); transition: clip-path 0.1s ease;">
-                <video autoplay muted loop playsinline preload="metadata" class="w-full h-full object-cover">
-                    <source src="FSI-FILM-FINAL.mp4" type="video/mp4" />
-                </video>
-            </div>
+    <!-- CINEMATIC VIDEO (MOBILE RESPONSIVE FIX) -->
+    <section class="relative w-full bg-black flex items-center justify-center border-t border-white/10" id="theater-section">
+        <!-- 
+            MOBILE FIX: On small screens, uses aspect-video to show the FULL frame (no text cutoff). 
+            On desktop, scales to h-screen and uses object-cover for immersion.
+        -->
+        <div class="w-full aspect-video md:h-screen md:aspect-auto relative overflow-hidden" id="main-video-container">
+            <video 
+                autoplay muted loop playsinline preload="metadata"
+                class="w-full h-full object-contain md:object-cover"
+            >
+                <source src="FSI-FILM-FINAL.mp4" type="video/mp4" />
+            </video>
         </div>
     </section>
 
     <!-- THE CONTROL ROOM -->
-    <section class="py-40 px-6 md:px-16 relative z-10 bg-[#000] border-t-architectural">
-        <div class="max-w-[90vw] mx-auto">
-            <div class="flex items-center gap-4 mb-16 info-fade">
-                <i data-lucide="cpu" class="w-6 h-6 text-[#E59214]"></i>
-                <h2 class="text-sm font-bold text-[#E59214] tracking-[0.4em] uppercase">The Control Room</h2>
-            </div>
+    <section class="py-32 md:py-40 px-6 md:px-16 relative z-10 bg-[#000] border-t border-white/10">
+        <div class="max-w-[95vw] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 md:gap-24">
             
-            <div class="grid grid-cols-1 lg:grid-cols-12 gap-20">
-                <div class="lg:col-span-7">
-                    <h3 class="text-[clamp(3rem,6vw,7rem)] font-black uppercase tracking-tighter mb-10 leading-[0.85] text-white info-fade">
-                        83 Agents.<br/><span class="text-outline">Written Like People.</span>
+            <!-- Sticky Left Column -->
+            <div class="lg:col-span-6 relative">
+                <div class="lg:sticky lg:top-40">
+                    <div class="flex items-center gap-4 mb-10 info-fade">
+                        <div class="p-3 bg-[#E59214]/10 rounded-full border border-[#E59214]/30">
+                            <i data-lucide="cpu" class="w-6 h-6 text-[#E59214]"></i>
+                        </div>
+                        <h2 class="text-sm font-bold text-[#E59214] tracking-[0.4em] uppercase">The Control Room</h2>
+                    </div>
+                    
+                    <h3 class="text-5xl md:text-7xl font-black uppercase tracking-tighter mb-8 leading-[0.85] text-white info-fade">
+                        83 Agents.<br/>Written Like <span class="text-[#E59214]">People.</span>
                     </h3>
-                    <p class="text-2xl md:text-4xl text-gray-400 font-light leading-tight mb-8 info-fade max-w-4xl">
+                    <p class="text-xl md:text-3xl text-gray-400 font-light leading-tight mb-8 info-fade">
                         A bespoke swarm of specialized intelligence, tailored to your exact operational DNA. <strong class="text-white">56 generate the work. 27 gather the intelligence.</strong>
                     </p>
-                    <p class="text-xl md:text-2xl text-gray-500 font-light leading-relaxed info-fade max-w-3xl border-l-2 border-[#E59214] pl-6 ml-2">
-                        They debate. They adapt. Every correction we feed them rewrites their methodology for the next deployment. Three of them exist purely as absolute firewalls against generic or subpar output.
+                    <p class="text-lg md:text-xl text-gray-500 font-light leading-relaxed info-fade border-l-2 border-[#E59214] pl-6">
+                        They debate. They adapt. Every correction we feed them rewrites their methodology for the next deployment. Three of them exist purely as absolute firewalls against generic output.
                     </p>
                 </div>
+            </div>
 
-                <div class="lg:col-span-5 lg:pl-10">
-                    <h4 class="text-sm font-bold uppercase tracking-widest text-white mb-10 pb-8 border-b-architectural info-fade flex justify-between items-center">
-                        Quality Assurance Matrix <i data-lucide="shield-check" class="text-[#E59214]"></i>
-                    </h4>
-                    
-                    <div id="doors-container">
-                        <div class="door-step flex flex-col md:flex-row md:items-start gap-4 md:gap-8 py-8 border-b-architectural group cursor-crosshair">
-                            <span class="text-[#E59214] text-3xl font-black leading-none group-hover:-rotate-12 transition-transform duration-500">01</span>
-                            <div>
-                                <h5 class="text-2xl font-black uppercase tracking-wide text-white mb-2 group-hover:text-[#E59214] transition-colors">Strangers Read It</h5>
-                                <p class="text-base text-gray-400 font-light">Checked for absolute clarity outside the internal echo chamber.</p>
-                            </div>
-                        </div>
-
-                        <div class="door-step flex flex-col md:flex-row md:items-start gap-4 md:gap-8 py-8 border-b-architectural group cursor-crosshair">
-                            <span class="text-[#E59214] text-3xl font-black leading-none group-hover:-rotate-12 transition-transform duration-500">02</span>
-                            <div>
-                                <h5 class="text-2xl font-black uppercase tracking-wide text-white mb-2 group-hover:text-[#E59214] transition-colors">It Gets A Mark</h5>
-                                <p class="text-base text-gray-400 font-light">Rigid algorithmic scoring against core brand and market parameters.</p>
-                            </div>
-                        </div>
-
-                        <div class="door-step flex flex-col md:flex-row md:items-start gap-4 md:gap-8 py-8 border-b-architectural group cursor-crosshair">
-                            <span class="text-[#E59214] text-3xl font-black leading-none group-hover:-rotate-12 transition-transform duration-500">03</span>
-                            <div>
-                                <h5 class="text-2xl font-black uppercase tracking-wide text-white mb-2 group-hover:text-[#E59214] transition-colors">Three Can Say No</h5>
-                                <p class="text-base text-gray-400 font-light">Automatic rejection protocol for copied, stale, or derivative concepts.</p>
-                            </div>
-                        </div>
-
-                        <div class="door-step flex flex-col md:flex-row md:items-start gap-4 md:gap-8 py-8 border-b-architectural group cursor-crosshair">
-                            <span class="text-[#E59214] text-3xl font-black leading-none group-hover:-rotate-12 transition-transform duration-500">04</span>
-                            <div>
-                                <h5 class="text-2xl font-black uppercase tracking-wide text-white mb-2 group-hover:text-[#E59214] transition-colors">Five Try To Break It</h5>
-                                <p class="text-base text-gray-400 font-light">Intense stress-testing isolating logical inconsistencies and visual flaws.</p>
-                            </div>
-                        </div>
-
-                        <div class="door-step flex flex-col md:flex-row md:items-start gap-4 md:gap-8 py-8 border-b-architectural last:border-b-0 group cursor-crosshair">
-                            <span class="text-[#E59214] text-3xl font-black leading-none group-hover:-rotate-12 transition-transform duration-500">05</span>
-                            <div>
-                                <h5 class="text-2xl font-black uppercase tracking-wide text-white mb-2 group-hover:text-[#E59214] transition-colors">One Last Look</h5>
-                                <p class="text-base text-gray-400 font-light">The final human-led taste engine sign-off. Technology directed by art.</p>
-                            </div>
+            <!-- Scrolling Right Column -->
+            <div class="lg:col-span-6 lg:pl-10">
+                <h4 class="text-sm font-bold uppercase tracking-widest text-white mb-10 pb-6 border-b border-white/10 info-fade flex items-center gap-3">
+                    <i data-lucide="shield-alert" class="text-[#E59214] w-5 h-5"></i> Quality Assurance Matrix
+                </h4>
+                
+                <div id="doors-container">
+                    {[
+                        { num: "01", title: "Strangers Read It", desc: "Checked for absolute clarity outside the internal echo chamber.", icon: "users" },
+                        { num: "02", title: "It Gets A Mark", desc: "Rigid algorithmic scoring against core brand and market parameters.", icon: "crosshair" },
+                        { num: "03", title: "Three Can Say No", desc: "Automatic rejection protocol for copied, stale, or derivative concepts.", icon: "x-octagon" },
+                        { num: "04", title: "Five Try To Break It", desc: "Intense stress-testing isolating logical inconsistencies and visual flaws.", icon: "hammer" },
+                        { num: "05", title: "One Last Look", desc: "The final human-led taste engine sign-off. Technology directed by art.", icon: "eye" }
+                    ].map((door) => `
+                    <div class="door-step relative flex flex-col sm:flex-row sm:items-center gap-6 md:gap-8 py-10 md:py-12 border-b border-white/10 last:border-b-0 group hover-target overflow-hidden">
+                        <!-- Massive Background Icon -->
+                        <i data-lucide="${door.icon}" class="absolute right-0 top-1/2 -translate-y-1/2 w-40 h-40 text-white/[0.02] group-hover:text-[#E59214]/5 group-hover:scale-125 transition-all duration-700 pointer-events-none"></i>
+                        
+                        <span class="text-[#E59214] text-4xl md:text-5xl font-black leading-none group-hover:-translate-y-2 transition-transform duration-500 relative z-10">${door.num}</span>
+                        <div class="relative z-10">
+                            <h5 class="text-2xl md:text-3xl font-black uppercase tracking-wide text-white mb-3 group-hover:text-[#E59214] transition-colors">${door.title}</h5>
+                            <p class="text-lg text-gray-400 font-light max-w-md">${door.desc}</p>
                         </div>
                     </div>
+                    `).join('')}
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- MAGNETIC PORTFOLIO / DEPLOYMENTS -->
-    <section id="portfolio" class="py-40 bg-[#050505] relative z-10 border-t-architectural">
-        <div class="px-6 md:px-16 max-w-[90vw] mx-auto mb-20">
-            <h2 class="text-sm font-bold text-[#E59214] tracking-[0.4em] uppercase mb-6 flex items-center gap-3">
-                <i data-lucide="folder-code" class="w-5 h-5"></i> Active Deployments
+    <!-- IMMERSIVE HORIZONTAL SCROLL (ACTIVE DEPLOYMENTS) -->
+    <section id="projects" class="bg-black relative z-10 overflow-hidden">
+        
+        <!-- Pinned Header -->
+        <div class="absolute top-10 left-6 md:left-16 z-20 pointer-events-none">
+            <h2 class="text-sm font-bold text-[#E59214] tracking-[0.4em] uppercase mb-4 flex items-center gap-3 drop-shadow-lg">
+                <i data-lucide="layers" class="w-5 h-5"></i> Active Deployments
             </h2>
-            <div class="flex flex-col lg:flex-row justify-between lg:items-end gap-10">
-                <h3 class="text-[clamp(4rem,8vw,9rem)] font-black uppercase tracking-tighter text-white leading-[0.85]">
-                    Client<br/><span class="text-outline">Ecosystem</span>
-                </h3>
-                <p class="text-xl text-gray-400 max-w-md font-light pb-4 border-b border-white/20">
-                    Hover to explore the structural outputs of our specialized agents across global sectors.
-                </p>
-            </div>
+            <h3 class="text-5xl md:text-7xl font-black uppercase tracking-tighter text-white leading-none drop-shadow-2xl">
+                Client<br/>Ecosystem
+            </h3>
         </div>
-            
-        <div class="w-full border-t-architectural border-b-architectural" id="project-list">
+
+        <div class="horizontal-scroll-wrapper" id="project-scroll-container">
             
             <!-- Project 1 -->
-            <div class="project-row flex flex-col md:flex-row justify-between md:items-center p-8 md:p-12 cursor-pointer group" data-image="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop">
-                <div class="flex items-center gap-8 md:gap-20 w-full md:w-1/2 mb-6 md:mb-0">
-                    <span class="text-[#E59214] font-black text-xl">01</span>
-                    <h3 class="text-3xl md:text-5xl font-black uppercase tracking-tighter text-white transition-colors">Akij Dynamics</h3>
-                </div>
-                <div class="w-full md:w-1/2 flex flex-col md:flex-row justify-between gap-6 md:gap-12">
-                    <p class="text-gray-400 font-light text-lg">Business Consultation Partner. Co-developing custom AI layers to manage deep data analysis and scale enterprise operations.</p>
-                    <span class="text-white/30 font-bold uppercase tracking-widest text-xs whitespace-nowrap">Enterprise AI</span>
+            <div class="project-panel" style="background-image: url('https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop');">
+                <div class="img-overlay"></div>
+                <div class="relative z-10 w-full flex flex-col md:flex-row justify-between md:items-end gap-10">
+                    <div>
+                        <span class="inline-block bg-[#E59214] text-black px-4 py-2 text-xs font-black uppercase tracking-widest mb-6">Business Consultation Partner</span>
+                        <h3 class="text-5xl md:text-8xl font-black uppercase tracking-tighter text-white mb-4">Akij Dynamics</h3>
+                        <p class="text-xl md:text-3xl text-gray-300 font-light max-w-3xl">Co-developing custom AI layers to manage deep data analysis and scale enterprise operations.</p>
+                    </div>
+                    <i data-lucide="bar-chart-3" class="w-24 h-24 text-white/20 mb-4"></i>
                 </div>
             </div>
 
             <!-- Project 2 -->
-            <div class="project-row flex flex-col md:flex-row justify-between md:items-center p-8 md:p-12 cursor-pointer group" data-image="https://images.unsplash.com/photo-1601134994276-808605d8f344?q=80&w=1964&auto=format&fit=crop">
-                <div class="flex items-center gap-8 md:gap-20 w-full md:w-1/2 mb-6 md:mb-0">
-                    <span class="text-[#E59214] font-black text-xl">02</span>
-                    <h3 class="text-3xl md:text-5xl font-black uppercase tracking-tighter text-white transition-colors">Lumiere Narratives</h3>
-                </div>
-                <div class="w-full md:w-1/2 flex flex-col md:flex-row justify-between gap-6 md:gap-12">
-                    <p class="text-gray-400 font-light text-lg">Engineered a high-end, aesthetic, film-inspired AI pipeline for high fashion. Executing complex physics and bespoke mist transitions.</p>
-                    <span class="text-white/30 font-bold uppercase tracking-widest text-xs whitespace-nowrap">Computational Video</span>
+            <div class="project-panel" style="background-image: url('https://images.unsplash.com/photo-1601134994276-808605d8f344?q=80&w=1964&auto=format&fit=crop');">
+                <div class="img-overlay"></div>
+                <div class="relative z-10 w-full flex flex-col md:flex-row justify-between md:items-end gap-10">
+                    <div>
+                        <span class="inline-block border border-white/30 text-white px-4 py-2 text-xs font-black uppercase tracking-widest mb-6">Computational Video</span>
+                        <h3 class="text-5xl md:text-8xl font-black uppercase tracking-tighter text-white mb-4">Lumiere Narratives</h3>
+                        <p class="text-xl md:text-3xl text-gray-300 font-light max-w-3xl">Engineered a high-end, aesthetic, film-inspired AI pipeline for high fashion. Executing complex physics and bespoke mist transitions.</p>
+                    </div>
+                    <i data-lucide="film" class="w-24 h-24 text-white/20 mb-4"></i>
                 </div>
             </div>
 
             <!-- Project 3 -->
-            <div class="project-row flex flex-col md:flex-row justify-between md:items-center p-8 md:p-12 cursor-pointer group" data-image="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2070&auto=format&fit=crop">
-                <div class="flex items-center gap-8 md:gap-20 w-full md:w-1/2 mb-6 md:mb-0">
-                    <span class="text-[#E59214] font-black text-xl">03</span>
-                    <h3 class="text-3xl md:text-5xl font-black uppercase tracking-tighter text-white transition-colors">Leadership Summits</h3>
-                </div>
-                <div class="w-full md:w-1/2 flex flex-col md:flex-row justify-between gap-6 md:gap-12">
-                    <p class="text-gray-400 font-light text-lg">Kaiqi & Changfu. Automated scheduling, scripting, and logistical mapping for high-level summits, multi-hour exhibitions, and formal dinners.</p>
-                    <span class="text-white/30 font-bold uppercase tracking-widest text-xs whitespace-nowrap">Logistics Array</span>
-                </div>
-            </div>
-
-            <!-- Project 4 (Combined ecosystem for impact) -->
-            <div class="project-row flex flex-col md:flex-row justify-between md:items-center p-8 md:p-12 cursor-pointer group" data-image="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop">
-                <div class="flex items-center gap-8 md:gap-20 w-full md:w-1/2 mb-6 md:mb-0">
-                    <span class="text-[#E59214] font-black text-xl">04</span>
-                    <h3 class="text-3xl md:text-5xl font-black uppercase tracking-tighter text-white transition-colors">Growth & Brands</h3>
-                </div>
-                <div class="w-full md:w-1/2 flex flex-col md:flex-row justify-between gap-6 md:gap-12">
-                    <p class="text-gray-400 font-light text-lg">Full-stack operational pipelines for Gunoboti, Grafiti, Nexus, and Terracotta. Delivering enterprise-grade output at 5x speed.</p>
-                    <span class="text-white/30 font-bold uppercase tracking-widest text-xs whitespace-nowrap">Brand Automation</span>
+            <div class="project-panel" style="background-image: url('https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2070&auto=format&fit=crop');">
+                <div class="img-overlay"></div>
+                <div class="relative z-10 w-full flex flex-col md:flex-row justify-between md:items-end gap-10">
+                    <div>
+                        <span class="inline-block border border-white/30 text-white px-4 py-2 text-xs font-black uppercase tracking-widest mb-6">Logistics Array</span>
+                        <h3 class="text-5xl md:text-8xl font-black uppercase tracking-tighter text-white mb-4">Leadership Summits</h3>
+                        <p class="text-xl md:text-3xl text-gray-300 font-light max-w-3xl">Kaiqi & Changfu. Automated scheduling, scripting, and logistical mapping for multi-hour exhibitions and formal dinners.</p>
+                    </div>
+                    <i data-lucide="calendar-check" class="w-24 h-24 text-white/20 mb-4"></i>
                 </div>
             </div>
 
+            <!-- Project 4 -->
+            <div class="project-panel" style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop');">
+                <div class="img-overlay"></div>
+                <div class="relative z-10 w-full flex flex-col md:flex-row justify-between md:items-end gap-10">
+                    <div>
+                        <span class="inline-block border border-white/30 text-white px-4 py-2 text-xs font-black uppercase tracking-widest mb-6">Brand Automation</span>
+                        <h3 class="text-5xl md:text-8xl font-black uppercase tracking-tighter text-white mb-4">Growth & Brands</h3>
+                        <p class="text-xl md:text-3xl text-gray-300 font-light max-w-3xl">Full-stack operational pipelines for Gunoboti, Grafiti, Nexus, and Terracotta. Delivering enterprise-grade output at 5x speed.</p>
+                    </div>
+                    <div class="flex flex-col gap-4">
+                        <a href="http://www.flowstateimpact.com/links" target="_blank" class="hover-target inline-flex items-center gap-3 bg-[#E59214] text-black px-8 py-4 text-sm font-black uppercase tracking-widest hover:bg-white transition-colors">
+                            View Portfolio <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- IMMERSIVE TIERS -->
+    <section class="py-40 bg-[#000] relative z-10 border-t border-white/10 overflow-hidden">
+        <div class="px-6 md:px-16 max-w-[95vw] mx-auto mb-16">
+            <h2 class="text-[clamp(3.5rem,7vw,8rem)] font-black uppercase tracking-tighter leading-[0.8] text-white">
+                Keep an engine <br/><span class="text-[#E59214]">of your own.</span>
+            </h2>
         </div>
         
-        <div class="flex justify-center mt-20">
-            <a href="http://www.flowstateimpact.com/links" target="_blank" class="magnetic-wrap" data-strength="50">
-                <div class="absolute -inset-6 z-10 cursor-pointer pointer-events-auto magnetic-area"></div>
-                <div class="magnetic-inner flex items-center gap-3 border border-[#E59214] text-[#E59214] px-12 py-6 text-sm font-black uppercase tracking-widest hover:bg-[#E59214] hover:text-black transition-colors duration-500 rounded-full">
-                    Explore Full Video & Photo Portfolio <i data-lucide="play" class="w-4 h-4 fill-current"></i>
+        <div class="grid grid-cols-1 lg:grid-cols-2">
+            <!-- Creator Tier -->
+            <div class="bg-img-card h-[60vh] md:h-[80vh] flex flex-col justify-between p-8 md:p-16 border-t border-b lg:border-r border-white/10 hover-target group" style="background-image: url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1964&auto=format&fit=crop');">
+                <div class="card-content flex justify-between items-start">
+                    <span class="text-[#E59214] text-sm font-bold uppercase tracking-widest bg-black/50 px-4 py-2 backdrop-blur-md">Tier 01</span>
+                    <i data-lucide="pen-tool" class="text-white w-10 h-10 group-hover:scale-110 transition-transform"></i>
                 </div>
-            </a>
-        </div>
-    </section>
-
-    <!-- CUSTOM TIERS (Massive Scale) -->
-    <section class="tier-section py-40 px-6 md:px-16 bg-[#000] relative z-10 border-t-architectural overflow-hidden">
-        <div class="max-w-[90vw] mx-auto">
-            <h2 class="text-massive font-black uppercase tracking-tighter mb-16 leading-[0.8] text-white">
-                Keep an engine <br/><span class="text-outline">of your own.</span>
-            </h2>
+                <div class="card-content">
+                    <h4 class="text-white text-5xl md:text-7xl font-black uppercase tracking-tighter mb-6 group-hover:text-[#E59214] transition-colors">Creator</h4>
+                    <p class="text-xl md:text-2xl text-gray-200 font-light leading-relaxed max-w-lg mb-8">Streamlined agentic pipelines optimized for rapid content generation, visual branding, and high-frequency design output.</p>
+                    <a href="#contact" class="inline-flex items-center gap-3 text-white text-sm font-bold uppercase tracking-widest hover:text-[#E59214] transition-colors">
+                        Deploy Architecture <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </a>
+                </div>
+            </div>
             
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-10 relative z-10">
-                <!-- Creator -->
-                <div class="bg-[#050505] p-12 md:p-20 border border-white/10 hover:border-[#E59214]/50 transition-all duration-500 flex flex-col justify-between min-h-[50vh] group">
-                    <div>
-                        <div class="flex justify-between items-center mb-10">
-                            <span class="text-[#E59214] text-sm font-bold uppercase tracking-widest">Tier 01</span>
-                            <i data-lucide="zap" class="text-[#E59214] w-8 h-8 opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all"></i>
-                        </div>
-                        <h4 class="text-white text-5xl md:text-6xl font-black uppercase tracking-tighter mb-6">Creator</h4>
-                    </div>
-                    <div>
-                        <p class="text-xl md:text-2xl text-gray-400 font-light leading-relaxed mb-8">Streamlined agentic pipelines optimized for rapid content generation, visual branding, and high-frequency design output.</p>
-                        <a href="#contact" class="inline-flex items-center gap-3 text-white text-sm font-bold uppercase tracking-widest hover:text-[#E59214] transition-colors border-b border-white/20 hover:border-[#E59214] pb-1">
-                            Deploy Architecture <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                        </a>
-                    </div>
+            <!-- Ultimate Tier -->
+            <div class="bg-img-card h-[60vh] md:h-[80vh] flex flex-col justify-between p-8 md:p-16 border-b border-white/10 hover-target group" style="background-image: url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop');">
+                <div class="card-content flex justify-between items-start">
+                    <span class="text-white text-sm font-bold uppercase tracking-widest bg-[#E59214]/80 px-4 py-2 backdrop-blur-md">Tier 02</span>
+                    <i data-lucide="globe-2" class="text-white w-10 h-10 group-hover:scale-110 transition-transform"></i>
                 </div>
-                
-                <!-- Ultimate -->
-                <div class="bg-[#E59214] p-12 md:p-20 flex flex-col justify-between min-h-[50vh] text-black hover:bg-white transition-all duration-500 group">
-                    <div>
-                        <div class="flex justify-between items-center mb-10">
-                            <span class="text-black/50 text-sm font-bold uppercase tracking-widest">Tier 02</span>
-                            <i data-lucide="globe-2" class="text-black w-8 h-8 opacity-50 group-hover:opacity-100 group-hover:scale-110 transition-all"></i>
-                        </div>
-                        <h4 class="text-black text-5xl md:text-6xl font-black uppercase tracking-tighter mb-6">Ultimate</h4>
-                    </div>
-                    <div>
-                        <p class="text-xl md:text-2xl font-medium leading-relaxed mb-8">Full-scale enterprise department automation. Deep data analysis, workflow integration, and bespoke operational swarms.</p>
-                        <a href="#contact" class="inline-flex items-center gap-3 text-black text-sm font-black uppercase tracking-widest border-b border-black/20 hover:border-black pb-1">
-                            Deploy Architecture <i data-lucide="arrow-right" class="w-4 h-4"></i>
-                        </a>
-                    </div>
+                <div class="card-content">
+                    <h4 class="text-white text-5xl md:text-7xl font-black uppercase tracking-tighter mb-6 group-hover:text-[#E59214] transition-colors">Ultimate</h4>
+                    <p class="text-xl md:text-2xl text-gray-200 font-light leading-relaxed max-w-lg mb-8">Full-scale enterprise department automation. Deep data analysis, workflow integration, and bespoke operational swarms.</p>
+                    <a href="#contact" class="inline-flex items-center gap-3 text-white text-sm font-bold uppercase tracking-widest hover:text-[#E59214] transition-colors">
+                        Deploy Architecture <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                    </a>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- THE HUMAN LAYER (Hardcoded for stability) -->
-    <section class="py-40 px-6 md:px-16 bg-[#000] relative z-10 border-t-architectural">
-        <div class="max-w-[90vw] mx-auto">
-            <h2 class="text-sm font-bold text-[#E59214] tracking-[0.4em] uppercase mb-16 flex items-center gap-3">
+    <!-- THE HUMAN LAYER -->
+    <section class="py-32 bg-[#050505] relative z-10 border-b border-white/10">
+        <div class="max-w-[95vw] mx-auto px-6 md:px-16 mb-16">
+            <h2 class="text-sm font-bold text-[#E59214] tracking-[0.4em] uppercase flex items-center gap-3">
                 <i data-lucide="fingerprint" class="w-5 h-5"></i> The Human Layer
             </h2>
+        </div>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-px bg-white/10">
+            <!-- Team Member 1 -->
+            <div class="bg-img-card aspect-[4/5] p-8 flex flex-col justify-end hover-target group" style="background-image: url('https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=1970&auto=format&fit=crop&grayscale=true');">
+                <div class="card-content transform group-hover:-translate-y-4 transition-transform duration-500">
+                    <h3 class="text-3xl font-black uppercase text-white mb-1 group-hover:text-[#E59214] transition-colors">Asif Farid</h3>
+                    <p class="text-gray-300 text-xs font-bold tracking-widest uppercase">MD & CTO</p>
+                </div>
+            </div>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-px bg-white/10 border border-white/10">
-                <div class="bg-black p-12 text-center hover:bg-[#050505] transition-colors duration-300 group">
-                    <h3 class="text-3xl font-black uppercase text-white mb-2 group-hover:text-[#E59214] transition-colors">Asif Farid</h3>
-                    <p class="text-gray-500 text-xs font-bold tracking-widest uppercase">MD & CTO</p>
+            <!-- Team Member 2 -->
+            <div class="bg-img-card aspect-[4/5] p-8 flex flex-col justify-end hover-target group" style="background-image: url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1976&auto=format&fit=crop&grayscale=true');">
+                <div class="card-content transform group-hover:-translate-y-4 transition-transform duration-500">
+                    <h3 class="text-3xl font-black uppercase text-white mb-1 group-hover:text-[#E59214] transition-colors">Nafia Islam Faria</h3>
+                    <p class="text-gray-300 text-xs font-bold tracking-widest uppercase">CEO</p>
                 </div>
-                <div class="bg-black p-12 text-center hover:bg-[#050505] transition-colors duration-300 group">
-                    <h3 class="text-3xl font-black uppercase text-white mb-2 group-hover:text-[#E59214] transition-colors">Nafia Islam Faria</h3>
-                    <p class="text-gray-500 text-xs font-bold tracking-widest uppercase">CEO</p>
+            </div>
+
+            <!-- Team Member 3 -->
+            <div class="bg-img-card aspect-[4/5] p-8 flex flex-col justify-end hover-target group" style="background-image: url('https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=1974&auto=format&fit=crop&grayscale=true');">
+                <div class="card-content transform group-hover:-translate-y-4 transition-transform duration-500">
+                    <h3 class="text-3xl font-black uppercase text-white mb-1 group-hover:text-[#E59214] transition-colors">Sarwar Jahan</h3>
+                    <p class="text-gray-300 text-xs font-bold tracking-widest uppercase">CMO</p>
                 </div>
-                <div class="bg-black p-12 text-center hover:bg-[#050505] transition-colors duration-300 group">
-                    <h3 class="text-3xl font-black uppercase text-white mb-2 group-hover:text-[#E59214] transition-colors">Sarwar Jahan</h3>
-                    <p class="text-gray-500 text-xs font-bold tracking-widest uppercase">CMO</p>
-                </div>
-                <div class="bg-black p-12 text-center hover:bg-[#050505] transition-colors duration-300 group">
-                    <h3 class="text-3xl font-black uppercase text-white mb-2 group-hover:text-[#E59214] transition-colors">Muaz Rakin</h3>
-                    <p class="text-gray-500 text-xs font-bold tracking-widest uppercase">CSO & CFO</p>
+            </div>
+
+            <!-- Team Member 4 -->
+            <div class="bg-img-card aspect-[4/5] p-8 flex flex-col justify-end hover-target group" style="background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1974&auto=format&fit=crop&grayscale=true');">
+                <div class="card-content transform group-hover:-translate-y-4 transition-transform duration-500">
+                    <h3 class="text-3xl font-black uppercase text-white mb-1 group-hover:text-[#E59214] transition-colors">Muaz Rakin</h3>
+                    <p class="text-gray-300 text-xs font-bold tracking-widest uppercase">CSO & CFO</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- CONTACT SECTION -->
-    <section id="contact" class="py-40 px-6 md:px-16 border-t-architectural bg-[#000] relative z-10 overflow-hidden">
-        <div class="max-w-[90vw] mx-auto flex flex-col lg:flex-row justify-between gap-20 relative z-10">
+    <!-- CONTACT / FOOTER -->
+    <section id="contact" class="py-40 px-6 md:px-16 bg-[#000] relative z-10 overflow-hidden">
+        <div class="max-w-[95vw] mx-auto flex flex-col lg:flex-row justify-between gap-20">
             
             <div class="w-full lg:w-1/2">
-                <h2 class="text-[clamp(4rem,8vw,10rem)] font-black uppercase tracking-tighter text-white mb-10 leading-[0.85]">
-                    Initialize<br/><span class="text-outline">Your Team.</span>
+                <h2 class="text-[clamp(4rem,8vw,10rem)] font-black uppercase tracking-tighter text-white mb-8 leading-[0.85]">
+                    Initialize<br/><span class="text-[#E59214]">Your Team.</span>
                 </h2>
-                <p class="text-2xl text-gray-400 font-light max-w-xl leading-relaxed">Reach out to our hub in Dhaka or London to begin structuring your custom agentic ecosystem today.</p>
+                <p class="text-2xl text-gray-400 font-light max-w-xl leading-relaxed">Reach out to our hub in Dhaka or London to begin structuring your custom agentic ecosystem.</p>
             </div>
             
             <div class="w-full lg:w-1/2 flex flex-col justify-end gap-6">
-                <a href="mailto:asif@flowstateimpact.com" class="magnetic-wrap w-full" data-strength="20">
-                    <div class="absolute -inset-2 z-10 cursor-pointer pointer-events-auto magnetic-area"></div>
-                    <div class="magnetic-inner w-full flex flex-col md:flex-row md:items-center justify-between p-10 md:p-12 border border-white/10 hover:bg-[#E59214] hover:text-black transition-colors duration-500 group bg-[#020202]">
-                        <span class="text-gray-500 group-hover:text-black text-xs font-bold tracking-widest uppercase mb-4 md:mb-0 transition-colors">Email Command</span>
-                        <span class="text-2xl md:text-4xl font-black tracking-tighter">asif@flowstateimpact.com</span>
-                    </div>
+                <a href="mailto:asif@flowstateimpact.com" class="hover-target w-full flex flex-col md:flex-row md:items-center justify-between p-10 md:p-12 border border-white/10 hover:bg-[#E59214] hover:text-black hover:border-[#E59214] transition-all duration-500 group bg-[#050505]">
+                    <span class="text-gray-500 group-hover:text-black/70 text-xs font-bold tracking-widest uppercase mb-4 md:mb-0 transition-colors">Email Command</span>
+                    <span class="text-2xl md:text-4xl font-black tracking-tighter">asif@flowstateimpact.com</span>
                 </a>
                 
-                <div class="magnetic-wrap w-full" data-strength="20">
-                    <div class="absolute -inset-2 z-10 cursor-pointer pointer-events-auto magnetic-area"></div>
-                    <div class="magnetic-inner w-full flex flex-col md:flex-row md:items-center justify-between p-10 md:p-12 border border-white/10 hover:bg-white hover:text-black transition-colors duration-500 group bg-[#020202]">
-                        <span class="text-gray-500 group-hover:text-black text-xs font-bold tracking-widest uppercase mb-4 md:mb-0 transition-colors">Call The Hub</span>
-                        <div class="text-right">
-                            <span class="text-2xl md:text-4xl font-black tracking-tighter block mb-2">01616 119242</span>
-                            <span class="text-2xl md:text-4xl font-black tracking-tighter block">01627 935350</span>
-                        </div>
+                <div class="w-full flex flex-col md:flex-row md:items-center justify-between p-10 md:p-12 border border-white/10 bg-[#050505]">
+                    <span class="text-gray-500 text-xs font-bold tracking-widest uppercase mb-4 md:mb-0">Call The Hub</span>
+                    <div class="text-left md:text-right">
+                        <span class="text-2xl md:text-4xl font-black tracking-tighter block mb-2 text-white hover:text-[#E59214] transition-colors hover-target">01616 119242</span>
+                        <span class="text-2xl md:text-4xl font-black tracking-tighter block text-white hover:text-[#E59214] transition-colors hover-target">01627 935350</span>
                     </div>
                 </div>
             </div>
@@ -421,17 +403,48 @@
         </div>
     </section>
 
-    <!-- FOOTER -->
-    <footer class="py-12 px-6 md:px-16 bg-[#000] border-t-architectural flex flex-col md:flex-row justify-between items-center text-xs tracking-widest text-gray-600 uppercase relative z-10">
+    <footer class="py-12 px-6 md:px-16 bg-[#000] flex flex-col md:flex-row justify-between items-center text-xs tracking-widest text-gray-600 uppercase relative z-10 border-t border-white/10">
         <p>FlowStãte Impact © 2026</p>
-        <p class="mt-4 md:mt-0 hover:text-white transition-colors cursor-pointer">Dhaka • London</p>
+        <p class="mt-4 md:mt-0 hover:text-white transition-colors hover-target">Dhaka • London</p>
     </footer>
 
     <!-- LOGIC & PHYSICS SCRIPTS -->
     <script>
         lucide.createIcons();
 
-        // 1. Lenis Smooth Scroll (Silky Physics)
+        // Custom Cursor Logic
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+        const hoverTargets = document.querySelectorAll('.hover-target');
+
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+            
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+            
+            // Slight delay on the outline for fluid feel
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+        hoverTargets.forEach(target => {
+            target.addEventListener('mouseenter', () => {
+                cursorOutline.style.width = '60px';
+                cursorOutline.style.height = '60px';
+                cursorOutline.style.backgroundColor = 'rgba(229,146,20,0.1)';
+            });
+            target.addEventListener('mouseleave', () => {
+                cursorOutline.style.width = '40px';
+                cursorOutline.style.height = '40px';
+                cursorOutline.style.backgroundColor = 'transparent';
+            });
+        });
+
+        // Lenis Smooth Scroll
         const lenis = new Lenis({ 
             duration: 1.5, 
             easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -446,21 +459,12 @@
         gsap.ticker.add((time) => { lenis.raf(time * 1000) });
         gsap.ticker.lagSmoothing(0);
 
-        // 2. Cinematic Typography Reveal
+        // Hero Typography Reveal
         const heroTl = gsap.timeline({ defaults: { ease: "expo.out" } });
-        heroTl.to(".nav-fade", { y: 0, opacity: 1, duration: 1.5, stagger: 0.1, delay: 0.5 })
+        heroTl.to(".nav-fade", { y: 0, opacity: 1, duration: 1.5, stagger: 0.1, delay: 0.2 })
               .to(".reveal-text", { y: "0%", opacity: 1, duration: 1.8, stagger: 0.12 }, "-=1.2");
 
-        // 3. The Video Theater Scroll Effect
-        gsap.to("#main-video", {
-            clipPath: "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%)",
-            ease: "none",
-            scrollTrigger: {
-                trigger: "#theater-section", start: "top bottom", end: "center center", scrub: true
-            }
-        });
-
-        // 4. Staggered Content Reveals
+        // Staggered Reveals
         gsap.fromTo(".info-fade", 
             { y: 60, opacity: 0 }, 
             { y: 0, opacity: 1, stagger: 0.1, duration: 1.5, ease: "expo.out", scrollTrigger: { trigger: ".info-fade", start: "top 85%" } }
@@ -471,118 +475,91 @@
             { y: 0, opacity: 1, stagger: 0.15, duration: 1, ease: "power3.out", scrollTrigger: { trigger: "#doors-container", start: "top 80%" } }
         );
 
-        // 5. Magnetic Buttons Logic
-        const magneticElements = document.querySelectorAll('.magnetic-wrap');
-        magneticElements.forEach((el) => {
-            const inner = el.querySelector('.magnetic-inner');
-            const strength = el.getAttribute('data-strength') || 30;
-
-            el.addEventListener('mousemove', (e) => {
-                const rect = el.getBoundingClientRect();
-                const x = ((e.clientX - rect.left) / rect.width - 0.5) * strength;
-                const y = ((e.clientY - rect.top) / rect.height - 0.5) * strength;
-                gsap.to(inner, { x: x, y: y, duration: 0.6, ease: "power3.out" });
-            });
-
-            el.addEventListener('mouseleave', () => {
-                gsap.to(inner, { x: 0, y: 0, duration: 0.8, ease: "elastic.out(1, 0.3)" });
-            });
+        // Horizontal Scroll for Projects
+        let panels = gsap.utils.toArray(".project-panel");
+        gsap.to(panels, {
+            xPercent: -100 * (panels.length - 1),
+            ease: "none",
+            scrollTrigger: {
+                trigger: "#projects",
+                pin: true,
+                scrub: 1,
+                snap: 1 / (panels.length - 1),
+                end: () => "+=" + document.querySelector("#project-scroll-container").offsetWidth
+            }
         });
 
-        // 6. Custom Magnetic Project Reveals
-        const revealEl = document.querySelector('.project-hover-reveal');
-        const projectRows = document.querySelectorAll('.project-row');
-        
-        projectRows.forEach(row => {
-            row.addEventListener('mouseenter', () => {
-                const imagePath = row.getAttribute('data-image');
-                revealEl.style.backgroundImage = `url(${imagePath})`;
-                gsap.to(revealEl, { opacity: 1, scale: 1, duration: 0.4, ease: "power3.out" });
-            });
-            row.addEventListener('mouseleave', () => {
-                gsap.to(revealEl, { opacity: 0, scale: 0.8, duration: 0.4, ease: "power3.out" });
-            });
-        });
-
-        // Move the reveal image with mouse
-        document.getElementById('project-list').addEventListener('mousemove', (e) => {
-            gsap.to(revealEl, { 
-                x: e.clientX - 225, // Center the 450px wide image
-                y: e.clientY - 275, // Center the 550px tall image
-                duration: 0.5, 
-                ease: "power2.out" 
-            });
-        });
-
-        // 7. Interactive Agent Swarm (Canvas Background)
+        // 3D Agent Swarm Particle Engine
         const canvas = document.getElementById('agent-swarm');
         const ctx = canvas.getContext('2d');
         let width, height;
         let particles = [];
-        
-        // Exactly 83 agents for the lore
-        const numAgents = 83;
-        let mouse = { x: -1000, y: -1000 };
+        const numAgents = 83; // Exact lore number
+        let mouse = { x: window.innerWidth/2, y: window.innerHeight/2 };
 
         function initCanvas() {
             width = canvas.width = window.innerWidth;
             height = canvas.height = window.innerHeight;
             particles = [];
             for(let i = 0; i < numAgents; i++) {
+                // Add z-depth property for 3D parallax effect
+                let z = Math.random() * 2 + 0.5; 
                 particles.push({
                     x: Math.random() * width,
                     y: Math.random() * height,
-                    vx: (Math.random() - 0.5) * 0.5,
-                    vy: (Math.random() - 0.5) * 0.5,
-                    radius: Math.random() * 1.5 + 0.5
+                    vx: (Math.random() - 0.5) * (3 / z), // Closer moves faster
+                    vy: (Math.random() - 0.5) * (3 / z),
+                    radius: (Math.random() * 2 + 1) / z, // Closer appears larger
+                    z: z
                 });
             }
         }
 
         window.addEventListener('resize', initCanvas);
-        window.addEventListener('mousemove', (e) => { mouse.x = e.clientX; mouse.y = e.clientY; });
+        window.addEventListener('mousemove', (e) => { 
+            mouse.x = e.clientX; mouse.y = e.clientY; 
+        });
         
         function animateCanvas() {
             ctx.clearRect(0, 0, width, height);
             
             for(let i = 0; i < particles.length; i++) {
                 let p = particles[i];
-                p.x += p.vx;
-                p.y += p.vy;
                 
-                // Wrap around edges
-                if(p.x < 0) p.x = width;
-                if(p.x > width) p.x = 0;
-                if(p.y < 0) p.y = height;
-                if(p.y > height) p.y = 0;
-
-                // React to mouse
-                let dx = mouse.x - p.x;
-                let dy = mouse.y - p.y;
-                let dist = Math.sqrt(dx*dx + dy*dy);
-                if(dist < 150) {
-                    p.x -= dx * 0.02;
-                    p.y -= dy * 0.02;
-                }
+                // Mouse parallax effect
+                let dxMouse = (mouse.x - width/2) * 0.005 / p.z;
+                let dyMouse = (mouse.y - height/2) * 0.005 / p.z;
+                
+                p.x += p.vx - dxMouse;
+                p.y += p.vy - dyMouse;
+                
+                // Wrap around edges seamlessly
+                if(p.x < -50) p.x = width + 50;
+                if(p.x > width + 50) p.x = -50;
+                if(p.y < -50) p.y = height + 50;
+                if(p.y > height + 50) p.y = -50;
                 
                 ctx.beginPath();
                 ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                ctx.fillStyle = i % 3 === 0 ? '#E59214' : 'rgba(255,255,255,0.5)';
+                ctx.fillStyle = i % 4 === 0 ? `rgba(229,146,20,${1/p.z})` : `rgba(255,255,255,${0.5/p.z})`;
                 ctx.fill();
                 
-                // Draw lines between close agents
+                // Neural networking lines based on Z-depth proximity
                 for(let j = i + 1; j < particles.length; j++) {
                     let p2 = particles[j];
-                    let dx2 = p.x - p2.x;
-                    let dy2 = p.y - p2.y;
-                    let dist2 = Math.sqrt(dx2*dx2 + dy2*dy2);
-                    
-                    if(dist2 < 120) {
-                        ctx.beginPath();
-                        ctx.moveTo(p.x, p.y);
-                        ctx.lineTo(p2.x, p2.y);
-                        ctx.strokeStyle = `rgba(255,255,255,${0.1 - dist2/1200})`;
-                        ctx.stroke();
+                    // Only connect if they are on a similar Z-plane
+                    if (Math.abs(p.z - p2.z) < 0.5) {
+                        let dx2 = p.x - p2.x;
+                        let dy2 = p.y - p2.y;
+                        let dist2 = Math.sqrt(dx2*dx2 + dy2*dy2);
+                        
+                        if(dist2 < 150) {
+                            ctx.beginPath();
+                            ctx.moveTo(p.x, p.y);
+                            ctx.lineTo(p2.x, p2.y);
+                            ctx.strokeStyle = `rgba(255,255,255,${(0.15 - dist2/1000) / p.z})`;
+                            ctx.stroke();
+                        }
                     }
                 }
             }
