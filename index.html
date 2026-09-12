@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>FLOWSTÃTE IMPACT | ERADICATE THE ORDINARY</title>
     
-    <!-- Fonts: Brutalist + High Fashion -->
+    <!-- Bold, High-Fashion & Brutalist Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Oswald:wght@500;700;900&family=Playfair+Display:ital,wght@0,400;0,800;1,400;1,800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@300;400;700;900&family=Playfair+Display:ital,wght@0,400;0,800;1,400;1,800&display=swap" rel="stylesheet">
     
-    <!-- Dependencies -->
+    <!-- Core Physics & Styling -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
@@ -18,254 +18,305 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <style>
-        :root { --amber: #FF5500; --bg: #050505; }
+        :root { --amber: #FF4400; --bg: #030303; }
         
         body { 
             background-color: var(--bg); color: #fff; 
-            font-family: 'Oswald', sans-serif; /* Primary Brutalist Font */
+            font-family: 'Inter', sans-serif;
             overflow-x: hidden; cursor: none;
             -webkit-font-smoothing: antialiased;
         }
 
-        .font-serif { font-family: 'Playfair Display', serif; }
+        h1, h2, h3, h4, h5, .font-anton { font-family: 'Anton', sans-serif; text-transform: uppercase; letter-spacing: 0.02em; }
+        .font-serif { font-family: 'Playfair Display', serif; text-transform: none; letter-spacing: 0; }
 
         html.lenis { height: auto; }
         .lenis.lenis-smooth { scroll-behavior: auto; }
         .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
         .lenis.lenis-stopped { overflow: hidden; }
 
-        /* TACTILE FILM GRAIN */
-        .grain {
-            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            pointer-events: none; z-index: 9999; opacity: 0.08; mix-blend-mode: overlay;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        /* HIGH-END TACTILE GRAIN */
+        .cinematic-grain {
+            position: fixed; inset: 0; z-index: 9999; pointer-events: none; opacity: 0.05;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
 
-        /* CUSTOM DYNAMIC CURSOR */
-        #cursor-dot {
-            position: fixed; top: 0; left: 0; width: 8px; height: 8px;
-            background: var(--amber); border-radius: 50%; pointer-events: none; z-index: 100000;
-            transform: translate(-50%, -50%); transition: opacity 0.3s;
+        /* ENERGETIC CURSOR */
+        #cursor-dot { position: fixed; width: 10px; height: 10px; background: var(--amber); border-radius: 50%; pointer-events: none; z-index: 100000; transform: translate(-50%, -50%); }
+        #cursor-ring {
+            position: fixed; width: 40px; height: 40px; border: 2px solid var(--amber); border-radius: 50%; pointer-events: none; z-index: 99999;
+            transform: translate(-50%, -50%); transition: width 0.3s, height 0.3s, background 0.3s, border-color 0.3s;
+            display: flex; align-items: center; justify-content: center; backdrop-filter: grayscale(1);
         }
-        #cursor-glass {
-            position: fixed; top: 0; left: 0; width: 40px; height: 40px;
-            border: 1px solid rgba(255,85,0,0.5); border-radius: 50%; pointer-events: none; z-index: 99999;
-            transform: translate(-50%, -50%);
-            display: flex; align-items: center; justify-content: center;
-            transition: width 0.4s cubic-bezier(0.76, 0, 0.24, 1), height 0.4s cubic-bezier(0.76, 0, 0.24, 1), background 0.4s, border 0.4s;
-            backdrop-filter: grayscale(1);
-        }
-        #cursor-text { opacity: 0; font-family: 'Oswald', sans-serif; font-size: 14px; font-weight: 700; color: #000; transition: opacity 0.3s; letter-spacing: 2px; }
+        #cursor-text { opacity: 0; font-family: 'Anton', sans-serif; font-size: 12px; color: #fff; transition: opacity 0.3s; letter-spacing: 2px; }
         
-        body.hover-btn #cursor-glass { width: 80px; height: 80px; background: rgba(255,85,0,0.2); border-color: transparent; }
-        body.hover-explore #cursor-glass { width: 120px; height: 120px; background: var(--amber); border-color: var(--amber); backdrop-filter: none; }
+        body.hover-interact #cursor-ring { width: 80px; height: 80px; background: rgba(255,68,0,0.1); border-color: transparent; }
+        body.hover-explore #cursor-ring { width: 120px; height: 120px; background: var(--amber); border-color: var(--amber); backdrop-filter: none; }
         body.hover-explore #cursor-text { opacity: 1; }
         body.hover-explore #cursor-dot { opacity: 0; }
 
-        /* TYPOGRAPHY UTILS */
-        .text-mega { font-size: clamp(5rem, 18vw, 20rem); line-height: 0.8; letter-spacing: -0.02em; text-transform: uppercase; }
-        .text-outline { color: transparent; -webkit-text-stroke: 2px rgba(255,255,255,0.8); }
+        /* TYPOGRAPHY */
+        .text-mega { font-size: clamp(5rem, 15vw, 18rem); line-height: 0.85; }
+        .text-outline { color: transparent; -webkit-text-stroke: 2px rgba(255,255,255,0.9); }
         .text-outline-amber { color: transparent; -webkit-text-stroke: 2px var(--amber); }
-        
-        .clip-text { overflow: hidden; display: block; }
-        .clip-text span { display: block; transform: translateY(115%); }
 
-        /* IMAGE PARALLAX CONTAINERS */
+        /* MASONRY & PARALLAX IMAGES */
         .img-wrap { overflow: hidden; position: relative; background: #111; }
-        .img-inner { width: 100%; height: 120%; object-fit: cover; position: absolute; top: -10%; left: 0; will-change: transform; filter: grayscale(40%) contrast(1.2); transition: filter 0.5s, transform 0.5s; }
-        .img-wrap:hover .img-inner { filter: grayscale(0%) contrast(1.1); transform: scale(1.05); }
+        .img-parallax { width: 100%; height: 130%; object-fit: cover; position: absolute; top: -15%; left: 0; filter: grayscale(50%) contrast(1.2); transition: filter 0.5s ease, transform 0.8s ease; }
+        .img-wrap:hover .img-parallax { filter: grayscale(0%) contrast(1.1); transform: scale(1.05); }
 
-        /* HORIZONTAL SCROLL SECTION */
-        .h-scroll-container { display: flex; width: 400vw; height: 100dvh; flex-wrap: nowrap; }
-        .h-panel { width: 100vw; height: 100dvh; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
-
-        /* STICKY STACK CARDS */
-        .stack-card { position: sticky; top: 0; height: 100dvh; width: 100%; display: flex; align-items: center; justify-content: center; }
-        .stack-card-inner { width: 100%; height: 100%; background: #0a0a0a; border-top: 1px solid rgba(255,255,255,0.1); display: flex; flex-direction: column; justify-content: center; position: relative; overflow: hidden; box-shadow: 0 -20px 50px rgba(0,0,0,0.9); }
-
-        /* MARQUEE */
-        .marquee { white-space: nowrap; overflow: hidden; display: flex; width: 100%; }
-        .marquee span { display: inline-block; animation: marquee 20s linear infinite; padding-right: 2rem; }
-        @keyframes marquee { 0% { transform: translate3d(0, 0, 0); } 100% { transform: translate3d(-100%, 0, 0); } }
+        /* HORIZONTAL SCROLL */
+        .h-scroll-container { display: flex; width: 400vw; height: 100vh; flex-wrap: nowrap; }
+        .h-panel { width: 100vw; height: 100vh; position: relative; overflow: hidden; display: flex; align-items: center; justify-content: center; }
+        
+        /* TEAM CARDS */
+        .team-card { position: relative; overflow: hidden; width: 100%; height: 100%; min-height: 500px; }
+        .team-card img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); transition: all 0.5s ease; }
+        .team-card:hover img { filter: grayscale(0%); transform: scale(1.05); }
 
     </style>
 </head>
-<body>
+<body class="bg-[#030303]">
 
-    <div class="grain"></div>
+    <div class="cinematic-grain"></div>
 
+    <!-- CUSTOM CURSOR -->
     <div id="cursor-dot"></div>
-    <div id="cursor-glass"><span id="cursor-text">EXPLORE</span></div>
+    <div id="cursor-ring"><span id="cursor-text">VIEW</span></div>
 
     <!-- NAVIGATION -->
     <nav class="fixed top-0 w-full p-6 md:p-10 flex justify-between items-center z-50 mix-blend-difference pointer-events-none">
-        <div class="pointer-events-auto interact-btn">
-            <h1 class="text-3xl md:text-4xl font-black uppercase tracking-tighter text-white leading-none">FlowStãte</h1>
-            <span class="text-[0.65rem] font-bold tracking-[0.6em] text-[#FF5500] uppercase block mt-1">Impact</span>
+        <div class="pointer-events-auto interact">
+            <h1 class="text-3xl md:text-5xl text-white leading-none">FlowStãte</h1>
+            <span class="text-[0.65rem] font-bold font-sans tracking-[0.5em] text-[#FF4400] uppercase block mt-1">Impact</span>
         </div>
         <div class="pointer-events-auto flex items-center gap-8">
-            <a href="http://www.flowstateimpact.com/links" target="_blank" class="hidden md:block text-xs font-bold uppercase tracking-widest text-white hover:text-[#FF5500] transition-colors interact-btn">
+            <a href="http://www.flowstateimpact.com/links" target="_blank" class="hidden md:block text-xs font-bold font-sans uppercase tracking-widest text-white hover:text-[#FF4400] transition-colors interact">
                 Video Archives
             </a>
-            <a href="#command" class="interact-btn bg-white text-black px-8 py-4 text-xs font-black uppercase tracking-widest hover:bg-[#FF5500] hover:text-white transition-all duration-300 rounded-full flex items-center gap-2">
+            <a href="#command" class="interact bg-white text-black px-8 py-4 text-xs font-black uppercase font-sans tracking-widest hover:bg-[#FF4400] hover:text-white transition-all duration-300 rounded-full flex items-center gap-2">
                 Deploy Swarm <div class="w-2 h-2 bg-black rounded-full animate-pulse"></div>
             </a>
         </div>
     </nav>
 
-    <!-- 1. KINETIC HERO: OVERLAPPING CHAOS -->
+    <!-- 1. KINETIC HERO (VIDEO + TYPOGRAPHY + IMAGES) -->
     <section class="relative min-h-[120vh] w-full flex flex-col items-center justify-center overflow-hidden pt-20">
         
-        <!-- Background Video trapped in an abstract shape -->
-        <div class="absolute inset-0 w-full h-full flex items-center justify-center z-0 opacity-50" data-speed="0.8">
-            <div class="w-[90vw] md:w-[60vw] h-[60vh] md:h-[80vh] overflow-hidden rounded-[2rem] md:rounded-[4rem] relative">
-                <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover filter contrast-125 saturate-50">
+        <!-- Central Video Element -->
+        <div class="absolute inset-0 w-full h-full flex items-center justify-center z-0 opacity-40">
+            <div class="w-[90vw] md:w-[70vw] h-[60vh] md:h-[80vh] overflow-hidden rounded-2xl relative">
+                <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover">
                     <source src="FSI-FILM-FINAL.mp4" type="video/mp4" />
                 </video>
-                <div class="absolute inset-0 bg-[#FF5500] mix-blend-overlay opacity-20"></div>
+                <div class="absolute inset-0 bg-gradient-to-t from-[#030303] via-transparent to-[#030303]"></div>
             </div>
         </div>
 
-        <!-- Floating Parallax Images (High Fashion/Tech Vibe) -->
-        <div class="absolute top-[10%] left-[5%] w-[40vw] md:w-[20vw] aspect-[3/4] img-wrap z-10 gs-parallax hidden md:block" data-speed="1.2">
-            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1500&auto=format&fit=crop" class="img-inner" alt="Art">
+        <!-- Floating High-Fashion Images (Parallax) -->
+        <div class="absolute top-[15%] left-[5%] w-[35vw] md:w-[15vw] aspect-[3/4] img-wrap z-10 gs-parallax hidden sm:block" data-speed="1.3">
+            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1500&auto=format&fit=crop" class="img-parallax" alt="Editorial 1">
         </div>
-        <div class="absolute bottom-[10%] right-[5%] w-[50vw] md:w-[25vw] aspect-square img-wrap z-10 gs-parallax hidden md:block" data-speed="0.7">
-            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1500&auto=format&fit=crop" class="img-inner" alt="Art">
+        <div class="absolute bottom-[10%] right-[5%] w-[45vw] md:w-[20vw] aspect-[4/5] img-wrap z-10 gs-parallax hidden sm:block" data-speed="0.8">
+            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1500&auto=format&fit=crop" class="img-parallax" alt="Editorial 2">
         </div>
 
-        <!-- Massive Kinetic Typography -->
-        <div class="relative z-20 w-full text-center pointer-events-none mix-blend-difference mt-20 md:mt-0">
+        <!-- Massive Typography -->
+        <div class="relative z-20 w-full text-center pointer-events-none mix-blend-difference mt-20 md:mt-0 px-4">
             <h1 class="text-mega m-0 p-0 flex flex-col items-center justify-center">
-                <span class="clip-text"><span class="reveal-up text-outline">INTELLIGENCE</span></span>
-                <span class="clip-text -mt-[4vw]"><span class="reveal-up font-serif italic text-white capitalize text-[clamp(4rem,12vw,14rem)]">is an</span></span>
-                <span class="clip-text -mt-[4vw]"><span class="reveal-up text-[#FF5500]">ARCHITECTURE</span></span>
+                <span class="overflow-hidden block"><span class="gs-up block text-outline">INTELLIGENCE</span></span>
+                <span class="overflow-hidden block -mt-[2vw]"><span class="gs-up block font-serif italic text-white normal-case tracking-normal">is an</span></span>
+                <span class="overflow-hidden block -mt-[2vw]"><span class="gs-up block text-[#FF4400]">ARCHITECTURE</span></span>
             </h1>
         </div>
 
         <!-- Scroll Indicator -->
-        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 z-20 reveal-up delay-700">
-            <span class="text-[10px] uppercase tracking-widest text-white/50">Scroll to initialize</span>
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 z-20 gs-up delay-700">
+            <span class="text-[10px] font-sans uppercase tracking-widest text-white/50">Scroll to initialize</span>
             <div class="w-px h-16 bg-gradient-to-b from-white to-transparent"></div>
         </div>
     </section>
 
-    <!-- 2. THE STROBE MANIFESTO -->
-    <section class="py-32 md:py-48 bg-[#FF5500] text-black relative z-20 overflow-hidden">
-        <div class="marquee text-[clamp(6rem,15vw,20rem)] font-black uppercase tracking-tighter leading-none opacity-10 absolute top-1/2 -translate-y-1/2 w-full">
-            <span>83 AGENTS • NO PAYROLL • 83 AGENTS • NO PAYROLL •</span>
-            <span>83 AGENTS • NO PAYROLL • 83 AGENTS • NO PAYROLL •</span>
-        </div>
-        
-        <div class="max-w-[90vw] mx-auto relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
-            <div>
-                <h2 class="text-6xl md:text-8xl font-black uppercase leading-[0.9] mb-8 gs-fade">
-                    Eradicate <br/><span class="font-serif italic font-bold">The Ordinary.</span>
+    <!-- 2. THE 83 AGENTS (MASONRY & MANIFESTO) -->
+    <section class="py-32 md:py-48 px-6 md:px-12 bg-[#050505] relative z-20 border-t border-white/10">
+        <div class="max-w-[95vw] mx-auto grid grid-cols-1 xl:grid-cols-12 gap-16 items-center">
+            
+            <!-- Left: Typography -->
+            <div class="xl:col-span-5">
+                <h2 class="text-6xl md:text-8xl font-black uppercase leading-[0.85] mb-8 gs-fade">
+                    Eradicate <br/><span class="font-serif italic font-bold text-gray-400">The Ordinary.</span>
                 </h2>
-                <p class="text-xl md:text-3xl font-bold max-w-xl leading-snug gs-fade">
+                <p class="text-xl md:text-3xl font-sans font-light max-w-xl leading-snug mb-12 text-gray-300 gs-fade">
                     Strategy, branding, design, content, and IT. We deploy entire ecosystems driven by elite human taste and executed by agentic scale.
                 </p>
+                
+                <div class="grid grid-cols-2 gap-8 border-t border-white/20 pt-10 gs-fade">
+                    <div>
+                        <span class="text-6xl md:text-8xl text-[#FF4400] font-black block leading-none">56</span>
+                        <span class="text-xs font-sans font-bold uppercase tracking-widest text-gray-400 block mt-4">Bespoke Generators</span>
+                    </div>
+                    <div>
+                        <span class="text-6xl md:text-8xl text-white font-black block leading-none">27</span>
+                        <span class="text-xs font-sans font-bold uppercase tracking-widest text-gray-400 block mt-4">Analytical Processors</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right: Masonry Image Grid -->
+            <div class="xl:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-8 mt-12 xl:mt-0">
+                <div class="flex flex-col gap-8 mt-0 sm:mt-24">
+                    <div class="img-wrap aspect-[3/4] rounded-xl gs-fade">
+                        <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1500&auto=format&fit=crop" class="img-parallax" alt="Data Core">
+                        <div class="absolute bottom-6 left-6 text-white font-sans text-xs uppercase tracking-widest font-bold">Data Architecture</div>
+                    </div>
+                    <div class="bg-[#FF4400] p-10 rounded-xl gs-fade interact text-black">
+                        <h3 class="text-4xl mb-4">AUTONOMY</h3>
+                        <p class="font-sans font-medium text-sm">Every correction permanently alters the neural pathway. They learn your brand DNA flawlessly.</p>
+                    </div>
+                </div>
+                <div class="flex flex-col gap-8">
+                    <div class="bg-[#111] p-10 rounded-xl border border-white/10 gs-fade interact">
+                        <h3 class="text-4xl mb-4 text-white">SYNTHESIS</h3>
+                        <p class="font-sans font-light text-sm text-gray-400">Processing vast data lakes into razor-sharp strategy, design, and cinematic output.</p>
+                    </div>
+                    <div class="img-wrap aspect-square rounded-xl gs-fade">
+                        <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=1500&auto=format&fit=crop" class="img-parallax" alt="Network">
+                        <div class="absolute bottom-6 left-6 text-white font-sans text-xs uppercase tracking-widest font-bold">Global Network</div>
+                    </div>
+                </div>
             </div>
             
-            <div class="grid grid-cols-2 gap-8 border-t-4 border-black pt-8 gs-fade">
-                <div>
-                    <span class="text-6xl md:text-8xl font-black block leading-none">56</span>
-                    <span class="text-sm font-bold uppercase tracking-widest block mt-2">Bespoke Generators</span>
+        </div>
+    </section>
+
+    <!-- 3. THE 5 DOORS (HARDCODED RAW HTML, IMAGE-RICH LIST) -->
+    <section class="py-32 md:py-48 bg-black relative z-30 border-t border-white/10">
+        <div class="max-w-[95vw] mx-auto px-6 md:px-0">
+            
+            <div class="mb-20 text-center">
+                <h2 class="text-xs font-sans font-bold text-[#FF4400] tracking-[0.5em] uppercase mb-4">Quality Assurance Matrix</h2>
+                <h3 class="text-5xl md:text-7xl font-black uppercase text-white tracking-tighter">The Five Firewalls</h3>
+            </div>
+
+            <div class="max-w-6xl mx-auto flex flex-col gap-4">
+                
+                <!-- DOOR 1 -->
+                <div class="flex flex-col md:flex-row bg-[#080808] border border-white/10 rounded-2xl overflow-hidden group interact gs-fade">
+                    <div class="w-full md:w-1/3 h-64 md:h-auto img-wrap">
+                        <img src="https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1500&auto=format&fit=crop" class="img-parallax" alt="Strangers">
+                    </div>
+                    <div class="w-full md:w-2/3 p-10 md:p-16 flex flex-col justify-center relative">
+                        <span class="absolute top-10 right-10 text-6xl font-black text-white/5 group-hover:text-[#FF4400]/20 transition-colors">01</span>
+                        <h4 class="text-4xl md:text-5xl text-white mb-4">Strangers Read It</h4>
+                        <p class="font-sans font-light text-gray-400 text-lg max-w-md">Validated for absolute clarity outside the internal brand echo chamber.</p>
+                    </div>
                 </div>
-                <div>
-                    <span class="text-6xl md:text-8xl font-black block leading-none">27</span>
-                    <span class="text-sm font-bold uppercase tracking-widest block mt-2">Analytical Processors</span>
+
+                <!-- DOOR 2 -->
+                <div class="flex flex-col md:flex-row-reverse bg-[#080808] border border-white/10 rounded-2xl overflow-hidden group interact gs-fade">
+                    <div class="w-full md:w-1/3 h-64 md:h-auto img-wrap">
+                        <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1500&auto=format&fit=crop" class="img-parallax" alt="Scoring">
+                    </div>
+                    <div class="w-full md:w-2/3 p-10 md:p-16 flex flex-col justify-center relative">
+                        <span class="absolute top-10 left-10 text-6xl font-black text-white/5 group-hover:text-[#FF4400]/20 transition-colors">02</span>
+                        <h4 class="text-4xl md:text-5xl text-white mb-4">It Gets A Mark</h4>
+                        <p class="font-sans font-light text-gray-400 text-lg max-w-md">Rigid algorithmic scoring against core aesthetic and logic parameters.</p>
+                    </div>
                 </div>
+
+                <!-- DOOR 3 -->
+                <div class="flex flex-col md:flex-row bg-[#080808] border border-white/10 rounded-2xl overflow-hidden group interact gs-fade">
+                    <div class="w-full md:w-1/3 h-64 md:h-auto img-wrap">
+                        <img src="https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?q=80&w=1500&auto=format&fit=crop" class="img-parallax" alt="Rejection">
+                    </div>
+                    <div class="w-full md:w-2/3 p-10 md:p-16 flex flex-col justify-center relative">
+                        <span class="absolute top-10 right-10 text-6xl font-black text-white/5 group-hover:text-[#FF4400]/20 transition-colors">03</span>
+                        <h4 class="text-4xl md:text-5xl text-white mb-4">Three Can Say No</h4>
+                        <p class="font-sans font-light text-gray-400 text-lg max-w-md">Autonomous rejection protocol. Ruthless assassins of derivative concepts.</p>
+                    </div>
+                </div>
+
+                <!-- DOOR 4 -->
+                <div class="flex flex-col md:flex-row-reverse bg-[#080808] border border-white/10 rounded-2xl overflow-hidden group interact gs-fade">
+                    <div class="w-full md:w-1/3 h-64 md:h-auto img-wrap">
+                        <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1500&auto=format&fit=crop" class="img-parallax" alt="Stress Test">
+                    </div>
+                    <div class="w-full md:w-2/3 p-10 md:p-16 flex flex-col justify-center relative">
+                        <span class="absolute top-10 left-10 text-6xl font-black text-white/5 group-hover:text-[#FF4400]/20 transition-colors">04</span>
+                        <h4 class="text-4xl md:text-5xl text-white mb-4">Five Try Break It</h4>
+                        <p class="font-sans font-light text-gray-400 text-lg max-w-md">Hostile stress-testing to isolate logical inconsistencies and visual flaws.</p>
+                    </div>
+                </div>
+
+                <!-- DOOR 5 -->
+                <div class="flex flex-col md:flex-row bg-[#080808] border border-white/10 rounded-2xl overflow-hidden group interact gs-fade">
+                    <div class="w-full md:w-1/3 h-64 md:h-auto img-wrap">
+                        <img src="https://images.unsplash.com/photo-1492447166138-50c3889fccb1?q=80&w=1500&auto=format&fit=crop" class="img-parallax" alt="Final Look">
+                    </div>
+                    <div class="w-full md:w-2/3 p-10 md:p-16 flex flex-col justify-center relative">
+                        <span class="absolute top-10 right-10 text-6xl font-black text-white/5 group-hover:text-[#FF4400]/20 transition-colors">05</span>
+                        <h4 class="text-4xl md:text-5xl text-white mb-4 text-[#FF4400]">One Last Look</h4>
+                        <p class="font-sans font-light text-gray-400 text-lg max-w-md">The final human-led taste engine sign-off. Technology directed by art.</p>
+                    </div>
+                </div>
+
             </div>
         </div>
     </section>
 
-    <!-- 3. THE 5 DOORS (STICKY STACKING CARDS) -->
-    <section class="bg-black relative z-30 pb-32" id="doors-stack">
-        <div class="pt-32 pb-16 px-6 md:px-12 text-center sticky top-0 z-0 bg-gradient-to-b from-black via-black to-transparent">
-            <h2 class="text-xs font-bold text-[#FF5500] tracking-[0.5em] uppercase mb-4">Quality Assurance Matrix</h2>
-            <h3 class="text-4xl md:text-6xl font-black uppercase text-white tracking-tighter">The Five Firewalls</h3>
-        </div>
-
-        <div class="relative z-10 w-full max-w-6xl mx-auto px-4 md:px-0">
-            
-            {[
-                { n: "01", t: "Strangers Read It", d: "Validated for absolute clarity outside the internal brand echo chamber.", img: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=2000&auto=format&fit=crop" },
-                { n: "02", t: "It Gets A Mark", d: "Rigid algorithmic scoring against core aesthetic and logic parameters.", img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2000&auto=format&fit=crop" },
-                { n: "03", t: "Three Can Say No", d: "Autonomous rejection protocol. Assassins of derivative concepts.", img: "https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?q=80&w=2000&auto=format&fit=crop" },
-                { n: "04", t: "Five Try Break It", d: "Hostile stress-testing to isolate logical inconsistencies and visual flaws.", img: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=2000&auto=format&fit=crop" },
-                { n: "05", t: "One Last Look", d: "The final human-led taste engine sign-off. Technology directed by art.", img: "https://images.unsplash.com/photo-1492447166138-50c3889fccb1?q=80&w=2000&auto=format&fit=crop" }
-            ].map((door, index) => `
-            <div class="stack-card">
-                <div class="stack-card-inner rounded-[2rem] md:rounded-[4rem] p-8 md:p-16 flex flex-col md:flex-row items-center gap-10 interact-explore group">
-                    <div class="w-full md:w-1/2 flex flex-col justify-center relative z-10">
-                        <span class="text-[8rem] md:text-[12rem] font-black text-white/5 leading-none absolute -top-10 -left-10 pointer-events-none group-hover:text-[#FF5500]/10 transition-colors">${door.n}</span>
-                        <h4 class="text-4xl md:text-6xl font-black uppercase text-white mb-6 relative z-10">${door.t}</h4>
-                        <p class="text-xl md:text-2xl text-gray-400 font-light max-w-md relative z-10 font-sans tracking-wide">${door.d}</p>
-                    </div>
-                    <div class="w-full md:w-1/2 h-[40vh] md:h-[60vh] img-wrap rounded-2xl md:rounded-[3rem]">
-                        <img src="${door.img}" class="img-inner" alt="QA">
-                    </div>
-                </div>
-            </div>
-            `).join('')}
-
-        </div>
-    </section>
-
-    <!-- 4. HIGH-VELOCITY HORIZONTAL ECOSYSTEM -->
+    <!-- 4. HIGH-VELOCITY HORIZONTAL ECOSYSTEM (FULL BLEED IMAGES) -->
     <section id="h-scroll-section" class="bg-[#050505] relative z-40 overflow-hidden border-t border-white/10">
         
         <div class="absolute top-12 left-6 md:left-12 z-50 pointer-events-none mix-blend-difference">
-            <h2 class="text-[#FF5500] text-xs font-bold uppercase tracking-[0.5em] drop-shadow-md mb-2">Active Deployments</h2>
+            <h2 class="text-[#FF4400] text-xs font-sans font-bold uppercase tracking-[0.5em] drop-shadow-md mb-2">Active Deployments</h2>
             <h3 class="text-4xl md:text-6xl font-black uppercase text-white tracking-tighter drop-shadow-2xl">Client Ecosystem</h3>
         </div>
 
         <div class="h-scroll-container" id="h-scroll-track">
             
             <!-- Panel 1: Akij -->
-            <div class="h-panel p-6 md:p-16">
-                <div class="w-full h-full relative img-wrap rounded-[2rem] md:rounded-[4rem] interact-explore">
-                    <img src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?q=80&w=2070&auto=format&fit=crop" class="img-inner" alt="Akij">
+            <div class="h-panel p-4 md:p-12">
+                <div class="w-full h-full relative img-wrap rounded-2xl md:rounded-[3rem] interact-explore">
+                    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2000&auto=format&fit=crop" class="img-parallax" alt="Akij">
                     <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
                     <div class="absolute bottom-10 left-6 md:bottom-20 md:left-20 z-10 max-w-4xl">
-                        <span class="px-4 py-2 bg-[#FF5500] text-black text-[10px] font-black uppercase tracking-widest mb-6 inline-block">Consultancy Partner</span>
+                        <span class="px-4 py-2 bg-[#FF4400] text-black font-sans text-[10px] font-bold uppercase tracking-widest mb-6 inline-block">Consultancy Partner</span>
                         <h3 class="text-[clamp(4rem,9vw,10rem)] font-black uppercase text-white leading-[0.85] tracking-tighter mb-6">Akij <br/><span class="font-serif italic font-normal text-white/80">Dynamics</span></h3>
-                        <p class="text-xl md:text-3xl text-gray-200 font-light font-sans max-w-2xl leading-relaxed">Co-developing custom AI layers to manage deep data analysis and scale enterprise operations under strict human parameters.</p>
+                        <p class="text-xl md:text-2xl text-gray-200 font-light font-sans max-w-2xl leading-relaxed">Co-developing custom AI layers to manage deep data analysis and scale enterprise operations under strict human parameters.</p>
                     </div>
                 </div>
             </div>
 
             <!-- Panel 2: Lumiere -->
-            <div class="h-panel p-6 md:p-16">
-                <div class="w-full h-full relative img-wrap rounded-[2rem] md:rounded-[4rem] interact-explore">
-                    <img src="https://images.unsplash.com/photo-1601134994276-808605d8f344?q=80&w=1964&auto=format&fit=crop" class="img-inner" alt="Lumiere">
+            <div class="h-panel p-4 md:p-12">
+                <div class="w-full h-full relative img-wrap rounded-2xl md:rounded-[3rem] interact-explore">
+                    <img src="https://images.unsplash.com/photo-1601134994276-808605d8f344?q=80&w=1964&auto=format&fit=crop" class="img-parallax" alt="Lumiere">
                     <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
                     <div class="absolute bottom-10 left-6 md:bottom-20 md:left-20 z-10 max-w-4xl">
-                        <span class="px-4 py-2 border border-white text-white text-[10px] font-black uppercase tracking-widest mb-6 inline-block backdrop-blur-md bg-black/30">Computational Cinema</span>
+                        <span class="px-4 py-2 border border-white text-white font-sans text-[10px] font-bold uppercase tracking-widest mb-6 inline-block backdrop-blur-md bg-black/30">Computational Cinema</span>
                         <h3 class="text-[clamp(4rem,9vw,10rem)] font-black uppercase text-white leading-[0.85] tracking-tighter mb-6">Lumiere <br/><span class="font-serif italic font-normal text-white/80">Narratives</span></h3>
-                        <p class="text-xl md:text-3xl text-gray-200 font-light font-sans max-w-2xl leading-relaxed">Engineered an aesthetic, film-inspired AI pipeline for high fashion. Executing complex physics and bespoke mist transitions.</p>
+                        <p class="text-xl md:text-2xl text-gray-200 font-light font-sans max-w-2xl leading-relaxed">Engineered an aesthetic, film-inspired AI pipeline for high fashion. Executing complex physics and bespoke mist transitions.</p>
                     </div>
                 </div>
             </div>
 
-            <!-- Panel 3: Events & Brands (Split) -->
-            <div class="h-panel p-6 md:p-16 flex flex-col md:flex-row gap-6 md:gap-16">
-                <div class="w-full md:w-1/2 h-full relative img-wrap rounded-[2rem] md:rounded-[4rem] interact-explore">
-                    <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2070&auto=format&fit=crop" class="img-inner" alt="Events">
+            <!-- Panel 3: Events & Brands -->
+            <div class="h-panel p-4 md:p-12 flex flex-col md:flex-row gap-6 md:gap-12">
+                <div class="w-full md:w-1/2 h-full relative img-wrap rounded-2xl md:rounded-[3rem] interact-explore">
+                    <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2070&auto=format&fit=crop" class="img-parallax" alt="Events">
                     <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
                     <div class="absolute bottom-10 left-10 z-10">
-                        <span class="text-white text-[10px] font-black uppercase tracking-widest mb-4 block opacity-60">Logistics Array</span>
+                        <span class="text-white font-sans text-[10px] font-bold uppercase tracking-widest mb-4 block opacity-60">Logistics Array</span>
                         <h3 class="text-5xl md:text-7xl font-black uppercase text-white tracking-tighter mb-4 leading-none">Kaiqi & <br/>Changfu</h3>
                         <p class="text-lg text-gray-300 font-sans max-w-sm">Automated scheduling and logistical mapping for high-level summits.</p>
                     </div>
                 </div>
                 
-                <div class="w-full md:w-1/2 h-full relative img-wrap rounded-[2rem] md:rounded-[4rem] interact-explore">
-                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop" class="img-inner" alt="Brands">
+                <div class="w-full md:w-1/2 h-full relative img-wrap rounded-2xl md:rounded-[3rem] interact-explore">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop" class="img-parallax" alt="Brands">
                     <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
                     <div class="absolute bottom-10 left-10 z-10">
-                        <span class="text-[#FF5500] text-[10px] font-black uppercase tracking-widest mb-4 block">Brand Ecosystem</span>
+                        <span class="text-[#FF4400] font-sans text-[10px] font-bold uppercase tracking-widest mb-4 block">Brand Ecosystem</span>
                         <h3 class="text-5xl md:text-7xl font-black uppercase text-white tracking-tighter mb-4 leading-none">Growth <br/>Partners</h3>
                         <p class="text-lg text-gray-300 font-sans max-w-sm">Full-stack pipelines for Gunoboti, Grafiti, Nexus, and Terracotta.</p>
                     </div>
@@ -273,10 +324,10 @@
             </div>
 
             <!-- Panel 4: Enter Archives -->
-            <div class="h-panel bg-[#FF5500] text-black flex items-center justify-center p-6 md:p-16">
+            <div class="h-panel bg-[#FF4400] text-black flex items-center justify-center p-6 md:p-16">
                 <div class="text-center w-full max-w-5xl">
                     <h3 class="text-[clamp(5rem,12vw,15rem)] font-black uppercase tracking-tighter leading-[0.8] mb-12">Witness <br/><span class="font-serif italic font-bold">The Output.</span></h3>
-                    <a href="http://www.flowstateimpact.com/links" target="_blank" class="interact-btn inline-flex items-center gap-4 bg-black text-white px-12 py-6 text-sm font-black uppercase tracking-widest hover:bg-white hover:text-black transition-colors rounded-full">
+                    <a href="http://www.flowstateimpact.com/links" target="_blank" class="interact inline-flex items-center gap-4 bg-black text-white px-12 py-6 font-sans text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-colors rounded-full">
                         Enter Video & Photo Archives <i data-lucide="arrow-right" class="w-5 h-5"></i>
                     </a>
                 </div>
@@ -285,62 +336,112 @@
         </div>
     </section>
 
-    <!-- 5. THE HUMAN LAYER (BRUTALIST PORTRAITS) -->
-    <section class="py-32 md:py-48 px-6 md:px-12 bg-[#020202] relative z-40 border-t border-white/5">
+    <!-- 5. TIERS (CREATOR & ULTIMATE) -->
+    <section class="bg-[#030303] relative z-40 border-t border-white/10">
+        <div class="grid grid-cols-1 lg:grid-cols-2">
+            
+            <div class="p-12 md:p-24 lg:border-r border-white/10 flex flex-col justify-between min-h-[60vh] hover:bg-[#0a0a0a] transition-colors duration-500 gs-fade">
+                <div>
+                    <span class="text-[#FF4400] font-sans text-xs font-bold uppercase tracking-widest border border-[#FF4400] px-4 py-1 rounded-full mb-10 inline-block">Tier 01</span>
+                    <h4 class="text-6xl md:text-8xl font-black uppercase tracking-tighter text-white mb-6">Creator</h4>
+                    <p class="text-xl font-sans text-gray-400 font-light leading-relaxed max-w-md">Streamlined agentic pipelines optimized for rapid content generation, visual branding, and high-frequency design output.</p>
+                </div>
+                <div class="mt-12">
+                    <i data-lucide="zap" class="w-12 h-12 text-[#FF4400]"></i>
+                </div>
+            </div>
+
+            <div class="p-12 md:p-24 flex flex-col justify-between min-h-[60vh] bg-white/5 hover:bg-white transition-colors duration-500 group gs-fade">
+                <div>
+                    <span class="text-white group-hover:text-black group-hover:border-black font-sans text-xs font-bold uppercase tracking-widest border border-white/30 px-4 py-1 rounded-full mb-10 inline-block transition-colors">Tier 02</span>
+                    <h4 class="text-6xl md:text-8xl font-black uppercase tracking-tighter text-white group-hover:text-black mb-6 transition-colors">Ultimate</h4>
+                    <p class="text-xl font-sans text-gray-400 group-hover:text-black/80 font-light leading-relaxed max-w-md transition-colors">Full-scale enterprise department automation. Deep data analysis, workflow integration, and bespoke operational swarms.</p>
+                </div>
+                <div class="mt-12 flex justify-between items-end">
+                    <i data-lucide="globe-2" class="w-12 h-12 text-white group-hover:text-black transition-colors"></i>
+                    <span class="text-6xl md:text-8xl font-black text-white/10 group-hover:text-black/20 tracking-tighter transition-colors">10x</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 6. THE HUMAN LAYER (HARDCODED HTML IMAGES) -->
+    <section class="py-32 md:py-48 px-6 md:px-12 bg-black relative z-40 border-t border-white/5">
         <div class="max-w-[95vw] mx-auto mb-20 flex justify-between items-end">
             <h2 class="text-5xl md:text-8xl font-black uppercase tracking-tighter text-white leading-[0.85] gs-fade">
-                The <br/><span class="font-serif italic font-normal text-[#FF5500]">Human Layer.</span>
+                The <br/><span class="font-serif italic font-normal text-[#FF4400]">Human Layer.</span>
             </h2>
             <p class="hidden md:block text-xl text-gray-400 font-sans max-w-sm font-light gs-fade">Intelligence scaled by machines. Directed by absolute human taste.</p>
         </div>
         
         <div class="max-w-[95vw] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            {[
-                { name: 'Asif Farid', role: 'MD & CTO', img: 'https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=1000&auto=format&fit=crop' },
-                { name: 'Nafia Islam Faria', role: 'CEO', img: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1000&auto=format&fit=crop' },
-                { name: 'Sarwar Jahan', role: 'CMO', img: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=1000&auto=format&fit=crop' },
-                { name: 'Muaz Rakin', role: 'CSO & CFO', img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000&auto=format&fit=crop' }
-            ].map((p) => `
-            <div class="img-wrap aspect-[3/4] rounded-2xl group interact-explore gs-fade">
-                <img src="${p.img}" class="img-inner" alt="${p.name}">
+            
+            <!-- ASIF -->
+            <div class="team-card rounded-2xl group interact gs-fade">
+                <img src="https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=1000&auto=format&fit=crop" alt="Asif Farid">
                 <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity"></div>
                 <div class="absolute bottom-8 left-8 right-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
-                    <h4 class="text-3xl font-black uppercase text-white mb-2 leading-none group-hover:text-[#FF5500] transition-colors">${p.name}</h4>
-                    <p class="text-[10px] font-sans font-bold tracking-widest uppercase text-gray-400 group-hover:text-white transition-colors">${p.role}</p>
+                    <h4 class="text-3xl md:text-4xl font-black uppercase text-white mb-2 leading-none group-hover:text-[#FF4400] transition-colors">Asif Farid</h4>
+                    <p class="text-[10px] font-sans font-bold tracking-widest uppercase text-gray-400 group-hover:text-white transition-colors">MD & CTO</p>
                 </div>
             </div>
-            `).join('')}
+
+            <!-- NAFIA -->
+            <div class="team-card rounded-2xl group interact gs-fade">
+                <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1000&auto=format&fit=crop" alt="Nafia Islam Faria">
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity"></div>
+                <div class="absolute bottom-8 left-8 right-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                    <h4 class="text-3xl md:text-4xl font-black uppercase text-white mb-2 leading-none group-hover:text-[#FF4400] transition-colors">Nafia Islam Faria</h4>
+                    <p class="text-[10px] font-sans font-bold tracking-widest uppercase text-gray-400 group-hover:text-white transition-colors">CEO</p>
+                </div>
+            </div>
+
+            <!-- SARWAR -->
+            <div class="team-card rounded-2xl group interact gs-fade">
+                <img src="https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=1000&auto=format&fit=crop" alt="Sarwar Jahan">
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity"></div>
+                <div class="absolute bottom-8 left-8 right-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                    <h4 class="text-3xl md:text-4xl font-black uppercase text-white mb-2 leading-none group-hover:text-[#FF4400] transition-colors">Sarwar Jahan</h4>
+                    <p class="text-[10px] font-sans font-bold tracking-widest uppercase text-gray-400 group-hover:text-white transition-colors">CMO</p>
+                </div>
+            </div>
+
+            <!-- MUAZ -->
+            <div class="team-card rounded-2xl group interact gs-fade">
+                <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000&auto=format&fit=crop" alt="Muaz Rakin">
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity"></div>
+                <div class="absolute bottom-8 left-8 right-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                    <h4 class="text-3xl md:text-4xl font-black uppercase text-white mb-2 leading-none group-hover:text-[#FF4400] transition-colors">Muaz Rakin</h4>
+                    <p class="text-[10px] font-sans font-bold tracking-widest uppercase text-gray-400 group-hover:text-white transition-colors">CSO & CFO</p>
+                </div>
+            </div>
+
         </div>
     </section>
 
-    <!-- 6. COMMAND TERMINAL -->
-    <section id="command" class="py-32 md:py-48 px-6 md:px-12 bg-black relative z-40 border-t border-[#FF5500]/30 overflow-hidden">
-        
-        <!-- Giant Background Text -->
-        <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[25vw] font-black uppercase tracking-tighter text-white/[0.02] whitespace-nowrap pointer-events-none select-none z-0">
-            DEPLOY
-        </div>
-
+    <!-- 7. COMMAND TERMINAL -->
+    <section id="command" class="py-32 md:py-48 px-6 md:px-12 bg-[#050505] relative z-40 border-t border-white/10 overflow-hidden">
         <div class="max-w-[95vw] mx-auto flex flex-col lg:flex-row justify-between gap-20 relative z-10">
             
             <div class="w-full lg:w-1/2">
                 <h2 class="text-[clamp(4rem,9vw,11rem)] font-black uppercase tracking-tighter text-white mb-8 leading-[0.8] gs-fade">
                     Command<br/><span class="text-outline">The Swarm.</span>
                 </h2>
-                <p class="text-xl md:text-3xl text-gray-400 font-light font-sans max-w-xl leading-relaxed gs-fade">Stop hiring isolated roles. Plug an entire autonomous department directly into your business infrastructure today.</p>
+                <p class="text-xl md:text-2xl text-gray-400 font-light font-sans max-w-xl leading-relaxed gs-fade">Stop hiring isolated roles. Plug an entire autonomous department directly into your business infrastructure today.</p>
             </div>
             
             <div class="w-full lg:w-1/2 flex flex-col justify-end gap-6 gs-fade">
-                <a href="mailto:asif@flowstateimpact.com" class="interact-btn bg-[#0a0a0a] p-10 md:p-14 rounded-[2rem] border border-white/10 hover:border-[#FF5500] hover:bg-white hover:text-black transition-colors duration-500 group flex flex-col md:flex-row justify-between md:items-center">
-                    <span class="text-[#FF5500] group-hover:text-black text-xs font-bold uppercase tracking-widest mb-6 md:mb-0 transition-colors font-sans">Email Protocol</span>
+                <a href="mailto:asif@flowstateimpact.com" class="interact bg-[#0a0a0a] p-10 md:p-14 rounded-3xl border border-white/10 hover:border-[#FF4400] hover:bg-white hover:text-black transition-colors duration-500 group flex flex-col md:flex-row justify-between md:items-center">
+                    <span class="text-[#FF4400] group-hover:text-black text-xs font-sans font-bold uppercase tracking-widest mb-6 md:mb-0 transition-colors">Email Protocol</span>
                     <span class="text-2xl md:text-4xl font-black tracking-tighter">asif@flowstateimpact.com</span>
                 </a>
                 
-                <div class="bg-[#0a0a0a] p-10 md:p-14 rounded-[2rem] border border-white/10 flex flex-col justify-between">
-                    <span class="text-gray-500 text-xs font-bold uppercase tracking-widest mb-8 font-sans">Direct Telecom Hub</span>
+                <div class="bg-[#0a0a0a] p-10 md:p-14 rounded-3xl border border-white/10 flex flex-col justify-between">
+                    <span class="text-gray-500 font-sans text-xs font-bold uppercase tracking-widest mb-8">Direct Telecom Hub</span>
                     <div class="flex flex-col gap-2">
-                        <span class="text-4xl md:text-6xl font-black tracking-tighter text-white hover:text-[#FF5500] transition-colors w-fit interact-btn">01616 119242</span>
-                        <span class="text-4xl md:text-6xl font-black tracking-tighter text-gray-600 hover:text-white transition-colors w-fit interact-btn">01627 935350</span>
+                        <span class="text-4xl md:text-6xl font-black tracking-tighter text-white hover:text-[#FF4400] transition-colors w-fit interact">01616 119242</span>
+                        <span class="text-4xl md:text-6xl font-black tracking-tighter text-gray-600 hover:text-white transition-colors w-fit interact">01627 935350</span>
                     </div>
                 </div>
             </div>
@@ -349,33 +450,33 @@
     </section>
 
     <!-- FOOTER -->
-    <footer class="py-10 px-6 md:px-12 bg-[#050505] flex flex-col md:flex-row justify-between items-center text-[10px] tracking-widest text-gray-500 uppercase font-sans border-t border-white/5 relative z-40">
+    <footer class="py-10 px-6 md:px-12 bg-black flex flex-col md:flex-row justify-between items-center text-[10px] tracking-widest text-gray-500 uppercase font-sans border-t border-white/10 relative z-40">
         <span class="mb-4 md:mb-0">FlowStãte Impact © 2026</span>
         <span>Dhaka Hub • London Hub</span>
     </footer>
 
-    <!-- MASTER ENGINE SCRIPTS -->
+    <!-- GSAP PHYSICS ENGINE -->
     <script>
         lucide.createIcons();
 
-        // 1. DYNAMIC CURSOR
+        // 1. MAGNETIC CURSOR
         const cursorDot = document.getElementById('cursor-dot');
-        const cursorGlass = document.getElementById('cursor-glass');
+        const cursorRing = document.getElementById('cursor-ring');
         
         const xSetDot = gsap.quickTo(cursorDot, "x", {duration: 0.1, ease: "power3.out"});
         const ySetDot = gsap.quickTo(cursorDot, "y", {duration: 0.1, ease: "power3.out"});
-        const xSetGlass = gsap.quickTo(cursorGlass, "x", {duration: 0.3, ease: "power3.out"});
-        const ySetGlass = gsap.quickTo(cursorGlass, "y", {duration: 0.3, ease: "power3.out"});
+        const xSetRing = gsap.quickTo(cursorRing, "x", {duration: 0.3, ease: "power3.out"});
+        const ySetRing = gsap.quickTo(cursorRing, "y", {duration: 0.3, ease: "power3.out"});
 
         window.addEventListener("mousemove", e => {
             xSetDot(e.clientX); ySetDot(e.clientY);
-            xSetGlass(e.clientX); ySetGlass(e.clientY);
+            xSetRing(e.clientX); ySetRing(e.clientY);
         });
 
         // Hover States
-        document.querySelectorAll('.interact-btn').forEach(el => {
-            el.addEventListener('mouseenter', () => document.body.classList.add('hover-btn'));
-            el.addEventListener('mouseleave', () => document.body.classList.remove('hover-btn'));
+        document.querySelectorAll('.interact').forEach(el => {
+            el.addEventListener('mouseenter', () => document.body.classList.add('hover-interact'));
+            el.addEventListener('mouseleave', () => document.body.classList.remove('hover-interact'));
         });
         document.querySelectorAll('.interact-explore').forEach(el => {
             el.addEventListener('mouseenter', () => document.body.classList.add('hover-explore'));
@@ -396,9 +497,9 @@
         gsap.ticker.add((time) => { lenis.raf(time * 1000) });
         gsap.ticker.lagSmoothing(0);
 
-        // 3. HERO SPLIT REVEAL
+        // 3. HERO REVEAL
         const heroTl = gsap.timeline();
-        heroTl.fromTo(".reveal-up", 
+        heroTl.fromTo(".gs-up", 
             { y: "115%" }, 
             { y: "0%", duration: 1.5, stagger: 0.15, ease: "power4.out", delay: 0.3 }
         );
@@ -406,35 +507,17 @@
         // 4. IMAGE PARALLAX ENGINE
         gsap.utils.toArray('.gs-parallax').forEach(el => {
             const speed = el.getAttribute('data-speed') || 1;
-            const img = el.querySelector('.img-inner');
+            const img = el.querySelector('.img-parallax');
             if(img) {
                 gsap.to(img, {
                     yPercent: 20 * speed,
                     ease: "none",
                     scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: true }
                 });
-            } else {
-                gsap.to(el, {
-                    yPercent: 30 * speed,
-                    ease: "none",
-                    scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: true }
-                });
             }
         });
 
-        // 5. STICKY STACKING CARDS (The 5 Doors)
-        const cards = gsap.utils.toArray('.stack-card');
-        cards.forEach((card, i) => {
-            ScrollTrigger.create({
-                trigger: card,
-                start: "top top",
-                pin: true,
-                pinSpacing: false, // Makes them stack over each other
-                invalidateOnRefresh: true
-            });
-        });
-
-        // 6. HIGH-VELOCITY HORIZONTAL SCROLL
+        // 5. HIGH-VELOCITY HORIZONTAL SCROLL
         const hTrack = document.getElementById("h-scroll-track");
         let panels = gsap.utils.toArray(".h-panel");
         gsap.to(panels, {
@@ -444,12 +527,11 @@
                 trigger: "#h-scroll-section",
                 pin: true,
                 scrub: 1,
-                // snap: 1 / (panels.length - 1), // Optional: Add this if you want it to snap to each project
                 end: () => "+=" + hTrack.offsetWidth
             }
         });
 
-        // 7. STANDARD SCROLL FADES
+        // 6. STANDARD SCROLL FADES
         gsap.utils.toArray('.gs-fade').forEach(el => {
             gsap.fromTo(el, 
                 { y: 60, opacity: 0 }, 
