@@ -3,375 +3,426 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FlowStãte Impact | The Art of Intelligence</title>
+    <title>FLOWSTÃTE IMPACT | SPECIALIZED INTELLIGENCE</title>
     
-    <!-- Haute Couture & High-Tech Typography -->
+    <!-- Ultra-Premium Typography: Uncompromising Brutalism + Editorial Serif -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Space+Grotesk:wght@300;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Manrope:wght@200;400;600;800&family=Playfair+Display:ital,wght@0,400;1,400&display=swap" rel="stylesheet">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <style>
-        :root { --amber: #E55D00; --bg: #030303; }
+        :root { --amber: #FF4A00; --bg: #030303; }
         
         body, html { 
-            margin: 0; padding: 0; width: 100%; height: 100%;
             background-color: var(--bg); color: #fff; 
-            font-family: 'Space Grotesk', sans-serif;
-            overflow: hidden; /* Hide default scrollbar for full immersion */
+            font-family: 'Manrope', sans-serif;
+            overflow-x: hidden; margin: 0; padding: 0;
             -webkit-font-smoothing: antialiased;
+            cursor: none;
         }
 
-        /* High-Fashion Display Font */
-        .font-editorial { font-family: 'Cinzel', serif; }
+        /* Fluid Scrolling Engine */
+        html.lenis { height: auto; }
+        .lenis.lenis-smooth { scroll-behavior: auto; }
+        .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+        .lenis.lenis-stopped { overflow: hidden; }
 
-        /* 
-         * NATIVE VERTICAL SNAP SCROLLING 
-         * 100% Hardware Accelerated. Zero mobile bugs. Flawless physics.
-         */
-        #snap-engine {
-            width: 100vw; height: 100vh;
-            overflow-y: scroll; overflow-x: hidden;
-            scroll-snap-type: y mandatory;
-            scroll-behavior: smooth;
-            -ms-overflow-style: none; scrollbar-width: none;
-        }
-        #snap-engine::-webkit-scrollbar { display: none; }
-
-        .snap-panel {
-            scroll-snap-align: start; scroll-snap-stop: always;
-            width: 100vw; height: 100vh;
-            position: relative; overflow: hidden;
-            display: flex; align-items: center; justify-content: center;
-        }
-
-        /* 
-         * SOPHISTICATED TEXTURES
-         */
-        /* High-End Analog Grain */
-        .analog-grain {
-            position: fixed; inset: 0; z-index: 9999; pointer-events: none; opacity: 0.04; mix-blend-mode: screen;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-        }
-
-        /* Deep Ambient Meshes */
-        .ambient-mesh {
-            position: absolute; inset: 0; z-index: 0; pointer-events: none;
-            background: radial-gradient(circle at 50% 50%, rgba(229,93,0,0.08), transparent 70%);
-        }
-
-        /* 
-         * CUSTOM MAGNETIC CURSOR (Desktop Only)
-         */
-        @media (hover: hover) and (pointer: fine) {
-            body { cursor: none; }
-            #cursor-dot { position: fixed; width: 6px; height: 6px; background: var(--amber); border-radius: 50%; pointer-events: none; z-index: 100000; transform: translate(-50%, -50%); transition: opacity 0.3s; }
-            #cursor-ring { position: fixed; width: 40px; height: 40px; border: 1px solid rgba(229,93,0,0.5); border-radius: 50%; pointer-events: none; z-index: 99999; transform: translate(-50%, -50%); display: flex; align-items: center; justify-content: center; transition: width 0.4s cubic-bezier(0.76, 0, 0.24, 1), height 0.4s cubic-bezier(0.76, 0, 0.24, 1), background 0.4s, border-color 0.4s; backdrop-filter: invert(1) grayscale(1); }
-            body.hover-target #cursor-ring { width: 90px; height: 90px; background: rgba(229,93,0,0.1); border-color: transparent; backdrop-filter: blur(2px); }
-        }
-        @media (hover: none) { #cursor-dot, #cursor-ring { display: none; } }
-
-        /* 
-         * 3D ABSTRACT ILLUSTRATION STYLES 
-         */
-        .art-layer { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; z-index: 0; filter: grayscale(40%) contrast(1.1); transform: scale(1.05); transition: transform 2s cubic-bezier(0.19, 1, 0.22, 1), filter 2s; }
-        .snap-panel:hover .art-layer { transform: scale(1); filter: grayscale(0%) contrast(1.2); }
-        .vignette { position: absolute; inset: 0; z-index: 1; background: radial-gradient(circle at center, transparent 20%, #020202 100%), linear-gradient(to top, #020202 0%, transparent 40%); }
-
-        /* TYPOGRAPHY UTILS */
-        .text-monumental { font-size: clamp(3.5rem, 9vw, 10rem); line-height: 0.9; }
-        .text-h2 { font-size: clamp(3rem, 7vw, 7rem); line-height: 0.9; }
-        .text-outline { color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.4); }
-
-        /* GSAP REVEAL MASKS */
-        .clip-mask { overflow: hidden; display: block; }
-        .clip-text { display: block; transform: translateY(115%); }
-        .fade-el { opacity: 0; transform: translateY(30px); }
-
-        /* GLASSMORPHISM */
-        .glass-panel { background: rgba(5,5,5,0.4); backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px); border: 1px solid rgba(255,255,255,0.08); }
+        /* Typography */
+        .font-display { font-family: 'Anton', sans-serif; text-transform: uppercase; letter-spacing: 0.02em; }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .text-hero { font-size: clamp(5rem, 16vw, 20rem); line-height: 0.8; }
+        .text-h2 { font-size: clamp(4rem, 10vw, 12rem); line-height: 0.85; }
         
-        /* HOVER EFFECTS */
-        .magnetic-btn { position: relative; overflow: hidden; }
-        .magnetic-btn::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 0%; background: var(--amber); z-index: -1; transition: height 0.4s cubic-bezier(0.85, 0, 0.15, 1); }
-        .magnetic-btn:hover::after { height: 100%; }
-        .magnetic-btn:hover { color: #000; border-color: var(--amber); }
+        /* High-End Custom Cursor */
+        #cursor-dot { position: fixed; width: 6px; height: 6px; background: var(--amber); border-radius: 50%; pointer-events: none; z-index: 100000; transform: translate(-50%, -50%); transition: opacity 0.2s; }
+        #cursor-ring { position: fixed; width: 40px; height: 40px; border: 1px solid rgba(255,255,255,0.4); border-radius: 50%; pointer-events: none; z-index: 99999; transform: translate(-50%, -50%); display: flex; align-items: center; justify-content: center; transition: width 0.4s cubic-bezier(0.76, 0, 0.24, 1), height 0.4s cubic-bezier(0.76, 0, 0.24, 1), background 0.4s, border-color 0.4s; mix-blend-mode: difference; }
+        #cursor-text { opacity: 0; font-family: 'Anton', sans-serif; font-size: 12px; color: #000; transition: opacity 0.3s; letter-spacing: 1px; text-transform: uppercase; }
+        
+        body.hover-btn #cursor-ring { width: 90px; height: 90px; background: #fff; border-color: transparent; }
+        body.hover-btn #cursor-text { opacity: 1; }
+        body.hover-btn #cursor-dot { opacity: 0; }
 
+        /* Loader */
+        #loader { position: fixed; inset: 0; background: #000; z-index: 999999; display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .loader-bar-wrap { width: 300px; height: 2px; background: rgba(255,255,255,0.1); margin-top: 20px; overflow: hidden; }
+        #loader-bar { width: 0%; height: 100%; background: var(--amber); }
+
+        /* Canvas Organism Background */
+        #webgl-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none; opacity: 0.6; mix-blend-mode: screen; }
+
+        /* GSAP Reveal Masks */
+        .mask-wrap { overflow: hidden; display: block; }
+        .mask-up { display: block; transform: translateY(115%); }
+
+        /* Parallax Image Wrappers */
+        .img-wrap { overflow: hidden; position: relative; background: #111; }
+        .img-parallax { width: 100%; height: 130%; object-fit: cover; position: absolute; top: -15%; left: 0; filter: grayscale(100%) contrast(1.1); transition: filter 0.8s ease, transform 0.8s ease; will-change: transform; }
+        .interact:hover .img-parallax { filter: grayscale(0%) contrast(1.1); transform: scale(1.05); }
+
+        /* HORIZONTAL SCROLL ENGINE */
+        .horizontal-section { height: 100vh; width: 400vw; display: flex; flex-wrap: nowrap; will-change: transform; }
+        .horizontal-panel { width: 100vw; height: 100vh; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+
+        /* CURSOR IMAGE TRACKER FOR DOORS */
+        .cursor-img-tracker { position: fixed; top: 0; left: 0; width: 400px; height: 500px; pointer-events: none; z-index: 40; opacity: 0; transform: scale(0.8); border-radius: 10px; overflow: hidden; will-change: transform, opacity; box-shadow: 0 40px 80px rgba(0,0,0,0.9); }
+        .cursor-img-tracker img { width: 100%; height: 100%; object-fit: cover; }
+        .door-row { border-bottom: 1px solid rgba(255,255,255,0.1); transition: padding 0.4s ease, border-color 0.4s; }
+        .door-row:hover { padding-left: 2rem; border-bottom-color: var(--amber); }
+
+        /* TEAM PORTRAITS */
+        .team-portrait { position: relative; aspect-ratio: 3/4; overflow: hidden; border-radius: 8px; }
+        .team-portrait img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(100%); transition: transform 1s cubic-bezier(0.19, 1, 0.22, 1), filter 1s; }
+        .team-portrait:hover img { transform: scale(1.08); filter: grayscale(0%); }
+
+        /* Magnetic Buttons */
+        .magnetic-btn { display: inline-block; position: relative; }
+        .magnetic-inner { display: inline-flex; pointer-events: none; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
     </style>
 </head>
 <body>
 
-    <!-- TACTILE TEXTURES -->
-    <div class="analog-grain"></div>
+    <!-- 0. THE LOADER -->
+    <div id="loader">
+        <h1 class="text-6xl font-display text-white tracking-tighter" id="loader-num">00</h1>
+        <div class="loader-bar-wrap"><div id="loader-bar"></div></div>
+    </div>
 
-    <!-- CURSORS -->
+    <!-- 1. CUSTOM CURSOR -->
     <div id="cursor-dot"></div>
-    <div id="cursor-ring"></div>
+    <div id="cursor-ring"><span id="cursor-text">VIEW</span></div>
 
-    <!-- NAVIGATION (Fixed over scroll container) -->
-    <nav class="fixed top-0 w-full p-6 md:p-10 flex justify-between items-center z-50 mix-blend-difference pointer-events-none">
-        <div class="pointer-events-auto interact">
-            <h1 class="text-3xl md:text-4xl font-editorial font-bold text-white leading-none tracking-tight">FlowStãte</h1>
-            <span class="text-[0.6rem] font-bold tracking-[0.5em] text-[#E55D00] uppercase block mt-1">Impact</span>
+    <!-- 2. CURSOR IMAGE REVEAL (For the 5 Doors) -->
+    <div class="cursor-img-tracker" id="door-img-tracker">
+        <img src="" id="door-img" alt="Context Image">
+    </div>
+
+    <!-- 3. GLOBAL NAVIGATION -->
+    <nav class="fixed top-0 w-full p-6 md:p-12 flex justify-between items-center z-50 mix-blend-difference pointer-events-none opacity-0" id="nav">
+        <div class="pointer-events-auto interact cursor-none">
+            <h1 class="text-3xl md:text-5xl font-display text-white leading-none">FlowStãte</h1>
+            <span class="text-[0.65rem] font-bold tracking-[0.5em] text-[#FF4A00] uppercase block mt-1">Impact</span>
         </div>
         <div class="pointer-events-auto flex items-center gap-8">
-            <a href="http://www.flowstateimpact.com/links" target="_blank" class="hidden md:flex items-center gap-2 text-xs font-bold uppercase tracking-widest text-white hover:text-[#E55D00] transition-colors interact">
-                <i data-lucide="aperture" class="w-4 h-4"></i> Archives
+            <a href="http://www.flowstateimpact.com/links" target="_blank" class="hidden md:block text-xs font-bold uppercase tracking-widest text-white hover:text-[#FF4A00] transition-colors interact cursor-none">
+                Visual Archives
             </a>
-            <a href="#command" class="interact bg-white text-black px-8 py-4 text-[10px] md:text-xs font-bold uppercase tracking-widest hover:bg-[#E55D00] hover:text-white transition-all duration-300 rounded-full flex items-center gap-2">
-                Deploy Swarm <div class="w-1.5 h-1.5 bg-black rounded-full animate-pulse"></div>
+            <a href="#command" class="magnetic-btn interact bg-white text-black px-8 py-4 text-xs font-black uppercase tracking-widest hover:bg-[#FF4A00] hover:text-white transition-all duration-500 rounded-full flex items-center gap-2 cursor-none" data-strength="40">
+                <div class="absolute -inset-4 z-10"></div>
+                <div class="magnetic-inner flex items-center gap-2">Deploy Swarm <div class="w-1.5 h-1.5 bg-black rounded-full animate-pulse"></div></div>
             </a>
         </div>
     </nav>
 
-    <!-- NATIVE SNAP ENGINE -->
-    <div id="snap-engine">
+    <!-- 4. HERO SECTION (Canvas Physics + Brutalist Typography) -->
+    <section class="relative min-h-[110vh] w-full flex flex-col justify-center overflow-hidden pt-20 bg-black">
+        <!-- Interactive WebGL Particle Organism -->
+        <canvas id="webgl-canvas"></canvas>
 
-        <!-- 1. HERO (CLEAN VIDEO, NO BUGS) -->
-        <section class="snap-panel bg-black" id="hero">
-            <video autoplay muted loop playsinline class="art-layer opacity-60">
-                <source src="FSI-FILM-FINAL.mp4" type="video/mp4" />
-            </video>
-            <div class="vignette"></div>
-
-            <div class="relative z-20 w-full max-w-[95vw] px-4 md:px-12 flex flex-col justify-end h-full pb-24 pointer-events-none">
-                <div class="clip-mask mb-6">
-                    <span class="clip-text inline-block text-[#E55D00] text-[10px] md:text-xs font-bold uppercase tracking-[0.3em] bg-black/40 backdrop-blur-md px-4 py-2 border border-[#E55D00]/30 pointer-events-auto interact">
-                        Specialized Intelligence
-                    </span>
-                </div>
-                
-                <h1 class="text-monumental font-editorial font-black uppercase text-white mb-6 pointer-events-auto">
-                    <span class="clip-mask"><span class="clip-text">INTELLIGENCE</span></span>
-                    <span class="clip-mask"><span class="clip-text font-sans font-light text-outline tracking-tight normal-case italic">is an</span></span>
-                    <span class="clip-mask"><span class="clip-text text-[#E55D00]">ARCHITECTURE.</span></span>
-                </h1>
-                
-                <div class="flex flex-col md:flex-row justify-between md:items-end gap-10 mt-6 pointer-events-auto">
-                    <div class="max-w-2xl fade-el">
-                        <p class="text-lg md:text-2xl font-light text-gray-300 leading-relaxed">
-                            Strategy, brand, design, and cinema. Orchestrated by <strong class="text-white">83 specialized synthetic agents.</strong> Directed by absolute human taste.
-                        </p>
-                    </div>
-                </div>
+        <div class="relative z-10 w-full max-w-[95vw] mx-auto px-4 md:px-12 pointer-events-none mix-blend-difference">
+            <div class="mask-wrap mb-8">
+                <span class="mask-up inline-block border border-[#FF4A00]/50 text-[#FF4A00] bg-black/50 backdrop-blur-md px-6 py-2 text-xs font-bold uppercase tracking-[0.4em]">
+                    Specialized Intelligence
+                </span>
             </div>
             
-            <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 z-20 fade-el opacity-50">
-                <span class="text-[10px] uppercase tracking-widest font-bold">Scroll</span>
-                <div class="w-px h-12 bg-gradient-to-b from-white to-transparent"></div>
+            <h1 class="text-hero font-display text-white m-0 p-0 flex flex-col">
+                <span class="mask-wrap"><span class="mask-up block">WE DON'T</span></span>
+                <span class="mask-wrap -mt-[3vw]"><span class="mask-up block font-serif italic text-white/80 normal-case tracking-normal">scale work.</span></span>
+                <span class="mask-wrap -mt-[3vw]"><span class="mask-up block text-[#FF4A00]">WE SCALE MINDS.</span></span>
+            </h1>
+            
+            <div class="flex flex-col md:flex-row justify-between md:items-end gap-10 mt-12 pointer-events-auto">
+                <div class="mask-wrap max-w-3xl">
+                    <p class="mask-up text-xl md:text-3xl font-light text-gray-300 leading-snug">
+                        Strategy, brand, design, and cinema. Orchestrated by <strong class="text-white font-bold">83 synthetic agents.</strong> Directed by elite human taste.
+                    </p>
+                </div>
             </div>
-        </section>
+        </div>
+        
+        <!-- Scroll Cue -->
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-4 z-20 opacity-0" id="scroll-cue">
+            <span class="text-[10px] font-bold uppercase tracking-widest text-white/50">Initialize</span>
+            <div class="w-px h-16 bg-gradient-to-b from-white to-transparent"></div>
+        </div>
+    </section>
 
-        <!-- 2. THE 83 AGENTS (3D ABSTRACT ILLUSTRATION) -->
-        <section class="snap-panel bg-[#020202]">
-            <!-- Surreal Abstract 3D Render -->
-            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2000&auto=format&fit=crop" class="art-layer opacity-40" alt="Abstract Data">
-            <div class="vignette"></div>
-
-            <div class="relative z-20 w-full max-w-[95vw] px-4 md:px-12 grid grid-cols-1 lg:grid-cols-12 gap-16 items-center">
-                <div class="lg:col-span-7">
-                    <h2 class="text-h2 font-editorial font-black uppercase text-white leading-[0.9] mb-8">
-                        <span class="clip-mask"><span class="clip-text">THE 83-NODE</span></span>
-                        <span class="clip-mask"><span class="clip-text text-outline">CONSCIOUSNESS.</span></span>
+    <!-- 5. THE MANIFESTO (Overlapping Parallax) -->
+    <section class="py-32 md:py-48 px-4 md:px-12 bg-[#050505] relative z-20 border-t border-white/10">
+        <div class="max-w-[95vw] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24">
+            
+            <!-- Left: Typography -->
+            <div class="lg:col-span-5 relative">
+                <div class="lg:sticky lg:top-40">
+                    <h2 class="text-h2 font-display text-white mb-8 leading-[0.85] gs-fade">
+                        83 AGENTS.<br/>
+                        <span class="font-serif italic font-normal text-gray-500 normal-case tracking-normal">One Vision.</span>
                     </h2>
-                    <p class="text-xl md:text-3xl font-light text-gray-300 max-w-2xl leading-relaxed mb-12 fade-el">
-                        They are not mere algorithms. They are <strong class="text-white">56 bespoke creative generators</strong> and <strong class="text-white">27 analytical processors</strong> mapped entirely to your brand's DNA.
+                    <p class="text-xl md:text-2xl font-light max-w-xl leading-relaxed mb-12 text-gray-300 gs-fade">
+                        A sentient creative ecosystem. <strong class="text-white">56 bespoke generators. 27 analytical processors.</strong> They possess temperaments, memory, and taste. They debate. They adapt.
                     </p>
                     
-                    <div class="grid grid-cols-2 gap-8 border-t border-white/10 pt-10 fade-el">
+                    <div class="grid grid-cols-2 gap-8 border-t border-white/10 pt-10 gs-fade">
                         <div>
-                            <span class="text-5xl md:text-7xl font-editorial font-black text-[#E55D00] block mb-2">0</span>
-                            <span class="text-[10px] font-bold uppercase tracking-widest text-gray-400 block">Generic Output</span>
+                            <span class="text-6xl md:text-8xl text-[#FF4A00] font-display block leading-none">0</span>
+                            <span class="text-xs font-bold uppercase tracking-widest text-gray-500 block mt-4">Generic Output</span>
                         </div>
                         <div>
-                            <span class="text-5xl md:text-7xl font-editorial font-black text-white block mb-2">&infin;</span>
-                            <span class="text-[10px] font-bold uppercase tracking-widest text-gray-400 block">Iterative Velocity</span>
+                            <span class="text-6xl md:text-8xl text-white font-display block leading-none">&infin;</span>
+                            <span class="text-xs font-bold uppercase tracking-widest text-gray-500 block mt-4">Iterative Velocity</span>
                         </div>
                     </div>
                 </div>
-
-                <div class="lg:col-span-5 flex justify-center fade-el">
-                    <div class="glass-panel p-10 md:p-14 rounded-[2rem] max-w-md w-full interact">
-                        <i data-lucide="cpu" class="w-10 h-10 text-[#E55D00] mb-8"></i>
-                        <h3 class="text-3xl font-editorial font-black text-white uppercase mb-4">Autonomy</h3>
-                        <p class="text-gray-400 font-light leading-relaxed">Every correction fed into the swarm permanently alters its neural pathway. They debate, they adapt, they learn your aesthetics flawlessly.</p>
-                    </div>
-                </div>
             </div>
-        </section>
 
-        <!-- 3. THE 5 DOORS (MONUMENTAL GRID) -->
-        <section class="snap-panel bg-[#050505]">
-            <div class="ambient-mesh"></div>
-            
-            <div class="relative z-20 w-full h-full flex flex-col justify-center px-4 md:px-12 max-w-7xl mx-auto">
-                <div class="mb-16 fade-el">
-                    <h2 class="text-[10px] font-bold text-[#E55D00] tracking-[0.5em] uppercase mb-4">Quality Assurance Matrix</h2>
-                    <h3 class="text-h2 font-editorial font-black uppercase text-white tracking-tighter">THE 5 FIREWALLS</h3>
+            <!-- Right: Parallax Editorials -->
+            <div class="lg:col-span-7 flex flex-col gap-20 md:gap-40 mt-20 lg:mt-0">
+                <div class="img-wrap aspect-[4/5] rounded-2xl gs-parallax interact" data-speed="1.1">
+                    <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1500&auto=format&fit=crop" class="img-parallax" alt="Data Core">
+                    <div class="absolute bottom-8 left-8 text-white text-[10px] font-bold uppercase tracking-widest bg-black/60 px-4 py-2 backdrop-blur-md rounded-full">System Architecture</div>
                 </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {[
-                        { n: "01", t: "STRANGERS READ IT", d: "Clarity check outside the echo chamber." },
-                        { n: "02", t: "IT GETS A MARK", d: "Algorithmic scoring against strict aesthetics." },
-                        { n: "03", t: "THREE CAN SAY NO", d: "Autonomous rejection of derivative concepts." },
-                        { n: "04", t: "FIVE TRY TO BREAK IT", d: "Hostile logical and visual stress-testing." },
-                        { n: "05", t: "ONE LAST LOOK", d: "Final human taste engine sign-off." }
-                    ].map((door, i) => `
-                    <div class="glass-panel p-8 rounded-2xl flex flex-col justify-between min-h-[250px] interact fade-el delay-${i}">
-                        <span class="text-5xl font-editorial font-black text-white/10">${door.n}</span>
-                        <div>
-                            <h4 class="text-xl font-editorial font-black text-white uppercase mb-3 text-[#E55D00]">${door.t}</h4>
-                            <p class="text-sm font-light text-gray-400 leading-relaxed">${door.d}</p>
-                        </div>
-                    </div>
-                    `).join('')}
-                </div>
-            </div>
-        </section>
-
-        <!-- 4. PROJECT: AKIJ DYNAMICS (3D ARCHITECTURAL GLASS) -->
-        <section class="snap-panel bg-black">
-            <img src="https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?q=80&w=2000&auto=format&fit=crop" class="art-layer opacity-60" alt="3D Glass Architecture">
-            <div class="vignette"></div>
-
-            <div class="relative z-20 w-full max-w-[95vw] px-4 md:px-12 flex items-center h-full">
-                <div class="max-w-4xl">
-                    <span class="fade-el inline-block px-4 py-2 bg-[#E55D00] text-black text-[10px] font-bold uppercase tracking-widest mb-8 rounded-full">Consultancy Partner</span>
-                    <h3 class="text-monumental font-editorial font-black uppercase text-white leading-[0.85] mb-8">
-                        <span class="clip-mask"><span class="clip-text">AKIJ</span></span>
-                        <span class="clip-mask"><span class="clip-text text-outline">DYNAMICS</span></span>
-                    </h3>
-                    <p class="fade-el text-xl md:text-3xl font-light text-gray-200 leading-relaxed max-w-3xl">
-                        Co-developing custom AI layers to manage deep data analysis and scale enterprise operations under strict human parameters across Aviation, Pharma, and Mobility.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- 5. PROJECT: LUMIERE NARRATIVES (ETHEREAL MIST 3D) -->
-        <section class="snap-panel bg-black">
-            <img src="https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?q=80&w=2000&auto=format&fit=crop" class="art-layer opacity-60" alt="Ethereal Mist">
-            <div class="vignette"></div>
-
-            <div class="relative z-20 w-full max-w-[95vw] px-4 md:px-12 flex items-center h-full">
-                <div class="max-w-4xl">
-                    <span class="fade-el inline-block px-4 py-2 border border-white text-white text-[10px] font-bold uppercase tracking-widest mb-8 rounded-full backdrop-blur-md bg-white/5">Computational Cinema</span>
-                    <h3 class="text-monumental font-editorial font-black uppercase text-white leading-[0.85] mb-8">
-                        <span class="clip-mask"><span class="clip-text">LUMIERE</span></span>
-                        <span class="clip-mask"><span class="clip-text text-outline">NARRATIVES</span></span>
-                    </h3>
-                    <p class="fade-el text-xl md:text-3xl font-light text-gray-200 leading-relaxed max-w-3xl">
-                        Engineered an aesthetic, film-inspired AI pipeline for high fashion. Executing complex physics and bespoke mist transitions for cinematic web environments.
-                    </p>
-                </div>
-            </div>
-        </section>
-
-        <!-- 6. PROJECT: EVENTS & BRANDS (FLUID METALLIC) -->
-        <section class="snap-panel bg-black">
-            <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=2000&auto=format&fit=crop" class="art-layer opacity-40" alt="Fluid Metal">
-            <div class="vignette"></div>
-
-            <div class="relative z-20 w-full max-w-[95vw] px-4 md:px-12 flex flex-col md:flex-row gap-12 md:gap-24 items-center h-full">
                 
-                <div class="w-full md:w-1/2 fade-el">
-                    <span class="text-white/60 text-[10px] font-bold uppercase tracking-widest mb-4 block">Logistics Array</span>
-                    <h3 class="text-5xl md:text-7xl font-editorial font-black uppercase text-white mb-6">KAIQI & CHANGFU</h3>
-                    <p class="text-lg md:text-xl font-light text-gray-300 max-w-md">Automated scheduling, dynamic scripting, and logistical mapping for international summits.</p>
+                <div class="img-wrap aspect-square rounded-2xl gs-parallax interact md:ml-32" data-speed="0.9">
+                    <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1500&auto=format&fit=crop" class="img-parallax" alt="Network">
+                    <div class="absolute bottom-8 left-8 text-white text-[10px] font-bold uppercase tracking-widest bg-black/60 px-4 py-2 backdrop-blur-md rounded-full">Neural Matrix</div>
                 </div>
+            </div>
+            
+        </div>
+    </section>
 
-                <div class="w-full md:w-1/2 fade-el">
-                    <span class="text-[#E55D00] text-[10px] font-bold uppercase tracking-widest mb-4 block">Brand Ecosystem</span>
-                    <h3 class="text-5xl md:text-7xl font-editorial font-black uppercase text-white mb-6">GROWTH PARTNERS</h3>
-                    <p class="text-lg md:text-xl font-light text-gray-300 max-w-md">Full-stack operational pipelines for Gunoboti, Grafiti, Nexus, and Terracotta at 5x speed.</p>
-                    
-                    <a href="http://www.flowstateimpact.com/links" target="_blank" class="mt-10 interact magnetic-btn inline-flex items-center gap-4 bg-white text-black px-8 py-4 text-xs font-bold uppercase tracking-widest hover:text-white rounded-full">
-                        Enter Archives <i data-lucide="arrow-right" class="w-4 h-4"></i>
+    <!-- 6. QUALITY ASSURANCE (HOVER IMAGE REVEAL LIST) -->
+    <section class="py-32 md:py-48 bg-[#020202] relative z-30 border-t border-white/10">
+        <div class="max-w-[95vw] mx-auto px-4 md:px-12">
+            
+            <div class="mb-20 text-center gs-fade">
+                <h2 class="text-xs font-bold text-[#FF4A00] tracking-[0.5em] uppercase mb-6">Quality Assurance Matrix</h2>
+                <h3 class="text-5xl md:text-8xl font-display text-white tracking-tighter">THE FIVE FIREWALLS</h3>
+            </div>
+
+            <div class="max-w-6xl mx-auto w-full flex flex-col">
+                <!-- Flawless, highly legible layout -->
+                {[
+                    { n: "01", t: "STRANGERS READ IT", d: "Validated for absolute clarity outside the internal brand echo chamber.", img: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?q=80&w=1500&auto=format&fit=crop" },
+                    { n: "02", t: "IT GETS A MARK", d: "Rigid algorithmic scoring against core aesthetic and logic parameters.", img: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1500&auto=format&fit=crop" },
+                    { n: "03", t: "THREE CAN SAY NO", d: "Autonomous rejection protocol. Ruthless assassins of derivative concepts.", img: "https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?q=80&w=1500&auto=format&fit=crop" },
+                    { n: "04", t: "FIVE TRY TO BREAK IT", d: "Hostile stress-testing to isolate logical inconsistencies and visual flaws.", img: "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1500&auto=format&fit=crop" },
+                    { n: "05", t: "ONE LAST LOOK", d: "The final human-led taste engine sign-off. Technology directed by art.", img: "https://images.unsplash.com/photo-1492447166138-50c3889fccb1?q=80&w=1500&auto=format&fit=crop" }
+                ].map((door) => `
+                <div class="door-row flex flex-col md:flex-row md:items-center gap-6 md:gap-16 py-10 md:py-16 interact hover-img-trigger group gs-fade" data-img="${door.img}">
+                    <span class="text-5xl md:text-7xl font-display text-gray-800 group-hover:text-[#FF4A00] transition-colors duration-500">${door.n}</span>
+                    <div class="flex flex-col md:flex-row md:items-center justify-between w-full gap-4 md:gap-10">
+                        <h4 class="text-3xl md:text-5xl font-display text-white group-hover:text-[#FF4A00] transition-colors">${door.t}</h4>
+                        <p class="text-lg md:text-xl font-light text-gray-400 max-w-md leading-relaxed group-hover:text-white transition-colors">${door.d}</p>
+                    </div>
+                </div>
+                `).join('')}
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 7. HORIZONTAL SCROLL (THE ECOSYSTEM) -->
+    <!-- This section pins to the screen, and the user scrolls horizontally through massive cinematic posters -->
+    <section id="horizontal-wrapper" class="bg-black relative z-40 overflow-hidden border-t border-white/10">
+        
+        <!-- Pinned Overlay Title -->
+        <div class="absolute top-12 left-6 md:top-16 md:left-16 z-50 pointer-events-none mix-blend-difference">
+            <h2 class="text-[#FF4A00] text-xs font-bold uppercase tracking-[0.5em] mb-4">Active Deployments</h2>
+            <h3 class="text-4xl md:text-6xl font-display text-white">CLIENT ECOSYSTEM</h3>
+        </div>
+
+        <div class="horizontal-section" id="horizontal-track">
+            
+            <!-- Panel 1: Akij -->
+            <div class="horizontal-panel p-4 md:p-12">
+                <div class="w-full h-full relative img-wrap rounded-3xl interact">
+                    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2000&auto=format&fit=crop" class="img-parallax" alt="Akij">
+                    <!-- Clean, readable gradient box for text -->
+                    <div class="absolute bottom-6 left-6 md:bottom-16 md:left-16 z-10 max-w-3xl bg-black/60 backdrop-blur-xl p-8 md:p-12 rounded-2xl border border-white/10">
+                        <span class="px-4 py-2 bg-[#FF4A00] text-black text-[10px] font-bold uppercase tracking-widest mb-6 inline-block rounded-full">Consultancy Partner</span>
+                        <h3 class="text-[clamp(3rem,6vw,7rem)] font-display text-white leading-none mb-6">AKIJ DYNAMICS</h3>
+                        <p class="text-lg md:text-2xl text-gray-200 font-light leading-relaxed">Co-developing custom AI layers to manage deep data analysis and scale enterprise operations under strict human parameters.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel 2: Lumiere -->
+            <div class="horizontal-panel p-4 md:p-12">
+                <div class="w-full h-full relative img-wrap rounded-3xl interact">
+                    <img src="https://images.unsplash.com/photo-1601134994276-808605d8f344?q=80&w=1964&auto=format&fit=crop" class="img-parallax" alt="Lumiere">
+                    <div class="absolute bottom-6 left-6 md:bottom-16 md:left-16 z-10 max-w-3xl bg-black/60 backdrop-blur-xl p-8 md:p-12 rounded-2xl border border-white/10">
+                        <span class="px-4 py-2 border border-white text-white text-[10px] font-bold uppercase tracking-widest mb-6 inline-block rounded-full">Computational Cinema</span>
+                        <h3 class="text-[clamp(3rem,6vw,7rem)] font-display text-white leading-none mb-6">LUMIERE NARRATIVES</h3>
+                        <p class="text-lg md:text-2xl text-gray-200 font-light leading-relaxed">Engineered an aesthetic, film-inspired AI pipeline for high fashion. Executing complex physics and bespoke mist transitions.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel 3: Events & Brands -->
+            <div class="horizontal-panel p-4 md:p-12 flex flex-col md:flex-row gap-6 md:gap-12">
+                <div class="w-full md:w-1/2 h-full relative img-wrap rounded-3xl interact">
+                    <img src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2070&auto=format&fit=crop" class="img-parallax" alt="Events">
+                    <div class="absolute bottom-6 left-6 md:bottom-12 md:left-12 z-10 bg-black/60 backdrop-blur-xl p-8 rounded-2xl border border-white/10 max-w-md">
+                        <span class="text-white text-[10px] font-bold uppercase tracking-widest mb-4 block">Logistics Array</span>
+                        <h3 class="text-4xl md:text-5xl font-display text-white mb-4">KAIQI & CHANGFU</h3>
+                        <p class="text-base text-gray-300 font-light leading-relaxed">Automated scheduling and logistical mapping for high-level summits and exhibitions.</p>
+                    </div>
+                </div>
+                
+                <div class="w-full md:w-1/2 h-full relative img-wrap rounded-3xl interact">
+                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop" class="img-parallax" alt="Brands">
+                    <div class="absolute bottom-6 left-6 md:bottom-12 md:left-12 z-10 bg-black/60 backdrop-blur-xl p-8 rounded-2xl border border-white/10 max-w-md">
+                        <span class="text-[#FF4A00] text-[10px] font-bold uppercase tracking-widest mb-4 block">Brand Ecosystem</span>
+                        <h3 class="text-4xl md:text-5xl font-display text-white mb-4">GROWTH PARTNERS</h3>
+                        <p class="text-base text-gray-300 font-light leading-relaxed">Full-stack pipelines for Gunoboti, Grafiti, Nexus, and Terracotta at 5x speed.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Panel 4: Enter -->
+            <div class="horizontal-panel bg-[#FF4A00] text-black flex items-center justify-center p-6 md:p-16">
+                <div class="text-center w-full max-w-5xl">
+                    <h3 class="text-hero font-display leading-[0.8] mb-12">WITNESS <br/><span class="font-serif italic font-bold">The Output.</span></h3>
+                    <a href="http://www.flowstateimpact.com/links" target="_blank" class="interact bg-black text-white px-12 py-6 text-sm font-bold uppercase tracking-widest hover:bg-white hover:text-black transition-colors rounded-full inline-flex items-center gap-4">
+                        Enter Visual Archives <i data-lucide="arrow-right" class="w-5 h-5"></i>
                     </a>
                 </div>
-
             </div>
-        </section>
 
-        <!-- 7. THE HUMAN LAYER (ABSTRACT TEXTURES, NO FACES) -->
-        <section class="snap-panel bg-[#020202]">
-            <div class="ambient-mesh"></div>
+        </div>
+    </section>
+
+    <!-- 8. TIERS (MONOLITHS) -->
+    <section class="bg-[#020202] relative z-40 border-t border-white/10">
+        <div class="grid grid-cols-1 lg:grid-cols-2">
             
-            <div class="relative z-20 w-full h-full flex flex-col justify-center px-4 md:px-12 max-w-[95vw] mx-auto">
-                <div class="mb-16 fade-el text-center md:text-left">
-                    <h2 class="text-h2 font-editorial font-black text-white leading-[0.85]">
-                        THE <span class="font-sans italic font-light text-[#E55D00] text-outline tracking-normal">Human Layer.</span>
-                    </h2>
+            <div class="p-12 md:p-24 lg:border-r border-white/10 flex flex-col justify-between min-h-[60vh] hover:bg-[#0a0a0a] transition-colors duration-500 gs-fade interact">
+                <div>
+                    <span class="text-[#FF4A00] text-[10px] font-bold uppercase tracking-widest border border-[#FF4A00] px-4 py-2 rounded-full mb-10 inline-block">Tier 01</span>
+                    <h4 class="text-6xl md:text-8xl font-display text-white mb-6">CREATOR</h4>
+                    <p class="text-xl text-gray-400 font-light leading-relaxed max-w-md">Streamlined agentic pipelines optimized for rapid content generation, visual branding, and high-frequency design output.</p>
                 </div>
+                <div class="mt-12">
+                    <i data-lucide="zap" class="w-12 h-12 text-[#FF4A00]"></i>
+                </div>
+            </div>
+
+            <div class="p-12 md:p-24 flex flex-col justify-between min-h-[60vh] bg-white/5 hover:bg-white transition-colors duration-500 group gs-fade interact">
+                <div>
+                    <span class="text-white group-hover:text-black group-hover:border-black text-[10px] font-bold uppercase tracking-widest border border-white/30 px-4 py-2 rounded-full mb-10 inline-block transition-colors">Tier 02</span>
+                    <h4 class="text-6xl md:text-8xl font-display text-white group-hover:text-black mb-6 transition-colors">ULTIMATE</h4>
+                    <p class="text-xl text-gray-400 group-hover:text-black/80 font-light leading-relaxed max-w-md transition-colors">Full-scale enterprise department automation. Deep data analysis, workflow integration, and bespoke operational swarms.</p>
+                </div>
+                <div class="mt-12 flex justify-between items-end">
+                    <i data-lucide="globe-2" class="w-12 h-12 text-white group-hover:text-black transition-colors"></i>
+                    <span class="text-6xl md:text-8xl font-display text-black/10 group-hover:text-black/20 transition-colors leading-none">10X</span>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 9. THE HUMAN LAYER (EDITORIAL PORTRAITS) -->
+    <section class="py-32 md:py-48 px-4 md:px-12 bg-[#050505] relative z-40 border-t border-white/5">
+        <div class="max-w-[95vw] mx-auto mb-20 flex justify-between items-end">
+            <h2 class="text-5xl md:text-8xl font-display text-white leading-[0.85] gs-fade">
+                THE <br/><span class="font-serif italic font-normal text-[#FF4A00] normal-case tracking-normal">Human Layer.</span>
+            </h2>
+            <p class="hidden md:block text-xl text-gray-400 font-light max-w-sm gs-fade text-right">Intelligence scaled by machines. Directed by absolute human taste.</p>
+        </div>
+        
+        <div class="max-w-[95vw] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+            
+            {[
+                { name: 'ASIF FARID', role: 'MD & CTO', img: 'https://images.unsplash.com/photo-1556157382-97eda2d62296?q=80&w=1000&auto=format&fit=crop' },
+                { name: 'NAFIA ISLAM FARIA', role: 'CEO', img: 'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=1000&auto=format&fit=crop' },
+                { name: 'SARWAR JAHAN', role: 'CMO', img: 'https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?q=80&w=1000&auto=format&fit=crop' },
+                { name: 'MUAZ RAKIN', role: 'CSO & CFO', img: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000&auto=format&fit=crop' }
+            ].map((p) => `
+            <div class="team-portrait interact group gs-fade">
+                <img src="${p.img}" alt="${p.name}">
+                <div class="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent opacity-80 group-hover:opacity-100 transition-opacity"></div>
+                <div class="absolute bottom-8 left-8 right-8 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-500">
+                    <h4 class="text-3xl font-display text-white mb-2 leading-none group-hover:text-[#FF4A00] transition-colors">${p.name}</h4>
+                    <p class="text-[10px] font-bold tracking-widest uppercase text-gray-400 group-hover:text-white transition-colors">${p.role}</p>
+                </div>
+            </div>
+            `).join('')}
+
+        </div>
+    </section>
+
+    <!-- 10. COMMAND TERMINAL (FOOTER) -->
+    <section id="command" class="py-32 md:py-48 px-6 md:px-12 bg-black relative z-40 border-t border-white/10">
+        <div class="max-w-[95vw] mx-auto flex flex-col lg:flex-row justify-between gap-20">
+            
+            <div class="w-full lg:w-1/2">
+                <h2 class="text-h2 font-display text-white mb-8 leading-[0.8] gs-fade">
+                    COMMAND <br/><span class="text-outline">THE SWARM.</span>
+                </h2>
+                <p class="text-xl md:text-2xl text-gray-400 font-light max-w-xl leading-relaxed gs-fade">Stop hiring isolated roles. Plug an entire autonomous department directly into your business infrastructure today.</p>
+            </div>
+            
+            <div class="w-full lg:w-1/2 flex flex-col justify-end gap-6 gs-fade">
+                <a href="mailto:asif@flowstateimpact.com" class="interact bg-[#0a0a0a] p-10 md:p-14 rounded-[2rem] border border-white/5 hover:border-[#FF4A00] hover:bg-white hover:text-black transition-colors duration-500 group flex flex-col md:flex-row justify-between md:items-center">
+                    <span class="text-[#FF4A00] group-hover:text-black text-[10px] font-bold uppercase tracking-widest mb-6 md:mb-0 transition-colors">Email Protocol</span>
+                    <span class="text-2xl md:text-4xl font-display tracking-wide">asif@flowstateimpact.com</span>
+                </a>
                 
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                    {[
-                        { n: "ASIF FARID", r: "MD & CTO", img: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=800&auto=format&fit=crop" },
-                        { n: "NAFIA ISLAM FARIA", r: "CEO", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop" },
-                        { n: "SARWAR JAHAN", r: "CMO", img: "https://images.unsplash.com/photo-1634017839464-5c339ebe3cb4?q=80&w=800&auto=format&fit=crop" },
-                        { n: "MUAZ RAKIN", r: "CSO & CFO", img: "https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?q=80&w=800&auto=format&fit=crop" }
-                    ].map((person, i) => `
-                    <div class="glass-panel relative aspect-[3/4] rounded-2xl overflow-hidden group interact fade-el delay-${i}">
-                        <img src="${person.img}" class="absolute inset-0 w-full h-full object-cover filter grayscale contrast-125 opacity-30 group-hover:opacity-80 group-hover:scale-110 transition-all duration-700" alt="Texture">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
-                        <div class="absolute bottom-6 left-6 right-6">
-                            <h4 class="text-2xl font-editorial font-black text-white mb-1 group-hover:text-[#E55D00] transition-colors">${person.n}</h4>
-                            <p class="text-[10px] font-bold tracking-widest uppercase text-gray-400 group-hover:text-white transition-colors">${person.r}</p>
-                        </div>
+                <div class="bg-[#0a0a0a] p-10 md:p-14 rounded-[2rem] border border-white/5 flex flex-col justify-between">
+                    <span class="text-gray-500 text-[10px] font-bold uppercase tracking-widest mb-8">Direct Telecom Hub</span>
+                    <div class="flex flex-col gap-2">
+                        <span class="text-4xl md:text-6xl font-display text-white hover:text-[#FF4A00] transition-colors w-fit interact">01616 119242</span>
+                        <span class="text-4xl md:text-6xl font-display text-gray-600 hover:text-white transition-colors w-fit interact">01627 935350</span>
                     </div>
-                    `).join('')}
                 </div>
             </div>
-        </section>
+            
+        </div>
+    </section>
 
-        <!-- 8. COMMAND TERMINAL -->
-        <section class="snap-panel bg-[#050505]" id="command">
-            <div class="relative z-20 w-full h-full flex flex-col justify-center px-4 md:px-12 max-w-[95vw] mx-auto border-t border-[#E55D00]/20">
-                <div class="flex flex-col lg:flex-row justify-between gap-16">
-                    
-                    <div class="w-full lg:w-1/2">
-                        <h2 class="text-monumental font-editorial font-black uppercase text-white mb-8 leading-[0.8]">
-                            <span class="clip-mask"><span class="clip-text">COMMAND</span></span>
-                            <span class="clip-mask"><span class="clip-text text-[#E55D00]">THE SWARM.</span></span>
-                        </h2>
-                        <p class="text-xl md:text-3xl font-light text-gray-400 leading-relaxed fade-el">Stop hiring isolated roles. Plug an entire autonomous department directly into your business infrastructure.</p>
-                    </div>
-                    
-                    <div class="w-full lg:w-1/2 flex flex-col gap-6 fade-el">
-                        <a href="mailto:asif@flowstateimpact.com" class="glass-panel p-10 md:p-12 rounded-3xl interact group flex flex-col md:flex-row justify-between md:items-center hover:bg-white hover:text-black transition-colors duration-500">
-                            <span class="text-[#E55D00] group-hover:text-black text-[10px] font-bold uppercase tracking-widest mb-6 md:mb-0 transition-colors">Email Protocol</span>
-                            <span class="text-2xl md:text-3xl font-editorial font-bold tracking-wider">asif@flowstateimpact.com</span>
-                        </a>
-                        
-                        <div class="glass-panel p-10 md:p-12 rounded-3xl flex flex-col justify-between">
-                            <span class="text-gray-500 text-[10px] font-bold uppercase tracking-widest mb-6">Direct Telecom Hub</span>
-                            <div class="flex flex-col gap-2">
-                                <span class="text-3xl md:text-5xl font-editorial font-bold text-white hover:text-[#E55D00] transition-colors w-fit interact">01616 119242</span>
-                                <span class="text-3xl md:text-5xl font-editorial font-bold text-gray-600 hover:text-white transition-colors w-fit interact">01627 935350</span>
-                            </div>
-                        </div>
-                    </div>
-                    
-                </div>
+    <!-- FOOTER -->
+    <footer class="py-10 px-6 md:px-12 bg-[#050505] flex flex-col md:flex-row justify-between items-center text-[10px] tracking-widest text-gray-500 uppercase border-t border-white/10 relative z-40">
+        <span class="mb-4 md:mb-0">FlowStãte Impact © 2026</span>
+        <span>Dhaka Hub • London Hub</span>
+    </footer>
 
-                <div class="w-full mt-16 pt-8 border-t border-white/10 flex justify-between items-center text-[10px] tracking-widest text-gray-600 uppercase fade-el">
-                    <span>FlowStãte Impact © 2026</span>
-                    <span>Dhaka Hub • London Hub</span>
-                </div>
-            </div>
-        </section>
-
-    </div> <!-- END SNAP ENGINE -->
-
-    <!-- LOGIC & ANIMATIONS -->
+    <!-- MASTER GSAP & CANVAS ENGINE -->
     <script>
         lucide.createIcons();
 
-        // 1. MAGNETIC CURSOR (Desktop Only)
+        // 1. BOOTLOADER SEQUENCE
+        const loader = document.getElementById('loader');
+        const loaderNum = document.getElementById('loader-num');
+        const loaderBar = document.getElementById('loader-bar');
+        
+        let progress = 0;
+        const loadInterval = setInterval(() => {
+            progress += Math.floor(Math.random() * 15) + 5;
+            if(progress >= 100) progress = 100;
+            
+            loaderNum.innerText = progress;
+            loaderBar.style.width = progress + '%';
+            
+            if(progress === 100) {
+                clearInterval(loadInterval);
+                setTimeout(() => {
+                    gsap.to(loader, { yPercent: -100, duration: 1, ease: "expo.inOut" });
+                    gsap.to("#nav", { opacity: 1, duration: 1, delay: 0.5 });
+                    gsap.fromTo(".mask-up", { y: "115%" }, { y: "0%", duration: 1.5, stagger: 0.1, ease: "power4.out", delay: 0.4 });
+                    gsap.to("#scroll-cue", { opacity: 0.5, duration: 1, delay: 1.5 });
+                }, 300);
+            }
+        }, 80);
+
+        // 2. DYNAMIC MAGNETIC CURSOR
         if (window.matchMedia("(pointer: fine)").matches) {
             const cursorDot = document.getElementById('cursor-dot');
             const cursorRing = document.getElementById('cursor-ring');
@@ -387,53 +438,152 @@
             });
 
             document.querySelectorAll('.interact').forEach(el => {
-                el.addEventListener('mouseenter', () => document.body.classList.add('hover-target'));
-                el.addEventListener('mouseleave', () => document.body.classList.remove('hover-target'));
+                el.addEventListener('mouseenter', () => document.body.classList.add('hover-btn'));
+                el.addEventListener('mouseleave', () => document.body.classList.remove('hover-btn'));
             });
         }
 
-        // 2. INTERSECTION OBSERVER ANIMATIONS 
-        // We use observers instead of ScrollTrigger to ensure animations fire perfectly inside the snapped sections without breaking mobile scrolling.
-        
-        const observerOptions = {
-            root: document.getElementById('snap-engine'),
-            threshold: 0.4 // Trigger when 40% of the section is visible
-        };
+        // 3. CURSOR IMAGE REVEAL (The 5 Doors)
+        if (window.matchMedia("(pointer: fine)").matches) {
+            const doorTracker = document.getElementById('door-img-tracker');
+            const doorImg = document.getElementById('door-img');
+            
+            const xSetImg = gsap.quickTo(doorTracker, "x", {duration: 0.4, ease: "power3.out"});
+            const ySetImg = gsap.quickTo(doorTracker, "y", {duration: 0.4, ease: "power3.out"});
 
-        const sectionObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if(entry.isIntersecting) {
-                    
-                    // Reveal Text (Masks)
-                    const clips = entry.target.querySelectorAll('.clip-text');
-                    if(clips.length) {
-                        gsap.fromTo(clips, 
-                            { y: "115%" }, 
-                            { y: "0%", duration: 1.2, stagger: 0.1, ease: "power4.out", overwrite: "auto" }
-                        );
-                    }
+            document.querySelectorAll('.hover-img-trigger').forEach(el => {
+                el.addEventListener('mouseenter', () => {
+                    doorImg.src = el.getAttribute('data-img');
+                    gsap.to(doorTracker, { opacity: 1, scale: 1, duration: 0.4, ease: "power3.out" });
+                });
+                el.addEventListener('mousemove', (e) => {
+                    xSetImg(e.clientX + 20); ySetImg(e.clientY - 250);
+                });
+                el.addEventListener('mouseleave', () => {
+                    gsap.to(doorTracker, { opacity: 0, scale: 0.8, duration: 0.3, ease: "power3.in" });
+                });
+            });
+        }
 
-                    // Fades
-                    const fades = entry.target.querySelectorAll('.fade-el');
-                    if(fades.length) {
-                        gsap.fromTo(fades,
-                            { y: 30, opacity: 0 },
-                            { y: 0, opacity: 1, duration: 1, stagger: 0.1, ease: "power2.out", overwrite: "auto", delay: 0.2 }
-                        );
+        // 4. CUSTOM CANVAS VORTEX (Hero Background)
+        const canvas = document.getElementById('webgl-canvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, particles = [];
+        let mouseX = window.innerWidth/2, mouseY = window.innerHeight/2;
+
+        window.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+
+        function initCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            particles = [];
+            // Spawn 150 particles for a rich, smoky/fluid look
+            for(let i=0; i<150; i++) {
+                particles.push({
+                    x: Math.random() * width, y: Math.random() * height,
+                    vx: (Math.random() - 0.5) * 2, vy: (Math.random() - 0.5) * 2,
+                    radius: Math.random() * 3 + 1,
+                    color: i % 3 === 0 ? 'rgba(255, 74, 0, 0.4)' : 'rgba(255, 255, 255, 0.1)'
+                });
+            }
+        }
+        window.addEventListener('resize', initCanvas);
+
+        function animateCanvas() {
+            ctx.clearRect(0, 0, width, height);
+            
+            for(let i=0; i<particles.length; i++) {
+                let p = particles[i];
+                
+                // Gravitational pull toward mouse (subtle)
+                let dx = mouseX - p.x; let dy = mouseY - p.y;
+                let dist = Math.sqrt(dx*dx + dy*dy);
+                if(dist < 300) {
+                    p.vx += (dx / dist) * 0.05;
+                    p.vy += (dy / dist) * 0.05;
+                }
+                
+                // Friction & Speed Limit
+                p.vx *= 0.98; p.vy *= 0.98;
+                if(Math.abs(p.vx) < 0.2) p.vx += (Math.random() - 0.5) * 0.5;
+                if(Math.abs(p.vy) < 0.2) p.vy += (Math.random() - 0.5) * 0.5;
+
+                p.x += p.vx; p.y += p.vy;
+                
+                // Wrap edges
+                if(p.x < 0) p.x = width; if(p.x > width) p.x = 0;
+                if(p.y < 0) p.y = height; if(p.y > height) p.y = 0;
+                
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fillStyle = p.color;
+                ctx.fill();
+                
+                // Neural connecting lines for depth
+                for(let j=i+1; j<particles.length; j++) {
+                    let p2 = particles[j];
+                    let d = Math.sqrt(Math.pow(p.x - p2.x, 2) + Math.pow(p.y - p2.y, 2));
+                    if(d < 120) {
+                        ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y);
+                        ctx.strokeStyle = `rgba(255,255,255,${0.05 - d/2400})`;
+                        ctx.stroke();
                     }
                 }
-            });
-        }, observerOptions);
+            }
+            requestAnimationFrame(animateCanvas);
+        }
+        initCanvas(); animateCanvas();
 
-        document.querySelectorAll('.snap-panel').forEach(sec => {
-            sectionObserver.observe(sec);
+        // 5. LENIS SMOOTH SCROLLING
+        const lenis = new Lenis({ 
+            duration: 1.5, 
+            easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t))
+        });
+        function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+        requestAnimationFrame(raf);
+        
+        gsap.registerPlugin(ScrollTrigger);
+        lenis.on('scroll', ScrollTrigger.update);
+        gsap.ticker.add((time) => { lenis.raf(time * 1000) });
+        gsap.ticker.lagSmoothing(0);
+
+        // 6. GSAP IMAGE PARALLAX
+        gsap.utils.toArray('.gs-parallax').forEach(el => {
+            const speed = el.getAttribute('data-speed') || 1;
+            const img = el.querySelector('.img-parallax');
+            if(img) {
+                gsap.to(img, {
+                    yPercent: 20 * speed, ease: "none",
+                    scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: true }
+                });
+            }
         });
 
-        // Trigger Hero immediately on load
-        setTimeout(() => {
-            gsap.fromTo("#hero .clip-text", { y: "115%" }, { y: "0%", duration: 1.5, stagger: 0.15, ease: "power4.out" });
-            gsap.fromTo("#hero .fade-el", { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 1.5, delay: 0.6, ease: "power3.out" });
-        }, 100);
+        // 7. HORIZONTAL SCROLL TIMELINE (The Ecosystem)
+        const hSection = document.getElementById("horizontal-wrapper");
+        const hTrack = document.getElementById("h-scroll-track");
+        let panels = gsap.utils.toArray(".horizontal-panel");
+        
+        gsap.to(panels, {
+            xPercent: -100 * (panels.length - 1),
+            ease: "none",
+            scrollTrigger: {
+                trigger: hSection,
+                pin: true,
+                scrub: 1,
+                end: () => "+=" + hTrack.offsetWidth
+            }
+        });
+
+        // 8. SCROLL FADES
+        gsap.utils.toArray('.gs-fade').forEach(el => {
+            gsap.fromTo(el, 
+                { y: 60, opacity: 0 }, 
+                { y: 0, opacity: 1, duration: 1.2, ease: "power3.out", 
+                  scrollTrigger: { trigger: el, start: "top 85%" } 
+                }
+            );
+        });
 
     </script>
 </body>
