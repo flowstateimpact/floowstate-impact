@@ -3,512 +3,419 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>FLOWSTÃTE IMPACT | INTELLIGENCE OS</title>
+    <title>FLOWSTÃTE | THE ART OF INTELLIGENCE</title>
     
-    <!-- Elite Sci-Fi Typography -->
+    <!-- Elite Typography: Anton (Monumental), Playfair (Fashion/Editorial), Space Grotesk (Tech) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Montserrat (Thick/Bold), Space Grotesk (Tech Body), JetBrains (Code/HUD) -->
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@100;400;700;900&family=Montserrat:wght@900&family=Space+Grotesk:wght@300;400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Anton&family=Playfair+Display:ital,wght@0,400;1,400;1,600&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
     
     <style>
-        :root { --amber: #FF3300; --bg: #000000; }
+        :root { --amber: #FF3300; --bg: #030303; --text: #EFEFEF; }
         
         body, html { 
-            background-color: var(--bg); color: #fff; 
+            background-color: var(--bg); color: var(--text); 
             font-family: 'Space Grotesk', sans-serif;
             margin: 0; padding: 0; overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Fluid Scroll Engine */
+        @media (hover: hover) and (pointer: fine) { body { cursor: none; } }
+
+        /* Typography Engine */
+        .font-monument { font-family: 'Anton', sans-serif; text-transform: uppercase; letter-spacing: 0.01em; }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .text-outline { color: transparent; -webkit-text-stroke: 1.5px rgba(255,255,255,0.7); }
+        .text-outline-amber { color: transparent; -webkit-text-stroke: 1.5px var(--amber); }
+
+        /* Smooth Scroll */
         html.lenis { height: auto; }
         .lenis.lenis-smooth { scroll-behavior: auto; }
         .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
         .lenis.lenis-stopped { overflow: hidden; }
 
-        /* Typography */
-        .font-logo { font-family: 'Montserrat', sans-serif; text-transform: uppercase; line-height: 0.85; }
-        .font-mono { font-family: 'JetBrains Mono', monospace; text-transform: uppercase; }
-        .text-hero { font-size: clamp(3rem, 11vw, 12rem); letter-spacing: -0.02em; }
-        .text-outline { color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.2); }
-
-        /* =======================================
-           1. GLOBAL MAINFRAME HUD (The Interface)
-        ======================================== */
-        /* This creates a permanent, futuristic border around the user's screen */
-        .os-frame {
-            position: fixed; top: 1vw; left: 1vw; right: 1vw; bottom: 1vw;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            pointer-events: none; z-index: 9999;
-        }
-        .os-corner { position: absolute; width: 2vw; height: 2vw; border: 2px solid var(--amber); transition: all 0.3s ease; }
-        .os-corner.tl { top: -2px; left: -2px; border-right: none; border-bottom: none; }
-        .os-corner.tr { top: -2px; right: -2px; border-left: none; border-bottom: none; }
-        .os-corner.bl { bottom: -2px; left: -2px; border-right: none; border-top: none; }
-        .os-corner.br { bottom: -2px; right: -2px; border-left: none; border-top: none; }
-
-        /* HUD Data points */
-        .hud-data { position: absolute; font-family: 'JetBrains Mono', monospace; font-size: 10px; color: var(--amber); opacity: 0.6; }
-        .hud-top-left { top: 20px; left: 20px; }
-        .hud-bottom-right { bottom: 20px; right: 20px; }
-
-        /* Scanline Overlay */
-        .scanlines {
-            position: fixed; inset: 0; z-index: 9998; pointer-events: none; opacity: 0.02;
-            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0) 50%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.2));
-            background-size: 100% 4px;
-        }
-
-        /* =======================================
-           2. NEW UI / UX COMPONENTS
-        ======================================== */
-        .glass-panel { background: rgba(5, 5, 5, 0.4); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.05); }
+        /* =========================================================
+           1. FOUR-CORNER OS HUD
+        ========================================================= */
+        .hud-element { position: fixed; z-index: 9999; mix-blend-mode: difference; pointer-events: auto; }
+        .hud-tl { top: 2rem; left: 2rem; }
+        .hud-tr { top: 2rem; right: 2rem; text-align: right; }
+        .hud-bl { bottom: 2rem; left: 2rem; }
+        .hud-br { bottom: 2rem; right: 2rem; text-align: right; }
         
-        .btn-core {
-            background: var(--amber); color: #000; border: 1px solid var(--amber);
-            box-shadow: 0 0 15px rgba(255, 51, 0, 0.2); transition: all 0.3s ease;
+        /* Tactical Grain */
+        .tactical-grain {
+            position: fixed; inset: 0; z-index: 9998; pointer-events: none; opacity: 0.06; mix-blend-mode: overlay;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.5' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
-        .btn-core:hover { background: #fff; border-color: #fff; box-shadow: 0 0 30px rgba(255, 255, 255, 0.5); transform: translateY(-2px); }
+
+        /* =========================================================
+           2. THE FLUID GLASS CURSOR
+        ========================================================= */
+        #cursor-glass {
+            position: fixed; width: 40px; height: 40px; border-radius: 50%; pointer-events: none; z-index: 100000;
+            transform: translate(-50%, -50%); transition: width 0.5s cubic-bezier(0.19, 1, 0.22, 1), height 0.5s cubic-bezier(0.19, 1, 0.22, 1);
+            backdrop-filter: invert(1) grayscale(1) blur(2px); border: 1px solid rgba(255,255,255,0.2);
+            display: flex; align-items: center; justify-content: center; overflow: hidden;
+        }
+        #cursor-text { font-family: 'Anton', sans-serif; font-size: 10px; color: #fff; opacity: 0; transition: opacity 0.3s; letter-spacing: 2px; }
         
-        .btn-ghost {
-            background: transparent; color: #fff; border: 1px solid rgba(255, 255, 255, 0.2);
-            transition: all 0.3s ease;
+        body.hover-large #cursor-glass { width: 150px; height: 150px; border-color: transparent; backdrop-filter: invert(0) grayscale(0) blur(10px); background: rgba(255,51,0,0.1); }
+        body.hover-large #cursor-text { opacity: 1; color: var(--amber); }
+
+        @media (hover: none) { #cursor-glass { display: none; } }
+
+        /* =========================================================
+           3. KINETIC HERO TYPOGRAPHY
+        ========================================================= */
+        .hero-line { overflow: hidden; display: flex; align-items: center; justify-content: center; width: 100%; white-space: nowrap; }
+        .hero-word { display: inline-block; font-size: clamp(5rem, 15vw, 18rem); line-height: 0.8; will-change: transform; }
+
+        /* =========================================================
+           4. HOVER-FLOOD ECOSYSTEM (The "Awwwards" List)
+        ========================================================= */
+        .ecosystem-container { position: relative; width: 100%; min-height: 100vh; display: flex; align-items: center; justify-content: center; overflow: hidden; }
+        .eco-bg-wrapper { position: absolute; inset: 0; z-index: 0; pointer-events: none; }
+        .eco-bg-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; opacity: 0; transform: scale(1.1); transition: opacity 0.8s ease, transform 1.2s cubic-bezier(0.16, 1, 0.3, 1); filter: brightness(0.4) contrast(1.2); }
+        .eco-bg-img.active { opacity: 1; transform: scale(1); z-index: 1; }
+
+        .eco-list { position: relative; z-index: 10; width: 100%; display: flex; flex-col; justify-content: center; }
+        .eco-item { 
+            font-family: 'Anton', sans-serif; font-size: clamp(3rem, 8vw, 9rem); line-height: 1; 
+            text-transform: uppercase; color: rgba(255,255,255,0.3); text-align: center;
+            cursor: pointer; transition: color 0.4s, transform 0.4s; position: relative;
+            padding: 1rem 0;
         }
-        .btn-ghost:hover { background: rgba(255, 255, 255, 0.05); border-color: #fff; }
+        .eco-item:hover { color: #fff; transform: scale(1.02); }
+        .eco-data { position: absolute; left: 50%; transform: translateX(-50%); bottom: -20px; font-family: 'Space Grotesk', sans-serif; font-size: 14px; font-weight: 300; letter-spacing: 2px; color: var(--amber); opacity: 0; transition: opacity 0.3s; white-space: nowrap; text-transform: uppercase; }
+        .eco-item:hover .eco-data { opacity: 1; }
 
-        /* =======================================
-           3. CINEMATIC IMAGERY & PARALLAX
-        ======================================== */
-        .img-container { overflow: hidden; position: relative; background: #050505; }
-        .img-parallax { width: 100%; height: 130%; object-fit: cover; position: absolute; top: -15%; left: 0; filter: grayscale(100%) brightness(0.6) contrast(1.2); transition: filter 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 1.5s cubic-bezier(0.16, 1, 0.3, 1); will-change: transform; }
-        
-        /* The Auto-Hover Logic for Mobile & Desktop */
-        .is-in-view .img-parallax, .img-container:hover .img-parallax { filter: grayscale(0%) brightness(0.9) contrast(1.1); transform: scale(1.05); }
-
-        /* =======================================
-           4. BENTO BOX ECOSYSTEM (The New Layout)
-        ======================================== */
-        /* A complex, asymmetrical grid for the clients instead of a boring horizontal scroll */
-        .bento-grid {
-            display: grid; gap: 1rem;
-            grid-template-columns: 1fr;
-            grid-auto-rows: 400px;
+        /* =========================================================
+           5. ASYMMETRICAL FIREWALLS
+        ========================================================= */
+        .firewall-card {
+            background: rgba(10,10,10,0.5); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.05);
+            padding: 3rem; border-radius: 16px; position: relative; overflow: hidden;
+            transition: border-color 0.4s;
         }
-        @media (min-width: 768px) {
-            .bento-grid { grid-template-columns: repeat(4, 1fr); grid-auto-rows: 350px; gap: 1.5rem; }
-            .bento-large { grid-column: span 2; grid-row: span 2; }
-            .bento-wide { grid-column: span 2; grid-row: span 1; }
-            .bento-tall { grid-column: span 1; grid-row: span 2; }
-            .bento-small { grid-column: span 1; grid-row: span 1; }
-        }
+        .firewall-card:hover { border-color: var(--amber); }
+        .firewall-num { position: absolute; top: -20px; right: -20px; font-family: 'Anton', sans-serif; font-size: 10rem; color: rgba(255,255,255,0.03); line-height: 1; pointer-events: none; transition: color 0.4s; }
+        .firewall-card:hover .firewall-num { color: rgba(255,51,0,0.1); }
 
-        /* =======================================
-           5. BIOMETRIC STICKY STACK (The Team)
-        ======================================== */
-        .team-stack-container { position: relative; width: 100%; padding-bottom: 10vh; }
-        .team-card { position: sticky; top: 15vh; width: 100%; height: 70vh; margin-bottom: 2rem; border-radius: 24px; overflow: hidden; box-shadow: 0 -20px 40px rgba(0,0,0,0.8); border: 1px solid rgba(255,255,255,0.05); }
+        /* =========================================================
+           6. BUTTONS & UTILS
+        ========================================================= */
+        .btn-strike { position: relative; display: inline-flex; align-items: center; justify-content: center; padding: 1.2rem 3rem; font-family: 'Space Grotesk', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 2px; color: #fff; border: 1px solid rgba(255,255,255,0.2); overflow: hidden; transition: color 0.4s; border-radius: 4px; }
+        .btn-strike::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: var(--amber); transform: scaleX(0); transform-origin: right; transition: transform 0.6s cubic-bezier(0.19, 1, 0.22, 1); z-index: -1; }
+        .btn-strike:hover::before { transform: scaleX(1); transform-origin: left; }
+        .btn-strike:hover { color: #000; border-color: var(--amber); }
 
-        /* =======================================
-           6. GSAP REVEALS
-        ======================================== */
-        .reveal-overflow { overflow: hidden; display: block; }
-        .reveal-text { display: block; transform: translateY(115%); will-change: transform; }
+        .btn-primary { background: var(--amber); color: #000; border-color: var(--amber); }
+        .btn-primary::before { background: #fff; }
+
+        .gs-reveal { opacity: 0; transform: translateY(40px); will-change: transform, opacity; }
+
+        /* Perfect Mobile Video */
+        .vid-wrapper { width: 100%; position: relative; overflow: hidden; border-radius: 12px; }
+        @media (max-width: 767px) { .vid-wrapper { aspect-ratio: 16/9; } }
+        @media (min-width: 768px) { .vid-wrapper { aspect-ratio: 21/9; border-radius: 24px; } }
+        .vid-wrapper video { width: 100%; height: 100%; object-fit: cover; }
 
     </style>
 </head>
 <body>
 
-    <!-- 1. OS INTERFACE (THE HUD) -->
-    <div class="scanlines"></div>
-    <div class="os-frame hidden md:block">
-        <div class="os-corner tl"></div><div class="os-corner tr"></div>
-        <div class="os-corner bl"></div><div class="os-corner br"></div>
-        <div class="hud-data hud-top-left">SYS.BOOT // ONLINE</div>
-        <div class="hud-data hud-bottom-right flex items-center gap-2">
-            <div class="w-1.5 h-1.5 bg-[#FF3300] rounded-full animate-pulse"></div> Y_AXIS: <span id="y-tracker">0000</span>
-        </div>
+    <div class="tactical-grain"></div>
+
+    <!-- THE FLUID GLASS CURSOR -->
+    <div id="cursor-glass"><span id="cursor-text">VIEW</span></div>
+
+    <!-- FOUR-CORNER OS HUD -->
+    <!-- Top Left: Logo -->
+    <div class="hud-element hud-tl interact-large">
+        <h1 class="font-monument text-2xl md:text-3xl leading-none">FLOWSTÃTE</h1>
+        <span class="font-mono text-[8px] md:text-[10px] text-[#FF3300] tracking-[0.4em] block uppercase mt-1">Impact_Protocol</span>
     </div>
 
-    <!-- 2. NAVIGATION -->
-    <nav class="fixed top-0 w-full p-6 md:p-10 flex justify-between items-center z-50 mix-blend-difference pointer-events-none">
-        <div class="pointer-events-auto flex flex-col">
-            <h1 class="text-3xl md:text-5xl font-logo text-white">FLOWSTÃTE</h1>
-            <span class="font-mono text-[10px] text-[#FF3300] mt-1 font-bold tracking-widest">IMPACT_PROTOCOL</span>
-        </div>
-        <div class="pointer-events-auto flex items-center gap-6">
-            <a href="http://www.flowstateimpact.com/links" target="_blank" class="hidden md:block font-mono text-[10px] tracking-widest text-white/50 hover:text-white transition-colors">
-                [ VISUAL_ARCHIVES ]
-            </a>
-            <a href="#command" class="btn-core px-6 py-3 font-mono text-[10px] font-bold uppercase rounded flex items-center gap-2">
-                INIT_SWARM
-            </a>
-        </div>
-    </nav>
+    <!-- Top Right: Archives -->
+    <div class="hud-element hud-tr hidden md:block interact-large">
+        <a href="http://www.flowstateimpact.com/links" target="_blank" class="font-mono text-[10px] tracking-widest text-gray-400 hover:text-[#FF3300] transition-colors uppercase">
+            [ VISUAL_ARCHIVES ]
+        </a>
+    </div>
 
-    <!-- MAIN CONTENT -->
-    <main class="w-full relative z-10 px-4 md:px-8">
+    <!-- Bottom Left: Status -->
+    <div class="hud-element hud-bl hidden md:flex items-center gap-3">
+        <div class="w-2 h-2 bg-[#FF3300] rounded-full animate-pulse"></div>
+        <span class="font-mono text-[10px] tracking-widest uppercase text-white/50">Sys.Online // Node 83</span>
+    </div>
 
-        <!-- 3. SCI-FI HERO -->
-        <section class="relative min-h-[95vh] w-full flex flex-col justify-center py-20 border-b border-white/10" id="hero">
+    <!-- Bottom Right: Primary CTA -->
+    <div class="hud-element hud-br interact-large z-[100]">
+        <a href="#command" class="inline-flex items-center justify-center bg-[#FF3300] text-black font-bold uppercase tracking-widest text-[10px] md:text-xs px-6 py-3 rounded-full hover:bg-white transition-colors shadow-[0_0_20px_rgba(255,51,0,0.3)]">
+            DEPLOY TEAM <i data-lucide="zap" class="w-3 h-3 ml-2"></i>
+        </a>
+    </div>
+
+    <main class="w-full relative z-10">
+
+        <!-- 1. KINETIC TYPOGRAPHY HERO -->
+        <section class="relative min-h-[100svh] w-full flex flex-col justify-center items-center overflow-hidden bg-[#030303]" id="hero">
             
-            <!-- Deep Tech Background -->
-            <div class="absolute inset-0 z-0 opacity-30 pointer-events-none">
-                <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=2500&auto=format&fit=crop" class="w-full h-full object-cover filter contrast-150 saturate-0" alt="Core">
-                <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-black"></div>
+            <!-- Abstract Ambient Light -->
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80vw] h-[80vw] bg-[#FF3300] rounded-full blur-[120px] opacity-10 pointer-events-none"></div>
+
+            <div class="w-full relative z-10 flex flex-col items-center justify-center pt-10">
+                <!-- Massive Typography Setup -->
+                <div class="hero-line gs-hero-split" data-speed="-1.5">
+                    <span class="hero-word font-monument text-outline">WE</span>
+                    <span class="hero-word font-monument ml-4 md:ml-8">DON'T</span>
+                </div>
+                <div class="hero-line gs-hero-split -mt-[4vw] md:-mt-[2vw]" data-speed="1.2">
+                    <span class="hero-word font-serif italic font-light text-white/80 lowercase">scale</span>
+                    <span class="hero-word font-monument text-outline ml-4 md:ml-8">WORK.</span>
+                </div>
+                <div class="hero-line gs-hero-split -mt-[4vw] md:-mt-[2vw]" data-speed="-1">
+                    <span class="hero-word font-monument text-outline-amber">WE</span>
+                    <span class="hero-word font-monument ml-4 md:ml-8 text-[#FF3300]">SCALE</span>
+                </div>
+                <div class="hero-line gs-hero-split -mt-[4vw] md:-mt-[2vw]" data-speed="1.5">
+                    <span class="hero-word font-monument text-outline">MINDS.</span>
+                </div>
             </div>
 
-            <div class="relative z-10 w-full max-w-[90vw] mx-auto flex flex-col justify-center h-full">
-                
-                <div class="mb-8 md:mb-12 gs-fade">
-                    <span class="font-mono text-[10px] text-[#FF3300] border border-[#FF3300]/30 bg-[#FF3300]/5 px-3 py-1.5 rounded uppercase tracking-widest">
-                        // INTELLIGENCE_INFRASTRUCTURE
-                    </span>
+            <!-- Intro Text perfectly spaced below -->
+            <div class="mt-16 max-w-2xl text-center px-4 relative z-20">
+                <p class="text-base md:text-xl font-light text-gray-300 leading-relaxed gs-reveal">
+                    Strategy, brand, design, and cinema. Orchestrated by <strong class="text-white font-bold tracking-wide">83 SYNTHETIC AGENTS.</strong> Directed by absolute human taste.
+                </p>
+                <div class="mt-8 flex justify-center gap-4 gs-reveal">
+                    <a href="#ecosystem" class="btn-strike btn-primary text-xs md:text-sm">Client Output</a>
                 </div>
-                
-                <!-- Uncompromising, massive typography. -->
-                <h1 class="text-hero font-logo text-white m-0 p-0 flex flex-col">
-                    <span class="reveal-overflow"><span class="reveal-text text-outline pb-2">WE DON'T</span></span>
-                    <span class="reveal-overflow"><span class="reveal-text pb-2">SCALE WORK.</span></span>
-                    <span class="reveal-overflow"><span class="reveal-text text-[#FF3300] pb-2">WE SCALE MINDS.</span></span>
-                </h1>
-                
-                <div class="mt-12 md:mt-16 max-w-2xl gs-fade">
-                    <p class="text-xl md:text-2xl font-light text-gray-300 leading-relaxed">
-                        Strategy, brand, design, and cinema. Orchestrated by <strong class="text-white font-bold tracking-wide">83 SYNTHETIC AGENTS.</strong> Directed by absolute human taste.
-                    </p>
-                </div>
+            </div>
 
-                <div class="mt-10 flex flex-col sm:flex-row gap-4 gs-fade w-full sm:w-auto">
-                    <a href="#command" class="btn-core px-8 py-5 font-mono text-sm font-bold text-center rounded">
-                        DEPLOY TEAM
-                    </a>
-                    <a href="#ecosystem" class="btn-ghost px-8 py-5 font-mono text-sm font-bold text-center rounded flex items-center justify-center gap-2">
-                        CLIENT FILES <i data-lucide="arrow-down" class="w-4 h-4"></i>
-                    </a>
-                </div>
-
+            <!-- Scroll indicator -->
+            <div class="absolute bottom-4 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-30 pointer-events-none hidden md:flex">
+                <div class="w-[1px] h-12 bg-gradient-to-b from-white to-transparent"></div>
             </div>
         </section>
 
-        <!-- 4. FLAWLESS MOBILE VIDEO (NATIVE SCALING) -->
-        <section class="w-full py-16 md:py-32 relative z-20">
-            <div class="max-w-[90vw] mx-auto">
-                <div class="flex items-center gap-4 mb-8 gs-fade">
-                    <div class="w-8 h-1 bg-[#FF3300]"></div>
-                    <span class="font-mono text-[10px] text-[#FF3300] tracking-widest uppercase">Visual Proof</span>
+        <!-- 2. THE CINEMATIC THEATER (FLAWLESS MOBILE SCALING) -->
+        <section class="w-full px-4 md:px-12 py-24 bg-[#050505] relative z-20 border-t border-white/10">
+            <div class="max-w-[95vw] mx-auto">
+                <div class="flex items-center gap-4 mb-8 gs-reveal">
+                    <div class="w-8 h-[2px] bg-[#FF3300]"></div>
+                    <span class="font-mono text-[10px] text-[#FF3300] tracking-widest uppercase">Visual Evidence</span>
                 </div>
                 
-                <!-- This container natively scales based on device. No clipping bugs. -->
-                <div class="w-full relative overflow-hidden rounded-2xl md:rounded-[2rem] border border-white/10 shadow-[0_0_40px_rgba(255,51,0,0.1)] gs-scale" style="aspect-ratio: 16/9;">
-                    <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover">
+                <!-- This scales natively on all devices. No GSAP pinning math to break it. -->
+                <div class="vid-wrapper shadow-[0_30px_60px_rgba(0,0,0,0.8)] gs-reveal border border-white/10">
+                    <video autoplay muted loop playsinline>
                         <source src="FSI-FILM-FINAL.mp4" type="video/mp4" />
                     </video>
                 </div>
             </div>
         </section>
 
-        <!-- 5. THE 83 AGENTS (SPLIT ARCHITECTURE) -->
-        <section class="py-24 md:py-40 relative z-20 border-t border-white/5" id="architecture">
-            <div class="max-w-[90vw] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-16 lg:gap-24">
-                
-                <!-- Left: Typography -->
-                <div class="lg:col-span-5 relative">
-                    <div class="lg:sticky lg:top-40">
-                        <span class="font-mono text-[10px] text-[#FF3300] tracking-widest block mb-4">// SYS_ARCHITECTURE</span>
-                        <h2 class="text-5xl md:text-8xl font-logo text-white leading-[0.9] mb-8 gs-fade">
-                            83 NODES.<br/><span class="text-outline">ONE MIND.</span>
-                        </h2>
-                        <p class="text-lg md:text-xl font-light text-gray-400 leading-relaxed mb-12 gs-fade">
-                            A sentient creative ecosystem. They are not templates. They possess temperaments, memory, and taste. They debate and rewrite their own logic.
-                        </p>
-                        
-                        <div class="flex gap-12 border-t border-white/10 pt-8 gs-fade">
-                            <div>
-                                <span class="text-5xl font-logo text-[#FF3300] block">0%</span>
-                                <span class="font-mono text-[10px] text-gray-500 block mt-2">Generic Output</span>
-                            </div>
-                            <div>
-                                <span class="text-5xl font-logo text-white block">&infin;</span>
-                                <span class="font-mono text-[10px] text-gray-500 block mt-2">Iterative Velocity</span>
-                            </div>
-                        </div>
-                    </div>
+        <!-- 3. HOVER-FLOOD ECOSYSTEM (THE AWWWARDS LIST) -->
+        <!-- Hovering over names changes the entire background of this section smoothly -->
+        <section id="ecosystem" class="ecosystem-container border-t border-white/10">
+            
+            <!-- Dynamic Image Backgrounds -->
+            <div class="eco-bg-wrapper">
+                <div class="absolute inset-0 bg-black z-[-1]"></div> <!-- Base dark -->
+                <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2000&auto=format&fit=crop" class="eco-bg-img" id="bg-akij" alt="Akij">
+                <img src="https://images.unsplash.com/photo-1604871000636-074fa5117945?q=80&w=2000&auto=format&fit=crop" class="eco-bg-img" id="bg-lumiere" alt="Lumiere">
+                <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=2000&auto=format&fit=crop" class="eco-bg-img" id="bg-kaiqi" alt="Kaiqi">
+                <img src="https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?q=80&w=2000&auto=format&fit=crop" class="eco-bg-img" id="bg-nexus" alt="Nexus">
+            </div>
+
+            <!-- Gradient overlay to ensure text is always readable -->
+            <div class="absolute inset-0 bg-gradient-to-b from-black/80 via-black/40 to-black/80 z-0"></div>
+
+            <div class="relative z-10 w-full max-w-[95vw] mx-auto py-32 flex flex-col items-center">
+                <div class="mb-16 gs-reveal text-center">
+                    <span class="font-mono text-[10px] text-[#FF3300] tracking-widest uppercase mb-4 block">// ECOSYSTEM_LIVE</span>
+                    <h2 class="text-xl md:text-3xl font-light text-white tracking-widest uppercase">Client Deployments</h2>
                 </div>
 
-                <!-- Right: Massive Abstract Data Renders -->
-                <div class="lg:col-span-7 flex flex-col gap-16 md:gap-32">
+                <div class="eco-list w-full flex flex-col gap-2">
                     
-                    <div class="w-full flex flex-col gap-6 trigger-element gs-fade">
-                        <div class="flex justify-between items-end border-b border-white/10 pb-4">
-                            <h3 class="font-logo text-3xl md:text-5xl text-white">56 GENERATORS</h3>
-                            <span class="font-mono text-[10px] text-[#FF3300] bg-[#FF3300]/10 px-2 py-1 rounded">ACTIVE</span>
-                        </div>
-                        <div class="img-container aspect-[4/3] rounded-2xl gs-parallax" data-speed="1.1">
-                            <img src="https://images.unsplash.com/photo-1634152962476-4b8a00e1915c?q=80&w=1500&auto=format&fit=crop" class="img-parallax" alt="Generators">
-                        </div>
-                        <p class="font-light text-gray-300 text-lg md:text-xl leading-relaxed">Every correction alters the neural pathway. They learn your brand's specific visual and tonal DNA flawlessly.</p>
+                    <div class="eco-item interact-large gs-reveal" data-target="bg-akij">
+                        AKIJ DYNAMICS
+                        <div class="eco-data">Consultancy / Analytics / Logistics</div>
                     </div>
 
-                    <div class="w-full flex flex-col gap-6 trigger-element gs-fade lg:mt-24">
-                        <div class="flex justify-between items-end border-b border-white/10 pb-4">
-                            <h3 class="font-logo text-3xl md:text-5xl text-white">27 PROCESSORS</h3>
-                            <span class="font-mono text-[10px] text-[#FF3300] bg-[#FF3300]/10 px-2 py-1 rounded">ACTIVE</span>
-                        </div>
-                        <div class="img-container aspect-[4/3] rounded-2xl gs-parallax" data-speed="1.1">
-                            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1500&auto=format&fit=crop" class="img-parallax" alt="Processors">
-                        </div>
-                        <p class="font-light text-gray-300 text-lg md:text-xl leading-relaxed">Processing vast data lakes into razor-sharp strategy, competitive analysis, and logical frameworks in milliseconds.</p>
+                    <div class="eco-item interact-large gs-reveal" data-target="bg-lumiere">
+                        LUMIERE NARRATIVES
+                        <div class="eco-data">Computational Cinema / High Fashion</div>
+                    </div>
+
+                    <div class="eco-item interact-large gs-reveal" data-target="bg-kaiqi">
+                        KAIQI & CHANGFU
+                        <div class="eco-data">Global Summits / Logistics Array</div>
+                    </div>
+
+                    <div class="eco-item interact-large gs-reveal" data-target="bg-nexus">
+                        NEXUS / GUNOBOTI
+                        <div class="eco-data">Retail Scaling / Brand Ecosystem</div>
                     </div>
 
                 </div>
             </div>
         </section>
 
-        <!-- 6. QUALITY ASSURANCE (MASSIVE TEXT TERMINAL) -->
-        <section class="py-32 md:py-48 relative z-30 border-t border-white/10 bg-[#020202]">
+        <!-- 4. ASYMMETRICAL FIREWALLS -->
+        <section class="py-32 md:py-48 bg-[#050505] relative z-20 border-t border-white/10" id="firewalls">
             <div class="max-w-[90vw] mx-auto">
-                <div class="mb-20 gs-fade">
-                    <span class="font-mono text-[10px] text-[#FF3300] tracking-widest block mb-4">// PROTOCOL_05</span>
-                    <h3 class="text-5xl md:text-8xl font-logo text-white tracking-tighter">THE FIREWALLS</h3>
-                </div>
-
-                <div class="w-full flex flex-col border-t border-white/10">
-                    
-                    <div class="py-10 md:py-16 border-b border-white/10 flex flex-col md:flex-row gap-6 md:gap-16 gs-fade">
-                        <span class="text-6xl md:text-8xl font-logo text-white/10 w-32">01</span>
-                        <div class="flex flex-col justify-center">
-                            <h4 class="text-3xl md:text-5xl font-logo text-white mb-4">STRANGERS READ IT</h4>
-                            <p class="text-lg md:text-xl font-light text-gray-400 max-w-2xl leading-relaxed">Validated for absolute clarity outside the internal brand echo chamber.</p>
-                        </div>
-                    </div>
-
-                    <div class="py-10 md:py-16 border-b border-white/10 flex flex-col md:flex-row gap-6 md:gap-16 gs-fade">
-                        <span class="text-6xl md:text-8xl font-logo text-white/10 w-32">02</span>
-                        <div class="flex flex-col justify-center">
-                            <h4 class="text-3xl md:text-5xl font-logo text-white mb-4">IT GETS A MARK</h4>
-                            <p class="text-lg md:text-xl font-light text-gray-400 max-w-2xl leading-relaxed">Rigid algorithmic scoring against core aesthetic and logic parameters.</p>
-                        </div>
-                    </div>
-
-                    <div class="py-10 md:py-16 border-b border-white/10 flex flex-col md:flex-row gap-6 md:gap-16 gs-fade">
-                        <span class="text-6xl md:text-8xl font-logo text-white/10 w-32">03</span>
-                        <div class="flex flex-col justify-center">
-                            <h4 class="text-3xl md:text-5xl font-logo text-white mb-4">THREE CAN SAY NO</h4>
-                            <p class="text-lg md:text-xl font-light text-gray-400 max-w-2xl leading-relaxed">Autonomous rejection protocol. Ruthless assassins of derivative concepts.</p>
-                        </div>
-                    </div>
-
-                    <div class="py-10 md:py-16 border-b border-white/10 flex flex-col md:flex-row gap-6 md:gap-16 gs-fade">
-                        <span class="text-6xl md:text-8xl font-logo text-white/10 w-32">04</span>
-                        <div class="flex flex-col justify-center">
-                            <h4 class="text-3xl md:text-5xl font-logo text-white mb-4">FIVE TRY TO BREAK IT</h4>
-                            <p class="text-lg md:text-xl font-light text-gray-400 max-w-2xl leading-relaxed">Hostile stress-testing to isolate logical inconsistencies and visual flaws.</p>
-                        </div>
-                    </div>
-
-                    <div class="py-10 md:py-16 border-b border-white/10 flex flex-col md:flex-row gap-6 md:gap-16 gs-fade">
-                        <span class="text-6xl md:text-8xl font-logo text-[#FF3300] w-32">05</span>
-                        <div class="flex flex-col justify-center">
-                            <h4 class="text-3xl md:text-5xl font-logo text-[#FF3300] mb-4">ONE LAST LOOK</h4>
-                            <p class="text-lg md:text-xl font-light text-gray-200 max-w-2xl leading-relaxed">The final human-led taste engine sign-off. Technology directed by art.</p>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-        </section>
-
-        <!-- 7. THE BENTO BOX ECOSYSTEM (NEW RADICAL LAYOUT) -->
-        <!-- Replacing the horizontal scroll with a massive, responsive grid of clients -->
-        <section id="ecosystem" class="py-32 md:py-48 relative z-40 border-t border-white/5 bg-black">
-            <div class="max-w-[95vw] mx-auto mb-16 gs-fade">
-                <span class="font-mono text-[10px] text-[#FF3300] tracking-widest uppercase mb-4 block">// ECOSYSTEM_LIVE</span>
-                <h3 class="text-5xl md:text-8xl font-logo text-white">CLIENT DEPLOYMENTS</h3>
-            </div>
-
-            <div class="max-w-[95vw] mx-auto bento-grid">
                 
-                <!-- BENTO: AKIJ (LARGE) -->
-                <div class="img-container bento-large rounded-2xl trigger-element group">
-                    <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2000&auto=format&fit=crop" class="img-parallax" alt="Akij Enterprise">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
-                    <div class="absolute bottom-0 left-0 w-full p-8 md:p-12">
-                        <span class="font-mono text-[#FF3300] text-[10px] font-bold uppercase mb-4 block bg-black/60 backdrop-blur-md px-3 py-1 w-fit rounded">AKIJ AVIATION | AKIJ PLUS | AKIJ PHARMA</span>
-                        <h3 class="text-4xl md:text-6xl font-logo text-white mb-4">AKIJ ENTERPRISE</h3>
-                        <p class="text-base md:text-xl text-gray-300 font-light max-w-2xl">Unified operational AI architectures managing aviation logistics, pharmaceutical distribution, and retail sectors.</p>
-                    </div>
+                <div class="mb-24 md:mb-32 max-w-2xl gs-reveal">
+                    <span class="font-mono text-[10px] text-[#FF3300] tracking-widest uppercase mb-4 block">// PROTOCOL_05</span>
+                    <h2 class="text-[clamp(3.5rem,8vw,8rem)] font-monument text-white leading-none mb-6">THE FIREWALLS</h2>
+                    <p class="text-lg md:text-xl text-gray-400 font-light leading-relaxed">Every piece of output is ruthlessly vetted. Three autonomous rejection protocols. Two absolute human taste engines.</p>
                 </div>
 
-                <!-- BENTO: HEALTHCARE (TALL) -->
-                <div class="img-container bento-tall rounded-2xl trigger-element group">
-                    <img src="https://images.unsplash.com/photo-1633458064402-d9229f34a02c?q=80&w=1000&auto=format&fit=crop" class="img-parallax" alt="Healthcare">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
-                    <div class="absolute bottom-0 left-0 w-full p-6 md:p-8">
-                        <span class="font-mono text-white text-[10px] font-bold uppercase mb-4 block bg-white/10 backdrop-blur-md px-3 py-1 w-fit rounded">GMSC CLINIC | BIMC</span>
-                        <h3 class="text-3xl md:text-4xl font-logo text-white mb-4">HEALTHCARE AI</h3>
-                        <p class="text-sm md:text-base text-gray-300 font-light">Predictive diagnostics and clinical workflow automation.</p>
+                <!-- Diagonal / Asymmetrical Layout -->
+                <div class="flex flex-col gap-12 md:gap-24 relative">
+                    
+                    <div class="w-full md:w-[60%] firewall-card gs-reveal">
+                        <span class="firewall-num">01</span>
+                        <h3 class="text-3xl md:text-4xl font-monument text-white mb-4">STRANGERS READ IT</h3>
+                        <p class="text-base text-gray-400 font-light leading-relaxed">Validated for absolute clarity outside the internal brand echo chamber.</p>
                     </div>
+
+                    <div class="w-full md:w-[60%] md:ml-auto firewall-card gs-reveal">
+                        <span class="firewall-num">02</span>
+                        <h3 class="text-3xl md:text-4xl font-monument text-white mb-4">IT GETS A MARK</h3>
+                        <p class="text-base text-gray-400 font-light leading-relaxed">Rigid algorithmic scoring against core aesthetic and logic parameters.</p>
+                    </div>
+
+                    <div class="w-full md:w-[60%] md:ml-[10%] firewall-card gs-reveal">
+                        <span class="firewall-num">03</span>
+                        <h3 class="text-3xl md:text-4xl font-monument text-white mb-4">THREE CAN SAY NO</h3>
+                        <p class="text-base text-gray-400 font-light leading-relaxed">Autonomous rejection protocol. Ruthless assassins of derivative concepts.</p>
+                    </div>
+
+                    <div class="w-full md:w-[60%] md:ml-auto md:mr-[10%] firewall-card gs-reveal">
+                        <span class="firewall-num">04</span>
+                        <h3 class="text-3xl md:text-4xl font-monument text-white mb-4">FIVE TRY TO BREAK IT</h3>
+                        <p class="text-base text-gray-400 font-light leading-relaxed">Hostile stress-testing to isolate logical inconsistencies and visual flaws.</p>
+                    </div>
+
+                    <div class="w-full md:w-[70%] mx-auto firewall-card border-[#FF3300]/30 bg-[#FF3300]/5 gs-reveal">
+                        <span class="firewall-num text-[#FF3300]/20">05</span>
+                        <h3 class="text-3xl md:text-5xl font-monument text-[#FF3300] mb-4">ONE LAST LOOK</h3>
+                        <p class="text-lg text-gray-300 font-light leading-relaxed">The final human-led taste engine sign-off. Technology directed by art.</p>
+                    </div>
+
                 </div>
 
-                <!-- BENTO: LUMIERE (TALL) -->
-                <div class="img-container bento-tall rounded-2xl trigger-element group">
-                    <img src="https://images.unsplash.com/photo-1604871000636-074fa5117945?q=80&w=1000&auto=format&fit=crop" class="img-parallax" alt="Lumiere">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
-                    <div class="absolute bottom-0 left-0 w-full p-6 md:p-8">
-                        <span class="font-mono text-white text-[10px] font-bold uppercase mb-4 block bg-white/10 backdrop-blur-md px-3 py-1 w-fit rounded">COMPUTATIONAL CINEMA</span>
-                        <h3 class="text-3xl md:text-4xl font-logo text-white mb-4">LUMIERE NARRATIVES</h3>
-                        <p class="text-sm md:text-base text-gray-300 font-light">Film-inspired AI pipeline executing bespoke mist transitions.</p>
-                    </div>
-                </div>
-
-                <!-- BENTO: RETAIL (WIDE) -->
-                <div class="img-container bento-wide rounded-2xl trigger-element group">
-                    <img src="https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?q=80&w=2000&auto=format&fit=crop" class="img-parallax" alt="Retail">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
-                    <div class="absolute bottom-0 left-0 w-full p-6 md:p-10">
-                        <span class="font-mono text-[#FF3300] text-[10px] font-bold uppercase mb-4 block bg-[#FF3300]/10 backdrop-blur-md px-3 py-1 w-fit rounded">NEXUS | GUNOBOTI</span>
-                        <h3 class="text-3xl md:text-5xl font-logo text-white mb-4">RETAIL LOGISTICS</h3>
-                        <p class="text-sm md:text-lg text-gray-300 font-light max-w-xl">Algorithmic brand scaling and inventory logistics architecture.</p>
-                    </div>
-                </div>
-
-                <!-- BENTO: SUMMITS (SMALL) -->
-                <div class="img-container bento-small rounded-2xl trigger-element group">
-                    <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=1000&auto=format&fit=crop" class="img-parallax" alt="Summits">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent"></div>
-                    <div class="absolute bottom-0 left-0 w-full p-6">
-                        <span class="font-mono text-white text-[10px] font-bold uppercase mb-2 block">GLOBAL SUMMITS</span>
-                        <h3 class="text-2xl font-logo text-white mb-2">KAIQI</h3>
-                        <p class="text-xs text-gray-400 font-light">Dynamic scheduling routing.</p>
-                    </div>
-                </div>
-
-                <!-- BENTO: EXHIBITIONS (SMALL) -->
-                <div class="img-container bento-small rounded-2xl trigger-element group">
-                    <img src="https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?q=80&w=1000&auto=format&fit=crop" class="img-parallax" alt="Chuangfu">
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-black/70 to-transparent"></div>
-                    <div class="absolute bottom-0 left-0 w-full p-6">
-                        <span class="font-mono text-white text-[10px] font-bold uppercase mb-2 block">EXHIBITIONS</span>
-                        <h3 class="text-2xl font-logo text-white mb-2">CHUANGFU</h3>
-                        <p class="text-xs text-gray-400 font-light">Autonomous VIP coordination.</p>
-                    </div>
-                </div>
-
-            </div>
-
-            <div class="max-w-[95vw] mx-auto mt-12 flex justify-center">
-                <a href="http://www.flowstateimpact.com/links" target="_blank" class="btn-primary px-10 py-5 font-mono text-xs font-bold uppercase rounded-lg">
-                    [ ACCESS VISUAL ARCHIVES ]
-                </a>
             </div>
         </section>
 
-        <!-- 8. THE HUMAN LAYER (STICKY STACKING DATA CARDS) -->
-        <section class="py-32 md:py-48 bg-[#020202] relative z-40 border-t border-white/5">
-            <div class="max-w-[90vw] mx-auto mb-20 text-center gs-fade">
-                <span class="font-mono text-[#FF3300] text-[10px] uppercase block mb-4">// ARCHITECTURE_DIRECTORS</span>
-                <h2 class="text-5xl md:text-8xl font-logo text-white leading-none">BIOMETRIC LAYER</h2>
-                <p class="mt-6 text-lg text-gray-400 font-light max-w-2xl mx-auto">Intelligence scaled by machines. Directed by absolute human taste. No generic faces. Pure data representation.</p>
+        <!-- 5. THE 83 AGENTS (MASSIVE SPLIT) -->
+        <section class="py-32 md:py-48 bg-[#020202] relative z-20 border-t border-white/10">
+            <div class="max-w-[90vw] mx-auto grid grid-cols-1 lg:grid-cols-2 gap-16 lg:gap-24 items-center">
+                
+                <div class="gs-reveal">
+                    <div class="flex items-center gap-4 mb-6">
+                        <i data-lucide="cpu" class="w-6 h-6 text-[#FF3300]"></i>
+                        <span class="font-mono text-[10px] text-[#FF3300] tracking-widest uppercase">SYS_ARCHITECTURE</span>
+                    </div>
+                    <h2 class="text-[clamp(4rem,8vw,8rem)] font-monument text-white leading-none mb-8">
+                        83 NODES.<br/><span class="text-outline">ONE MIND.</span>
+                    </h2>
+                    <p class="text-xl font-light text-gray-400 leading-relaxed mb-12">
+                        A sentient creative ecosystem. <strong class="text-white">56 bespoke generators. 27 analytical processors.</strong> They learn your brand's specific visual and tonal DNA flawlessly.
+                    </p>
+                    <div class="flex gap-12 border-t border-white/10 pt-8">
+                        <div>
+                            <span class="text-5xl font-monument text-[#FF3300] block">0%</span>
+                            <span class="font-mono text-[10px] text-gray-500 uppercase tracking-widest block mt-2">Generic Output</span>
+                        </div>
+                        <div>
+                            <span class="text-5xl font-monument text-white block">&infin;</span>
+                            <span class="font-mono text-[10px] text-gray-500 uppercase tracking-widest block mt-2">Iterative Velocity</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Abstract 3D Render to represent the agents visually -->
+                <div class="w-full aspect-[4/5] rounded-2xl overflow-hidden relative border border-white/10 gs-reveal">
+                    <img src="https://images.unsplash.com/photo-1634152962476-4b8a00e1915c?q=80&w=1500&auto=format&fit=crop" class="w-full h-full object-cover filter grayscale contrast-125" alt="Agent Architecture">
+                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- 6. THE HUMAN LAYER (ABSTRACT DATA CARDS) -->
+        <section class="py-32 md:py-48 bg-[#050505] relative z-20 border-t border-white/10">
+            <div class="max-w-[90vw] mx-auto mb-20 text-center md:text-left gs-reveal">
+                <span class="font-mono text-[#FF3300] text-[10px] tracking-widest uppercase mb-4 block">// ARCHITECTURE_DIRECTORS</span>
+                <h2 class="text-5xl md:text-7xl font-monument text-white leading-none">BIOMETRIC LAYER</h2>
+                <p class="mt-6 text-lg text-gray-400 font-light max-w-2xl">Intelligence scaled by machines. Directed by absolute human taste. Pure data representation.</p>
             </div>
             
-            <!-- Stacking Mechanism via CSS Sticky -->
-            <div class="team-stack-container max-w-5xl mx-auto px-4">
+            <div class="max-w-[90vw] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                 
-                <!-- ASIF FARID -->
-                <div class="team-card bg-[#050505] flex flex-col md:flex-row">
-                    <div class="w-full md:w-1/2 h-64 md:h-full img-container">
-                        <img src="https://images.unsplash.com/photo-1633458064402-d9229f34a02c?q=80&w=1500&auto=format&fit=crop" class="img-parallax" alt="Data">
-                    </div>
-                    <div class="w-full md:w-1/2 p-8 md:p-16 flex flex-col justify-center">
-                        <div class="flex items-center gap-4 mb-8">
-                            <i data-lucide="fingerprint" class="w-10 h-10 text-[#FF3300]"></i>
-                            <span class="font-mono text-[10px] text-gray-500 border border-gray-500/30 px-2 py-1 rounded">VERIFIED</span>
+                {[
+                    { n: "ASIF FARID", r: "MD & CTO", img: "https://images.unsplash.com/photo-1633458064402-d9229f34a02c?q=80&w=1000&auto=format&fit=crop" },
+                    { n: "NAFIA ISLAM FARIA", r: "CEO", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop" },
+                    { n: "SARWAR JAHAN", r: "CMO", img: "https://images.unsplash.com/photo-1604871000636-074fa5117945?q=80&w=1000&auto=format&fit=crop" },
+                    { n: "MUAZ RAKIN", r: "CSO & CFO", img: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1000&auto=format&fit=crop" }
+                ].map((person) => `
+                <div class="bg-[#020202] border border-white/10 p-6 md:p-8 rounded-2xl group interact-large gs-reveal flex flex-col justify-between aspect-[3/4] relative overflow-hidden hover:border-[#FF3300]/50 transition-colors">
+                    <div>
+                        <div class="flex justify-between items-center mb-6">
+                            <i data-lucide="fingerprint" class="w-8 h-8 text-white/20 group-hover:text-[#FF3300] transition-colors duration-500"></i>
+                            <span class="font-mono text-[10px] text-gray-500 group-hover:text-white transition-colors">VERIFIED</span>
                         </div>
-                        <span class="font-mono text-[10px] text-[#FF3300] mb-2 block">ID: ASIF // 01</span>
-                        <h4 class="text-4xl md:text-6xl font-logo text-white mb-4">ASIF FARID</h4>
-                        <p class="font-mono text-sm text-gray-400 border-t border-white/10 pt-4">MD & CTO</p>
+                        <div class="w-full h-32 md:h-40 overflow-hidden rounded-lg border border-white/5">
+                            <img src="${person.img}" class="w-full h-full object-cover filter grayscale contrast-150 opacity-40 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-500" alt="Data">
+                        </div>
+                    </div>
+                    <div class="mt-8">
+                        <span class="font-mono text-[10px] text-[#FF3300] mb-2 block">ID: ${person.n.split(' ')[0]}</span>
+                        <h4 class="text-2xl md:text-3xl font-monument text-white group-hover:text-[#FF3300] transition-colors">${person.n}</h4>
+                        <p class="font-mono text-[10px] text-gray-400 mt-2 uppercase tracking-widest">${person.r}</p>
                     </div>
                 </div>
-
-                <!-- NAFIA ISLAM FARIA -->
-                <div class="team-card bg-[#080808] flex flex-col md:flex-row-reverse">
-                    <div class="w-full md:w-1/2 h-64 md:h-full img-container">
-                        <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1500&auto=format&fit=crop" class="img-parallax" alt="Data">
-                    </div>
-                    <div class="w-full md:w-1/2 p-8 md:p-16 flex flex-col justify-center">
-                        <div class="flex items-center gap-4 mb-8">
-                            <i data-lucide="fingerprint" class="w-10 h-10 text-[#FF3300]"></i>
-                            <span class="font-mono text-[10px] text-gray-500 border border-gray-500/30 px-2 py-1 rounded">VERIFIED</span>
-                        </div>
-                        <span class="font-mono text-[10px] text-[#FF3300] mb-2 block">ID: NAFIA // 02</span>
-                        <h4 class="text-4xl md:text-6xl font-logo text-white mb-4">NAFIA ISLAM</h4>
-                        <p class="font-mono text-sm text-gray-400 border-t border-white/10 pt-4">CEO</p>
-                    </div>
-                </div>
-
-                <!-- SARWAR JAHAN -->
-                <div class="team-card bg-[#0a0a0a] flex flex-col md:flex-row">
-                    <div class="w-full md:w-1/2 h-64 md:h-full img-container">
-                        <img src="https://images.unsplash.com/photo-1604871000636-074fa5117945?q=80&w=1500&auto=format&fit=crop" class="img-parallax" alt="Data">
-                    </div>
-                    <div class="w-full md:w-1/2 p-8 md:p-16 flex flex-col justify-center">
-                        <div class="flex items-center gap-4 mb-8">
-                            <i data-lucide="fingerprint" class="w-10 h-10 text-[#FF3300]"></i>
-                            <span class="font-mono text-[10px] text-gray-500 border border-gray-500/30 px-2 py-1 rounded">VERIFIED</span>
-                        </div>
-                        <span class="font-mono text-[10px] text-[#FF3300] mb-2 block">ID: SARWAR // 03</span>
-                        <h4 class="text-4xl md:text-6xl font-logo text-white mb-4">SARWAR JAHAN</h4>
-                        <p class="font-mono text-sm text-gray-400 border-t border-white/10 pt-4">CMO</p>
-                    </div>
-                </div>
-
-                <!-- MUAZ RAKIN -->
-                <div class="team-card bg-[#0d0d0d] flex flex-col md:flex-row-reverse">
-                    <div class="w-full md:w-1/2 h-64 md:h-full img-container">
-                        <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1500&auto=format&fit=crop" class="img-parallax" alt="Data">
-                    </div>
-                    <div class="w-full md:w-1/2 p-8 md:p-16 flex flex-col justify-center">
-                        <div class="flex items-center gap-4 mb-8">
-                            <i data-lucide="fingerprint" class="w-10 h-10 text-[#FF3300]"></i>
-                            <span class="font-mono text-[10px] text-gray-500 border border-gray-500/30 px-2 py-1 rounded">VERIFIED</span>
-                        </div>
-                        <span class="font-mono text-[10px] text-[#FF3300] mb-2 block">ID: MUAZ // 04</span>
-                        <h4 class="text-4xl md:text-6xl font-logo text-white mb-4">MUAZ RAKIN</h4>
-                        <p class="font-mono text-sm text-gray-400 border-t border-white/10 pt-4">CSO & CFO</p>
-                    </div>
-                </div>
+                `).join('')}
 
             </div>
         </section>
 
-        <!-- 9. COMMAND TERMINAL -->
-        <section id="command" class="py-32 md:py-48 px-4 md:px-12 bg-[#050505] relative z-40 border-t border-[#FF3300]/20">
+        <!-- 7. COMMAND TERMINAL (FOOTER) -->
+        <section id="command" class="py-32 md:py-48 bg-[#000] relative z-40 border-t border-[#FF3300]/30">
             <div class="max-w-[90vw] mx-auto flex flex-col lg:flex-row justify-between gap-16">
                 
-                <div class="w-full lg:w-1/2 gs-fade">
-                    <h2 class="text-[clamp(4rem,9vw,10rem)] font-logo text-white mb-6 leading-[0.9]">
+                <div class="w-full lg:w-1/2 gs-reveal">
+                    <h2 class="text-[clamp(4rem,9vw,10rem)] font-monument text-white mb-8 leading-[0.9]">
                         COMMAND<br/><span class="text-outline">THE SWARM</span>
                     </h2>
-                    <p class="text-lg md:text-2xl text-gray-400 font-light max-w-xl leading-relaxed">Stop hiring isolated roles. Plug an entire autonomous department directly into your business infrastructure today.</p>
+                    <p class="text-xl md:text-2xl text-gray-400 font-light max-w-xl leading-relaxed">Stop hiring isolated roles. Plug an entire autonomous department directly into your business infrastructure today.</p>
                 </div>
                 
-                <div class="w-full lg:w-1/2 flex flex-col gap-6 gs-fade">
-                    <a href="mailto:asif@flowstateimpact.com" class="glass-panel p-8 md:p-12 rounded-2xl flex flex-col md:flex-row justify-between md:items-center hover:border-[#FF3300] transition-colors duration-300">
-                        <span class="font-mono text-[#FF3300] text-[10px] uppercase tracking-widest mb-4 md:mb-0">INIT_EMAIL</span>
-                        <span class="text-xl md:text-3xl font-logo text-white">asif@flowstateimpact.com</span>
+                <div class="w-full lg:w-1/2 flex flex-col gap-6 gs-reveal">
+                    <a href="mailto:asif@flowstateimpact.com" class="bg-[#050505] border border-white/10 p-8 md:p-12 rounded-2xl flex flex-col md:flex-row justify-between md:items-center group hover:border-[#FF3300] transition-colors duration-500 interact-large shadow-2xl relative overflow-hidden">
+                        <!-- Glow effect -->
+                        <div class="absolute top-0 right-0 w-40 h-40 bg-[#FF3300]/20 rounded-full blur-3xl group-hover:bg-[#FF3300]/40 transition-colors"></div>
+                        <span class="font-mono text-[#FF3300] text-[10px] uppercase tracking-widest mb-4 md:mb-0 relative z-10">INIT_EMAIL</span>
+                        <span class="text-xl md:text-3xl font-monument text-white group-hover:text-[#FF3300] transition-colors relative z-10 truncate">asif@flowstateimpact.com</span>
                     </a>
                     
-                    <div class="glass-panel p-8 md:p-12 rounded-2xl flex flex-col justify-between">
+                    <div class="bg-[#050505] border border-white/10 p-8 md:p-12 rounded-2xl flex flex-col justify-between shadow-2xl">
                         <span class="font-mono text-gray-500 text-[10px] uppercase tracking-widest mb-8">TELECOM_RELAY</span>
-                        <div class="flex flex-col gap-2">
-                            <span class="text-3xl md:text-5xl font-logo text-white hover:text-[#FF3300] transition-colors w-fit">+88 01616 119242</span>
-                            <span class="text-3xl md:text-5xl font-logo text-gray-600 hover:text-white transition-colors w-fit">+88 01627 935350</span>
+                        <div class="flex flex-col gap-4">
+                            <span class="text-3xl md:text-5xl font-monument text-white hover:text-[#FF3300] transition-colors w-fit interact-large">+88 01616 119242</span>
+                            <span class="text-3xl md:text-5xl font-monument text-gray-600 hover:text-white transition-colors w-fit interact-large">+88 01627 935350</span>
                         </div>
                     </div>
                 </div>
@@ -517,7 +424,7 @@
         </section>
 
         <!-- FOOTER -->
-        <footer class="py-8 px-6 md:px-12 bg-black flex flex-col md:flex-row justify-between items-center font-mono text-[10px] text-gray-600 uppercase border-t border-white/10 relative z-40">
+        <footer class="py-8 px-6 md:px-12 bg-black flex flex-col md:flex-row justify-between items-center font-mono text-[10px] text-gray-600 uppercase tracking-widest border-t border-white/10 relative z-40">
             <span class="mb-4 md:mb-0">FLOWSTÃTE IMPACT © 2026 // ALL SYSTEMS ONLINE</span>
             <span>DHAKA_HUB // LONDON_HUB</span>
         </footer>
@@ -528,29 +435,23 @@
     <script>
         lucide.createIcons();
 
-        // 1. MOBILE AUTO-HOVER (Intersection Observer)
-        // Eliminates the need for manual hovering on touch devices
-        const observerOptions = { root: null, rootMargin: '-20% 0px -20% 0px', threshold: 0 };
-        const autoHoverObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) { entry.target.classList.add('is-in-view'); } 
-                else { entry.target.classList.remove('is-in-view'); }
+        // 1. FLUID GLASS CURSOR (Desktop Only)
+        if (window.matchMedia("(pointer: fine)").matches) {
+            const cursorGlass = document.getElementById('cursor-glass');
+            const xSetGlass = gsap.quickTo(cursorGlass, "x", {duration: 0.4, ease: "power3.out"});
+            const ySetGlass = gsap.quickTo(cursorGlass, "y", {duration: 0.4, ease: "power3.out"});
+
+            window.addEventListener("mousemove", e => {
+                xSetGlass(e.clientX); ySetGlass(e.clientY);
             });
-        }, observerOptions);
 
-        document.querySelectorAll('.trigger-element').forEach(el => {
-            autoHoverObserver.observe(el);
-        });
-
-        // 2. HUD COORDINATE TRACKER
-        const yTracker = document.getElementById('y-tracker');
-        if(yTracker) {
-            window.addEventListener('scroll', () => {
-                yTracker.innerText = Math.floor(window.scrollY).toString().padStart(4, '0');
+            document.querySelectorAll('.interact-large').forEach(el => {
+                el.addEventListener('mouseenter', () => document.body.classList.add('hover-large'));
+                el.addEventListener('mouseleave', () => document.body.classList.remove('hover-large'));
             });
         }
 
-        // 3. LENIS SMOOTH SCROLL
+        // 2. LENIS SMOOTH SCROLL
         const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
         function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
         requestAnimationFrame(raf);
@@ -560,28 +461,53 @@
         gsap.ticker.add((time) => { lenis.raf(time * 1000) });
         gsap.ticker.lagSmoothing(0);
 
-        // 4. GSAP ANIMATIONS
+        // 3. GSAP ANIMATIONS
         
-        // Text Mask Reveals
-        gsap.fromTo(".reveal-text", { y: "115%" }, { y: "0%", duration: 1.2, stagger: 0.1, ease: "power4.out", delay: 0.2 });
+        // Kinetic Hero Split (Scroll Parallax)
+        gsap.utils.toArray('.gs-hero-split').forEach(el => {
+            const speed = el.getAttribute('data-speed') || 1;
+            gsap.to(el, {
+                xPercent: 20 * speed,
+                ease: "none",
+                scrollTrigger: { trigger: "#hero", start: "top top", end: "bottom top", scrub: true }
+            });
+        });
 
         // General Fades
-        gsap.utils.toArray('.gs-fade').forEach(el => {
-            gsap.fromTo(el, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 85%" } });
+        gsap.utils.toArray('.gs-reveal').forEach(el => {
+            gsap.fromTo(el, 
+                { y: 50, opacity: 0 }, 
+                { y: 0, opacity: 1, duration: 1.2, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 85%" } }
+            );
         });
 
-        // Image Parallax Effect
-        gsap.utils.toArray('.gs-parallax').forEach(el => {
-            const img = el.querySelector('.img-parallax');
-            if(img) {
-                gsap.to(img, { yPercent: 20, ease: "none", scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: true } });
-            }
+        // 4. ECOSYSTEM HOVER FLOOD BACKGROUND
+        // Hovering over names changes the background smoothly
+        const ecoItems = document.querySelectorAll('.eco-item');
+        const ecoBgs = document.querySelectorAll('.eco-bg-img');
+
+        ecoItems.forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                // Remove active from all
+                ecoBgs.forEach(bg => bg.classList.remove('active'));
+                ecoItems.forEach(el => el.style.opacity = '0.3');
+                
+                // Add active to target
+                const targetId = item.getAttribute('data-target');
+                document.getElementById(targetId).classList.add('active');
+                item.style.opacity = '1';
+                item.style.color = '#FF3300';
+            });
+
+            item.addEventListener('mouseleave', () => {
+                item.style.color = '';
+            });
         });
 
-        // Video Hardware Scaling Effect (Native Aspect Ratio protects mobile bounds)
-        gsap.to(".video-box", {
-            scale: 1, borderColor: "rgba(255,51,0,0.3)",
-            scrollTrigger: { trigger: ".video-box", start: "top 90%", end: "top 20%", scrub: true }
+        // Reset when leaving container
+        document.querySelector('.ecosystem-container').addEventListener('mouseleave', () => {
+            ecoBgs.forEach(bg => bg.classList.remove('active'));
+            ecoItems.forEach(el => el.style.opacity = '');
         });
 
     </script>
