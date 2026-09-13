@@ -5,12 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>FLOWSTÃTE IMPACT | INTELLIGENCE INFRASTRUCTURE</title>
     
-    <!-- Elite Typography: Bold Montserrat (Logo) + Space Grotesk (Body) + JetBrains (Code) -->
+    <!-- Elite Sci-Fi Typography -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Space+Grotesk:wght@300;400;500;700&family=JetBrains+Mono:wght@400;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@900&family=Space+Grotesk:wght@300;400;500;700&family=JetBrains+Mono:wght@100;400;700;900&display=swap" rel="stylesheet">
     
-    <!-- Engines -->
+    <!-- Physics & UI Engines -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
@@ -18,7 +18,7 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     
     <style>
-        :root { --amber: #FF4400; --bg: #050505; --hud-border: rgba(255, 68, 0, 0.4); }
+        :root { --amber: #FF4400; --bg: #030303; }
         
         body, html { 
             background-color: var(--bg); color: #fff; 
@@ -27,344 +27,402 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* 1. SCROLL PHYSICS */
+        @media (hover: hover) and (pointer: fine) { body { cursor: none; } }
+
+        /* Typography */
+        .font-logo { font-family: 'Montserrat', sans-serif; text-transform: uppercase; letter-spacing: -0.02em; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; text-transform: uppercase; }
+        .text-hero { font-size: clamp(3.5rem, 11vw, 12rem); line-height: 0.9; }
+
+        /* Smooth Scroll */
         html.lenis { height: auto; }
         .lenis.lenis-smooth { scroll-behavior: auto; }
         .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
         .lenis.lenis-stopped { overflow: hidden; }
 
-        /* 2. TYPOGRAPHY */
-        .font-logo { font-family: 'Montserrat', sans-serif; text-transform: uppercase; }
-        .font-mono { font-family: 'JetBrains Mono', monospace; text-transform: uppercase; letter-spacing: 0.05em; }
-        .text-hero { font-size: clamp(3.5rem, 10vw, 12rem); line-height: 0.9; letter-spacing: -0.02em; }
-        .text-outline { color: transparent; -webkit-text-stroke: 1px rgba(255,255,255,0.4); }
-
-        /* 3. SCI-FI TECH TEXTURES (Fixed Backgrounds) */
-        #global-textures { position: fixed; inset: 0; z-index: -1; pointer-events: none; }
-        
-        /* High-End Circuit Grid */
-        .tech-grid {
-            position: absolute; inset: 0; opacity: 0.2;
+        /* -------------------------------------
+           HIGH-END TEXTURES & BACKGROUNDS
+        -------------------------------------- */
+        .bg-grid {
+            position: fixed; inset: 0; z-index: -2; opacity: 0.15; pointer-events: none;
             background-image: 
-                radial-gradient(rgba(255, 255, 255, 0.15) 1px, transparent 1px),
-                linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
-                linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
-            background-size: 40px 40px, 120px 120px, 120px 120px;
-            background-position: 0 0, 20px 20px, 20px 20px;
+                linear-gradient(to right, rgba(255,255,255,0.05) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(255,255,255,0.05) 1px, transparent 1px);
+            background-size: 50px 50px;
+            mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
+            -webkit-mask-image: radial-gradient(circle at center, black 40%, transparent 100%);
         }
-
-        /* Ambient Glows */
-        .core-glow {
-            position: absolute; top: -20vh; left: 10vw; width: 80vw; height: 60vh;
-            background: radial-gradient(ellipse at center, rgba(255,68,0,0.12) 0%, transparent 60%);
-            filter: blur(60px);
-        }
-
-        /* Tactile Grain */
-        .cinematic-grain {
-            position: absolute; inset: 0; opacity: 0.05; mix-blend-mode: overlay;
+        .bg-grain {
+            position: fixed; inset: 0; z-index: 9999; pointer-events: none; opacity: 0.05; mix-blend-mode: overlay;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
         }
-
-        /* 4. ONE-TIME LASER SCANNER */
-        .scanner-line {
-            position: absolute; top: -10px; left: 0; width: 100%; height: 2px;
-            background: var(--amber); box-shadow: 0 0 20px 5px rgba(255,68,0,0.5);
-            animation: scanOnce 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards; opacity: 0; z-index: 50; pointer-events: none;
-        }
-        @keyframes scanOnce { 0% { top: -10px; opacity: 1; } 90% { top: 100%; opacity: 1; } 100% { top: 100%; opacity: 0; } }
-
-        /* 5. UI COMPONENTS & CARDS */
-        .glass-hud { background: rgba(5,5,5,0.6); backdrop-filter: blur(24px); border: 1px solid rgba(255,255,255,0.08); box-shadow: 0 30px 60px rgba(0,0,0,0.6); border-radius: 20px; }
-        .border-amber-l { border-left: 3px solid var(--amber); }
-
-        .img-wrap { overflow: hidden; position: relative; background: #000; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); }
-        .img-parallax { width: 100%; height: 130%; object-fit: cover; position: absolute; top: -15%; left: 0; filter: grayscale(100%) contrast(1.2) brightness(0.6); transition: filter 0.6s ease, transform 0.8s ease; will-change: transform; }
         
-        /* Mobile Auto-Hover Classes + Desktop Hover */
-        .active-state .img-parallax, .interactive-card:hover .img-parallax { filter: grayscale(0%) contrast(1.1) brightness(0.9); transform: scale(1.05); }
-        .active-state .reveal-ui, .interactive-card:hover .reveal-ui { border-color: var(--amber); background: rgba(255,68,0,0.05); }
+        #hero-canvas { position: absolute; inset: 0; width: 100%; height: 100%; z-index: 0; opacity: 0.8; mix-blend-mode: screen; pointer-events: none; }
+        .hero-vignette { position: absolute; inset: 0; z-index: 1; background: radial-gradient(circle at center, transparent 0%, #030303 100%); pointer-events: none; }
+
+        /* -------------------------------------
+           TARGETING CROSSHAIR
+        -------------------------------------- */
+        #cursor-dot { position: fixed; width: 4px; height: 4px; background: var(--amber); border-radius: 50%; pointer-events: none; z-index: 100000; transform: translate(-50%, -50%); transition: opacity 0.2s; box-shadow: 0 0 10px var(--amber); }
+        #cursor-cross { position: fixed; width: 40px; height: 40px; pointer-events: none; z-index: 99999; transform: translate(-50%, -50%); transition: width 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), height 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); display: flex; align-items: center; justify-content: center; }
+        #cursor-cross::before, #cursor-cross::after { content: ''; position: absolute; background: var(--amber); opacity: 0.5; }
+        #cursor-cross::before { width: 100%; height: 1px; }
+        #cursor-cross::after { width: 1px; height: 100%; }
+        .cursor-ring { position: absolute; inset: 0; border: 1px solid rgba(255, 68, 0, 0.3); border-radius: 50%; animation: spin 8s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
         
-        /* 6. NATIVE STICKY VIDEO (Bug-Free Expansion) */
+        body.hover-active #cursor-cross { width: 80px; height: 80px; }
+        body.hover-active #cursor-cross .cursor-ring { border-color: var(--amber); background: rgba(255,68,0,0.05); }
+        body.hover-active #cursor-dot { opacity: 0; }
+        @media (hover: none) { #cursor-dot, #cursor-cross { display: none; } }
+
+        /* -------------------------------------
+           UI ELEMENTS & CONTAINERS
+        -------------------------------------- */
+        .glass-hud { background: rgba(10,10,10,0.8); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.05); box-shadow: 0 20px 40px rgba(0,0,0,0.5); }
+        .border-amber-l { border-left: 2px solid var(--amber); }
+
+        .btn-primary { background: var(--amber); color: #000; transition: all 0.3s; position: relative; overflow: hidden; }
+        .btn-primary:hover { background: #fff; box-shadow: 0 0 20px rgba(255,255,255,0.4); }
+        .btn-secondary { background: rgba(255,255,255,0.05); color: #fff; border: 1px solid rgba(255,255,255,0.2); transition: all 0.3s; }
+        .btn-secondary:hover { background: rgba(255,68,0,0.1); border-color: var(--amber); color: var(--amber); }
+
+        /* Cinematic Images */
+        .img-wrap { overflow: hidden; position: relative; background: #050505; border-radius: 16px; border: 1px solid rgba(255,255,255,0.05); }
+        .img-parallax { width: 100%; height: 130%; object-fit: cover; position: absolute; top: -15%; left: 0; filter: grayscale(100%) contrast(1.2) brightness(0.6); transition: filter 0.8s ease, transform 1s ease; will-change: transform; }
+        
+        /* Mobile Auto-Hover logic */
+        .active-state .img-parallax, .interact-explore:hover .img-parallax { filter: grayscale(0%) contrast(1.1) brightness(0.9); transform: scale(1.05); }
+
+        /* -------------------------------------
+           VIDEO SCALING THEATER
+        -------------------------------------- */
         .theater-wrapper { position: relative; height: 200svh; background: #000; }
         .theater-sticky { position: sticky; top: 0; height: 100svh; width: 100vw; display: flex; align-items: center; justify-content: center; overflow: hidden; }
-        .video-mask { width: 90vw; height: 50vh; border-radius: 24px; overflow: hidden; position: relative; transition: width 0.1s, height 0.1s, border-radius 0.1s; will-change: width, height; }
-        .video-mask video { width: 100%; height: 100%; object-fit: cover; }
+        
+        .video-box { width: 90vw; border-radius: 24px; overflow: hidden; position: relative; transform-origin: center; will-change: width, height, border-radius; box-shadow: 0 0 50px rgba(255,68,0,0.1); }
+        @media (max-width: 767px) { .video-box { aspect-ratio: 16/9; } }
+        @media (min-width: 768px) { .video-box { aspect-ratio: 21/9; } }
+        .video-box video { width: 100%; height: 100%; object-fit: cover; }
 
-        /* 7. HORIZONTAL SCROLL ENGINE */
+        /* -------------------------------------
+           SCROLL MECHANICS
+        -------------------------------------- */
+        /* Vertical Snapping */
+        .snap-y-container { height: 100svh; width: 100%; overflow-y: auto; scroll-snap-type: y mandatory; scrollbar-width: none; -ms-overflow-style: none; }
+        .snap-y-container::-webkit-scrollbar { display: none; }
+        .snap-card { height: 100%; width: 100%; scroll-snap-align: center; display: flex; align-items: center; justify-content: center; position: relative; }
+
+        /* Horizontal Scroll */
         .h-scroll-container { display: flex; width: max-content; height: 100svh; flex-wrap: nowrap; }
         .h-panel { width: 100vw; height: 100svh; position: relative; display: flex; align-items: center; justify-content: center; padding: 2rem; }
-        @media (min-width: 768px) { .h-panel { padding: 5rem; } }
-
-        /* Buttons */
-        .btn-primary { background: var(--amber); color: #000; transition: background 0.3s, transform 0.2s; }
-        .btn-primary:hover { background: #fff; transform: translateY(-2px); }
-        .btn-secondary { background: transparent; border: 1px solid rgba(255,255,255,0.3); color: #fff; transition: border 0.3s, background 0.3s; }
-        .btn-secondary:hover { border-color: var(--amber); background: rgba(255,68,0,0.1); }
+        @media (min-width: 768px) { .h-panel { padding: 4rem; } }
 
     </style>
 </head>
 <body>
 
-    <!-- HIGH-TECH FIXED BACKGROUND -->
-    <div id="global-textures">
-        <div class="core-glow"></div>
-        <div class="tech-grid"></div>
-        <div class="cinematic-grain"></div>
-    </div>
+    <!-- GLOBAL TEXTURES -->
+    <div class="bg-grid"></div>
+    <div class="cyber-grain"></div>
 
-    <!-- NAVIGATION -->
+    <!-- TARGETING CURSOR -->
+    <div id="cursor-dot"></div>
+    <div id="cursor-cross"><div class="cursor-ring"></div></div>
+
+    <!-- HUD NAVIGATION -->
     <nav class="fixed top-0 w-full p-6 md:p-10 flex justify-between items-center z-50 mix-blend-difference pointer-events-none">
-        <div class="pointer-events-auto flex flex-col">
-            <h1 class="text-3xl md:text-4xl font-logo text-white leading-none tracking-tight">FLOWSTÃTE</h1>
-            <span class="font-mono text-[10px] text-[#FF4400] mt-1 tracking-widest font-bold">SYS.IMPACT_</span>
+        <div class="pointer-events-auto interact flex flex-col">
+            <h1 class="text-3xl md:text-4xl font-logo text-white leading-none">FLOWSTÃTE</h1>
+            <span class="font-mono text-[10px] text-[#FF4400] font-bold tracking-[0.4em] mt-1">SYS.IMPACT_</span>
         </div>
-        <div class="pointer-events-auto flex items-center gap-6">
-            <a href="#command" class="btn-primary px-8 py-4 font-mono text-xs font-bold uppercase rounded flex items-center gap-3">
-                INIT_SWARM <div class="w-2 h-2 bg-black rounded-sm animate-pulse"></div>
+        <div class="pointer-events-auto flex items-center gap-8">
+            <a href="http://www.flowstateimpact.com/links" target="_blank" class="hidden md:flex font-mono text-[10px] font-bold text-gray-400 uppercase tracking-widest hover:text-[#FF4400] transition-colors interact">
+                [ VISUAL_ARCHIVES ]
+            </a>
+            <a href="#command" class="interact btn-primary px-6 py-3 font-mono text-[10px] font-bold uppercase tracking-widest rounded flex items-center gap-2">
+                INIT_SWARM <div class="w-1.5 h-1.5 bg-black rounded-full animate-pulse"></div>
             </a>
         </div>
     </nav>
 
-    <main class="w-full overflow-hidden">
+    <main class="w-full relative z-10">
 
-        <!-- 1. HERO (AI CANVAS + SCANNER) -->
-        <section class="relative min-h-[100svh] w-full flex flex-col justify-center pt-24 pb-12 overflow-hidden border-b border-white/10">
-            <!-- Initial Laser Scan -->
-            <div class="scanner-line"></div>
+        <!-- 1. HERO SECTION (PURE BLACK + AI CANVAS + PERFECT SPACING) -->
+        <section class="relative min-h-[100svh] w-full flex flex-col justify-center pt-24 pb-16 px-4 md:px-12 bg-[#030303] border-b border-white/10" id="hero">
             
-            <!-- Tech Particles -->
-            <canvas id="tech-canvas" class="absolute inset-0 w-full h-full z-0 opacity-40 mix-blend-screen pointer-events-none"></canvas>
+            <!-- Dynamic Swarm Background -->
+            <canvas id="hero-canvas"></canvas>
+            <div class="hero-vignette"></div>
 
-            <div class="relative z-10 w-full max-w-[95vw] mx-auto px-4 md:px-12 flex flex-col justify-center h-full">
+            <div class="relative z-10 w-full max-w-[95vw] mx-auto flex flex-col justify-center h-full">
                 
-                <div class="mb-6 gs-fade">
-                    <span class="font-mono text-xs text-[#FF4400] border border-[#FF4400]/40 bg-black/60 px-4 py-2 rounded">
-                        // OS.VERSION.2026_ACTIVE
+                <div class="mb-6 md:mb-8 gs-fade">
+                    <span class="font-mono text-[10px] text-[#FF4400] border border-[#FF4400]/40 bg-[#FF4400]/5 px-3 py-1.5 rounded uppercase tracking-widest">
+                        // INTELLIGENCE_INFRASTRUCTURE
                     </span>
                 </div>
                 
-                <!-- Massive, solid typography. No overlaps. -->
-                <h1 class="text-hero font-logo text-white m-0 p-0 flex flex-col gap-2 relative z-10">
-                    <span class="block text-outline gs-up">INFRASTRUCTURE</span>
-                    <span class="block gs-up">FOR THE</span>
-                    <span class="block text-[#FF4400] gs-up">IMPOSSIBLE.</span>
+                <!-- Massive Typography (Properly spaced with Flexbox, no overlaps) -->
+                <h1 class="text-hero font-logo font-black text-white m-0 p-0 flex flex-col gap-1 md:gap-2 gs-fade pointer-events-auto">
+                    <span class="block">WE DON'T</span>
+                    <span class="block text-gray-400">SCALE WORK.</span>
+                    <span class="block text-[#FF4400]">WE SCALE MINDS.</span>
                 </h1>
                 
-                <div class="mt-12 flex flex-col md:flex-row gap-6 md:gap-12 md:items-center gs-fade">
-                    <div class="glass-hud border-amber-l p-6 md:p-8 max-w-2xl">
-                        <p class="text-lg md:text-xl font-light text-gray-200 leading-relaxed">
-                            Strategy, brand, design, and cinema. Orchestrated by <strong class="text-white font-bold">83 Autonomous Agents.</strong> Directed by absolute human taste.
-                        </p>
-                    </div>
-                    
-                    <!-- Two Clear CTAs -->
-                    <div class="flex flex-col sm:flex-row gap-4">
-                        <a href="#command" class="btn-primary px-8 py-4 font-mono text-sm font-bold text-center rounded">
-                            DEPLOY TEAM
-                        </a>
-                        <a href="#ecosystem" class="btn-secondary px-8 py-4 font-mono text-sm font-bold text-center rounded flex items-center justify-center gap-2">
-                            <i data-lucide="folder-search" class="w-4 h-4"></i> CLIENT FILES
-                        </a>
-                    </div>
+                <!-- Perfectly spaced subtext and CTAs -->
+                <div class="mt-10 md:mt-12 max-w-3xl glass-hud border-amber-l p-6 md:p-8 rounded-r-xl gs-fade pointer-events-auto">
+                    <p class="text-lg md:text-2xl font-light text-gray-200 leading-relaxed">
+                        Strategy, brand, design, and cinema. Orchestrated by <strong class="text-white font-bold tracking-wide">83 SYNTHETIC AGENTS.</strong> Directed by absolute human taste.
+                    </p>
                 </div>
+
+                <div class="mt-8 flex flex-col sm:flex-row gap-4 gs-fade pointer-events-auto w-full sm:w-auto">
+                    <a href="#command" class="interact btn-primary px-8 py-4 font-mono text-xs font-bold text-center rounded tracking-widest w-full sm:w-auto">
+                        DEPLOY TEAM
+                    </a>
+                    <a href="#ecosystem" class="interact btn-secondary px-8 py-4 font-mono text-xs font-bold text-center rounded tracking-widest flex items-center justify-center gap-2 w-full sm:w-auto">
+                        <i data-lucide="folder-search" class="w-4 h-4"></i> CLIENT FILES
+                    </a>
+                </div>
+
             </div>
-            
         </section>
 
-        <!-- 2. CINEMATIC VIDEO (FLAWLESS NATIVE STICKY SCALING) -->
-        <section class="theater-wrapper">
-            <div class="theater-sticky bg-black">
-                <!-- Using GSAP to dynamically scale width, height, and radius of this mask -->
-                <div class="video-mask" id="video-scale-target">
-                    <video autoplay muted loop playsinline class="absolute inset-0 w-full h-full object-cover">
+        <!-- 2. CINEMATIC VIDEO THEATER (FLAWLESS NATIVE EXPANSION) -->
+        <section class="theater-wrapper border-b border-white/10" id="theater">
+            <div class="theater-sticky">
+                <div class="video-box" id="video-scale-target">
+                    <video autoplay muted loop playsinline>
                         <source src="FSI-FILM-FINAL.mp4" type="video/mp4" />
                     </video>
-                    <!-- Readability vignette -->
-                    <div class="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80"></div>
+                    <!-- Readability / Tech Vignette -->
+                    <div class="absolute inset-0 bg-gradient-to-t from-[#000] via-transparent to-transparent opacity-80 pointer-events-none"></div>
+                    <!-- Tech Scanner Line inside video -->
+                    <div class="absolute top-0 left-0 w-full h-[1px] bg-[#FF4400]/50 shadow-[0_0_15px_#FF4400] pointer-events-none" style="animation: scanOnce 4s linear infinite;"></div>
                 </div>
             </div>
         </section>
 
-        <!-- 3. THE 83 AGENTS (MASSIVE LEGIBLE CARDS) -->
-        <section class="bg-black relative z-20 border-t border-white/10">
+        <!-- 3. THE 83 AGENTS (PINNED ARCHITECTURE) -->
+        <section class="bg-[#050505] relative z-20 border-b border-white/10">
             <div class="w-full grid grid-cols-1 lg:grid-cols-2">
                 
-                <div class="p-8 md:p-20 lg:border-r border-white/10 relative">
+                <!-- Left: Sticky Typography HUD -->
+                <div class="p-6 md:p-16 lg:p-24 lg:border-r border-white/10 relative bg-[#020202]">
                     <div class="lg:sticky lg:top-40">
-                        <div class="flex items-center gap-4 mb-6 gs-fade">
+                        <div class="flex items-center gap-4 mb-8 gs-fade">
                             <i data-lucide="cpu" class="w-6 h-6 text-[#FF4400]"></i>
-                            <span class="font-mono text-xs text-[#FF4400]">SYS_ARCHITECTURE</span>
+                            <span class="font-mono text-[10px] text-[#FF4400] tracking-widest">SYS_ARCHITECTURE</span>
                         </div>
-                        <h2 class="text-5xl md:text-7xl font-logo text-white mb-6 leading-none gs-fade">
+                        <h2 class="text-[clamp(3.5rem,7vw,7rem)] font-logo font-black text-white mb-6 leading-none tracking-tighter gs-fade">
                             83 NODES.<br/>
-                            <span class="text-outline">ONE MIND.</span>
+                            ONE MIND.
                         </h2>
-                        <p class="text-xl font-light max-w-lg leading-relaxed mb-12 text-gray-400 gs-fade">
+                        <p class="text-lg md:text-xl font-light max-w-md leading-relaxed mb-12 text-gray-400 gs-fade">
                             A sentient creative ecosystem. They are not templates. They possess temperaments, memory, and taste. They debate and rewrite their own logic.
                         </p>
                         
                         <div class="flex gap-12 border-t border-white/10 pt-8 gs-fade">
                             <div>
-                                <span class="text-5xl font-logo text-[#FF4400] block">0%</span>
-                                <span class="font-mono text-xs text-gray-500 block mt-2">Generic Output</span>
+                                <span class="text-5xl font-logo font-black text-[#FF4400] block">0%</span>
+                                <span class="font-mono text-[10px] text-gray-500 block mt-2 tracking-widest">Generic Output</span>
                             </div>
                             <div>
-                                <span class="text-5xl font-logo text-white block">MAX</span>
-                                <span class="font-mono text-xs text-gray-500 block mt-2">Iterative Velocity</span>
+                                <span class="text-5xl font-logo font-black text-white block">&infin;</span>
+                                <span class="font-mono text-[10px] text-gray-500 block mt-2 tracking-widest">Iterative Velocity</span>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Huge Abstract Tech Images -->
-                <div class="p-8 md:p-20 flex flex-col gap-24">
+                <!-- Right: Abstract Dark Data Renders -->
+                <div class="p-6 md:p-16 lg:p-24 flex flex-col gap-24 bg-[#050505]">
                     
-                    <div class="w-full interactive-card mobile-auto-trigger gs-fade group">
-                        <div class="flex justify-between items-end border-b border-white/10 pb-4 mb-8">
-                            <h3 class="font-logo text-4xl text-white">56 GENERATORS</h3>
-                            <span class="font-mono text-xs text-[#FF4400] flex items-center gap-2"><div class="w-2 h-2 bg-[#FF4400] rounded-full animate-pulse"></div> [ ACTIVE ]</span>
+                    <!-- Generators -->
+                    <div class="w-full flex flex-col gap-6 auto-trigger interact-explore gs-fade">
+                        <div class="flex justify-between items-end border-b border-white/10 pb-4">
+                            <h3 class="font-logo font-black text-3xl md:text-4xl text-white">56 GENERATORS</h3>
+                            <span class="font-mono text-[10px] text-[#FF4400] border border-[#FF4400]/30 px-2 py-1 rounded bg-[#FF4400]/10 flex items-center gap-2"><div class="w-1.5 h-1.5 bg-[#FF4400] rounded-full animate-pulse"></div> ACTIVE</span>
                         </div>
-                        <div class="img-wrap aspect-[16/9] mb-8">
-                            <!-- Abstract Circuit / Neural Render -->
-                            <img src="https://images.unsplash.com/photo-1634152962476-4b8a00e1915c?q=80&w=1500&auto=format&fit=crop" class="img-parallax" alt="Generators">
+                        <div class="img-wrap aspect-[4/3] gs-parallax" data-speed="1.1">
+                            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1500&auto=format&fit=crop" class="img-parallax" alt="Generators">
                         </div>
-                        <p class="font-light text-gray-300 text-xl leading-relaxed">Every correction fed into the swarm permanently alters its neural pathway. They learn your brand's specific visual and tonal DNA flawlessly.</p>
+                        <p class="font-light text-gray-400 text-lg leading-relaxed">Every correction alters the neural pathway. They learn your brand's specific visual and tonal DNA flawlessly.</p>
                     </div>
 
-                    <div class="w-full interactive-card mobile-auto-trigger gs-fade group">
-                        <div class="flex justify-between items-end border-b border-white/10 pb-4 mb-8">
-                            <h3 class="font-logo text-4xl text-white">27 PROCESSORS</h3>
-                            <span class="font-mono text-xs text-[#FF4400] flex items-center gap-2"><div class="w-2 h-2 bg-[#FF4400] rounded-full animate-pulse"></div> [ ACTIVE ]</span>
+                    <!-- Processors -->
+                    <div class="w-full flex flex-col gap-6 auto-trigger interact-explore gs-fade">
+                        <div class="flex justify-between items-end border-b border-white/10 pb-4">
+                            <h3 class="font-logo font-black text-3xl md:text-4xl text-white">27 PROCESSORS</h3>
+                            <span class="font-mono text-[10px] text-[#FF4400] border border-[#FF4400]/30 px-2 py-1 rounded bg-[#FF4400]/10 flex items-center gap-2"><div class="w-1.5 h-1.5 bg-[#FF4400] rounded-full animate-pulse"></div> ACTIVE</span>
                         </div>
-                        <div class="img-wrap aspect-[16/9] mb-8">
-                            <!-- Abstract Data Center Render -->
-                            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1500&auto=format&fit=crop" class="img-parallax" alt="Processors">
+                        <div class="img-wrap aspect-[4/3] gs-parallax" data-speed="1.1">
+                            <img src="https://images.unsplash.com/photo-1634152962476-4b8a00e1915c?q=80&w=1500&auto=format&fit=crop" class="img-parallax" alt="Processors">
                         </div>
-                        <p class="font-light text-gray-300 text-xl leading-relaxed">Processing vast data lakes into razor-sharp strategy, competitive analysis, and logical frameworks in milliseconds.</p>
+                        <p class="font-light text-gray-400 text-lg leading-relaxed">Processing vast data lakes into razor-sharp strategy, competitive analysis, and logical frameworks in milliseconds.</p>
                     </div>
 
                 </div>
             </div>
         </section>
 
-        <!-- 4. QUALITY ASSURANCE (HUGE, READABLE LIST) -->
-        <section class="py-32 md:py-48 bg-[#020202] relative z-30 border-t border-white/10">
-            <div class="max-w-[95vw] mx-auto px-4 md:px-12">
+        <!-- 4. QUALITY ASSURANCE (TARGETED CSS VERTICAL SNAPPING) -->
+        <section class="bg-[#020202] relative z-30" id="firewalls">
+            <div class="py-16 px-4 text-center bg-[#010101] border-b border-white/10">
+                <span class="font-mono text-[10px] text-[#FF4400] tracking-[0.4em] mb-4 block">// PROTOCOL_05</span>
+                <h3 class="text-4xl md:text-6xl font-logo font-black text-white">THE FIREWALLS</h3>
+                <p class="mt-4 font-mono text-gray-500 text-[10px] tracking-widest">SCROLL TO INSPECT NODES</p>
+            </div>
+
+            <!-- CSS Snapping Container -->
+            <div class="snap-y-container">
                 
-                <div class="mb-20 gs-fade">
-                    <span class="font-mono text-xs text-[#FF4400] mb-4 block">// PROTOCOL_05</span>
-                    <h3 class="text-5xl md:text-7xl font-logo text-white tracking-tighter">THE FIREWALLS</h3>
-                </div>
-
-                <div class="w-full flex flex-col border-t border-white/10">
-                    
-                    {[
-                        { n: "01", t: "STRANGERS READ IT", d: "Validated for absolute clarity outside the internal brand echo chamber." },
-                        { n: "02", t: "IT GETS A MARK", d: "Rigid algorithmic scoring against core aesthetic and logic parameters." },
-                        { n: "03", t: "THREE CAN SAY NO", d: "Autonomous rejection protocol. Ruthless assassins of derivative concepts." },
-                        { n: "04", t: "FIVE TRY TO BREAK IT", d: "Hostile stress-testing to isolate logical inconsistencies and visual flaws." },
-                        { n: "05", t: "ONE LAST LOOK", d: "The final human-led taste engine sign-off. Technology directed by art." }
-                    ].map((door) => `
-                    <div class="flex flex-col md:flex-row md:items-center gap-6 md:gap-16 py-12 md:py-16 border-b border-white/10 interactive-card mobile-auto-trigger reveal-ui transition-colors duration-500 gs-fade px-4 md:px-8">
-                        <span class="text-5xl md:text-7xl font-logo text-white/20 transition-colors duration-500" style="min-width: 100px;">${door.n}</span>
-                        <div class="flex flex-col md:flex-row md:items-center justify-between w-full gap-4 md:gap-10">
-                            <h4 class="text-3xl md:text-5xl font-logo text-white transition-colors">${door.t}</h4>
-                            <p class="text-lg md:text-xl font-light text-gray-400 max-w-2xl leading-relaxed">${door.d}</p>
+                <!-- 01 -->
+                <div class="snap-card border-b border-white/10 bg-[#050505]">
+                    <div class="relative z-10 w-full max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center gap-8 md:gap-16 auto-trigger interact-explore">
+                        <span class="text-[6rem] md:text-[10rem] font-logo font-black text-white/10 leading-none">01</span>
+                        <div>
+                            <h4 class="text-3xl md:text-5xl font-logo font-black text-white mb-4 transition-colors">STRANGERS READ IT</h4>
+                            <p class="text-lg md:text-xl font-light text-gray-400 max-w-2xl leading-relaxed">Validated for absolute clarity outside the internal brand echo chamber.</p>
                         </div>
                     </div>
-                    `).join('')}
-
                 </div>
+
+                <!-- 02 -->
+                <div class="snap-card border-b border-white/10 bg-[#070707]">
+                    <div class="relative z-10 w-full max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center gap-8 md:gap-16 auto-trigger interact-explore">
+                        <span class="text-[6rem] md:text-[10rem] font-logo font-black text-white/10 leading-none">02</span>
+                        <div>
+                            <h4 class="text-3xl md:text-5xl font-logo font-black text-white mb-4 transition-colors">IT GETS A MARK</h4>
+                            <p class="text-lg md:text-xl font-light text-gray-400 max-w-2xl leading-relaxed">Rigid algorithmic scoring against core aesthetic and logic parameters.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 03 -->
+                <div class="snap-card border-b border-white/10 bg-[#090909]">
+                    <div class="relative z-10 w-full max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center gap-8 md:gap-16 auto-trigger interact-explore">
+                        <span class="text-[6rem] md:text-[10rem] font-logo font-black text-white/10 leading-none">03</span>
+                        <div>
+                            <h4 class="text-3xl md:text-5xl font-logo font-black text-white mb-4 transition-colors">THREE CAN SAY NO</h4>
+                            <p class="text-lg md:text-xl font-light text-gray-400 max-w-2xl leading-relaxed">Autonomous rejection protocol. Ruthless assassins of derivative concepts.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 04 -->
+                <div class="snap-card border-b border-white/10 bg-[#0b0b0b]">
+                    <div class="relative z-10 w-full max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center gap-8 md:gap-16 auto-trigger interact-explore">
+                        <span class="text-[6rem] md:text-[10rem] font-logo font-black text-white/10 leading-none">04</span>
+                        <div>
+                            <h4 class="text-3xl md:text-5xl font-logo font-black text-white mb-4 transition-colors">FIVE TRY TO BREAK IT</h4>
+                            <p class="text-lg md:text-xl font-light text-gray-400 max-w-2xl leading-relaxed">Hostile stress-testing to isolate logical inconsistencies and visual flaws.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 05 -->
+                <div class="snap-card border-b border-[#FF4400]/40 bg-[#0d0d0d]">
+                    <div class="relative z-10 w-full max-w-6xl mx-auto px-6 flex flex-col md:flex-row items-center gap-8 md:gap-16 auto-trigger interact-explore">
+                        <span class="text-[6rem] md:text-[10rem] font-logo font-black text-[#FF4400]/50 leading-none">05</span>
+                        <div>
+                            <h4 class="text-3xl md:text-5xl font-logo font-black text-[#FF4400] mb-4">ONE LAST LOOK</h4>
+                            <p class="text-lg md:text-xl font-light text-gray-300 max-w-2xl leading-relaxed">The final human-led taste engine sign-off. Technology directed by art.</p>
+                        </div>
+                    </div>
+                </div>
+
             </div>
         </section>
 
-        <!-- 5. ACTIVE DEPLOYMENTS (THE MASSIVE ROSTER) -->
-        <section id="ecosystem" class="bg-[#050505] relative z-40 overflow-hidden border-t border-white/10">
+        <!-- 5. ACTIVE DEPLOYMENTS (THE MASSIVE HORIZONTAL ROSTER) -->
+        <!-- All 10 requested brands explicitly highlighted -->
+        <section id="ecosystem" class="bg-[#000] relative z-40 overflow-hidden border-t border-white/10 pt-24 md:pt-32">
             
-            <div class="absolute top-10 left-6 md:top-16 md:left-12 z-50 pointer-events-none mix-blend-difference">
-                <span class="font-mono text-xs text-[#FF4400] mb-2 block">// ECOSYSTEM_LIVE</span>
-                <h3 class="text-4xl md:text-6xl font-logo text-white">CLIENT DEPLOYMENTS</h3>
+            <div class="px-6 md:px-12 mb-16 gs-fade">
+                <span class="font-mono text-[10px] text-[#FF4400] tracking-widest uppercase mb-4 block">// ECOSYSTEM_LIVE</span>
+                <h3 class="text-4xl md:text-7xl font-logo font-black text-white">CLIENT DEPLOYMENTS</h3>
             </div>
 
-            <!-- Dynamic Horizontal GSAP Track -->
+            <!-- GSAP Horizontal Track -->
             <div class="h-scroll-container" id="h-scroll-track">
                 
                 <!-- Panel 1: Akij Portfolio -->
                 <div class="h-panel">
-                    <div class="w-full h-full relative img-wrap rounded-2xl md:rounded-[2rem] interactive-card mobile-auto-trigger border border-white/10">
-                        <img src="https://images.unsplash.com/photo-1451187580459-43490279c0fa?q=80&w=2000&auto=format&fit=crop" class="img-parallax" alt="Akij">
+                    <div class="w-full h-full relative img-wrap auto-trigger interact-explore">
+                        <img src="https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2000&auto=format&fit=crop" class="img-parallax" alt="Akij Enterprise">
                         <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
                         
-                        <div class="absolute bottom-6 left-6 md:bottom-16 md:left-16 z-10 max-w-3xl glass-hud border-amber-l p-8 md:p-12 rounded-r-xl">
-                            <span class="font-mono text-white text-xs mb-4 block px-3 py-1 border border-white/30 rounded w-fit">AKIJ AVIATION | AKIJ PLUS | AKIJ PHARMA</span>
-                            <h3 class="text-4xl md:text-6xl font-logo text-white mb-6">AKIJ ENTERPRISE</h3>
-                            <p class="text-lg md:text-2xl text-gray-300 font-light leading-relaxed">Managing unified operational AI architectures across aviation logistics, pharmaceutical distribution, and retail enterprise.</p>
+                        <div class="absolute bottom-6 left-6 md:bottom-16 md:left-16 z-10 max-w-4xl glass-hud border-amber-l p-6 md:p-12">
+                            <span class="font-mono text-white text-[10px] font-bold uppercase tracking-widest mb-6 block border border-white/20 bg-white/5 px-3 py-1 w-fit rounded">AKIJ AVIATION | AKIJ PLUS | AKIJ PHARMA</span>
+                            <h3 class="text-[clamp(3rem,6vw,6rem)] font-logo font-black text-white leading-none mb-6">AKIJ ENTERPRISE</h3>
+                            <p class="text-base md:text-xl text-gray-300 font-light leading-relaxed">Unified operational AI architectures managing aviation logistics, pharmaceutical distribution, and expansive retail enterprise sectors.</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Panel 2: Healthcare -->
                 <div class="h-panel">
-                    <div class="w-full h-full relative img-wrap rounded-2xl md:rounded-[2rem] interactive-card mobile-auto-trigger border border-white/10">
-                        <img src="https://images.unsplash.com/photo-1633458064402-d9229f34a02c?q=80&w=2000&auto=format&fit=crop" class="img-parallax" alt="Healthcare">
+                    <div class="w-full h-full relative img-wrap auto-trigger interact-explore">
+                        <img src="https://images.unsplash.com/photo-1633458064402-d9229f34a02c?q=80&w=2000&auto=format&fit=crop" class="img-parallax" alt="Healthcare AI">
                         <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
                         
-                        <div class="absolute bottom-6 left-6 md:bottom-16 md:left-16 z-10 max-w-3xl glass-hud border-amber-l p-8 md:p-12 rounded-r-xl">
-                            <span class="font-mono text-white text-xs mb-4 block px-3 py-1 border border-white/30 rounded w-fit">GMSC CLINIC | BIMC</span>
-                            <h3 class="text-4xl md:text-6xl font-logo text-white mb-6">HEALTHCARE AI</h3>
-                            <p class="text-lg md:text-2xl text-gray-300 font-light leading-relaxed">Predictive diagnostics, clinical workflow automation, and precision operational intelligence for elite medical centers.</p>
+                        <div class="absolute bottom-6 left-6 md:bottom-16 md:left-16 z-10 max-w-4xl glass-hud border-amber-l p-6 md:p-12">
+                            <span class="font-mono text-white text-[10px] font-bold uppercase tracking-widest mb-6 block border border-white/20 bg-white/5 px-3 py-1 w-fit rounded">GMSC CLINIC | BIMC</span>
+                            <h3 class="text-[clamp(3rem,6vw,6rem)] font-logo font-black text-white leading-none mb-6">HEALTHCARE AI</h3>
+                            <p class="text-base md:text-xl text-gray-300 font-light leading-relaxed">Predictive diagnostics, clinical workflow automation, and precision operational intelligence deployed for elite medical institutions.</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Panel 3: Commerce -->
                 <div class="h-panel">
-                    <div class="w-full h-full relative img-wrap rounded-2xl md:rounded-[2rem] interactive-card mobile-auto-trigger border border-white/10">
-                        <img src="https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?q=80&w=2000&auto=format&fit=crop" class="img-parallax" alt="Commerce">
+                    <div class="w-full h-full relative img-wrap auto-trigger interact-explore">
+                        <img src="https://images.unsplash.com/photo-1558591710-4b4a1ae0f04d?q=80&w=2000&auto=format&fit=crop" class="img-parallax" alt="Retail Logistics">
                         <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
                         
-                        <div class="absolute bottom-6 left-6 md:bottom-16 md:left-16 z-10 max-w-3xl glass-hud border-amber-l p-8 md:p-12 rounded-r-xl">
-                            <span class="font-mono text-white text-xs mb-4 block px-3 py-1 border border-white/30 rounded w-fit">NEXUS | GUNOBOTI</span>
-                            <h3 class="text-4xl md:text-6xl font-logo text-white mb-6">RETAIL & LOGISTICS</h3>
-                            <p class="text-lg md:text-2xl text-gray-300 font-light leading-relaxed">Algorithmic brand scaling, targeted data infrastructure, and advanced inventory logistics architecture.</p>
+                        <div class="absolute bottom-6 left-6 md:bottom-16 md:left-16 z-10 max-w-4xl glass-hud border-amber-l p-6 md:p-12">
+                            <span class="font-mono text-[#FF4400] text-[10px] font-bold uppercase tracking-widest mb-6 block border border-[#FF4400]/30 bg-[#FF4400]/10 px-3 py-1 w-fit rounded">NEXUS | GUNOBOTI</span>
+                            <h3 class="text-[clamp(3rem,6vw,6rem)] font-logo font-black text-white leading-none mb-6">RETAIL LOGISTICS</h3>
+                            <p class="text-base md:text-xl text-gray-300 font-light leading-relaxed">Algorithmic brand scaling, targeted data infrastructure, and advanced inventory logistics architecture at 5x deployment speed.</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Panel 4: Summits (Kaiqi & Chuangfu) -->
+                <!-- Panel 4: Summits Split -->
                 <div class="h-panel flex flex-col md:flex-row gap-6 md:gap-12">
-                    <div class="w-full md:w-1/2 h-full relative img-wrap rounded-2xl md:rounded-[3rem] interactive-card mobile-auto-trigger border border-white/10">
+                    <div class="w-full md:w-1/2 h-full relative img-wrap auto-trigger interact-explore">
                         <img src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?q=80&w=2000&auto=format&fit=crop" class="img-parallax" alt="Kaiqi">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
-                        <div class="absolute bottom-6 left-6 md:bottom-12 md:left-12 z-10 max-w-lg glass-hud border-amber-l p-6 md:p-10 rounded-r-xl">
-                            <span class="font-mono text-[#FF4400] text-xs mb-4 block">GLOBAL SUMMITS</span>
-                            <h3 class="text-4xl md:text-5xl font-logo text-white mb-4">KAIQI</h3>
-                            <p class="text-base md:text-lg text-gray-300 font-light leading-relaxed">Dynamic scheduling, scripting, and real-time translation routing for international summits.</p>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+                        <div class="absolute bottom-6 left-6 md:bottom-12 md:left-12 z-10 max-w-lg glass-hud border-amber-l p-6 md:p-10">
+                            <span class="font-mono text-white text-[10px] font-bold uppercase tracking-widest mb-4 block">GLOBAL SUMMITS</span>
+                            <h3 class="text-4xl md:text-5xl font-logo font-black text-white mb-4">KAIQI</h3>
+                            <p class="text-sm md:text-base text-gray-300 font-light leading-relaxed">Dynamic scheduling, scripting, and real-time translation routing for international summits.</p>
                         </div>
                     </div>
                     
-                    <div class="w-full md:w-1/2 h-full relative img-wrap rounded-2xl md:rounded-[3rem] interactive-card mobile-auto-trigger border border-white/10">
+                    <div class="w-full md:w-1/2 h-full relative img-wrap auto-trigger interact-explore">
                         <img src="https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?q=80&w=2000&auto=format&fit=crop" class="img-parallax" alt="Chuangfu">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/40 to-transparent"></div>
-                        <div class="absolute bottom-6 left-6 md:bottom-12 md:left-12 z-10 max-w-lg glass-hud border-amber-l p-6 md:p-10 rounded-r-xl">
-                            <span class="font-mono text-[#FF4400] text-xs mb-4 block">GLOBAL SUMMITS</span>
-                            <h3 class="text-4xl md:text-5xl font-logo text-white mb-4">CHUANGFU</h3>
-                            <p class="text-base md:text-lg text-gray-300 font-light leading-relaxed">Logistical mapping and autonomous VIP coordination for elite exhibition frameworks.</p>
+                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+                        <div class="absolute bottom-6 left-6 md:bottom-12 md:left-12 z-10 max-w-lg glass-hud border-amber-l p-6 md:p-10">
+                            <span class="font-mono text-white text-[10px] font-bold uppercase tracking-widest mb-4 block">GLOBAL SUMMITS</span>
+                            <h3 class="text-4xl md:text-5xl font-logo font-black text-white mb-4">CHUANGFU</h3>
+                            <p class="text-sm md:text-base text-gray-300 font-light leading-relaxed">Logistical mapping and autonomous VIP coordination for elite exhibition frameworks.</p>
                         </div>
                     </div>
                 </div>
 
                 <!-- Panel 5: Lumiere -->
                 <div class="h-panel">
-                    <div class="w-full h-full relative img-wrap rounded-2xl md:rounded-[2rem] interactive-card mobile-auto-trigger border border-white/10">
+                    <div class="w-full h-full relative img-wrap auto-trigger interact-explore">
                         <img src="https://images.unsplash.com/photo-1604871000636-074fa5117945?q=80&w=2000&auto=format&fit=crop" class="img-parallax" alt="Lumiere">
                         <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
                         
-                        <div class="absolute bottom-6 left-6 md:bottom-16 md:left-16 z-10 max-w-3xl glass-hud border-amber-l p-8 md:p-12 rounded-r-xl">
-                            <span class="font-mono text-[#FF4400] text-xs mb-4 block px-3 py-1 border border-[#FF4400]/30 rounded w-fit bg-[#FF4400]/10">COMPUTATIONAL CINEMA</span>
-                            <h3 class="text-4xl md:text-6xl font-logo text-white mb-6">LUMIERE NARRATIVES</h3>
-                            <p class="text-lg md:text-2xl text-gray-300 font-light leading-relaxed">Engineered an aesthetic, film-inspired AI pipeline for high fashion. Developing complex physics protocols, including specific mist-transition rendering.</p>
+                        <div class="absolute bottom-6 left-6 md:bottom-16 md:left-16 z-10 max-w-4xl glass-hud border-amber-l p-6 md:p-12">
+                            <span class="font-mono text-white text-[10px] font-bold uppercase tracking-widest mb-6 block border border-white/20 bg-white/5 px-3 py-1 w-fit rounded">LUMIERE NARRATIVES</span>
+                            <h3 class="text-[clamp(3rem,6vw,6rem)] font-logo font-black text-white leading-none mb-6">COMPUTATIONAL CINEMA</h3>
+                            <p class="text-base md:text-xl text-gray-300 font-light leading-relaxed">Engineered an aesthetic, film-inspired AI pipeline for high fashion. Executing complex physics, including specific mist-transition rendering.</p>
                         </div>
                     </div>
                 </div>
@@ -372,63 +430,121 @@
             </div>
         </section>
 
-        <!-- 6. BIOMETRIC LAYER (DATA DOSSIERS - NO FACES) -->
-        <section class="py-32 md:py-48 px-4 md:px-12 bg-[#020202] relative z-40 border-t border-white/5">
-            <div class="max-w-[95vw] mx-auto mb-20 text-center md:text-left">
-                <span class="font-mono text-[#FF4400] text-xs uppercase block mb-4">// ARCHITECTURE_DIRECTORS</span>
-                <h2 class="text-5xl md:text-8xl font-logo text-white leading-none gs-fade">BIOMETRIC LAYER</h2>
-                <p class="mt-6 text-xl text-gray-400 font-light max-w-2xl gs-fade">Intelligence scaled by machines. Directed by absolute human taste. Accessing personnel data protocols.</p>
+        <!-- 6. BIOMETRIC LAYER (DATA DOSSIERS - ABSOLUTELY NO FACES) -->
+        <section class="py-32 md:py-48 px-4 md:px-12 bg-[#020202] relative z-40 border-t border-white/10">
+            <div class="max-w-[95vw] mx-auto mb-16 md:mb-24 text-center md:text-left">
+                <span class="font-mono text-[#FF4400] text-[10px] uppercase tracking-widest block mb-4">// ARCHITECTURE_DIRECTORS</span>
+                <h2 class="text-5xl md:text-8xl font-logo font-black text-white leading-none gs-fade">BIOMETRIC LAYER</h2>
+                <p class="mt-6 text-lg md:text-xl text-gray-400 font-light max-w-2xl gs-fade">Intelligence scaled by machines. Directed by absolute human taste. Accessing personnel data protocols.</p>
             </div>
             
+            <!-- HARDCODED HTML. NO ARRAYS. NO BUGS. -->
             <div class="max-w-[95vw] mx-auto grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 
-                {[
-                    { n: "ASIF FARID", r: "MD & CTO", img: "https://images.unsplash.com/photo-1633458064402-d9229f34a02c?q=80&w=1000&auto=format&fit=crop" },
-                    { n: "NAFIA ISLAM FARIA", r: "CEO", img: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop" },
-                    { n: "SARWAR JAHAN", r: "CMO", img: "https://images.unsplash.com/photo-1604871000636-074fa5117945?q=80&w=1000&auto=format&fit=crop" },
-                    { n: "MUAZ RAKIN", r: "CSO & CFO", img: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1000&auto=format&fit=crop" }
-                ].map((person) => `
-                <div class="glass-hud p-8 rounded-2xl interactive-card mobile-auto-trigger reveal-ui group gs-fade flex flex-col justify-between aspect-[3/4] relative overflow-hidden">
-                    <!-- Subtle Laser Scan Effect inside card -->
-                    <div class="absolute left-0 w-full h-[2px] bg-[#FF4400] opacity-0 group-hover:opacity-50 blur-[2px] transition-opacity duration-300" style="animation: scanOnce 3s linear infinite;"></div>
+                <!-- ASIF FARID -->
+                <div class="glass-hud p-6 md:p-8 rounded-2xl auto-trigger interact-explore group gs-fade flex flex-col justify-between aspect-[3/4] relative overflow-hidden border-t-2 border-t-white/10 hover:border-t-[#FF4400] transition-colors">
+                    <!-- Scanner -->
+                    <div class="absolute left-0 w-full h-[1px] bg-[#FF4400] opacity-0 group-hover:opacity-100 shadow-[0_0_10px_#FF4400]" style="animation: scanOnce 3s linear infinite;"></div>
                     
                     <div>
-                        <i data-lucide="fingerprint" class="w-12 h-12 text-white/20 group-hover:text-[#FF4400] transition-colors duration-500 mb-6"></i>
-                        <img src="${person.img}" class="w-full h-32 object-cover rounded-lg filter grayscale contrast-150 opacity-40 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-500" alt="Biometric Data">
+                        <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
+                            <i data-lucide="fingerprint" class="w-8 h-8 text-white/20 group-hover:text-[#FF4400] transition-colors duration-500"></i>
+                            <span class="font-mono text-[10px] text-gray-500 group-hover:text-white transition-colors">VERIFIED</span>
+                        </div>
+                        <!-- Abstract Data Art -->
+                        <div class="w-full h-32 md:h-40 overflow-hidden rounded-lg bg-[#050505] border border-white/5">
+                            <img src="https://images.unsplash.com/photo-1633458064402-d9229f34a02c?q=80&w=1000&auto=format&fit=crop" class="w-full h-full object-cover filter grayscale contrast-150 opacity-40 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-500" alt="Data">
+                        </div>
                     </div>
                     <div class="mt-8">
-                        <span class="font-mono text-[10px] text-gray-500 mb-2 block">ID: ${person.n.split(' ')[0]} // VERIFIED</span>
-                        <h4 class="text-2xl md:text-3xl font-logo text-white group-hover:text-[#FF4400] transition-colors">${person.n}</h4>
-                        <p class="font-mono text-xs text-white mt-2 border-t border-white/10 pt-2">${person.r}</p>
+                        <span class="font-mono text-[10px] text-[#FF4400] mb-2 block">ID: ASIF // 01</span>
+                        <h4 class="text-2xl md:text-3xl font-logo font-black text-white group-hover:text-[#FF4400] transition-colors">ASIF FARID</h4>
+                        <p class="font-mono text-[10px] text-gray-400 mt-2">MD & CTO</p>
                     </div>
                 </div>
-                `).join('')}
+
+                <!-- NAFIA ISLAM FARIA -->
+                <div class="glass-hud p-6 md:p-8 rounded-2xl auto-trigger interact-explore group gs-fade flex flex-col justify-between aspect-[3/4] relative overflow-hidden border-t-2 border-t-white/10 hover:border-t-[#FF4400] transition-colors">
+                    <div class="absolute left-0 w-full h-[1px] bg-[#FF4400] opacity-0 group-hover:opacity-100 shadow-[0_0_10px_#FF4400]" style="animation: scanOnce 3s linear infinite;"></div>
+                    <div>
+                        <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
+                            <i data-lucide="fingerprint" class="w-8 h-8 text-white/20 group-hover:text-[#FF4400] transition-colors duration-500"></i>
+                            <span class="font-mono text-[10px] text-gray-500 group-hover:text-white transition-colors">VERIFIED</span>
+                        </div>
+                        <div class="w-full h-32 md:h-40 overflow-hidden rounded-lg bg-[#050505] border border-white/5">
+                            <img src="https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1000&auto=format&fit=crop" class="w-full h-full object-cover filter grayscale contrast-150 opacity-40 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-500" alt="Data">
+                        </div>
+                    </div>
+                    <div class="mt-8">
+                        <span class="font-mono text-[10px] text-[#FF4400] mb-2 block">ID: NAFIA // 02</span>
+                        <h4 class="text-2xl md:text-3xl font-logo font-black text-white group-hover:text-[#FF4400] transition-colors">NAFIA ISLAM</h4>
+                        <p class="font-mono text-[10px] text-gray-400 mt-2">CEO</p>
+                    </div>
+                </div>
+
+                <!-- SARWAR JAHAN -->
+                <div class="glass-hud p-6 md:p-8 rounded-2xl auto-trigger interact-explore group gs-fade flex flex-col justify-between aspect-[3/4] relative overflow-hidden border-t-2 border-t-white/10 hover:border-t-[#FF4400] transition-colors">
+                    <div class="absolute left-0 w-full h-[1px] bg-[#FF4400] opacity-0 group-hover:opacity-100 shadow-[0_0_10px_#FF4400]" style="animation: scanOnce 3s linear infinite;"></div>
+                    <div>
+                        <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
+                            <i data-lucide="fingerprint" class="w-8 h-8 text-white/20 group-hover:text-[#FF4400] transition-colors duration-500"></i>
+                            <span class="font-mono text-[10px] text-gray-500 group-hover:text-white transition-colors">VERIFIED</span>
+                        </div>
+                        <div class="w-full h-32 md:h-40 overflow-hidden rounded-lg bg-[#050505] border border-white/5">
+                            <img src="https://images.unsplash.com/photo-1604871000636-074fa5117945?q=80&w=1000&auto=format&fit=crop" class="w-full h-full object-cover filter grayscale contrast-150 opacity-40 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-500" alt="Data">
+                        </div>
+                    </div>
+                    <div class="mt-8">
+                        <span class="font-mono text-[10px] text-[#FF4400] mb-2 block">ID: SARWAR // 03</span>
+                        <h4 class="text-2xl md:text-3xl font-logo font-black text-white group-hover:text-[#FF4400] transition-colors">SARWAR JAHAN</h4>
+                        <p class="font-mono text-[10px] text-gray-400 mt-2">CMO</p>
+                    </div>
+                </div>
+
+                <!-- MUAZ RAKIN -->
+                <div class="glass-hud p-6 md:p-8 rounded-2xl auto-trigger interact-explore group gs-fade flex flex-col justify-between aspect-[3/4] relative overflow-hidden border-t-2 border-t-white/10 hover:border-t-[#FF4400] transition-colors">
+                    <div class="absolute left-0 w-full h-[1px] bg-[#FF4400] opacity-0 group-hover:opacity-100 shadow-[0_0_10px_#FF4400]" style="animation: scanOnce 3s linear infinite;"></div>
+                    <div>
+                        <div class="flex justify-between items-center mb-6 border-b border-white/10 pb-4">
+                            <i data-lucide="fingerprint" class="w-8 h-8 text-white/20 group-hover:text-[#FF4400] transition-colors duration-500"></i>
+                            <span class="font-mono text-[10px] text-gray-500 group-hover:text-white transition-colors">VERIFIED</span>
+                        </div>
+                        <div class="w-full h-32 md:h-40 overflow-hidden rounded-lg bg-[#050505] border border-white/5">
+                            <img src="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1000&auto=format&fit=crop" class="w-full h-full object-cover filter grayscale contrast-150 opacity-40 group-hover:opacity-100 group-hover:grayscale-0 transition-all duration-500" alt="Data">
+                        </div>
+                    </div>
+                    <div class="mt-8">
+                        <span class="font-mono text-[10px] text-[#FF4400] mb-2 block">ID: MUAZ // 04</span>
+                        <h4 class="text-2xl md:text-3xl font-logo font-black text-white group-hover:text-[#FF4400] transition-colors">MUAZ RAKIN</h4>
+                        <p class="font-mono text-[10px] text-gray-400 mt-2">CSO & CFO</p>
+                    </div>
+                </div>
 
             </div>
         </section>
 
         <!-- 7. COMMAND TERMINAL (FOOTER) -->
-        <section id="command" class="py-32 md:py-48 px-6 md:px-12 bg-[#050505] relative z-40 border-t border-[#FF4400]/30">
-            <div class="max-w-[95vw] mx-auto flex flex-col lg:flex-row justify-between gap-20">
+        <section id="command" class="py-32 md:py-48 px-4 md:px-12 bg-[#050505] relative z-40 border-t border-[#FF4400]/30">
+            <div class="max-w-[95vw] mx-auto flex flex-col lg:flex-row justify-between gap-16">
                 
                 <div class="w-full lg:w-1/2 gs-fade">
-                    <h2 class="text-[clamp(4rem,9vw,10rem)] font-logo text-white mb-8 leading-[0.9]">
+                    <h2 class="text-[clamp(4rem,9vw,10rem)] font-logo font-black text-white mb-8 leading-[0.9]">
                         COMMAND<br/><span class="text-outline">THE SWARM</span>
                     </h2>
-                    <p class="text-xl md:text-3xl text-gray-400 font-light max-w-xl leading-relaxed">Stop hiring isolated roles. Plug an entire autonomous department directly into your business infrastructure today.</p>
+                    <p class="text-xl md:text-2xl text-gray-400 font-light max-w-xl leading-relaxed">Stop hiring isolated roles. Plug an entire autonomous department directly into your business infrastructure today.</p>
                 </div>
                 
-                <div class="w-full lg:w-1/2 flex flex-col gap-8 gs-fade">
-                    <a href="mailto:asif@flowstateimpact.com" class="glass-hud p-10 md:p-14 rounded-2xl flex flex-col md:flex-row justify-between md:items-center group hover:border-[#FF4400] transition-colors duration-500">
-                        <span class="font-mono text-[#FF4400] text-xs uppercase tracking-widest mb-4 md:mb-0">INIT_EMAIL</span>
-                        <span class="text-2xl md:text-4xl font-logo text-white group-hover:text-[#FF4400] transition-colors">asif@flowstateimpact.com</span>
+                <div class="w-full lg:w-1/2 flex flex-col gap-6 gs-fade">
+                    <a href="mailto:asif@flowstateimpact.com" class="interact-explore glass-hud p-8 md:p-12 rounded-2xl flex flex-col md:flex-row justify-between md:items-center group hover:border-[#FF4400] transition-colors duration-500">
+                        <span class="font-mono text-[#FF4400] text-[10px] uppercase tracking-widest mb-4 md:mb-0">INIT_EMAIL</span>
+                        <span class="text-xl md:text-3xl font-logo font-black text-white group-hover:text-[#FF4400] transition-colors truncate">asif@flowstateimpact.com</span>
                     </a>
                     
-                    <div class="glass-hud p-10 md:p-14 rounded-2xl flex flex-col justify-between">
-                        <span class="font-mono text-gray-500 text-xs uppercase tracking-widest mb-8">TELECOM_RELAY</span>
+                    <div class="glass-hud p-8 md:p-12 rounded-2xl flex flex-col justify-between">
+                        <span class="font-mono text-gray-500 text-[10px] uppercase tracking-widest mb-8">TELECOM_RELAY</span>
                         <div class="flex flex-col gap-4">
-                            <span class="text-4xl md:text-6xl font-logo text-white hover:text-[#FF4400] transition-colors w-fit">+88 01616 119242</span>
-                            <span class="text-4xl md:text-6xl font-logo text-gray-600 hover:text-white transition-colors w-fit">+88 01627 935350</span>
+                            <span class="text-3xl md:text-5xl font-logo font-black text-white hover:text-[#FF4400] transition-colors w-fit interact-explore">+88 01616 119242</span>
+                            <span class="text-3xl md:text-5xl font-logo font-black text-gray-600 hover:text-white transition-colors w-fit interact-explore">+88 01627 935350</span>
                         </div>
                     </div>
                 </div>
@@ -436,76 +552,111 @@
             </div>
         </section>
 
-        <footer class="py-8 px-6 md:px-12 bg-black flex flex-col md:flex-row justify-between items-center font-mono text-[10px] text-gray-600 uppercase tracking-widest border-t border-white/10 relative z-40">
+        <!-- FOOTER -->
+        <footer class="py-8 px-6 md:px-12 bg-[#000] flex flex-col md:flex-row justify-between items-center font-mono text-[10px] text-gray-600 uppercase tracking-widest border-t border-white/10 relative z-40">
             <span class="mb-4 md:mb-0">FLOWSTÃTE IMPACT © 2026 // ALL SYSTEMS ONLINE</span>
             <span>DHAKA_HUB // LONDON_HUB</span>
         </footer>
 
     </main>
 
+    <!-- MASTER GSAP & JS ENGINE -->
     <script>
         lucide.createIcons();
 
         // 1. MOBILE AUTO-HOVER ENGINE (Intersection Observer)
-        // This ensures mobile users get the "hover" animations simply by scrolling items into the center of their screen.
-        const observerOptions = { root: null, rootMargin: '-25% 0px -25% 0px', threshold: 0 };
+        const observerOptions = { root: null, rootMargin: '-20% 0px -20% 0px', threshold: 0 };
         const autoHoverObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
-                if (entry.isIntersecting) { entry.target.classList.add('is-active'); } 
-                else { entry.target.classList.remove('is-active'); }
+                if (entry.isIntersecting) { entry.target.classList.add('active-state'); } 
+                else { entry.target.classList.remove('active-state'); }
             });
         }, observerOptions);
 
-        document.querySelectorAll('.mobile-auto-trigger').forEach(el => {
+        document.querySelectorAll('.auto-trigger').forEach(el => {
             autoHoverObserver.observe(el);
         });
 
-        // 2. SYNAPTIC AI CANVAS (High-Tech Background)
-        const canvas = document.getElementById('tech-canvas');
-        const ctx = canvas.getContext('2d');
-        let width, height, particles = [];
-        
-        function initCanvas() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-            particles = [];
-            for(let i=0; i<80; i++) {
-                particles.push({
-                    x: Math.random() * width, y: Math.random() * height,
-                    vx: (Math.random() - 0.5) * 1.5, vy: (Math.random() - 0.5) * 1.5,
-                    radius: Math.random() * 2 + 1,
-                    color: i % 3 === 0 ? 'rgba(255, 68, 0, 0.7)' : 'rgba(255, 255, 255, 0.2)'
-                });
-            }
-        }
-        window.addEventListener('resize', initCanvas);
+        // 2. TARGETING CROSSHAIR CURSOR (Desktop Only)
+        if (window.matchMedia("(pointer: fine)").matches) {
+            const cursorDot = document.getElementById('cursor-dot');
+            const cursorCross = document.getElementById('cursor-cross');
+            
+            const xSetDot = gsap.quickTo(cursorDot, "x", {duration: 0.1, ease: "power3.out"});
+            const ySetDot = gsap.quickTo(cursorDot, "y", {duration: 0.1, ease: "power3.out"});
+            const xSetCross = gsap.quickTo(cursorCross, "x", {duration: 0.4, ease: "power3.out"});
+            const ySetCross = gsap.quickTo(cursorCross, "y", {duration: 0.4, ease: "power3.out"});
 
-        function animateCanvas() {
-            ctx.clearRect(0, 0, width, height);
-            for(let i=0; i<particles.length; i++) {
-                let p = particles[i];
-                p.x += p.vx; p.y += p.vy;
-                
-                if(p.x < 0 || p.x > width) p.vx *= -1;
-                if(p.y < 0 || p.y > height) p.vy *= -1;
-                
-                ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                ctx.fillStyle = p.color; ctx.fill();
-                
-                for(let j=i+1; j<particles.length; j++) {
-                    let p2 = particles[j];
-                    let d = Math.sqrt(Math.pow(p.x - p2.x, 2) + Math.pow(p.y - p2.y, 2));
-                    if(d < 150) {
-                        ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y);
-                        ctx.strokeStyle = `rgba(255,255,255,${(0.08 - d/1875)})`; ctx.stroke();
-                    }
+            window.addEventListener("mousemove", e => {
+                xSetDot(e.clientX); ySetDot(e.clientY);
+                xSetCross(e.clientX); ySetCross(e.clientY);
+            });
+
+            document.querySelectorAll('.interact-explore, .interact').forEach(el => {
+                el.addEventListener('mouseenter', () => document.body.classList.add('hover-target'));
+                el.addEventListener('mouseleave', () => document.body.classList.remove('hover-target'));
+            });
+        }
+
+        // 3. SYNAPTIC AI CANVAS (Hero Particles)
+        const canvas = document.getElementById('ai-canvas');
+        if(canvas) {
+            const ctx = canvas.getContext('2d');
+            let width, height, particles = [];
+            let mouseX = window.innerWidth/2, mouseY = window.innerHeight/2;
+
+            window.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+
+            function initCanvas() {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+                particles = [];
+                for(let i=0; i<100; i++) {
+                    particles.push({
+                        x: Math.random() * width, y: Math.random() * height,
+                        vx: (Math.random() - 0.5) * 1.5, vy: (Math.random() - 0.5) * 1.5,
+                        radius: Math.random() * 2 + 0.5,
+                        color: i % 4 === 0 ? 'rgba(255, 68, 0, 0.8)' : 'rgba(255, 255, 255, 0.2)'
+                    });
                 }
             }
-            requestAnimationFrame(animateCanvas);
-        }
-        initCanvas(); animateCanvas();
+            window.addEventListener('resize', initCanvas);
 
-        // 3. SMOOTH SCROLLING (Lenis)
+            function animateCanvas() {
+                ctx.clearRect(0, 0, width, height);
+                for(let i=0; i<particles.length; i++) {
+                    let p = particles[i];
+                    
+                    let dx = mouseX - p.x; let dy = mouseY - p.y;
+                    let dist = Math.sqrt(dx*dx + dy*dy);
+                    if(dist < 200) { p.vx -= (dx / dist) * 0.1; p.vy -= (dy / dist) * 0.1; }
+                    
+                    p.vx *= 0.99; p.vy *= 0.99;
+                    if(Math.abs(p.vx) < 0.2) p.vx += (Math.random() - 0.5) * 0.2;
+                    if(Math.abs(p.vy) < 0.2) p.vy += (Math.random() - 0.5) * 0.2;
+
+                    p.x += p.vx; p.y += p.vy;
+                    if(p.x < 0) p.x = width; if(p.x > width) p.x = 0;
+                    if(p.y < 0) p.y = height; if(p.y > height) p.y = 0;
+                    
+                    ctx.beginPath(); ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fillStyle = p.color; ctx.fill();
+                    
+                    for(let j=i+1; j<particles.length; j++) {
+                        let p2 = particles[j];
+                        let d = Math.sqrt(Math.pow(p.x - p2.x, 2) + Math.pow(p.y - p2.y, 2));
+                        if(d < 120) {
+                            ctx.beginPath(); ctx.moveTo(p.x, p.y); ctx.lineTo(p2.x, p2.y);
+                            ctx.strokeStyle = `rgba(255,255,255,${(0.08 - d/1500)})`; ctx.stroke();
+                        }
+                    }
+                }
+                requestAnimationFrame(animateCanvas);
+            }
+            initCanvas(); animateCanvas();
+        }
+
+        // 4. LENIS SMOOTH SCROLL & HUD TRACKER
         const lenis = new Lenis({ duration: 1.2, easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)) });
         function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
         requestAnimationFrame(raf);
@@ -515,20 +666,25 @@
         gsap.ticker.add((time) => { lenis.raf(time * 1000) });
         gsap.ticker.lagSmoothing(0);
 
-        // 4. GSAP ANIMATIONS
-        
-        // Hero Init
-        gsap.fromTo(".gs-up", { y: "115%" }, { y: "0%", duration: 1.2, stagger: 0.1, ease: "power4.out", delay: 0.3 });
-
-        // Cinematic Video Native Expansion (Scales width and height perfectly without pinning bugs)
-        // Mobile uses native aspect-ratio to prevent gaps. Desktop expands visually.
-        if(window.innerWidth > 768) {
-            gsap.to("#video-scale-target", {
-                width: "100vw", height: "100svh", borderRadius: "0px",
-                ease: "none",
-                scrollTrigger: { trigger: ".theater-wrapper", start: "top top", end: "+=100%", scrub: true }
+        const depthTracker = document.getElementById('scroll-depth');
+        if(depthTracker) {
+            window.addEventListener('scroll', () => {
+                depthTracker.innerText = Math.floor(window.scrollY).toString().padStart(4, '0');
             });
         }
+
+        // 5. GSAP ANIMATIONS
+        
+        // Hero Init
+        gsap.fromTo(".gs-up", { y: "115%" }, { y: "0%", duration: 1.2, stagger: 0.1, ease: "power4.out", delay: 0.2 });
+
+        // Video Expansion (Native scale based on scroll)
+        gsap.to("#video-scale-target", {
+            scale: 1, borderRadius: "0px",
+            scrollTrigger: {
+                trigger: ".theater-wrapper", start: "top top", end: "+=100%", scrub: true, pin: ".theater-sticky"
+            }
+        });
 
         // Horizontal Scroll (Client Ecosystem)
         const hTrack = document.getElementById("h-scroll-track");
@@ -536,18 +692,22 @@
         gsap.to(panels, {
             xPercent: -100 * (panels.length - 1),
             ease: "none",
-            scrollTrigger: { trigger: "#ecosystem", pin: true, scrub: 1, end: () => "+=" + hTrack.offsetWidth }
+            scrollTrigger: {
+                trigger: "#ecosystem", pin: true, scrub: 1, end: () => "+=" + hTrack.offsetWidth
+            }
         });
 
-        // General Fade & Slide Reveals
+        // General Fades
         gsap.utils.toArray('.gs-fade').forEach(el => {
-            gsap.fromTo(el, { y: 50, opacity: 0 }, { y: 0, opacity: 1, duration: 1, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 85%" } });
+            gsap.fromTo(el, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 1.2, ease: "power3.out", scrollTrigger: { trigger: el, start: "top 85%" } });
         });
 
-        // Image Parallax 
-        gsap.utils.toArray('.gs-parallax').forEach(el => {
+        // Image Parallax
+        gsap.utils.toArray('.img-wrap').forEach(el => {
             const img = el.querySelector('.img-parallax');
-            if(img) { gsap.to(img, { yPercent: 15, ease: "none", scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: true } }); }
+            if(img) {
+                gsap.to(img, { yPercent: 15, ease: "none", scrollTrigger: { trigger: el, start: "top bottom", end: "bottom top", scrub: true } });
+            }
         });
 
     </script>
