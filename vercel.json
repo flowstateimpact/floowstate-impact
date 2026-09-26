@@ -1,14 +1,15 @@
 {
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": null,
+  "cleanUrls": true,
   "redirects": [
-    {
-      "source": "/links",
-      "destination": "https://linktr.ee/flowstateimpact",
-      "permanent": false
-    },
-    {
-      "source": "/links/",
-      "destination": "https://linktr.ee/flowstateimpact",
-      "permanent": false
-    }
+    { "source": "/links", "destination": "https://linktr.ee/flowstateimpact", "permanent": false },
+    { "source": "/links/", "destination": "https://linktr.ee/flowstateimpact", "permanent": false }
+  ],
+  "headers": [
+    { "source": "/assets/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }] },
+    { "source": "/media/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=2592000" }] },
+    { "source": "/fonts/(.*)", "headers": [{ "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }] }
   ]
 }

@@ -1,0 +1,59 @@
+{
+  "sections": [
+    {
+      "id": "film",
+      "title": "Film & video",
+      "count_label": "auto-pieces",
+      "items": [
+        { "cat": "Event", "title": "Berlin Super Return", "url": "https://www.lumierenarratives.com/mikey-weds-charlotte-2-1-1-1-2-1-1-3-1-1-1" },
+        { "cat": "Showreel", "title": "Highlight Reel 2025", "url": "https://www.lumierenarratives.com/highlight-reel-2024" },
+        { "cat": "Commercial", "title": "Fluffy Fluffy", "url": "https://www.lumierenarratives.com/mikey-weds-charlotte-2-1-1-1-2-1" },
+        { "cat": "Event", "title": "Oxford Union", "url": "https://www.lumierenarratives.com/mikey-weds-charlotte-2-1-1-1-2-1-1-1" },
+        { "cat": "Event", "title": "Vincent Club", "url": "https://www.lumierenarratives.com/mikey-weds-charlotte-2-1-1-1-2-1-1" },
+        { "cat": "Social media", "title": "Chocolatarium", "url": "https://www.lumierenarratives.com/mikey-weds-charlotte-2-1-1-1" },
+        { "cat": "Event", "title": "Resolve UK", "url": "https://www.lumierenarratives.com/mikey-weds-charlotte-2-1" },
+        { "cat": "Commercial", "title": "Jashans Restaurant", "url": "https://www.lumierenarratives.com/mikey-weds-charlotte-2-1-1-1-1-2-1-1-1-1-1-1-1" },
+        { "cat": "Motion graphics", "title": "CQI", "url": "https://www.lumierenarratives.com/mikey-weds-charlotte-2-1-2" },
+        { "cat": "Social media", "title": "Chocolatarium Re-Opening", "url": "https://www.lumierenarratives.com/mikey-weds-charlotte-2-1-1-1-2-1-1-2-1" },
+        { "cat": "Music video", "title": "Piano Promo", "url": "https://www.lumierenarratives.com/mikey-weds-charlotte-2-1-1-1-1-2-1-1-1-1-1" },
+        { "cat": "Commercial", "title": "Chocolate Making", "url": "https://www.lumierenarratives.com/mikey-weds-charlotte-2-1-1-1-2-1-1-2" },
+        { "cat": "Music video", "title": "Broken Inside", "url": "https://www.youtube.com/watch?v=hHAMozscWN4&list=RDhHAMozscWN4&start_radio=1" },
+        { "cat": "Commercial", "title": "Chocolatarium Tours", "url": "https://www.lumierenarratives.com/mikey-weds-charlotte-2-1-1-1-1-2-1" },
+        { "cat": "Music video", "title": "Fairy Ring", "url": "https://www.lumierenarratives.com/mikey-weds-charlotte-2" },
+        { "cat": "Music video", "title": "Lotus Flower", "url": "https://www.lumierenarratives.com/mikey-weds-charlotte-2-1-1" },
+        { "cat": "Documentary", "title": "A Lucky Man", "url": "https://www.lumierenarratives.com/mikey-weds-charlotte-2-1-1-1-1" },
+        { "cat": "Social media", "title": "MDUK", "url": "https://www.lumierenarratives.com/mikey-weds-charlotte-2-1-1-1-1-2-1-1-1-1-1-1" },
+        { "cat": "Social media", "title": "Li Ame Reel", "url": "https://www.lumierenarratives.com/mikey-weds-charlotte-2-1-1-1-2-1-1-3-1-1" },
+        { "cat": "Social media", "title": "Mandira", "url": null },
+        { "cat": "Social media", "title": "Galette Reel", "url": "https://www.lumierenarratives.com/mikey-weds-charlotte-2-1-1-1-2-1-1-3-1" },
+        { "cat": "Short film", "title": "On the Edge", "url": "https://www.lumierenarratives.com/mikey-weds-charlotte-2-1-1-1-1-2-1-1-1-1" },
+        { "cat": "Short film", "title": "The Old Man", "url": "https://www.lumierenarratives.com/mikey-weds-charlotte-2-1-1-1-2" },
+        { "cat": "Short film", "title": "Pay Time", "url": "https://www.lumierenarratives.com/mikey-weds-charlotte-2-2" },
+        { "cat": "AI video", "title": "Perspectum", "url": "https://www.lumierenarratives.com/mikey-weds-charlotte-2-1-1-1-1-2" },
+        { "cat": "Commercial", "title": "Chocolatarium Highlight", "url": "https://www.lumierenarratives.com/mikey-weds-charlotte-2-1-1-1-1-2-1-1" },
+        { "cat": "Instagram", "title": "The Muslim Vote", "url": "https://www.instagram.com/themuslimvote/" },
+        { "cat": "YouTube", "title": "The Muslim Vote", "url": "https://www.youtube.com/@TheMuslimVote" },
+        { "cat": "Podcast", "title": "Diago Dalut", "url": "https://www.lumierenarratives.com/mikey-weds-charlotte-2-1-1-1-1-2-1-1-1-1-1-2-1" },
+        { "cat": "Social media", "title": "Car Content", "url": "https://www.lumierenarratives.com/mikey-weds-charlotte-1" },
+        { "cat": "Music video", "title": "Kalakate", "url": "https://www.lumierenarratives.com/mikey-weds-charlotte" },
+        { "cat": "Podcast", "title": "Tottenham Stadium", "url": "https://www.lumierenarratives.com/mikey-weds-charlotte-2-1-1-1-1-2-1-1-1-1-1-2" }
+      ]
+    },
+    {
+      "id": "graphics",
+      "title": "Graphics design",
+      "count_label": "Folder",
+      "items": [
+        { "cat": "Portfolio", "title": "Graphics Design Portfolio", "url": "https://drive.google.com/drive/folders/1gn2ndxWv-NiFzXLUyk5wpzv-ubsAn4pa?usp=sharing" }
+      ]
+    },
+    {
+      "id": "photo",
+      "title": "Photography",
+      "count_label": "External",
+      "items": [
+        { "cat": "Portfolio", "title": "Photography Work", "url": "https://equinnphotography.wixsite.com/portfolio" }
+      ]
+    }
+  ]
+}
