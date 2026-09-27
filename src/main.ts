@@ -251,7 +251,7 @@ if (finePointer && !reduce) {
   document.body.appendChild(cur);
   const cx = gsap.quickTo(cur, 'x', { duration: 0.35, ease: 'power3' });
   const cy = gsap.quickTo(cur, 'y', { duration: 0.35, ease: 'power3' });
-  window.addEventListener('pointermove', (e) => { cx(e.clientX); cy(e.clientY); }, { passive: true });
+  window.addEventListener('pointermove', (e) => { cur.classList.add('is-on'); cx(e.clientX); cy(e.clientY); }, { passive: true });
   document.querySelectorAll('a, button').forEach((el) => {
     el.addEventListener('pointerenter', () => cur.classList.add('is-hot'));
     el.addEventListener('pointerleave', () => cur.classList.remove('is-hot'));

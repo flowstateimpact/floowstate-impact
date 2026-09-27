@@ -193,7 +193,8 @@ main { position: relative; z-index: 1; }
 .hero__title { --wd: var(--wd-t); }
 .hero__title .line { display: block; width: max-content; white-space: nowrap; font-variation-settings: "wdth" var(--wd); }
 @supports not (font-variation-settings: "wdth" 100) { .hero__title .line { font-stretch: var(--stretch); } }
-.hero__title em { text-shadow: 0 0 60px rgba(255, 176, 59, .35); }
+/* glow lives on the em, outside the .w reveal mask; a text-shadow here gets clipped into a box */
+.hero__title em { filter: drop-shadow(0 0 28px rgba(255, 176, 59, .38)); }
 .hero__foot {
   display: grid; gap: 1.6rem; margin-top: clamp(2rem, 4vw, 3.5rem);
   grid-template-columns: 1fr;
@@ -238,6 +239,7 @@ main { position: relative; z-index: 1; }
 .why__n { grid-row: span 2; color: var(--amber); font-size: 1rem; padding-top: .4rem; }
 .why__item h3 { font-family: var(--f-display); font-weight: 620; font-stretch: 100%; font-size: var(--fs-h); line-height: 1.05; letter-spacing: -.01em; }
 .why__item p { color: var(--cream-2); max-width: 44ch; }
+.why__item h3, .case__title, .get__grid dt, .gates__lead, .why__coda { text-wrap: balance; }
 @media (min-width: 1000px) {
   .why__item { grid-template-columns: 5rem minmax(0, 1.1fr) minmax(0, 1fr); align-items: baseline; }
   .why__n { grid-row: auto; }
@@ -305,7 +307,8 @@ main { position: relative; z-index: 1; }
   .gates__doors li { aspect-ratio: auto; border-radius: 4px; flex-direction: row; justify-content: flex-start; align-items: center; padding: 1rem 1.1rem; font-size: 1.15rem; }
 }
 .gates__lead { font-family: var(--f-display); font-stretch: 100%; font-weight: 500; font-size: var(--fs-h); line-height: 1.15; max-width: 22ch; margin-bottom: 2rem; }
-.stamps { display: flex; flex-wrap: wrap; gap: 1rem 1.2rem; }
+/* the slam-in starts at 1.8x; clip so the oversized stamps never widen the page on phones */
+.stamps { display: flex; flex-wrap: wrap; gap: 1rem 1.2rem; overflow: clip; overflow-clip-margin: 1rem; }
 .stamps li {
   font-family: var(--f-mono); font-weight: 700; font-size: clamp(.8rem, .7rem + .5vw, 1.15rem); letter-spacing: .14em; text-transform: uppercase;
   color: var(--flare); border: 2px solid var(--flare); padding: .5em .9em; border-radius: 4px;
@@ -444,6 +447,7 @@ main { position: relative; z-index: 1; }
 .contact__mail { font-size: clamp(1.4rem, .6rem + 4.4vw, 6rem); font-stretch: 90%; font-weight: 500; overflow-wrap: anywhere; position: relative; justify-self: start; line-height: 1; }
 .contact__mail::after { content: ""; position: absolute; left: 0; right: 0; bottom: -.12em; height: 2px; background: var(--amber); transform: scaleX(.18); transform-origin: left; transition: transform .8s var(--ease); }
 .contact__mail:hover::after { transform: scaleX(1); }
+@media (max-width: 480px) { .contact__mail { font-size: 6.4vw; } }
 .contact__phones { display: flex; flex-wrap: wrap; gap: 1rem 2rem; color: var(--cream-2); }
 .contact__phones a:hover { color: var(--amber); }
 @media (min-width: 1000px) { .contact__grid { grid-template-columns: 1fr auto; align-items: end; } }
@@ -452,7 +456,8 @@ main { position: relative; z-index: 1; }
 .foot a:hover { color: var(--amber); }
 
 /* cursor */
-.cursor { position: fixed; left: 0; top: 0; z-index: 99; width: 14px; height: 14px; margin: -7px 0 0 -7px; border: 1px solid var(--amber); border-radius: 50%; pointer-events: none; transition: width .35s var(--ease), height .35s var(--ease), margin .35s var(--ease), background .35s; mix-blend-mode: difference; }
+.cursor { position: fixed; left: 0; top: 0; z-index: 99; width: 14px; height: 14px; margin: -7px 0 0 -7px; border: 1px solid var(--amber); border-radius: 50%; pointer-events: none; transition: width .35s var(--ease), height .35s var(--ease), margin .35s var(--ease), background .35s, opacity .3s; mix-blend-mode: difference; opacity: 0; }
+.cursor.is-on { opacity: 1; }
 .cursor.is-hot { width: 56px; height: 56px; margin: -28px 0 0 -28px; background: rgba(255,176,59,.9); border-color: transparent; }
 
 /* ---------- reduced motion: a complete, still page ---------- */
