@@ -48,19 +48,19 @@ export interface PremisesSpec {
 
 export const FRONT_ROOM: PremisesSpec = {
   category: 'front-room',
-  apron: { depth: 3.5, left: -2.1, right: 2.1 },
+  apron: { depth: 3.5, left: -3.0, right: 2.6 },
   frontage: { width: 3.0, lintel: 2.4 },
   facade: { storeys: 6, groundH: 3.3, storeyH: 3.0, left: -6.2, right: 2.6, wall: 0.25, litWindows: 4 },
   inside: { left: -7.5, right: 2.5, depth: 30 },
-  ceiling: { height: 2.9, edge: 'beam', beamDepth: 0.28, beamWidth: 0.22, beamsX: [-2.2, -5.0] },
+  ceiling: { height: 2.9, edge: 'beam', beamDepth: 0.28, beamWidth: 0.22, beamsX: [-2.6, -6.3] },
   frontRoom: { partitionZ: -2.3, partitionFromX: 0.0 },
-  counter: { at: [-2.55, 0, -1.55], length: 1.9, depth: 0.7, height: 0.78, kind: 'desk' },
+  counter: { at: [-6.5, 0, -2.75], length: 0.75, depth: 1.8, height: 0.78, kind: 'desk' },
   owner: { height: 1.7, eye: 1.58 },
   marks: {
-    // M0: on the apron in front of the shutter's left half, where the handle is
-    M0: { at: [-0.5, 0, 0.45], facing: 0 },
-    // M1: at the desk, just inside the front wall, facing into the room toward the desk's near-right corner
-    M1: { at: [-1.4, 0, -0.6], facing: 34 },
+    // M0: on the apron at the left end of the shutter, where the handle and the lock tab are
+    M0: { at: [-1.781, 0, 0.197], facing: 0 },
+    // M1: at the desk against the long left wall, its back to the room, 5.2m from where the camera rests
+    M1: { at: [-5.784, 0, -2.381], facing: 65 },
   },
   lane: { roadWidth: 6.0, bendX: 3.0, bendDeg: 50 },
   plates: 'front-room',

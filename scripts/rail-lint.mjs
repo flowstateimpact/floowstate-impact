@@ -21,7 +21,7 @@ import { fileURLToPath } from 'node:url';
 import { FRONT_ROOM } from '../src/world/premises.ts';
 import { buildWorld, raycast, pointBoxDist, inPremises, shutterSolid, sub, len, norm, deg } from '../src/world/world.ts';
 import { STATIONS } from '../src/world/stations.ts';
-import { rail, layout, project, LANDSCAPE_REF, PORTRAIT_REF, phoneAspect } from '../src/world/rail.ts';
+import { rail, layout, project, ownerFraming, LANDSCAPE_REF, PORTRAIT_REF, phoneAspect } from '../src/world/rail.ts';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = join(ROOT, 'docs', 'v2', 'rail-lint');
@@ -33,6 +33,10 @@ const CLEARANCE = 0.15;           // the lens never sits inside or against a sol
 const STAGE_MIN_DEG = 55, STAGE_WALL_M = 6;
 const TUNNEL_SIDE_M = 1.5, TUNNEL_RUN_M = 2.0;
 const WALLISH = new Set(['facade', 'pier', 'lintel', 'wall', 'partition', 'shelf', 'bay', 'shutter', 'street']);
+
+/** law 6 sizes, as share of the frame's height (the taste read, 2026-09-29). Held in the check, not in the stations,
+ *  so a station can never loosen its own law. */
+export const OWNER_SIZE = { hero: [0.34, 0.40], why: [0.22, 0.28], default: [0.26, 0.34] };
 
 const FRAMES = {
   landscape: { min: 0.22, frames: [16 / 10, 16 / 9, 21 / 9].map((a) => ({ name: a.toFixed(2), aspect: a, refAspect: LANDSCAPE_REF, fit: 'landscape', window: [0, 1] })) },
@@ -105,25 +109,30 @@ export function lint(spec, stations, opts = {}) {
       }
     }
 
-    /* law 6 (placeholder mark): at every dwell sample the owner is bottom-left and never small */
     const cfg = FRAMES[railId];
+    /* law 6: at every dwell sample the owner is bottom-left, at the size the taste read fixed (2026-09-29):
+       share of the frame's height, hero 34 to 40 percent, every other dwell 26 to 34, "why" 22 to 28 from the chest up;
+       head, shoulders and chest always in frame, never a head alone; the lowest visible point in the lower part */
     const dwell = samples.filter((x) => x.phase === 'dwell');
     for (const sec of lay.sections) for (let k = 0; k <= 24; k++) dwell.push(at(sec.start + sec.travel + ((sec.len - sec.travel - 1e-6) * k) / 24));
     const l6 = [];
     for (const st of dwell) {
+      // "why" is held at 22 to 28 once its tilt has settled; while it tilts up out of the 2a framing the owner may sit
+      // anywhere between the two ranges, never outside both
+      const settle = stations.find((x) => x.id === st.station)?.dwellSettle ?? 1;
+      const tilting = st.station === 'why' && st.u < settle - 1e-9;
+      const range = tilting ? [OWNER_SIZE.why[0], OWNER_SIZE.default[1]] : OWNER_SIZE[st.station] ?? OWNER_SIZE.default;
       for (const fr of cfg.frames) {
-        const o = st.owner.at;
-        const feet = project(st.pose, [o[0], 0, o[2]], fr), head = project(st.pose, [o[0], spec.owner.height, o[2]], fr);
-        const bottom = Math.min(feet.down, 1), top = Math.max(head.down, 0);
-        const vis = bottom - top, across = (feet.across + head.across) / 2;
+        const o = ownerFraming(st.pose, st.owner.at, spec.owner.height, fr);
         const fails = [];
-        if (feet.depth <= 0 || head.depth <= 0) fails.push('behind the camera');
-        if (head.down < 0.02 || head.down > 1) fails.push(`head cut (at ${(head.down * 100).toFixed(1)}% down)`);
-        if (bottom < 0.72) fails.push(`feet at ${(feet.down * 100).toFixed(1)}% down, need 72% or lower in frame`);
-        if (across < 0.04 || across > 0.34) fails.push(`${(across * 100).toFixed(1)}% across, need 4 to 34%`);
-        if (vis < cfg.min) fails.push(`${(vis * 100).toFixed(1)}% of the frame tall, need ${cfg.min * 100}%`);
+        if (o.behind) fails.push('behind the camera');
+        if (!o.headIn) fails.push(`head cut (at ${(o.head * 100).toFixed(1)}% down)`);
+        if (!o.shoulderIn || !o.chestIn) fails.push('shoulders or chest out of frame');
+        if (o.bottom < 0.62) fails.push(`lowest visible point at ${(o.bottom * 100).toFixed(1)}% down, need the lower part of the frame`);
+        if (o.across < 0.04 || o.across > 0.34) fails.push(`${(o.across * 100).toFixed(1)}% across, need 4 to 34%`);
+        if (o.vis < range[0] - 1e-9 || o.vis > range[1] + 1e-9) fails.push(`${(o.vis * 100).toFixed(1)}% of the frame tall, need ${range[0] * 100} to ${range[1] * 100}%`);
         if (fails.length) add('6', railId, st.s, st.station, `at ${fr.name}: ${fails.join('; ')}`);
-        l6.push({ station: st.station, frame: fr.name, across, feet: feet.down, head: head.down, vis });
+        l6.push({ station: st.station, frame: fr.name, across: o.across, feet: o.feet, head: o.head, vis: o.vis });
       }
     }
 
@@ -178,7 +187,7 @@ export function lint(spec, stations, opts = {}) {
 const LAWS = ['1', '2', '3', '4', '5', '6', '7', 'STAGE'];
 const LAW_NAME = {
   1: 'eye height or lower (0.6 to 1.58m)', 2: 'never past the ceiling line', 3: 'never outside the premises, never inside a solid',
-  4: 'lamp homes in the footprint, 4 to 24m up', 5: 'no sky from the street', 6: 'owner bottom-left, never small (placeholder mark)',
+  4: 'lamp homes in the footprint, 4 to 24m up', 5: 'no sky from the street', 6: 'owner bottom-left, at the fixed size range',
   7: 'no tunnel', STAGE: 'stage law: never down the length',
 };
 
@@ -212,7 +221,7 @@ function writeLogs(res) {
 
 function report(res, summary) {
   const out = [];
-  out.push('rail-lint · direction B, slice one (hero, one, 2a, why) · front-room premises');
+  out.push('rail-lint · direction B, part one (hero, one, 2a, why) · front-room premises');
   for (const [railId, s] of Object.entries(summary.rails)) {
     out.push(`  ${railId.padEnd(9)} ${s.totalVh}vh · ${s.samples} even samples + knots + ${DENSE} dense · height ${s.heightMin.toFixed(3)} to ${s.heightMax.toFixed(3)}m · worst enclosed run ${s.worstTunnelRunM}m`);
   }
@@ -220,8 +229,8 @@ function report(res, summary) {
     const perRail = ['landscape', 'portrait'].map((r) => res.violations.filter((x) => x.law === l && (x.rail === r || x.rail === '-')).length);
     out.push(`  law ${l.padEnd(5)} ${LAW_NAME[l].padEnd(52)} landscape ${String(perRail[0]).padStart(3)} · portrait ${String(perRail[1]).padStart(3)}`);
   }
-  out.push('  waits for later slices: law 4 real sky placement (slice three) · law 5 blob count on the contact frame (contact is not built) ·');
-  out.push('    law 6 against directors and opened workers, and the brightest-person check (owner module, slice four) · laws 8 to 10 (not in this slice)');
+  out.push('  laws 4 and 5 judge the eight real lamp homes (sky.ts) · waits for later slices: the other 75 (slice three), the contact frame ·');
+  out.push('    law 6 against directors and opened workers (slice four) · laws 8 to 10 (not in this slice)');
   if (res.violations.length) {
     out.push(`  FAIL: ${res.violations.length} breach(es). First ten:`);
     for (const x of res.violations.slice(0, 10)) out.push(`    law ${x.law} · ${x.rail} · s=${x.s}vh · ${x.station} · ${x.detail}`);
@@ -239,9 +248,10 @@ function selftest() {
     { law: '1', name: 'camera forced to 1.60m at "why"', stations: set(STATIONS, 'why', 'landscape', 'settle', { height: 1.6 }) },
     { law: '1', name: 'camera dropped to 0.5m at the landing', stations: set(STATIONS, 'hero', 'portrait', 'arrive', { height: 0.5 }) },
     { law: '3', name: 'landing pulled back into the road', stations: set(STATIONS, 'hero', 'landscape', 'arrive', { behind: 4.6 }) },
-    { law: '4', name: 'a lamp 2m above the ceiling line', opts: { extraLamps: [{ id: 900, at: [-3, FRONT_ROOM.ceiling.height + 2, -10], lead: false, why: false, waiting: false }] } },
-    { law: '5', name: 'a lamp high over the front wall, seen over the roof', opts: { extraLamps: [{ id: 901, at: [-2, FRONT_ROOM.ceiling.height + 24, -1.2], lead: false, why: false, waiting: false }] } },
+    { law: '4', name: 'a lamp 2m above the ceiling line', opts: { extraLamps: [{ id: 'test-900', at: [-3, FRONT_ROOM.ceiling.height + 2, -10], lead: false, why: false, waiting: false }] } },
+    { law: '5', name: 'a lamp high over the front wall, seen over the roof', opts: { extraLamps: [{ id: 'test-901', at: [-2, FRONT_ROOM.ceiling.height + 24, -1.2], lead: false, why: false, waiting: false }] } },
     { law: '6', name: 'landing turned so the owner leaves the bottom-left', stations: set(STATIONS, 'hero', 'landscape', 'settle', { yaw: 20 }) },
+    { law: '6', name: 'owner-size range: lens narrowed at the wordless beat', stations: set(STATIONS, 'wordless', 'landscape', 'settle', { fov: 30 }) },
     { law: '7', name: 'a 3m corridor built round the 2a travel', opts: { extraSolids: corridor() } },
     { law: 'STAGE', name: '"why" walked into the hall, gazing down the length', stations: set(STATIONS, 'why', 'landscape', 'arrive', { right: -2.4, behind: -3.2, yaw: 8 }) },
   ];

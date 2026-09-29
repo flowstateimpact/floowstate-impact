@@ -8,7 +8,7 @@
  * Two rails share the same knot tags: landscape (desktop, fov authored at 16:9) and portrait (phones,
  * fov authored for the full 390 x 844 frame, the world drawn into its top 56 percent).
  */
-import type { MarkId } from './premises.ts';
+import type { MarkId, Vec3 } from './premises.ts';
 
 export type RailId = 'landscape' | 'portrait';
 
@@ -38,6 +38,8 @@ export interface Station {
   walkFrom?: MarkId;
   /** the part of the travel the walk takes, as travel progress */
   walkSpan: [number, number];
+  /** the step drawings of a walk, in order (each held for an equal share of walkSpan) */
+  walkSteps?: Vec3[];
   /** optional: the part of the travel the camera's position takes (default: all of it) */
   spans?: { pos?: [number, number] };
   /** optional per-rail keys [travel u, value] for the look, so a travel can turn, hold, and turn again */
@@ -45,7 +47,11 @@ export interface Station {
   railKeys?: Partial<Record<RailId, Station['keys']>>;
   knots: Record<RailId, { arrive: Knot; settle: Knot }>;
   /** shutter bottom edge over the section's progress: [t, metres, curve into this key] */
-  shutter: Array<[number, number, ('lin' | 'cut' | 'pull')?]>;
+  shutter: Array<[number, number, ('lin' | 'cut' | 'pull' | 'hand')?]>;
+  /** optional: the part of the dwell over which arrive settles into settle, then held (default: all of it) */
+  dwellSettle?: number;
+  /** optional per-rail keys over the settle, [settle progress, value]: the "why" lens stays wide while it tilts */
+  dwellKeys?: Partial<Record<RailId, { fov?: Array<[number, number]> }>>;
   /** law 5: during the landing and "The shop is closed", zero lamps are visible */
   zeroLamps: boolean;
 }
@@ -57,15 +63,15 @@ export const STATIONS: Station[] = [
   {
     id: 'hero', route: '1', label: 'Now your business can afford a whole department.',
     len: { landscape: 150, portrait: 130 }, travel: 'none', owner: 'M0', walkSpan: [0, 1],
-    // kerb edge, 1.45m high, 3.5m from the shutter, slightly right; the lane bends away to the right
+    // kerb edge, 1.45m high, 3.5m from the shutter, right of the opening; a level wide lens keeps the building's verticals upright
     knots: {
       landscape: {
-        arrive: { anchor: 'M0', right: 1.7, height: 1.45, behind: 3.0, yaw: -3.5, pitch: -3.5, fov: 56 },
-        settle: { anchor: 'M0', right: 1.7, height: 1.45, behind: 2.96, yaw: -3.8, pitch: -3.5, fov: 56 },
+        arrive: { anchor: 'M0', right: 4.03, height: 1.45, behind: 3.25, yaw: 12.3, pitch: -3.6, fov: 59.3 },
+        settle: { anchor: 'M0', right: 4.03, height: 1.45, behind: 3.22, yaw: 12.1, pitch: -3.6, fov: 59.3 },
       },
       portrait: {
-        arrive: { anchor: 'M0', right: 1.2, height: 1.45, behind: 3.0, yaw: 6, pitch: 1, fov: 60 },
-        settle: { anchor: 'M0', right: 1.2, height: 1.45, behind: 2.96, yaw: 5.8, pitch: 1, fov: 60 },
+        arrive: { anchor: 'M0', right: 2.96, height: 1.45, behind: 3.25, yaw: 19.5, pitch: -2.7, fov: 61.4 },
+        settle: { anchor: 'M0', right: 2.96, height: 1.45, behind: 3.22, yaw: 19.3, pitch: -2.7, fov: 61.4 },
       },
     },
     shutter: [[0, CHEST]], zeroLamps: true,
@@ -73,40 +79,43 @@ export const STATIONS: Station[] = [
   {
     id: 'one', route: '2', label: 'Bangladesh, 2024 · The shop is closed',
     len: { landscape: 170, portrait: 140 }, travel: 'pull', owner: 'M0', walkSpan: [0, 1],
-    // crab left 1m, down to 1.3m. The owner pulls it down and locks it, the phone lights, the owner lifts it to chest height
+    // crab left 1m, down to 1.3m, and the lens opens: as the shop closes the owner grows small in the lane.
+    // The owner pulls it down and locks it, the phone lights with a late order, the owner lifts it to chest height.
     knots: {
       landscape: {
-        arrive: { anchor: 'M0', right: 0.7, height: 1.3, behind: 3.0, yaw: -11.5, pitch: -3.5, fov: 52 },
-        settle: { anchor: 'M0', right: 0.68, height: 1.3, behind: 2.97, yaw: -11.7, pitch: -3.5, fov: 52 },
+        arrive: { anchor: 'M0', right: 3.03, height: 1.3, behind: 3.25, yaw: 12.5, pitch: 2.3, fov: 69.5 },
+        settle: { anchor: 'M0', right: 3.03, height: 1.3, behind: 3.23, yaw: 12.4, pitch: 2.3, fov: 69.5 },
       },
       portrait: {
-        arrive: { anchor: 'M0', right: 0.2, height: 1.3, behind: 3.0, yaw: -11, pitch: 3.5, fov: 64 },
-        settle: { anchor: 'M0', right: 0.18, height: 1.3, behind: 2.97, yaw: -11.2, pitch: 3.5, fov: 64 },
+        arrive: { anchor: 'M0', right: 1.96, height: 1.3, behind: 3.25, yaw: 16.0, pitch: 1.0, fov: 72 },
+        settle: { anchor: 'M0', right: 1.96, height: 1.3, behind: 3.23, yaw: 15.9, pitch: 1.0, fov: 72 },
       },
     },
-    shutter: [[0, CHEST], [0.3, CHEST], [0.46, 0, 'pull'], [0.72, 0], [0.9, CHEST, 'pull'], [1, CHEST]],
+    shutter: [[0, CHEST], [0.3, CHEST], [0.46, 0, 'hand'], [0.76, 0], [0.9, CHEST, 'hand'], [1, CHEST]],
     zeroLamps: true,
   },
   {
     id: 'wordless', route: '2a', label: '(wordless beat)',
-    len: { landscape: 160, portrait: 130 }, travel: 'pull', owner: 'M1', walkFrom: 'M0', walkSpan: [0.44, 0.7],
-    // Rests under the lintel, behind and right of the owner, looking across the room (stage law).
+    len: { landscape: 160, portrait: 130 }, travel: 'pull', owner: 'M1', walkFrom: 'M0', walkSpan: [0.3, 0.39],
+    // two step drawings: over the threshold, then half behind the left pier; the next drawing is inside, out of sight
+    walkSteps: [[-1.3, 0, -0.1], [-1.8, 0, -0.45], [-5.784, 0, -2.381]],
     // The sequence: turn while the shutter is still at chest height (the level gaze stays on steel), hold with the gaze
     // on the pier edge while the spring throws the shutter up (the reveal fills the right of frame), pan onto the owner's
-    // own wall, then slide in past the pier (the pier edge is the wipe; the owner's walk happens behind it).
+    // own wall, then duck under the lintel and rest inside, behind and right of the owner, looking across the room.
+    // The owner steps in behind the pier while the camera holds on it; the walk itself is never shown (hidden cut).
     spans: { pos: [0.58, 1.0] },
     railKeys: {
-      landscape: { yaw: [[0.22, 28], [0.42, 28], [0.62, 60.5]] },
-      portrait: { yaw: [[0.22, 22], [0.42, 22], [0.62, 68.5]] },
+      landscape: { yaw: [[0.22, 41], [0.42, 41], [0.62, 57.3]] },
+      portrait: { yaw: [[0.22, 28], [0.42, 28], [0.62, 69.5]] },
     },
     knots: {
       landscape: {
-        arrive: { anchor: 'M1', right: 1.92, height: 1.2, behind: 1.8, yaw: 60.5, pitch: -5.5, fov: 48 },
-        settle: { anchor: 'M1', right: 1.94, height: 1.2, behind: 1.77, yaw: 60.8, pitch: -5.5, fov: 48 },
+        arrive: { anchor: 'M1', right: 1.97, height: 1.2, behind: 4.83, yaw: 57.3, pitch: 5, fov: 61.7 },
+        settle: { anchor: 'M1', right: 1.99, height: 1.2, behind: 4.81, yaw: 57.4, pitch: 5, fov: 61.7 },
       },
       portrait: {
-        arrive: { anchor: 'M1', right: 1.92, height: 1.2, behind: 1.8, yaw: 68.5, pitch: -1, fov: 56 },
-        settle: { anchor: 'M1', right: 1.94, height: 1.2, behind: 1.77, yaw: 68.8, pitch: -1, fov: 56 },
+        arrive: { anchor: 'M1', right: 1.62, height: 1.2, behind: 4.8, yaw: 69.5, pitch: 5, fov: 57.7 },
+        settle: { anchor: 'M1', right: 1.64, height: 1.2, behind: 4.78, yaw: 69.6, pitch: 5, fov: 57.7 },
       },
     },
     shutter: [[0, CHEST], [0.072, CHEST], [0.122, LINTEL, 'cut'], [1, LINTEL]], zeroLamps: false,
@@ -114,15 +123,19 @@ export const STATIONS: Station[] = [
   {
     id: 'why', route: '3', label: 'why · traits A to D',
     len: { landscape: 220, portrait: 180 }, travel: 'pull', owner: 'M1', walkSpan: [0, 1],
-    // 0.3m crab, then the slow upward look, 5 to 22 degrees, no rise
+    // 0.3m crab; then the slow upward look, 5 to 22 degrees, no rise, finished in the first third of the dwell,
+    // so the eight lamps ignite into a settled field as the pen lifts at the end of each of the four lines
+    dwellSettle: 0.33,
+    // the lens holds wide while the view tilts up, and closes only in the last quarter of the tilt
+    dwellKeys: { landscape: { fov: [[0.75, 66]] }, portrait: { fov: [[0.75, 64]] } },
     knots: {
       landscape: {
-        arrive: { anchor: 'M1', right: 2.18, height: 1.2, behind: 1.66, yaw: 63, pitch: 5, fov: 48 },
-        settle: { anchor: 'M1', right: 2.18, height: 1.2, behind: 1.66, yaw: 65, pitch: 22, fov: 50 },
+        arrive: { anchor: 'M1', right: 2.26, height: 1.2, behind: 4.87, yaw: 57.3, pitch: 5, fov: 66 },
+        settle: { anchor: 'M1', right: 2.26, height: 1.2, behind: 4.87, yaw: 57.25, pitch: 22, fov: 57.7 },
       },
       portrait: {
-        arrive: { anchor: 'M1', right: 2.18, height: 1.2, behind: 1.66, yaw: 69.5, pitch: 5, fov: 68 },
-        settle: { anchor: 'M1', right: 2.18, height: 1.2, behind: 1.66, yaw: 71.5, pitch: 22, fov: 68 },
+        arrive: { anchor: 'M1', right: 1.92, height: 1.2, behind: 4.78, yaw: 69.8, pitch: 5, fov: 64 },
+        settle: { anchor: 'M1', right: 1.92, height: 1.2, behind: 4.78, yaw: 69.8, pitch: 22, fov: 57.3 },
       },
     },
     shutter: [[0, LINTEL]], zeroLamps: false,

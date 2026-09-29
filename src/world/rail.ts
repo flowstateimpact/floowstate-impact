@@ -27,6 +27,8 @@ export interface RailState {
   s: number;
   station: Station['id'];
   index: number;
+  /** progress through the whole section, 0..1 */
+  t: number;
   phase: 'travel' | 'dwell';
   /** progress through the current phase, 0..1 */
   u: number;
@@ -43,6 +45,9 @@ export const pull = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * 
 export const drift = (t: number) => 0.5 - 0.5 * Math.cos(Math.PI * t);
 /** CUT: fast start, dead stop, no bounce (the spring finishing the shutter) */
 export const cut = (t: number) => (t >= 1 ? 1 : 1 - Math.pow(2, -10 * t) * (1 - t));
+
+/** drawings in one hand-led shutter move (pull down, or lift to chest) */
+export const HAND_DRAWINGS = 8;
 
 const clamp01 = (t: number) => Math.min(1, Math.max(0, t));
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
@@ -108,7 +113,8 @@ function shutterAt(keys: Station['shutter'], t: number): number {
     const [t0, h0] = keys[i - 1], [t1, h1, curve] = keys[i];
     if (t <= t1) {
       const k = (t - t0) / Math.max(1e-9, t1 - t0);
-      const e = curve === 'cut' ? cut(k) : curve === 'pull' ? pull(k) : k;
+      // 'hand': the owner's hand leads and the shutter follows it drawing by drawing (figures on twos): eight drawings
+      const e = curve === 'cut' ? cut(k) : curve === 'pull' ? pull(k) : curve === 'hand' ? pull(Math.floor(k * HAND_DRAWINGS) / HAND_DRAWINGS) : k;
       return lerp(h0, h1, e);
     }
   }
@@ -135,19 +141,28 @@ export function rail(spec: PremisesSpec, railId: RailId, s: number, lay: Layout 
     phase = 'travel';
   } else {
     u = clamp01((local - sec.travel) / Math.max(1e-9, sec.len - sec.travel));
-    pose = mixPose(arrive, settle, drift(u));
+    // the held drift runs over the whole dwell, or settles early and holds (the "why" tilt ends before the first lamp)
+    const span = st.dwellSettle ?? 1;
+    const t = clamp01(u / span);
+    pose = mixPose(arrive, settle, drift(t));
+    const dk = st.dwellKeys?.[railId];
+    if (dk?.fov) pose.fov = keyed(arrive.fov, settle.fov, t, dk.fov);
     phase = 'dwell';
   }
 
   // the owner: at the station's mark, or walking between marks during the travel that names a walk
   let ownerAt: Vec3 = spec.marks[st.owner]!.at;
   if (phase === 'travel' && st.walkFrom) {
-    const from = spec.marks[st.walkFrom]!.at;
-    const w = st.walkSpan;
-    ownerAt = lerp3(from, ownerAt, pull(clamp01((u - w[0]) / (w[1] - w[0]))));
+    // no walk cycle in part one: the owner is at the old mark, then at each step drawing, then (hidden) at the new mark
+    const steps = st.walkSteps ?? [];
+    if (u < st.walkSpan[0]) ownerAt = spec.marks[st.walkFrom]!.at;
+    else if (u < st.walkSpan[1]) {
+      const k = Math.min(steps.length - 1, Math.floor(((u - st.walkSpan[0]) / (st.walkSpan[1] - st.walkSpan[0])) * steps.length));
+      ownerAt = steps[k] ?? ownerAt;
+    }
   }
 
-  return { s: sc, station: st.id, index: i, phase, u, pose, shutter: shutterAt(st.shutter, local / sec.len), owner: { at: ownerAt, mark: st.owner } };
+  return { s: sc, station: st.id, index: i, t: local / sec.len, phase, u, pose, shutter: shutterAt(st.shutter, local / sec.len), owner: { at: ownerAt, mark: st.owner } };
 }
 
 /* ---------- projection, shared by the page's camera and the rail check ---------- */
@@ -170,12 +185,34 @@ export const PHONE_WORLD_SHARE = 0.56;
 export const phoneAspect = (w: number, h: number) => w / (PHONE_WORLD_SHARE * h);
 export const PORTRAIT_REF = phoneAspect(390, 844);
 
-/** the vertical field of view actually used at this aspect, degrees */
-export function effectiveFov(fov: number, fr: Frame): number {
-  const t = Math.tan(deg(fov) / 2);
-  const keepH = fr.fit === 'portrait' || fr.aspect > fr.refAspect;
-  const tv = keepH ? (t * fr.refAspect) / fr.aspect : t;
-  return (2 * Math.atan(tv) * 180) / Math.PI;
+/** the vertical field of view actually used at this aspect, degrees.
+ *  Part one keeps the vertical view on every screen (wider screens see more to the sides), so the owner's
+ *  share of the frame's height, which law 6 fixes per station, is the same on every screen. */
+export function effectiveFov(fov: number, _fr: Frame): number {
+  return fov;
+}
+
+/* ---------- the owner's framing (law 6), shared by the rail check and the page's own measurement ---------- */
+/** heights on the film's figure, as fractions of its height: shoulder line ty = 0.77h, chest 0.62h (film.mjs bodyEl) */
+export const FIG = { shoulder: 0.77, chest: 0.62 };
+
+export function ownerFraming(p: Pose, at: Vec3, h: number, fr: Frame) {
+  const P = (y: number) => project(p, [at[0], y, at[2]], fr);
+  const feet = P(0), head = P(h), sh = P(h * FIG.shoulder), ch = P(h * FIG.chest);
+  const bottom = Math.min(feet.down, 1), top = Math.max(head.down, 0);
+  const inFrame = (q: { across: number; down: number; depth: number }) => q.depth > 0 && q.down >= 0 && q.down <= 1 && q.across >= 0 && q.across <= 1;
+  return {
+    across: (feet.across + head.across) / 2,
+    feet: feet.down,
+    head: head.down,
+    /** the owner's visible share of the frame's height */
+    vis: bottom - top,
+    bottom,
+    headIn: head.depth > 0 && head.down >= 0.02 && head.down <= 1,
+    shoulderIn: inFrame(sh),
+    chestIn: inFrame(ch),
+    behind: feet.depth <= 0 || head.depth <= 0,
+  };
 }
 
 export function basis(p: Pose) {

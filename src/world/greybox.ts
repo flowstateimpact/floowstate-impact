@@ -11,7 +11,12 @@
  */
 import * as THREE from 'three';
 import type { Vec3 } from './premises.ts';
-import { RAMP, deg, shutterSolid, type Solid, type World } from './world.ts';
+import { RAMP, deg, type Solid, type World } from './world.ts';
+import type { Frame, RailState } from './rail.ts';
+import { STATIONS } from './stations.ts';
+import { Shutter, SLATS } from './shutter.ts';
+import { OwnerPuppet, ownerState } from './owner.ts';
+import { WHY_LAMPS, igniteLevels, coreSizePx } from './sky.ts';
 
 THREE.ColorManagement.enabled = false;
 
@@ -19,14 +24,27 @@ const hex = (h: string) => new THREE.Color(h);
 
 const VERT = /* glsl */ `
 attribute float aBase;
+#ifdef SEAM
+attribute float aV;
+varying float vV;
+#endif
 varying vec3 vW;
 varying vec3 vN;
 varying float vBase;
 void main() {
-  vec4 w = modelMatrix * vec4(position, 1.0);
+  vec4 local = vec4(position, 1.0);
+  vec3 nrm = normal;
+#ifdef USE_INSTANCING
+  local = instanceMatrix * local;
+  nrm = mat3(instanceMatrix) * nrm;
+#endif
+  vec4 w = modelMatrix * local;
   vW = w.xyz;
-  vN = normalize(mat3(modelMatrix) * normal);
+  vN = normalize(mat3(modelMatrix) * nrm);
   vBase = aBase;
+#ifdef SEAM
+  vV = aV;
+#endif
   gl_Position = projectionMatrix * viewMatrix * w;
 }`;
 
@@ -35,17 +53,26 @@ precision highp float;
 #define MAXL 12
 uniform vec3 uRamp[5];
 uniform vec4 uLight[MAXL];   // xyz position, w intensity
-uniform vec2 uInfo[MAXL];    // x radius, y scope (0 inside, 1 outside)
+uniform vec3 uInfo[MAXL];    // x radius, y scope (0 inside, 1 outside), z 1 for a shaded pendant's downward cone
 uniform int uCount;
 uniform float uGap;          // how much of the opening is clear under the shutter, 0..1
 uniform float uInside;       // 1 when the camera is behind the shutter line
 uniform float uCeil;         // the ceiling line
+uniform float uMask;         // 1 while measuring: the world draws as flat black
+#ifdef SEAM
+varying float vV;
+#endif
 varying vec3 vW;
 varying vec3 vN;
 varying float vBase;
 void main() {
   // from inside, the building above the ceiling line does not exist: the night takes its place (the Skyspace move)
   if (uInside > 0.5 && vW.y > uCeil + 0.002) discard;
+  if (uMask > 0.5) { gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0); return; }
+#ifdef SEAM
+  // the seam between slats, drawn in ink along each slat's lower edge
+  if (vV < 0.09) { gl_FragColor = vec4(uRamp[0], 1.0); return; }
+#endif
   vec3 n = normalize(vN);
   // what a surface shows before any lamp reaches it; upper storeys fall toward ink
   float lum = vBase * mix(1.0, 0.3, smoothstep(3.5, 14.0, vW.y));
@@ -54,13 +81,17 @@ void main() {
     vec3 d = uLight[i].xyz - vW;
     float dist = length(d);
     float ndl = max(dot(n, d / dist), 0.0);
+    // a shade: light leaves only downward, full inside 30 degrees of straight down, none past 50 (no arch on the wall)
+    float cone = uInfo[i].z > 0.5 ? smoothstep(0.64, 0.87, d.y / dist) : 1.0;
     float r = uInfo[i].x;
     float att = uLight[i].w / (1.0 + dist * dist / (r * r));
     // light from inside reaches the apron only through the gap under the shutter; street light stays outside
     // and it stops at the kerb
     float outside = uGap * 0.7 * (1.0 - smoothstep(0.4, 3.3, vW.z));
     float reach = uInfo[i].y < 0.5 ? (vW.z > 0.03 ? outside : 1.0) : (vW.z < -0.3 ? 0.0 : 1.0);
-    lum += att * ndl * reach;
+    // the floor inside takes little light, so no stage pool gathers round the owner: light reads from its hardware
+    float floorIn = (n.y > 0.9 && vW.y < 0.01 && vW.z < -0.3) ? 0.45 : 1.0;
+    lum += att * ndl * reach * floorIn * cone;
   }
   int k = lum < 0.08 ? 0 : lum < 0.22 ? 1 : lum < 0.5 ? 2 : lum < 1.05 ? 3 : 4;
   vec3 c = uRamp[0];
@@ -117,7 +148,7 @@ function addBox(b: Buf, lines: number[], s: Solid) {
 function toneMaterial(world: World) {
   const lights = world.lights.slice(0, 12);
   const uLight = Array.from({ length: 12 }, (_, i) => (lights[i] ? new THREE.Vector4(...lights[i].at, lights[i].intensity) : new THREE.Vector4()));
-  const uInfo = Array.from({ length: 12 }, (_, i) => (lights[i] ? new THREE.Vector2(lights[i].radius, lights[i].scope === 'inside' ? 0 : 1) : new THREE.Vector2()));
+  const uInfo = Array.from({ length: 12 }, (_, i) => (lights[i] ? new THREE.Vector3(lights[i].radius, lights[i].scope === 'inside' ? 0 : 1, lights[i].down ? 1 : 0) : new THREE.Vector3()));
   return new THREE.ShaderMaterial({
     vertexShader: VERT,
     fragmentShader: FRAG,
@@ -128,6 +159,7 @@ function toneMaterial(world: World) {
       uCount: { value: lights.length },
       uGap: { value: 1 },
       uInside: { value: 0 },
+      uMask: { value: 0 },
       uCeil: { value: world.spec.ceiling.height },
     },
     // a small constant push only: a slope-scaled push lets hidden edges bleed through at grazing angles
@@ -150,14 +182,18 @@ export interface GreyBox {
   /** clip planes the renderer applies to the built-in materials (lines, panels) */
   clip: THREE.Plane[];
   /** apply the rail's state for this frame */
-  update(state: { shutter: number; owner: Vec3; camera: THREE.PerspectiveCamera; whyLit: number }): void;
+  update(st: RailState, camera: THREE.PerspectiveCamera, frame: Frame, viewportH: number): void;
+  /** measurement passes for the gates: 'lamps' draws only the lamps, white; 'owner' only the owner, white */
+  setMask(mode: 'none' | 'lamps' | 'owner'): void;
 }
 
-export function buildGreyBox(world: World): GreyBox {
+export function buildGreyBox(world: World, opts: { phone?: boolean } = {}): GreyBox {
   const scene = new THREE.Scene();
   scene.background = hex(RAMP[0]);
   const mat = toneMaterial(world);
+  const slatMat = new THREE.ShaderMaterial({ vertexShader: VERT, fragmentShader: FRAG, uniforms: mat.uniforms, defines: { SEAM: '' }, polygonOffset: true, polygonOffsetFactor: 0.15, polygonOffsetUnits: 2 });
   const ink = new THREE.LineBasicMaterial({ color: hex(RAMP[0]) });
+  const spec = world.spec;
 
   /* the static world: one mesh, one line set */
   const b: Buf = { pos: [], nrm: [], base: [] };
@@ -171,7 +207,8 @@ export function buildGreyBox(world: World): GreyBox {
   scene.add(new THREE.Mesh(merged(b), mat));
   const lg = new THREE.BufferGeometry();
   lg.setAttribute('position', new THREE.Float32BufferAttribute(lines, 3));
-  scene.add(new THREE.LineSegments(lg, ink));
+  const lineSet = new THREE.LineSegments(lg, ink);
+  scene.add(lineSet);
 
   /* signs, lit windows, bands of light: fixed tones, one mesh */
   const pp: number[] = [], pc: number[] = [];
@@ -185,101 +222,105 @@ export function buildGreyBox(world: World): GreyBox {
   const pg = new THREE.BufferGeometry();
   pg.setAttribute('position', new THREE.Float32BufferAttribute(pp, 3));
   pg.setAttribute('color', new THREE.Float32BufferAttribute(pc, 3));
-  scene.add(new THREE.Mesh(pg, new THREE.MeshBasicMaterial({ vertexColors: true, side: THREE.DoubleSide })));
+  const panels = new THREE.Mesh(pg, new THREE.MeshBasicMaterial({ vertexColors: true, side: THREE.DoubleSide }));
+  scene.add(panels);
 
-  /* the shutter: PLACEHOLDER flat panel with its 28 slat lines (the real slatted shutter is slice two) */
-  const spec = world.spec;
-  const half = spec.frontage.width / 2;
-  const shutterMesh = new THREE.Mesh(new THREE.BoxGeometry(spec.frontage.width, 1, 0.05), mat);
-  const slatH = spec.frontage.lintel / 28;
-  const slatGeo = new THREE.BufferGeometry();
-  const slatAttr = new THREE.Float32BufferAttribute(new Float32Array(28 * 6), 3);
-  slatGeo.setAttribute('position', slatAttr);
-  const slatLines = new THREE.LineSegments(slatGeo, ink);
-  slatLines.frustumCulled = false;
-  const shutter = new THREE.Group();
-  shutter.add(shutterMesh, slatLines);
-  scene.add(shutter);
-  const baseAttr = (g: THREE.BufferGeometry) => g.setAttribute('aBase', new THREE.Float32BufferAttribute(new Array(g.attributes.position.count).fill(0.22), 1));
-  baseAttr(shutterMesh.geometry);
+  /* the shutter: 28 slats on desktop, 20 on phones (plan 4.2) */
+  const shutter = new Shutter(spec, opts.phone ? SLATS.phone : SLATS.desktop, slatMat, mat);
+  scene.add(shutter.group);
 
-  /* the owner: PLACEHOLDER MARK for law 6, 1.70m, amber with an ink stroke; the drawn figure is slice four */
-  const ownerShape = new THREE.Shape();
-  const w = 0.22, top = 1.46, hr = 0.12;
-  ownerShape.moveTo(-w, 0); ownerShape.lineTo(w, 0); ownerShape.lineTo(w * 0.8, top); ownerShape.lineTo(-w * 0.8, top); ownerShape.lineTo(-w, 0);
-  const headShape = new THREE.Shape();
-  headShape.absarc(0, 1.7 - hr, hr, 0, Math.PI * 2, false);
-  const ownerGeo = new THREE.ShapeGeometry([ownerShape, headShape], 12);
-  const owner = new THREE.Group();
-  owner.add(new THREE.Mesh(ownerGeo, new THREE.MeshBasicMaterial({ color: hex(RAMP[3]), side: THREE.DoubleSide })));
-  owner.add(new THREE.LineSegments(new THREE.EdgesGeometry(ownerGeo), ink));
-  scene.add(owner);
+  /* the owner, and the khata on the desk */
+  const owner = new OwnerPuppet(spec);
+  scene.add(owner.group, owner.ledgerObject());
+  const maskCard = new THREE.ShaderMaterial({
+    uniforms: { map: { value: null } },
+    vertexShader: 'varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position,1.0); }',
+    fragmentShader: 'uniform sampler2D map; varying vec2 vUv; void main(){ float a = texture2D(map, vUv).a; if (a < 0.5) discard; gl_FragColor = vec4(1.0); }',
+    side: THREE.DoubleSide,
+  });
 
-  /* the eight "why" lamps: PLACEHOLDER points, round, 3px (4px for the two amber leads), no glow pass */
-  const why = world.lamps.filter((l) => l.why);
-  const lg2 = new THREE.BufferGeometry();
-  lg2.setAttribute('position', new THREE.Float32BufferAttribute(why.flatMap((l) => [...l.at]), 3));
-  lg2.setAttribute('aLead', new THREE.Float32BufferAttribute(why.map((l) => (l.lead ? 1 : 0)), 1));
-  lg2.setAttribute('aOrder', new THREE.Float32BufferAttribute(why.map((_, i) => i), 1));
+  /* the eight lamps: round points, core size by depth, cream workers and amber leads, no glow pass */
+  const lampGeo = new THREE.BufferGeometry();
+  lampGeo.setAttribute('position', new THREE.Float32BufferAttribute(WHY_LAMPS.flatMap((l) => [...l.at]), 3));
+  lampGeo.setAttribute('aLead', new THREE.Float32BufferAttribute(WHY_LAMPS.map((l) => (l.lead ? 1 : 0)), 1));
+  lampGeo.setAttribute('aCore', new THREE.Float32BufferAttribute(WHY_LAMPS.map((l) => coreSizePx(l.at[1] - spec.ceiling.height)), 1));
+  const levelAttr = new THREE.Float32BufferAttribute(new Float32Array(WHY_LAMPS.length), 1);
+  lampGeo.setAttribute('aLevel', levelAttr);
   const lampMat = new THREE.ShaderMaterial({
-    uniforms: { uLit: { value: 0 }, uDpr: { value: 1 }, uCream: { value: hex(RAMP[4]) }, uAmber: { value: hex(RAMP[3]) } },
+    uniforms: { uDpr: { value: 1 }, uCream: { value: hex(RAMP[4]) }, uAmber: { value: hex(RAMP[3]) }, uMask: { value: 0 } },
     vertexShader: /* glsl */ `
-      attribute float aLead; attribute float aOrder;
-      uniform float uLit; uniform float uDpr;
-      varying float vLead; varying float vOn;
+      attribute float aLead; attribute float aCore; attribute float aLevel;
+      uniform float uDpr;
+      varying float vLead; varying float vLevel; varying float vCore;
       void main() {
-        vLead = aLead; vOn = step(aOrder + 0.5, uLit);
+        vLead = aLead; vLevel = aLevel; vCore = aCore * uDpr;
         gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
-        gl_PointSize = (aLead > 0.5 ? 4.0 : 3.0) * uDpr + 2.0 * uDpr;
+        gl_PointSize = aCore * uDpr + 2.0 * uDpr + 2.0;
       }`,
     fragmentShader: /* glsl */ `
       precision highp float;
-      uniform vec3 uCream; uniform vec3 uAmber; uniform float uDpr;
-      varying float vLead; varying float vOn;
+      uniform vec3 uCream; uniform vec3 uAmber; uniform float uDpr; uniform float uMask;
+      varying float vLead; varying float vLevel; varying float vCore;
       void main() {
-        if (vOn < 0.5) discard;
-        float px = length(gl_PointCoord - 0.5) * (vLead > 0.5 ? 6.0 : 5.0) * uDpr;
-        float core = (vLead > 0.5 ? 2.0 : 1.5) * uDpr;
-        float a = 1.0 - smoothstep(core, core + uDpr, px);
+        if (vLevel <= 0.0) discard;
+        float size = vCore + 2.0 * uDpr + 2.0;
+        float px = length(gl_PointCoord - 0.5) * size;
+        // a round core with a 1px soft edge; nothing wider (the halo stays under 3px)
+        float a = 1.0 - smoothstep(vCore * 0.5, vCore * 0.5 + uDpr, px);
         if (a <= 0.0) discard;
-        gl_FragColor = vec4(vLead > 0.5 ? uAmber : uCream, a);
+        vec3 c = uMask > 0.5 ? vec3(1.0) : (vLead > 0.5 ? uAmber : uCream);
+        gl_FragColor = vec4(c, a * vLevel);
       }`,
     transparent: true,
     depthWrite: false,
   });
-  const lamps = new THREE.Points(lg2, lampMat);
+  const lamps = new THREE.Points(lampGeo, lampMat);
   lamps.frustumCulled = false;
+  lamps.renderOrder = 3;
   scene.add(lamps);
 
+  const whyIndex = STATIONS.findIndex((x) => x.id === 'why');
   const clipPlane = new THREE.Plane(new THREE.Vector3(0, -1, 0), spec.ceiling.height + 0.002);
   const clip: THREE.Plane[] = [];
+  let mask: 'none' | 'lamps' | 'owner' = 'none';
+  let cardMat: THREE.Material | null = null;
   return {
     scene,
     clip,
-    update({ shutter: bottom, owner: at, camera, whyLit }) {
+    setMask(mode) {
+      mask = mode;
+      mat.uniforms.uMask.value = mode === 'none' ? 0 : 1;
+      lampMat.uniforms.uMask.value = mode === 'lamps' ? 1 : 0;
+      lineSet.visible = panels.visible = mode === 'none';
+      lamps.visible = mode !== 'owner';
+      owner.ledgerObject().visible = mode === 'none';
+      scene.background = hex(RAMP[0]);
+      if (mode !== 'none') scene.background = new THREE.Color(0, 0, 0);
+    },
+    update(st, camera, frame, viewportH) {
       const inside = camera.position.z < -0.02;
       mat.uniforms.uInside.value = inside ? 1 : 0;
       clip.length = 0;
       if (inside) clip.push(clipPlane);
-      const sol = shutterSolid(spec, bottom);
-      shutter.visible = !!sol;
-      if (sol) {
-        shutterMesh.position.set(sol.c[0], sol.c[1], sol.c[2]);
-        shutterMesh.scale.set(1, sol.s[1], 1);
-        // slat seams ride up with the bottom edge, as a real shutter's slats do
-        let n = 0;
-        for (let i = 1; i < 28; i++) {
-          const y = bottom + i * slatH;
-          if (y >= spec.frontage.lintel) break;
-          slatAttr.setXYZ(n++, -half, y, 0.056); slatAttr.setXYZ(n++, half, y, 0.056);
-        }
-        slatAttr.needsUpdate = true;
-        slatGeo.setDrawRange(0, n);
+      const os = ownerState(st);
+      shutter.update(st.shutter, os.locked);
+      mat.uniforms.uGap.value = Math.min(1, Math.max(0, st.shutter / spec.frontage.lintel));
+      owner.update(os, st.owner.at, camera, frame, viewportH, st.pose);
+      if (mask !== 'none') owner.ledgerObject().visible = false;
+      const card = owner.group.children[0] as THREE.Mesh;
+      if (mask === 'owner') {
+        cardMat ??= card.material as THREE.Material;
+        maskCard.uniforms.map.value = (cardMat as THREE.MeshBasicMaterial).map;
+        card.material = maskCard;
+        owner.group.visible = true;
+      } else {
+        if (cardMat) { card.material = cardMat; cardMat = null; }
+        owner.group.visible = mask === 'none';
+        if (mask === 'none') owner.ledgerObject().visible = os.ledger !== 'carried';
       }
-      mat.uniforms.uGap.value = Math.min(1, Math.max(0, bottom / spec.frontage.lintel));
-      owner.position.set(at[0], 0, at[2]);
-      owner.rotation.y = Math.atan2(camera.position.x - at[0], camera.position.z - at[2]);
-      lampMat.uniforms.uLit.value = whyLit;
+      const lv = igniteLevels(whyIndex, st.index, st.phase, st.u);
+      lv.forEach((v, i) => levelAttr.setX(i, v));
+      levelAttr.needsUpdate = true;
       lampMat.uniforms.uDpr.value = Math.min(window.devicePixelRatio || 1, 2);
     },
   };

@@ -25,7 +25,7 @@ document.body.classList.toggle('clean', q.has('clean'));
 const spec = FRONT_ROOM;
 const world = buildWorld(spec);
 const lay = layout(railId);
-const gb = buildGreyBox(world);
+const gb = buildGreyBox(world, { phone: railId === 'portrait' });
 
 /* ---------- the scroll track: one section per station, travel then dwell; words only in the dwell ---------- */
 const track = document.getElementById('track')!;
@@ -51,7 +51,7 @@ track.appendChild(tail);
 
 /* ---------- renderer ---------- */
 const canvas = document.getElementById('world') as HTMLCanvasElement;
-const capture = q.has('s');
+const capture = q.has('s') || q.has('gate') || q.has('rec');
 const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, preserveDrawingBuffer: capture, powerPreference: 'high-performance' });
 renderer.outputColorSpace = THREE.LinearSRGBColorSpace;
 renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.5));
@@ -70,16 +70,6 @@ function resize() {
 }
 addEventListener('resize', () => { resize(); dirty = true; });
 resize();
-
-/* ---------- the eight "why" placeholders ignite one at a time across the why dwell ---------- */
-function whyLit(st: RailState) {
-  const i = lay.sections.findIndex((x) => x.station.id === 'why');
-  if (st.index < i) return 0;
-  if (st.index > i || st.phase === 'dwell' && st.u >= 1) return 8;
-  if (st.phase === 'travel') return 0;
-  // two per trait, A to D, each as the pen lifts: evenly through the first 90 percent of the dwell
-  return Math.min(8, Math.floor((st.u / 0.9) * 8 + 0.0001));
-}
 
 /* ---------- the plan of the premises, top down, with the rail and the view cone ---------- */
 const map = document.getElementById('map') as HTMLCanvasElement;
@@ -130,7 +120,7 @@ function frameAt(s: number) {
   camera.rotation.set(deg(st.pose.pitch), deg(st.pose.yaw), 0, 'YXZ');
   camera.fov = effectiveFov(st.pose.fov, frame);
   camera.updateProjectionMatrix();
-  gb.update({ shutter: st.shutter, owner: st.owner.at, camera, whyLit: whyLit(st) });
+  gb.update(st, camera, frame, canvas.clientHeight || innerHeight);
   renderer.clippingPlanes = gb.clip;
   renderer.render(gb.scene, camera);
   caps.forEach((c, i) => c.classList.toggle('on', i === st.index && st.phase === 'dwell'));
@@ -151,8 +141,71 @@ function frameAt(s: number) {
   return st;
 }
 
+/* ---------- measurement harness for the part-one gates (dev only) ---------- */
+function pixels() {
+  const gl = renderer.getContext();
+  const w = gl.drawingBufferWidth, h = gl.drawingBufferHeight;
+  const px = new Uint8Array(w * h * 4);
+  gl.readPixels(0, 0, w, h, gl.RGBA, gl.UNSIGNED_BYTE, px);
+  return { px, w, h };
+}
+function measure(s: number, mask: 'none' | 'lamps' | 'owner') {
+  gb.setMask(mask);
+  frameAt(s);
+  const r = pixels();
+  gb.setMask('none');
+  return r;
+}
+const gate = {
+  /** lamp blobs visible at s: the world drawn black, lamps white, 8-connected blobs over 40 percent grey */
+  lampBlobs(s: number) {
+    const { px, w, h } = measure(s, 'lamps');
+    const on = new Uint8Array(w * h);
+    for (let i = 0; i < w * h; i++) on[i] = px[i * 4] > 102 ? 1 : 0;
+    const seen = new Uint8Array(w * h);
+    const sizes: number[] = [];
+    for (let i = 0; i < w * h; i++) {
+      if (!on[i] || seen[i]) continue;
+      let n = 0; const stack = [i]; seen[i] = 1;
+      while (stack.length) {
+        const k = stack.pop()!; n++;
+        const x = k % w, y = (k / w) | 0;
+        for (let dy = -1; dy <= 1; dy++) for (let dx = -1; dx <= 1; dx++) {
+          const xx = x + dx, yy = y + dy;
+          if (xx < 0 || yy < 0 || xx >= w || yy >= h) continue;
+          const j = yy * w + xx;
+          if (on[j] && !seen[j]) { seen[j] = 1; stack.push(j); }
+        }
+      }
+      sizes.push(n);
+    }
+    return { blobs: sizes.length, sizes };
+  },
+  /** the owner's drawn box at s, as fractions of the frame (the 12 percent shadow excluded) */
+  ownerBox(s: number) {
+    const { px, w, h } = measure(s, 'owner');
+    let x0 = w, x1 = -1, y0 = h, y1 = -1;
+    for (let y = 0; y < h; y++) for (let x = 0; x < w; x++) if (px[(y * w + x) * 4] > 128) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+    if (x1 < 0) return null;
+    // readPixels rows run bottom-up
+    return { across: (x0 + x1) / 2 / w, top: 1 - (y1 + 1) / h, bottom: 1 - y0 / h, tall: (y1 - y0 + 1) / h };
+  },
+  /** a hash of the full frame at s (FNV-1a) */
+  hash(s: number) {
+    frameAt(s);
+    const { px } = pixels();
+    let hsh = 0x811c9dc5;
+    for (let i = 0; i < px.length; i += 1) { hsh ^= px[i]; hsh = Math.imul(hsh, 0x01000193); }
+    return (hsh >>> 0).toString(16);
+  },
+  layout: () => lay,
+  render: (s: number) => { frameAt(s); },
+};
+(window as unknown as { __gate: typeof gate }).__gate = gate;
+
 if (capture) {
   const s = parseFloat(q.get('s') || '0');
+  // in gate and recording modes the page never scrolls; frames are rendered at the asked position directly
   resize();
   scrollTo(0, (s * innerHeight) / 100);
   requestAnimationFrame(() => {

@@ -48,8 +48,13 @@ for (const [railId, ctxOpts] of Object.entries(RAILS)) {
   // two frames inside the 2a travel, landscape only: the reveal (spring done, gaze on the pier edge) and the pier wipe
   if (railId === 'landscape') {
     const sec = layout(railId).sections.find((x) => x.station.id === 'wordless');
-    for (const [name, u] of [['2a-travel-reveal', 0.4], ['2a-travel-wipe', 0.8]]) {
-      const s = sec.start + sec.travel * u;
+    const lay = layout(railId);
+    const one = lay.sections.find((x) => x.station.id === 'one'), why = lay.sections.find((x) => x.station.id === 'why');
+    for (const [name, s] of [
+      ['2a-travel-reveal', sec.start + sec.travel * 0.4], ['2a-travel-wipe', sec.start + sec.travel * 0.8],
+      ['2-one-phone', one.start + one.len * 0.66], ['2-one-lift', one.start + one.len * 0.84],
+      ['3-why-midway', why.start + why.travel + (why.len - why.travel) * 0.7],
+    ]) {
       await page.goto(`${base}/dev/rail.html?rail=${railId}&clean&s=${s.toFixed(2)}`);
       await page.waitForFunction(() => document.documentElement.dataset.ready === '1', null, { timeout: 30000 });
       const file = join(OUT, `${railId}-${name}.png`);

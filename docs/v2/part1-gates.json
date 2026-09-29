@@ -1,0 +1,865 @@
+{
+  "when": "measured on the dev page, SwiftShader (software GL) in headless Chromium 1223",
+  "c": {
+    "landscape": {
+      "hero dwell 0.1": {
+        "s": 15,
+        "blobs": 0,
+        "sizes": []
+      },
+      "hero dwell 0.5": {
+        "s": 75,
+        "blobs": 0,
+        "sizes": []
+      },
+      "hero dwell 0.9": {
+        "s": 135,
+        "blobs": 0,
+        "sizes": []
+      },
+      "one dwell 0.2": {
+        "s": 224.8,
+        "blobs": 0,
+        "sizes": []
+      },
+      "one dwell 0.5": {
+        "s": 260.5,
+        "blobs": 0,
+        "sizes": []
+      },
+      "one dwell 0.9": {
+        "s": 308.1,
+        "blobs": 0,
+        "sizes": []
+      },
+      "why dwell 0.97 (all ignited)": {
+        "s": 695.4,
+        "blobs": 8,
+        "sizes": [
+          20,
+          20,
+          20,
+          21,
+          21,
+          19,
+          20,
+          20
+        ]
+      },
+      "why dwell 0.60 (line A lifted: 2 lit)": {
+        "s": 638.4,
+        "blobs": 2,
+        "sizes": [
+          21,
+          20
+        ]
+      },
+      "why dwell 0.75 (lines A and B: 5 lit)": {
+        "s": 661.5,
+        "blobs": 5,
+        "sizes": [
+          20,
+          21,
+          19,
+          20,
+          20
+        ]
+      }
+    },
+    "portrait": {
+      "hero dwell 0.1": {
+        "s": 13,
+        "blobs": 0,
+        "sizes": []
+      },
+      "hero dwell 0.5": {
+        "s": 65,
+        "blobs": 0,
+        "sizes": []
+      },
+      "hero dwell 0.9": {
+        "s": 117,
+        "blobs": 0,
+        "sizes": []
+      },
+      "one dwell 0.2": {
+        "s": 191.6,
+        "blobs": 0,
+        "sizes": []
+      },
+      "one dwell 0.5": {
+        "s": 221,
+        "blobs": 0,
+        "sizes": []
+      },
+      "one dwell 0.9": {
+        "s": 260.2,
+        "blobs": 0,
+        "sizes": []
+      },
+      "why dwell 0.97 (all ignited)": {
+        "s": 576.2,
+        "blobs": 8,
+        "sizes": [
+          82,
+          83,
+          83,
+          78,
+          80,
+          78,
+          82,
+          78
+        ]
+      },
+      "why dwell 0.60 (line A lifted: 2 lit)": {
+        "s": 529.6,
+        "blobs": 2,
+        "sizes": [
+          83,
+          80
+        ]
+      },
+      "why dwell 0.75 (lines A and B: 5 lit)": {
+        "s": 548.5,
+        "blobs": 5,
+        "sizes": [
+          83,
+          83,
+          80,
+          82,
+          78
+        ]
+      }
+    }
+  },
+  "d": {
+    "landscape": {
+      "positions": 200,
+      "identical": 200,
+      "mismatches": []
+    },
+    "portrait": {
+      "positions": 200,
+      "identical": 200,
+      "mismatches": []
+    }
+  },
+  "e": {
+    "landscape": {
+      "samples": 27,
+      "pass": 27,
+      "fails": [],
+      "all": [
+        {
+          "station": "hero",
+          "dwell": 0.05,
+          "s": 7.5,
+          "across": 0.128,
+          "tall": 0.378,
+          "bottom": 0.764,
+          "range": [
+            0.34,
+            0.4
+          ],
+          "pass": true
+        },
+        {
+          "station": "hero",
+          "dwell": 0.25,
+          "s": 37.5,
+          "across": 0.127,
+          "tall": 0.378,
+          "bottom": 0.764,
+          "range": [
+            0.34,
+            0.4
+          ],
+          "pass": true
+        },
+        {
+          "station": "hero",
+          "dwell": 0.35,
+          "s": 52.5,
+          "across": 0.126,
+          "tall": 0.379,
+          "bottom": 0.766,
+          "range": [
+            0.34,
+            0.4
+          ],
+          "pass": true
+        },
+        {
+          "station": "hero",
+          "dwell": 0.5,
+          "s": 75,
+          "across": 0.125,
+          "tall": 0.379,
+          "bottom": 0.766,
+          "range": [
+            0.34,
+            0.4
+          ],
+          "pass": true
+        },
+        {
+          "station": "hero",
+          "dwell": 0.6,
+          "s": 90,
+          "across": 0.124,
+          "tall": 0.38,
+          "bottom": 0.767,
+          "range": [
+            0.34,
+            0.4
+          ],
+          "pass": true
+        },
+        {
+          "station": "hero",
+          "dwell": 0.75,
+          "s": 112.5,
+          "across": 0.122,
+          "tall": 0.38,
+          "bottom": 0.767,
+          "range": [
+            0.34,
+            0.4
+          ],
+          "pass": true
+        },
+        {
+          "station": "hero",
+          "dwell": 0.95,
+          "s": 142.5,
+          "across": 0.122,
+          "tall": 0.381,
+          "bottom": 0.768,
+          "range": [
+            0.34,
+            0.4
+          ],
+          "pass": true
+        },
+        {
+          "station": "one",
+          "dwell": 0.05,
+          "s": 206.9,
+          "across": 0.269,
+          "tall": 0.333,
+          "bottom": 0.784,
+          "range": [
+            0.26,
+            0.34
+          ],
+          "pass": true
+        },
+        {
+          "station": "one",
+          "dwell": 0.25,
+          "s": 230.8,
+          "across": 0.286,
+          "tall": 0.27,
+          "bottom": 0.786,
+          "range": [
+            0.26,
+            0.34
+          ],
+          "pass": true
+        },
+        {
+          "station": "one",
+          "dwell": 0.35,
+          "s": 242.7,
+          "across": 0.282,
+          "tall": 0.334,
+          "bottom": 0.786,
+          "range": [
+            0.26,
+            0.34
+          ],
+          "pass": true
+        },
+        {
+          "station": "one",
+          "dwell": 0.5,
+          "s": 260.5,
+          "across": 0.274,
+          "tall": 0.334,
+          "bottom": 0.786,
+          "range": [
+            0.26,
+            0.34
+          ],
+          "pass": true
+        },
+        {
+          "station": "one",
+          "dwell": 0.6,
+          "s": 272.4,
+          "across": 0.274,
+          "tall": 0.334,
+          "bottom": 0.786,
+          "range": [
+            0.26,
+            0.34
+          ],
+          "pass": true
+        },
+        {
+          "station": "one",
+          "dwell": 0.75,
+          "s": 290.3,
+          "across": 0.265,
+          "tall": 0.272,
+          "bottom": 0.787,
+          "range": [
+            0.26,
+            0.34
+          ],
+          "pass": true
+        },
+        {
+          "station": "one",
+          "dwell": 0.95,
+          "s": 314.1,
+          "across": 0.266,
+          "tall": 0.336,
+          "bottom": 0.787,
+          "range": [
+            0.26,
+            0.34
+          ],
+          "pass": true
+        },
+        {
+          "station": "wordless",
+          "dwell": 0.05,
+          "s": 373.6,
+          "across": 0.253,
+          "tall": 0.331,
+          "bottom": 0.809,
+          "range": [
+            0.26,
+            0.34
+          ],
+          "pass": true
+        },
+        {
+          "station": "wordless",
+          "dwell": 0.25,
+          "s": 396,
+          "across": 0.25,
+          "tall": 0.331,
+          "bottom": 0.809,
+          "range": [
+            0.26,
+            0.34
+          ],
+          "pass": true
+        },
+        {
+          "station": "wordless",
+          "dwell": 0.35,
+          "s": 407.2,
+          "across": 0.249,
+          "tall": 0.331,
+          "bottom": 0.809,
+          "range": [
+            0.26,
+            0.34
+          ],
+          "pass": true
+        },
+        {
+          "station": "wordless",
+          "dwell": 0.5,
+          "s": 424,
+          "across": 0.249,
+          "tall": 0.331,
+          "bottom": 0.809,
+          "range": [
+            0.26,
+            0.34
+          ],
+          "pass": true
+        },
+        {
+          "station": "wordless",
+          "dwell": 0.6,
+          "s": 435.2,
+          "across": 0.248,
+          "tall": 0.332,
+          "bottom": 0.81,
+          "range": [
+            0.26,
+            0.34
+          ],
+          "pass": true
+        },
+        {
+          "station": "wordless",
+          "dwell": 0.75,
+          "s": 452,
+          "across": 0.257,
+          "tall": 0.332,
+          "bottom": 0.81,
+          "range": [
+            0.26,
+            0.34
+          ],
+          "pass": true
+        },
+        {
+          "station": "wordless",
+          "dwell": 0.95,
+          "s": 474.4,
+          "across": 0.257,
+          "tall": 0.332,
+          "bottom": 0.81,
+          "range": [
+            0.26,
+            0.34
+          ],
+          "pass": true
+        },
+        {
+          "station": "why",
+          "dwell": 0.4,
+          "s": 607.6,
+          "across": 0.17,
+          "tall": 0.248,
+          "bottom": 1,
+          "range": [
+            0.22,
+            0.28
+          ],
+          "pass": true
+        },
+        {
+          "station": "why",
+          "dwell": 0.5,
+          "s": 623,
+          "across": 0.184,
+          "tall": 0.248,
+          "bottom": 1,
+          "range": [
+            0.22,
+            0.28
+          ],
+          "pass": true
+        },
+        {
+          "station": "why",
+          "dwell": 0.6,
+          "s": 638.4,
+          "across": 0.179,
+          "tall": 0.248,
+          "bottom": 1,
+          "range": [
+            0.22,
+            0.28
+          ],
+          "pass": true
+        },
+        {
+          "station": "why",
+          "dwell": 0.7,
+          "s": 653.8,
+          "across": 0.17,
+          "tall": 0.248,
+          "bottom": 1,
+          "range": [
+            0.22,
+            0.28
+          ],
+          "pass": true
+        },
+        {
+          "station": "why",
+          "dwell": 0.8,
+          "s": 669.2,
+          "across": 0.184,
+          "tall": 0.248,
+          "bottom": 1,
+          "range": [
+            0.22,
+            0.28
+          ],
+          "pass": true
+        },
+        {
+          "station": "why",
+          "dwell": 0.97,
+          "s": 695.4,
+          "across": 0.184,
+          "tall": 0.248,
+          "bottom": 1,
+          "range": [
+            0.22,
+            0.28
+          ],
+          "pass": true
+        }
+      ]
+    },
+    "portrait": {
+      "samples": 27,
+      "pass": 27,
+      "fails": [],
+      "all": [
+        {
+          "station": "hero",
+          "dwell": 0.05,
+          "s": 6.5,
+          "across": 0.129,
+          "tall": 0.364,
+          "bottom": 0.766,
+          "range": [
+            0.34,
+            0.4
+          ],
+          "pass": true
+        },
+        {
+          "station": "hero",
+          "dwell": 0.25,
+          "s": 32.5,
+          "across": 0.128,
+          "tall": 0.365,
+          "bottom": 0.767,
+          "range": [
+            0.34,
+            0.4
+          ],
+          "pass": true
+        },
+        {
+          "station": "hero",
+          "dwell": 0.35,
+          "s": 45.5,
+          "across": 0.128,
+          "tall": 0.365,
+          "bottom": 0.767,
+          "range": [
+            0.34,
+            0.4
+          ],
+          "pass": true
+        },
+        {
+          "station": "hero",
+          "dwell": 0.5,
+          "s": 65,
+          "across": 0.127,
+          "tall": 0.365,
+          "bottom": 0.767,
+          "range": [
+            0.34,
+            0.4
+          ],
+          "pass": true
+        },
+        {
+          "station": "hero",
+          "dwell": 0.6,
+          "s": 78,
+          "across": 0.126,
+          "tall": 0.367,
+          "bottom": 0.769,
+          "range": [
+            0.34,
+            0.4
+          ],
+          "pass": true
+        },
+        {
+          "station": "hero",
+          "dwell": 0.75,
+          "s": 97.5,
+          "across": 0.126,
+          "tall": 0.367,
+          "bottom": 0.769,
+          "range": [
+            0.34,
+            0.4
+          ],
+          "pass": true
+        },
+        {
+          "station": "hero",
+          "dwell": 0.95,
+          "s": 123.5,
+          "across": 0.125,
+          "tall": 0.367,
+          "bottom": 0.769,
+          "range": [
+            0.34,
+            0.4
+          ],
+          "pass": true
+        },
+        {
+          "station": "one",
+          "dwell": 0.05,
+          "s": 176.9,
+          "across": 0.293,
+          "tall": 0.334,
+          "bottom": 0.766,
+          "range": [
+            0.26,
+            0.34
+          ],
+          "pass": true
+        },
+        {
+          "station": "one",
+          "dwell": 0.25,
+          "s": 196.5,
+          "across": 0.332,
+          "tall": 0.271,
+          "bottom": 0.766,
+          "range": [
+            0.26,
+            0.34
+          ],
+          "pass": true
+        },
+        {
+          "station": "one",
+          "dwell": 0.35,
+          "s": 206.3,
+          "across": 0.322,
+          "tall": 0.336,
+          "bottom": 0.766,
+          "range": [
+            0.26,
+            0.34
+          ],
+          "pass": true
+        },
+        {
+          "station": "one",
+          "dwell": 0.5,
+          "s": 221,
+          "across": 0.304,
+          "tall": 0.337,
+          "bottom": 0.767,
+          "range": [
+            0.26,
+            0.34
+          ],
+          "pass": true
+        },
+        {
+          "station": "one",
+          "dwell": 0.6,
+          "s": 230.8,
+          "across": 0.331,
+          "tall": 0.272,
+          "bottom": 0.767,
+          "range": [
+            0.26,
+            0.34
+          ],
+          "pass": true
+        },
+        {
+          "station": "one",
+          "dwell": 0.75,
+          "s": 245.5,
+          "across": 0.289,
+          "tall": 0.272,
+          "bottom": 0.767,
+          "range": [
+            0.26,
+            0.34
+          ],
+          "pass": true
+        },
+        {
+          "station": "one",
+          "dwell": 0.95,
+          "s": 265.1,
+          "across": 0.289,
+          "tall": 0.337,
+          "bottom": 0.767,
+          "range": [
+            0.26,
+            0.34
+          ],
+          "pass": true
+        },
+        {
+          "station": "wordless",
+          "dwell": 0.05,
+          "s": 314.5,
+          "across": 0.276,
+          "tall": 0.334,
+          "bottom": 0.815,
+          "range": [
+            0.26,
+            0.34
+          ],
+          "pass": true
+        },
+        {
+          "station": "wordless",
+          "dwell": 0.25,
+          "s": 332.5,
+          "across": 0.268,
+          "tall": 0.334,
+          "bottom": 0.815,
+          "range": [
+            0.26,
+            0.34
+          ],
+          "pass": true
+        },
+        {
+          "station": "wordless",
+          "dwell": 0.35,
+          "s": 341.5,
+          "across": 0.268,
+          "tall": 0.334,
+          "bottom": 0.815,
+          "range": [
+            0.26,
+            0.34
+          ],
+          "pass": true
+        },
+        {
+          "station": "wordless",
+          "dwell": 0.5,
+          "s": 355,
+          "across": 0.267,
+          "tall": 0.334,
+          "bottom": 0.815,
+          "range": [
+            0.26,
+            0.34
+          ],
+          "pass": true
+        },
+        {
+          "station": "wordless",
+          "dwell": 0.6,
+          "s": 364,
+          "across": 0.286,
+          "tall": 0.334,
+          "bottom": 0.815,
+          "range": [
+            0.26,
+            0.34
+          ],
+          "pass": true
+        },
+        {
+          "station": "wordless",
+          "dwell": 0.75,
+          "s": 377.5,
+          "across": 0.285,
+          "tall": 0.334,
+          "bottom": 0.815,
+          "range": [
+            0.26,
+            0.34
+          ],
+          "pass": true
+        },
+        {
+          "station": "wordless",
+          "dwell": 0.95,
+          "s": 395.5,
+          "across": 0.285,
+          "tall": 0.336,
+          "bottom": 0.817,
+          "range": [
+            0.26,
+            0.34
+          ],
+          "pass": true
+        },
+        {
+          "station": "why",
+          "dwell": 0.4,
+          "s": 504.4,
+          "across": 0.192,
+          "tall": 0.24,
+          "bottom": 1,
+          "range": [
+            0.22,
+            0.28
+          ],
+          "pass": true
+        },
+        {
+          "station": "why",
+          "dwell": 0.5,
+          "s": 517,
+          "across": 0.218,
+          "tall": 0.24,
+          "bottom": 1,
+          "range": [
+            0.22,
+            0.28
+          ],
+          "pass": true
+        },
+        {
+          "station": "why",
+          "dwell": 0.6,
+          "s": 529.6,
+          "across": 0.209,
+          "tall": 0.24,
+          "bottom": 1,
+          "range": [
+            0.22,
+            0.28
+          ],
+          "pass": true
+        },
+        {
+          "station": "why",
+          "dwell": 0.7,
+          "s": 542.2,
+          "across": 0.192,
+          "tall": 0.24,
+          "bottom": 1,
+          "range": [
+            0.22,
+            0.28
+          ],
+          "pass": true
+        },
+        {
+          "station": "why",
+          "dwell": 0.8,
+          "s": 554.8,
+          "across": 0.218,
+          "tall": 0.24,
+          "bottom": 1,
+          "range": [
+            0.22,
+            0.28
+          ],
+          "pass": true
+        },
+        {
+          "station": "why",
+          "dwell": 0.97,
+          "s": 576.2,
+          "across": 0.218,
+          "tall": 0.24,
+          "bottom": 1,
+          "range": [
+            0.22,
+            0.28
+          ],
+          "pass": true
+        }
+      ]
+    }
+  }
+}
