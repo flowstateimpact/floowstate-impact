@@ -5,5 +5,5 @@ export default defineConfig({
     cssMinify: true,
     assetsInlineLimit: 2048,
   },
-  server: { port: 4180, host: true },
+  server: { port: 4180, host: '127.0.0.1' },
 });

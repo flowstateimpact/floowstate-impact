@@ -1,0 +1,115 @@
+{
+  "note": "Deterministic: the same code gives the same file. Written by scripts/rail-lint.mjs.",
+  "rails": {
+    "landscape": {
+      "totalVh": 700,
+      "sections": [
+        {
+          "id": "hero",
+          "start": 0,
+          "len": 150,
+          "travel": 0
+        },
+        {
+          "id": "one",
+          "start": 150,
+          "len": 170,
+          "travel": 51
+        },
+        {
+          "id": "wordless",
+          "start": 320,
+          "len": 160,
+          "travel": 48
+        },
+        {
+          "id": "why",
+          "start": 480,
+          "len": 220,
+          "travel": 66
+        }
+      ],
+      "samples": 400,
+      "heightMax": 1.45,
+      "heightMin": 1.2,
+      "stageAngleMinWhereNoWall": 58.5,
+      "worstTunnelRunM": 0,
+      "ownerAtDwell": {
+        "hero @ 1.60": "across 11-12%, feet from 90% down, head from 36% down, at least 54% tall",
+        "hero @ 1.78": "across 15-16%, feet from 90% down, head from 36% down, at least 54% tall",
+        "hero @ 2.33": "across 15-16%, feet from 103% down, head from 31% down, at least 68% tall",
+        "one @ 1.60": "across 21-21%, feet from 90% down, head from 29% down, at least 61% tall",
+        "one @ 1.78": "across 24-24%, feet from 90% down, head from 29% down, at least 61% tall",
+        "one @ 2.33": "across 24-24%, feet from 103% down, head from 22% down, at least 78% tall",
+        "wordless @ 1.60": "across 24-24%, feet from 92% down, head from 16% down, at least 76% tall",
+        "wordless @ 1.78": "across 26-27%, feet from 92% down, head from 16% down, at least 76% tall",
+        "wordless @ 2.33": "across 26-27%, feet from 105% down, head from 5% down, at least 95% tall",
+        "why @ 1.60": "across 19-19%, feet from 116% down, head from 38% down, at least 29% tall",
+        "why @ 1.78": "across 22-22%, feet from 116% down, head from 38% down, at least 29% tall",
+        "why @ 2.33": "across 22-22%, feet from 137% down, head from 34% down, at least 23% tall"
+      }
+    },
+    "portrait": {
+      "totalVh": 580,
+      "sections": [
+        {
+          "id": "hero",
+          "start": 0,
+          "len": 130,
+          "travel": 0
+        },
+        {
+          "id": "one",
+          "start": 130,
+          "len": 140,
+          "travel": 42
+        },
+        {
+          "id": "wordless",
+          "start": 270,
+          "len": 130,
+          "travel": 40
+        },
+        {
+          "id": "why",
+          "start": 400,
+          "len": 180,
+          "travel": 54
+        }
+      ],
+      "samples": 400,
+      "heightMax": 1.45,
+      "heightMin": 1.2,
+      "stageAngleMinWhereNoWall": 62,
+      "worstTunnelRunM": 0,
+      "ownerAtDwell": {
+        "hero @ 360x780": "across 19-20%, feet from 92% down, head from 44% down, at least 48% tall",
+        "hero @ 390x844": "across 19-20%, feet from 92% down, head from 44% down, at least 48% tall",
+        "hero @ 430x932": "across 19-20%, feet from 92% down, head from 44% down, at least 48% tall",
+        "hero @ 375x667": "across 19-20%, feet from 101% down, head from 43% down, at least 57% tall",
+        "one @ 360x780": "across 24-24%, feet from 92% down, head from 44% down, at least 48% tall",
+        "one @ 390x844": "across 24-24%, feet from 92% down, head from 44% down, at least 48% tall",
+        "one @ 430x932": "across 24-24%, feet from 92% down, head from 44% down, at least 48% tall",
+        "one @ 375x667": "across 24-24%, feet from 101% down, head from 42% down, at least 57% tall",
+        "wordless @ 360x780": "across 24-25%, feet from 92% down, head from 30% down, at least 62% tall",
+        "wordless @ 390x844": "across 24-25%, feet from 92% down, head from 30% down, at least 62% tall",
+        "wordless @ 430x932": "across 24-25%, feet from 92% down, head from 30% down, at least 62% tall",
+        "wordless @ 375x667": "across 24-25%, feet from 101% down, head from 26% down, at least 74% tall",
+        "why @ 360x780": "across 22-22%, feet from 92% down, head from 42% down, at least 35% tall",
+        "why @ 390x844": "across 22-22%, feet from 92% down, head from 42% down, at least 35% tall",
+        "why @ 430x932": "across 22-22%, feet from 92% down, head from 42% down, at least 35% tall",
+        "why @ 375x667": "across 22-22%, feet from 101% down, head from 41% down, at least 32% tall"
+      }
+    }
+  },
+  "violationsPerLaw": {
+    "1": 0,
+    "2": 0,
+    "3": 0,
+    "4": 0,
+    "5": 0,
+    "6": 0,
+    "7": 0,
+    "STAGE": 0
+  }
+}

@@ -1,0 +1,430 @@
+/*
+ * world.ts · the grey-box world built from a PremisesSpec. Pure data and pure maths, no three.js,
+ * so scripts/rail-lint.mjs checks exactly the geometry the page draws.
+ *
+ * Everything is a box (optionally turned about the vertical axis) or a flat panel. Tones are the
+ * direction's fixed ramp (section 5): 0 ink, 1 deep, 2 mid, 3 lit, 4 highlight. Nothing generated.
+ */
+import type { PremisesSpec, Vec3 } from './premises.ts';
+
+export type Tone = 0 | 1 | 2 | 3 | 4;
+export const RAMP = ['#0A0A0B', '#2B1C0E', '#7A4F1E', '#FFB03B', '#F5F1EB'] as const;
+
+export type SolidKind =
+  | 'facade' | 'pier' | 'lintel' | 'wall' | 'partition' | 'shelf' | 'bay' | 'beam' | 'cornice'
+  | 'furniture' | 'fixture' | 'street' | 'shutter';
+
+export interface Solid {
+  id: string;
+  kind: SolidKind;
+  /** centre */
+  c: Vec3;
+  /** full size along its own x, y, z */
+  s: Vec3;
+  /** turn about the vertical axis, degrees; local +x maps to (cos, 0, -sin) */
+  rotY?: number;
+  /** how bright the surface is before any light reaches it (0..1 on the tone scale) */
+  base: number;
+  /** render only the face whose normal is local +z (facades seen only from the lane) */
+  frontOnly?: boolean;
+  /** does it stop sight lines in the rail check (everything opaque does) */
+  occludes: boolean;
+}
+
+export interface Panel {
+  id: string;
+  /** centre, size (w, h), turn, and a fixed tone: signs, lit windows, bands of light */
+  c: Vec3;
+  w: number;
+  h: number;
+  rotY: number;
+  tone: Tone;
+}
+
+export interface Floor {
+  id: string;
+  x0: number; x1: number; z0: number; z1: number; y: number;
+  rotY?: number;
+  /** pivot for a turned floor */
+  pivot?: Vec3;
+  base: number;
+}
+
+export interface Light {
+  id: string;
+  at: Vec3;
+  intensity: number;
+  radius: number;
+  /** 'inside' lights reach the apron only through the shutter gap */
+  scope: 'inside' | 'outside';
+}
+
+export interface LampHome {
+  id: number;
+  at: Vec3;
+  lead: boolean;
+  /** true for the eight that light at "why" (direction section 8) */
+  why: boolean;
+  /** a waiting lamp sits 1m above the ceiling line (direction 3a); none in slice one */
+  waiting: boolean;
+}
+
+export interface World {
+  spec: PremisesSpec;
+  solids: Solid[];
+  panels: Panel[];
+  floors: Floor[];
+  lights: Light[];
+  lamps: LampHome[];
+}
+
+/* ---------- small vector helpers ---------- */
+export const deg = (d: number) => (d * Math.PI) / 180;
+export const add = (a: Vec3, b: Vec3): Vec3 => [a[0] + b[0], a[1] + b[1], a[2] + b[2]];
+export const sub = (a: Vec3, b: Vec3): Vec3 => [a[0] - b[0], a[1] - b[1], a[2] - b[2]];
+export const scale = (a: Vec3, k: number): Vec3 => [a[0] * k, a[1] * k, a[2] * k];
+export const len = (a: Vec3) => Math.hypot(a[0], a[1], a[2]);
+export const norm = (a: Vec3): Vec3 => scale(a, 1 / (len(a) || 1));
+export const dot = (a: Vec3, b: Vec3) => a[0] * b[0] + a[1] * b[1] + a[2] * b[2];
+
+/** seeded random, so every build places the same things */
+export function seeded(seed: number) {
+  let s = seed >>> 0;
+  return () => {
+    s = (s + 0x6d2b79f5) >>> 0;
+    let t = s;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+/** a box from min/max corners */
+function box(id: string, kind: SolidKind, x0: number, x1: number, y0: number, y1: number, z0: number, z1: number, base: number, extra: Partial<Solid> = {}): Solid {
+  return { id, kind, c: [(x0 + x1) / 2, (y0 + y1) / 2, (z0 + z1) / 2], s: [x1 - x0, y1 - y0, z1 - z0], base, occludes: true, ...extra };
+}
+
+/** a box set along a turned line: s0..s1 along the line, n0..n1 off it (toward the lane), y0..y1 */
+function lineBox(id: string, kind: SolidKind, origin: Vec3, rotY: number, s0: number, s1: number, n0: number, n1: number, y0: number, y1: number, base: number, extra: Partial<Solid> = {}): Solid {
+  const r = deg(rotY);
+  const ax: Vec3 = [Math.cos(r), 0, -Math.sin(r)];
+  const nz: Vec3 = [Math.sin(r), 0, Math.cos(r)];
+  const sm = (s0 + s1) / 2, nm = (n0 + n1) / 2;
+  const c = add(add(origin, scale(ax, sm)), scale(nz, nm));
+  return { id, kind, c: [c[0], (y0 + y1) / 2, c[2]], s: [s1 - s0, y1 - y0, n1 - n0], rotY, base, occludes: true, ...extra };
+}
+
+function linePanel(id: string, origin: Vec3, rotY: number, sMid: number, n: number, y: number, w: number, h: number, tone: Tone): Panel {
+  const r = deg(rotY);
+  const c = add(add(origin, scale([Math.cos(r), 0, -Math.sin(r)], sMid)), scale([Math.sin(r), 0, Math.cos(r)], n));
+  return { id, c: [c[0], y, c[2]], w, h, rotY, tone };
+}
+
+/* ---------- the world ---------- */
+export function buildWorld(spec: PremisesSpec): World {
+  const solids: Solid[] = [];
+  const panels: Panel[] = [];
+  const floors: Floor[] = [];
+  const lights: Light[] = [];
+  const { apron, frontage, facade, inside, ceiling, frontRoom, counter } = spec;
+  const half = frontage.width / 2;
+  const W = facade.wall;
+  const C = ceiling.height;
+  const roof = facade.groundH + (facade.storeys - 1) * facade.storeyH;
+
+  /* the owner's building, seen from the lane */
+  solids.push(box('pier-left', 'pier', facade.left, -half, 0, C, -W, 0, 0.16));
+  solids.push(box('pier-right', 'pier', half, facade.right, 0, C, -W, 0, 0.16));
+  solids.push(box('lintel', 'lintel', -half, half, frontage.lintel, C, -W, 0, 0.18));
+  solids.push(box('facade-upper', 'facade', facade.left, facade.right, C, roof, -W, 0, 0.1, { frontOnly: true }));
+  solids.push(box('parapet', 'facade', facade.left, facade.right, roof, roof + 0.9, -W, 0, 0.05, { frontOnly: true }));
+  // slab edges between storeys and plain balconies with straight grilles
+  for (let k = 1; k < facade.storeys; k++) {
+    const y = facade.groundH + (k - 1) * facade.storeyH;
+    solids.push(box(`slab-${k}`, 'facade', facade.left, facade.right, y - 0.12, y + 0.08, 0, 0.18, 0.08));
+    solids.push(box(`balcony-${k}`, 'facade', facade.left + 0.9, facade.left + 3.9, y + 0.08, y + 1.0, 0, 0.9, 0.06));
+  }
+  // guide rails of the shutter and the blank glowing signboard (dimmer than the band under the shutter)
+  solids.push(box('guide-left', 'fixture', -half - 0.06, -half, 0, frontage.lintel, 0, 0.08, 0.2));
+  solids.push(box('guide-right', 'fixture', half, half + 0.06, 0, frontage.lintel, 0, 0.08, 0.2));
+  panels.push({ id: 'sign', c: [0, 2.72, 0.02], w: frontage.width + 0.2, h: 0.46, rotY: 0, tone: 2 });
+  // four of twenty windows lit (plate 2)
+  const winLit = new Set([3, 8, 14, 17]);
+  for (let k = 0; k < 20; k++) {
+    const storey = 1 + Math.floor(k / 4), col = k % 4;
+    const x = facade.left + 1.2 + col * ((facade.right - facade.left - 2.4) / 3);
+    const y = facade.groundH + (storey - 1) * facade.storeyH + 1.5;
+    panels.push({ id: `win-${k}`, c: [x, y, 0.02], w: 1.1, h: 1.2, rotY: 0, tone: winLit.has(k) ? 4 : 0 });
+  }
+
+  /* the left neighbour, a six-storey building with its own shop, shutter half down, light under it */
+  const nl = facade.left - 9.5;
+  solids.push(box('nbrL-pier-a', 'street', nl, -10.6, 0, C, -W, 0, 0.12));
+  solids.push(box('nbrL-pier-b', 'street', -7.4, facade.left, 0, C, -W, 0, 0.12));
+  solids.push(box('nbrL-lintel', 'street', -10.6, -7.4, 2.4, C, -W, 0, 0.12));
+  solids.push(box('nbrL-shutter', 'street', -10.6, -7.4, 1.05, 2.4, 0, 0.05, 0.12));
+  solids.push(box('nbrL-upper', 'street', nl, facade.left, C, roof - 1.0, -W, 0, 0.06, { frontOnly: true }));
+  panels.push({ id: 'nbrL-band', c: [-9.0, 0.52, 0.01], w: 3.2, h: 1.04, rotY: 0, tone: 3 });
+  panels.push({ id: 'nbrL-sign', c: [-9.0, 2.7, 0.02], w: 3.0, h: 0.42, rotY: 0, tone: 2 });
+  panels.push({ id: 'nbrL-win', c: [-12.5, 7.8, 0.02], w: 1.1, h: 1.2, rotY: 0, tone: 4 });
+  solids.push(box('row-left', 'street', -40, nl, 0, 14.3, -W, 0, 0.05, { frontOnly: true }));
+  lights.push({ id: 'nbrL-band', at: [-9.0, 0.4, 0.6], intensity: 0.55, radius: 1.3, scope: 'outside' });
+
+  /* the lane bends away to the right beyond the owner's building (direction row 1: the lane alive to the right) */
+  const bend: Vec3 = [facade.right, 0, 0];
+  const bd = spec.lane.bendDeg;
+  const fw = 0.3;
+  // building A: the neighbour's shop, shutter half down with a band of light under it
+  solids.push(lineBox('laneA-a', 'street', bend, bd, 0.4, 4.0, -fw, 0, 0, C, 0.12));
+  solids.push(lineBox('laneA-b', 'street', bend, bd, 7.0, 11.0, -fw, 0, 0, C, 0.12));
+  solids.push(lineBox('laneA-lintel', 'street', bend, bd, 4.0, 7.0, -fw, 0, 2.4, C, 0.12));
+  solids.push(lineBox('laneA-shutter', 'street', bend, bd, 4.0, 7.0, 0, 0.05, 0.95, 2.4, 0.14));
+  solids.push(lineBox('laneA-upper', 'street', bend, bd, 0.4, 11.0, -fw, 0, C, roof, 0.07, { frontOnly: true }));
+  panels.push(linePanel('laneA-band', bend, bd, 5.5, 0.02, 0.475, 3.0, 0.95, 3));
+  panels.push(linePanel('laneA-sign', bend, bd, 5.5, 0.03, 2.72, 2.8, 0.42, 3));
+  panels.push(linePanel('laneA-win1', bend, bd, 2.0, 0.02, 7.8, 1.1, 1.2, 4));
+  panels.push(linePanel('laneA-win2', bend, bd, 8.8, 0.02, 13.8, 1.1, 1.2, 4));
+  lights.push({ id: 'laneA-band', at: (() => { const p = linePanel('x', bend, bd, 5.5, 0.9, 0.3, 0, 0, 0).c; return p; })(), intensity: 0.6, radius: 1.5, scope: 'outside' });
+  // building B, five storeys, with the tea stall under a small tin awning in front
+  solids.push(lineBox('laneB', 'street', bend, bd, 11.0, 21.0, -fw, 0, 0, roof - 3.0, 0.08, { frontOnly: true }));
+  solids.push(lineBox('tea-counter', 'furniture', bend, bd, 13.2, 14.8, 0.2, 1.0, 0, 0.95, 0.14));
+  solids.push(lineBox('tea-awning', 'fixture', bend, bd, 12.9, 15.1, 0, 1.5, 2.25, 2.33, 0.1));
+  solids.push(lineBox('tea-post', 'fixture', bend, bd, 15.0, 15.08, 1.42, 1.5, 0, 2.25, 0.1));
+  panels.push(linePanel('tea-glow', bend, bd, 14.0, 0.05, 1.5, 1.4, 1.0, 3));
+  lights.push({ id: 'tea', at: (() => linePanel('x', bend, bd, 14.0, 0.8, 2.05, 0, 0, 0).c)(), intensity: 0.7, radius: 1.4, scope: 'outside' });
+  // building C and the far parked rickshaw, hood up, a silhouette in the tea stall's light
+  solids.push(lineBox('laneC', 'street', bend, bd, 21.0, 36.0, -fw, 0, 0, roof, 0.05, { frontOnly: true }));
+  solids.push(lineBox('rickshaw-hood', 'street', bend, bd, 25.0, 26.1, 2.2, 3.0, 0.9, 2.0, 0.02));
+  solids.push(lineBox('rickshaw-seat', 'street', bend, bd, 24.6, 26.4, 2.25, 2.95, 0.3, 0.9, 0.02));
+  // the far side of the bent lane (mostly out of frame; kept so the lane has two sides)
+  solids.push(lineBox('laneFar', 'street', bend, bd, -2.0, 36.0, spec.lane.roadWidth + 3.0, spec.lane.roadWidth + 3.3, 0, 12.0, 0.03));
+  // the concrete pole at the bend with its lamp head on an arm, and a small pool on dry paving
+  const pole = linePanel('x', bend, bd, 3.0, 1.1, 0, 0, 0, 0).c;
+  solids.push(box('pole', 'fixture', pole[0] - 0.09, pole[0] + 0.09, 0, 6.6, pole[2] - 0.09, pole[2] + 0.09, 0.12));
+  solids.push(box('pole-arm', 'fixture', pole[0] - 0.7, pole[0] + 0.05, 6.2, 6.28, pole[2] - 0.04, pole[2] + 0.04, 0.12));
+  panels.push({ id: 'pole-head', c: [pole[0] - 0.62, 6.12, pole[2]], w: 0.34, h: 0.12, rotY: 0, tone: 4 });
+  lights.push({ id: 'streetlamp', at: [pole[0] - 0.62, 6.0, pole[2]], intensity: 0.5, radius: 3.2, scope: 'outside' });
+  // one overhead cable crossing high (a thin box)
+  solids.push(box('cable', 'fixture', -8, 8, 7.4, 7.43, 1.8, 1.83, 0.05, { occludes: false }));
+
+  /* the lane across from the shop, behind the landing camera */
+  solids.push(box('row-opposite', 'street', -40, 1.0, 0, 16.0, apron.depth + spec.lane.roadWidth + 1.5, apron.depth + spec.lane.roadWidth + 1.8, 0.03));
+
+  /* floors: the owner's apron and the pavement, the road, the interior tiles */
+  floors.push({ id: 'pavement', x0: -40, x1: facade.right + 0.4, z0: 0, z1: apron.depth, y: 0, base: 0.1 });
+  floors.push({ id: 'road', x0: -40, x1: 40, z0: apron.depth, z1: apron.depth + spec.lane.roadWidth + 1.8, y: -0.15, base: 0.04 });
+  floors.push({ id: 'lane-bent', x0: 0, x1: 38, z0: 0, z1: spec.lane.roadWidth + 3.0, y: -0.15, rotY: bd, pivot: bend, base: 0.04 });
+  floors.push({ id: 'tiles', x0: inside.left, x1: inside.right, z0: -inside.depth, z1: 0, y: 0, base: 0.02 });
+
+  /* the room: walls rise only to the ceiling line; above it, open night */
+  const L = inside.left, R = inside.right, D = -inside.depth;
+  solids.push(box('front-wall-far', 'wall', L, facade.left, 0, C, -W, 0, 0.1));
+  solids.push(box('wall-right', 'wall', R, R + W, 0, C, D, 0, 0.1));
+  solids.push(box('wall-back', 'wall', L - W, R + W, 0, C, D - W, D, 0.1));
+  // the long left wall with five plain doorways, each onto a back room with a little warm light in it
+  const doors = [-8.5, -12.0, -15.5, -19.0, -22.5];
+  let zPrev = 0;
+  doors.forEach((zc, i) => {
+    solids.push(box(`wall-left-${i}`, 'wall', L - W, L, 0, C, zc + 0.55, zPrev, 0.1));
+    solids.push(box(`door-head-${i}`, 'wall', L - W, L, 2.1, C, zc - 0.55, zc + 0.55, 0.1));
+    panels.push({ id: `backroom-${i}`, c: [L - 1.4, 1.05, zc], w: 1.1, h: 2.1, rotY: 90, tone: 2 });
+    // the warm spill from each back room falls off across the tiles (plate 6)
+    lights.push({ id: `backroom-${i}`, at: [L + 0.35, 1.3, zc], intensity: 0.6, radius: 1.3, scope: 'inside' });
+    zPrev = zc - 0.55;
+  });
+  solids.push(box('wall-left-end', 'wall', L - W, L, 0, C, D, zPrev, 0.1));
+
+  // the ceiling line: a cornice round the walls and two beams along the length, and nothing above
+  const bw = ceiling.beamWidth, bdp = ceiling.beamDepth;
+  solids.push(box('cornice-front', 'cornice', L, R, C - 0.2, C, -W - 0.2, -W, 0.14));
+  solids.push(box('cornice-left', 'cornice', L, L + 0.2, C - 0.2, C, D, -W, 0.14));
+  solids.push(box('cornice-right', 'cornice', R - 0.2, R, C - 0.2, C, D, -W, 0.14));
+  solids.push(box('cornice-back', 'cornice', L, R, C - 0.2, C, D, D + 0.2, 0.14));
+  ceiling.beamsX.forEach((x, i) => solids.push(box(`beam-${i}`, 'beam', x - bw / 2, x + bw / 2, C - bdp, C, D, -W, 0.16)));
+
+  // the front room seen from the lane: shelved partition on the right, fabric faced edge-on in value order
+  const pz = frontRoom.partitionZ;
+  solids.push(box('partition', 'partition', frontRoom.partitionFromX, R, 0, C, pz - 0.15, pz, 0.12));
+  for (let k = 0; k < 4; k++) {
+    const y0 = 0.35 + k * 0.48;
+    solids.push(box(`shelf-${k}`, 'shelf', frontRoom.partitionFromX + 0.1, R - 0.1, y0, y0 + 0.04, pz, pz + 0.35, 0.2));
+    for (let j = 0; j < 10; j++) {
+      const x0 = frontRoom.partitionFromX + 0.2 + j * 0.37;
+      solids.push(box(`fabric-${k}-${j}`, 'shelf', x0, x0 + 0.3, y0 + 0.04, y0 + 0.3, pz + 0.04, pz + 0.32, 0.08 + 0.03 * ((j + k) % 4)));
+    }
+  }
+  // the desk counter with its glass top, lit by one warm pendant from the beam
+  const [cx, , cz] = counter.at;
+  solids.push(box('desk', 'furniture', cx - counter.length / 2, cx + counter.length / 2, 0, counter.height - 0.04, cz - counter.depth / 2, cz + counter.depth / 2, 0.14));
+  solids.push(box('desk-glass', 'furniture', cx - counter.length / 2 - 0.02, cx + counter.length / 2 + 0.02, counter.height - 0.04, counter.height, cz - counter.depth / 2 - 0.02, cz + counter.depth / 2 + 0.02, 0.22));
+  const lampAt: Vec3 = [cx + 0.15, 2.12, cz];
+  solids.push(box('pendant-cord', 'fixture', lampAt[0] - 0.01, lampAt[0] + 0.01, lampAt[1] + 0.1, C - bdp, cz - 0.01, cz + 0.01, 0.1, { occludes: false }));
+  solids.push(box('pendant-shade', 'fixture', lampAt[0] - 0.16, lampAt[0] + 0.16, lampAt[1], lampAt[1] + 0.12, cz - 0.16, cz + 0.16, 0.1));
+  panels.push({ id: 'pendant-bulb', c: [lampAt[0], lampAt[1] - 0.01, cz], w: 0.12, h: 0.06, rotY: 0, tone: 4 });
+  lights.push({ id: 'pendant', at: [lampAt[0], lampAt[1] - 0.06, cz], intensity: 1.9, radius: 1.55, scope: 'inside' });
+  // the packing table, courier parcels in stacked rows
+  solids.push(box('packing', 'furniture', 0.05, 1.45, 0, 0.8, -1.85, -1.25, 0.14));
+  for (let k = 0; k < 4; k++) {
+    const x0 = 0.12 + (k % 4) * 0.33, row = 0;
+    solids.push(box(`parcel-${k}`, 'furniture', x0, x0 + 0.28, 0.8 + row * 0.2, 0.98 + row * 0.2, -1.75, -1.4, 0.2));
+  }
+  // the garment rail of eight pieces, the full-length mirror, the ring light switched off
+  solids.push(box('rail-post-a', 'fixture', 1.95, 1.99, 0, 1.62, -0.75, -0.71, 0.14));
+  solids.push(box('rail-post-b', 'fixture', 1.95, 1.99, 0, 1.62, -1.9, -1.86, 0.14));
+  solids.push(box('rail-bar', 'fixture', 1.95, 1.99, 1.58, 1.62, -1.9, -0.71, 0.14));
+  for (let k = 0; k < 8; k++) {
+    const z0 = -0.82 - k * 0.135;
+    solids.push(box(`garment-${k}`, 'furniture', 1.72, 2.22, 0.55, 1.55, z0 - 0.05, z0, 0.12 + 0.02 * (k % 3)));
+  }
+  solids.push(box('mirror', 'fixture', R - 0.06, R, 0.1, 1.95, -0.95, -0.4, 0.26));
+  solids.push(box('ringlight-stand', 'fixture', 2.18, 2.22, 0, 1.45, -0.42, -0.38, 0.1));
+  solids.push(box('ringlight', 'fixture', 2.0, 2.4, 1.45, 1.85, -0.41, -0.39, 0.06));
+  // the seating corner at the desk's end: a low glass table and five upright chairs
+  solids.push(box('low-table', 'furniture', -5.1, -4.1, 0, 0.45, -1.95, -1.3, 0.14));
+  const chairs: Array<[number, number]> = [[-5.5, -1.6], [-3.7, -1.6], [-4.9, -2.45], [-4.3, -2.45], [-4.6, -0.8]];
+  chairs.forEach(([x, z], i) => {
+    solids.push(box(`chair-${i}`, 'furniture', x - 0.22, x + 0.22, 0, 0.46, z - 0.22, z + 0.22, 0.12));
+    solids.push(box(`chair-back-${i}`, 'furniture', x - 0.22, x + 0.22, 0.46, 0.95, z - 0.24, z - 0.2, 0.12));
+  });
+  // the deep premises: freestanding bays of folded fabric, side-on, overlapping toward the right
+  const bays: Array<[number, number]> = [
+    [-3.3, -3.6], [-5.6, -4.2], [-1.4, -5.2], [-4.2, -6.4], [-6.3, -7.6], [-2.4, -8.2],
+    [-5.0, -10.0], [-0.9, -10.6], [-3.4, -12.0], [-6.1, -13.2], [-1.8, -14.6], [-4.4, -16.2],
+  ];
+  bays.forEach(([x, z], i) => solids.push(box(`bay-${i}`, 'bay', x - 0.55, x + 0.55, 0, 2.05, z - 0.55, z + 0.55, 0.12)));
+
+  solids.push(box('display-a', 'furniture', -1.9, -0.7, 0, 0.72, -3.9, -3.2, 0.14));
+  solids.push(box('display-b', 'furniture', -3.2, -2.0, 0, 0.72, -6.3, -5.6, 0.12));
+
+  return { spec, solids, panels, floors, lights, lamps: placeLamps(spec, solids) };
+}
+
+/* ---------- the 83 lamp homes: PLACEHOLDER MARKS for the rail check, not the sky ----------
+ * The real placement (clusters, leads, the vantage lock) is slice three. These are a seeded scatter
+ * inside the footprint, inset 1m, 4 to 24m above the ceiling line (direction 1b), kept back from the
+ * front wall far enough that none shows over the roof from the lane (law 5 checks it independently). */
+export const ROOMS: Array<{ name: string; lead: boolean; n: number }> = [
+  { name: 'Finders', lead: true, n: 8 }, { name: 'Planners', lead: false, n: 4 },
+  { name: 'Writers', lead: true, n: 8 }, { name: 'Designers', lead: true, n: 13 },
+  { name: 'Web', lead: false, n: 3 }, { name: 'Film', lead: false, n: 6 },
+  { name: 'Rooms', lead: false, n: 2 }, { name: 'Numbers', lead: false, n: 5 },
+  { name: 'Selling', lead: true, n: 5 }, { name: 'The office', lead: true, n: 12 },
+  { name: 'The bench', lead: true, n: 11 },
+];
+
+/** the eight that light at "why" (direction section 8, split 2, 3, 1, 2; two amber): room and index within the room (0 = lead) */
+export const WHY_EIGHT: Array<[string, number]> = [
+  ['Finders', 1], ['Numbers', 0],                       // A: written, not set up
+  ['The bench', 0], ['The bench', 1], ['The bench', 2], // B: they disagree
+  ['The office', 1],                                     // C: the keeper, in outline
+  ['Planners', 0], ['The office', 0],                    // D: every job has its own map
+];
+/** where the "why" dwell camera ends (stations.ts, landscape why settle), so the eight placeholders sit inside
+ *  that frame above the beam; slice three replaces this with the vantage-locked sky */
+export const WHY_VIEW = { eye: [1.34, 1.2, -0.44] as Vec3, yaw: 65 };
+
+function placeLamps(spec: PremisesSpec, _solids: Solid[]): LampHome[] {
+  const rnd = seeded(83);
+  const { inside, ceiling } = spec;
+  const inset = 1;
+  const clampX = (x: number) => Math.min(inside.right - inset, Math.max(inside.left + inset, x));
+  const clampZ = (z: number) => Math.min(-3.0, Math.max(-inside.depth + inset, z));
+  const lamps: LampHome[] = [];
+  let id = 0;
+  for (const room of ROOMS) {
+    const count = room.n + (room.lead ? 1 : 0);
+    for (let k = 0; k < count; k++) {
+      const lead = room.lead && k === 0;
+      const whyIdx = WHY_EIGHT.findIndex(([r, i]) => r === room.name && i === k);
+      let at: Vec3;
+      if (whyIdx >= 0) {
+        // in the why frame: 7 to 15m out along the view, 31 to 43 degrees up, spread across it
+        const lat = deg(-20 + whyIdx * 5.5 + rnd() * 2);
+        const yaw = deg(WHY_VIEW.yaw) + lat;
+        const d = 7 + rnd() * 8;
+        const e = deg(31 + rnd() * 12);
+        const x = clampX(WHY_VIEW.eye[0] - Math.sin(yaw) * d);
+        const z = clampZ(WHY_VIEW.eye[2] - Math.cos(yaw) * d);
+        const h = Math.hypot(x - WHY_VIEW.eye[0], z - WHY_VIEW.eye[2]);
+        const y = Math.min(ceiling.height + 24, Math.max(ceiling.height + 4, WHY_VIEW.eye[1] + h * Math.tan(e)));
+        at = [x, y, z];
+      } else {
+        at = [inside.left + inset + rnd() * (inside.right - inside.left - 2 * inset), ceiling.height + 4 + rnd() * 20, -3.0 - rnd() * (inside.depth - 4.0)];
+      }
+      lamps.push({ id: id++, at, lead, why: whyIdx >= 0, waiting: false });
+    }
+  }
+  return lamps;
+}
+
+/* ---------- ray casting against boxes (turned about y) ---------- */
+export interface Hit { t: number; solid: Solid }
+
+function toLocal(p: Vec3, s: Solid): Vec3 {
+  const d = sub(p, s.c);
+  if (!s.rotY) return d;
+  const r = deg(s.rotY);
+  // local x axis = (cos, 0, -sin), local z axis = (sin, 0, cos)
+  return [d[0] * Math.cos(r) - d[2] * Math.sin(r), d[1], d[0] * Math.sin(r) + d[2] * Math.cos(r)];
+}
+function dirLocal(v: Vec3, s: Solid): Vec3 {
+  if (!s.rotY) return v;
+  const r = deg(s.rotY);
+  return [v[0] * Math.cos(r) - v[2] * Math.sin(r), v[1], v[0] * Math.sin(r) + v[2] * Math.cos(r)];
+}
+
+export function rayBox(o: Vec3, d: Vec3, s: Solid): number {
+  const lo = toLocal(o, s), ld = dirLocal(d, s);
+  let tmin = -Infinity, tmax = Infinity;
+  for (let a = 0; a < 3; a++) {
+    const h = s.s[a] / 2;
+    if (Math.abs(ld[a]) < 1e-12) {
+      if (lo[a] < -h || lo[a] > h) return Infinity;
+    } else {
+      let t1 = (-h - lo[a]) / ld[a], t2 = (h - lo[a]) / ld[a];
+      if (t1 > t2) [t1, t2] = [t2, t1];
+      tmin = Math.max(tmin, t1); tmax = Math.min(tmax, t2);
+      if (tmin > tmax) return Infinity;
+    }
+  }
+  if (tmax < 0) return Infinity;
+  return tmin >= 0 ? tmin : 0; // origin inside counts as a hit at 0
+}
+
+export function raycast(o: Vec3, d: Vec3, solids: Solid[], maxT = Infinity, filter?: (s: Solid) => boolean): Hit | null {
+  let best: Hit | null = null;
+  for (const s of solids) {
+    if (!s.occludes || (filter && !filter(s))) continue;
+    const t = rayBox(o, d, s);
+    if (t < maxT && (!best || t < best.t)) best = { t, solid: s };
+  }
+  return best;
+}
+
+/** distance from a point to a box's surface (0 inside) */
+export function pointBoxDist(p: Vec3, s: Solid): number {
+  const l = toLocal(p, s);
+  let q = 0;
+  for (let a = 0; a < 3; a++) {
+    const e = Math.abs(l[a]) - s.s[a] / 2;
+    if (e > 0) q += e * e;
+  }
+  return Math.sqrt(q);
+}
+
+/** the premises: interior plus the owner's apron, shutter line to kerb; the street beyond is seen, never entered */
+export function inPremises(spec: PremisesSpec, p: Vec3): 'interior' | 'apron' | null {
+  const [x, y, z] = p;
+  if (y < 0 || y > spec.ceiling.height) return null;
+  if (x >= spec.inside.left && x <= spec.inside.right && z <= 0 && z >= -spec.inside.depth) return 'interior';
+  if (x >= spec.apron.left && x <= spec.apron.right && z >= 0 && z <= spec.apron.depth) return 'apron';
+  return null;
+}
+
+/** the shutter as a solid at a given height of its bottom edge (placeholder for slice two's slatted shutter) */
+export function shutterSolid(spec: PremisesSpec, bottom: number): Solid | null {
+  const half = spec.frontage.width / 2;
+  const top = spec.frontage.lintel;
+  if (bottom >= top - 1e-3) return null;
+  return box('shutter', 'shutter', -half, half, bottom, top, 0, 0.05, 0.2);
+}

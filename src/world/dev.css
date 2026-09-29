@@ -1,0 +1,22 @@
+/* dev page only: the rail travelled on scroll, with a readout and a plan of the premises */
+@font-face { font-family: 'fsi-mono'; src: url('/fonts/fsi-mono.woff2') format('woff2'); font-display: swap; }
+html, body { margin: 0; background: #0a0a0b; color: #f5f1eb; }
+body { font: 12px/1.5 'fsi-mono', ui-monospace, monospace; }
+#world { position: fixed; inset: 0 0 auto 0; width: 100vw; height: 100vh; display: block; }
+body.portrait #world { height: 56vh; }
+#track section { position: relative; }
+#track .cap {
+  position: sticky; top: 64vh; margin-left: 58vw; max-width: 34vw;
+  font-size: 15px; line-height: 1.5; letter-spacing: 0.01em; color: #f5f1eb;
+  opacity: 0; transition: opacity 240ms cubic-bezier(0.2, 0.8, 0.1, 1);
+}
+body.portrait #track .cap { top: 62vh; margin: 0 6vw; max-width: none; }
+#track .cap.on { opacity: 1; }
+#track .cap small { display: block; color: #ffb03b; font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+#hud {
+  position: fixed; top: 12px; left: 12px; white-space: pre; pointer-events: none;
+  color: #f5f1eb; background: rgba(10, 10, 11, 0.72); padding: 8px 10px; border-left: 2px solid #ffb03b;
+}
+#map { position: fixed; right: 12px; top: 12px; width: 220px; height: 220px; pointer-events: none; background: rgba(10, 10, 11, 0.72); }
+body.portrait #map { width: 140px; height: 140px; }
+body.clean #hud, body.clean #map, body.clean #track .cap { display: none; }
