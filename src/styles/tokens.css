@@ -1,0 +1,32 @@
+/* THE PALETTE. One file, three roles. Every colour on the site, the 3D room included, is read from here.
+   base      about 60 percent of the surface: the ground, the room, the table
+   secondary about 30 percent: the paper, the type, the lit sheets
+   highlight about 10 percent: calls to action and one accent per view (the painted board edges)        */
+
+:root,
+[data-p='a'] {
+  /* Palette A, the default: the live site's own pairing. The ground is the #050505 family warmed a step. */
+  --base: #070504;
+  --secondary: #ebe4d6;
+  --highlight: #ff4400;
+  --on-highlight: #0b0705;
+  --light: #ffd9b3; /* the colour of the one lamp in the room */
+}
+
+[data-p='b'] {
+  /* Palette B (?p=b): original colours, same split. Cold ink ground, chalk paper, the film's amber turned hotter. */
+  --base: #090e11;
+  --secondary: #dcdccf;
+  --highlight: #ff6a14;
+  --on-highlight: #0a0d0f;
+  --light: #ffe6c4;
+}
+
+:root {
+  /* Derived steps. Nothing below introduces a new hue. */
+  --base-up: color-mix(in srgb, var(--base) 90%, var(--secondary));
+  --ink-soft: color-mix(in srgb, var(--secondary) 74%, var(--base));
+  --ink-faint: color-mix(in srgb, var(--secondary) 22%, var(--base));
+  --paper-ink-soft: color-mix(in srgb, var(--base) 78%, var(--secondary));
+  --paper-rule: color-mix(in srgb, var(--base) 18%, var(--secondary));
+}

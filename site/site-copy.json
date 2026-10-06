@@ -1,0 +1,254 @@
+{
+  "meta": {
+    "title": "FlowStãte Impact · A strategy and design firm, Dhaka and London",
+    "description": "Branding, websites, films and images, each one starting with an audit of your business. A strategy and design firm, Dhaka and London."
+  },
+  "nav": {
+    "cta": "Write to us"
+  },
+  "opening": {
+    "eyebrow": "A strategy and design firm, Dhaka and London",
+    "line": "",
+    "line_fallback": "",
+    "line_pending_asif": true,
+    "line_note": "Emptied 2 Oct 2026: Asif rejected every opening line and the sub line. Until he picks a new one, the opening shows the eyebrow (the category line) alone, large. Never restore the old lines.",
+    "sub": "",
+    "proof": {
+      "text": "[PENDING ASIF: the audit's fixed terms, for example its price, its seven to ten days and what you are handed at the end. Or a count of audits that ended in change nothing.]",
+      "pending_asif": true
+    },
+    "cta_primary": "Start with the audit",
+    "cta_secondary": "See the services",
+    "cta_secondary_note": "Placeholder label set 2 Oct 2026 in place of 'See the four', which came from a rejected heading. The line team confirms the final label."
+  },
+  "services": {
+    "heading": "Four things we make. One audit decides which.",
+    "intro": "The audit sits last on this list and first in the work.",
+    "items": [
+      {
+        "id": "branding",
+        "name": "Branding",
+        "line": "A brand people recognise with the logo covered.",
+        "body": "We start with what your business is and who it is for, then draw the name, the mark, the colours and the voice from that. You leave with a brand your own staff can use without ringing us.",
+        "body_draft": true
+      },
+      {
+        "id": "websites",
+        "name": "Websites",
+        "line": "A stranger knows what you sell before they scroll.",
+        "body": "Designed and built here, around how your customers move through it. Easy on the eyes, easy to use, and it feels like you on a phone as much as on a desk.",
+        "body_draft": true
+      },
+      {
+        "id": "videos",
+        "name": "Videos",
+        "line": "Watch it with the sound off. It should still make sense.",
+        "body": "Brand films, launch films, and the short cuts that go out week after week. Written, made and edited under one director, so the story holds from the first frame to the last.",
+        "body_draft": true
+      },
+      {
+        "id": "images",
+        "name": "Images",
+        "line": "Put it beside ten others. People should pick out yours.",
+        "body": "Your product, your people and your place, made in one light so they sit together. For the campaign, the website, the feed and the wall.",
+        "body_draft": true
+      },
+      {
+        "id": "audit",
+        "name": "The audit",
+        "line": "One clear look at your business, before anyone makes anything.",
+        "body": "We read your business the way a customer meets it and write down what it needs. It takes seven to ten days, and sometimes the answer is to change nothing.",
+        "body_draft": true
+      }
+    ]
+  },
+  "addon": {
+    "label": "An extra, if you want it",
+    "heading": "We have our own AI system. We'll build one for your business.",
+    "body": "Our own content engine and our own build stay with us, because they are how we make our work. Yours is a separate system, made to your business and its needs, with several departments sharing one memory, and we run it for you.",
+    "body_draft": true,
+    "ruled_by_asif": "2 October 2026: we build it and run it for you; the studio's own content engine and build stay with the studio.",
+    "cta": "Ask about a system"
+  },
+  "checks": {
+    "heading": "Five checks before it reaches you.",
+    "intro": "By the time you see a piece of work, it has been through all of these.",
+    "intro_draft": true,
+    "pending_asif": true,
+    "items": [
+      {
+        "title": "Strangers read it.",
+        "line": "Read cold, with no background, to see if it stands alone."
+      },
+      {
+        "title": "It gets a mark.",
+        "line": "Scored against a written standard. A low mark sends it back."
+      },
+      {
+        "title": "Three can say no.",
+        "line": "One for taste, one for substance, one for ethics. Any one stops it."
+      },
+      {
+        "title": "Five try to break it.",
+        "line": "Five attacks on it: the facts, the logic, the wording, the look, the claim."
+      },
+      {
+        "title": "One last look.",
+        "line": "A director looks at it last, and signs it."
+      }
+    ],
+    "variants": {
+      "A_system_then_director": {
+        "intro": "The first four are run by our own AI system. The last is a director.",
+        "lines": [
+          "Our AI system reads it cold, with no background on you.",
+          "The system scores it against a written standard. A low mark sends it back.",
+          "Three separate checks: taste, substance, ethics. Any one stops it.",
+          "The system attacks it five ways, starting with the facts.",
+          "A director looks at it last, and signs it."
+        ]
+      },
+      "B_people": {
+        "intro": "By the time you see a piece of work, five sets of eyes have been on it.",
+        "lines": [
+          "People who know nothing about you read it cold.",
+          "A reviewer scores it against a written standard. A low mark sends it back.",
+          "Three senior people can each stop it: on taste, substance or ethics.",
+          "Five reviewers attack the facts, the logic, the wording and the look.",
+          "A director looks at it last, and signs it."
+        ]
+      },
+      "C_mixed": {
+        "intro": "Some of these are done by people and some by our own system. Each line says which.",
+        "lines": [
+          {
+            "who": "PENDING ASIF",
+            "person": "A person who knows nothing about you reads it cold.",
+            "system": "Our system reads it cold, with no background on you."
+          },
+          {
+            "who": "PENDING ASIF",
+            "person": "A person scores it against a written standard. A low mark sends it back.",
+            "system": "Our system scores it against a written standard. A low mark sends it back."
+          },
+          {
+            "who": "PENDING ASIF",
+            "person": "Three people check taste, substance and ethics. Any one can stop it.",
+            "system": "Our system checks taste, substance and ethics. Any one of the three stops it."
+          },
+          {
+            "who": "PENDING ASIF",
+            "person": "People attack it five ways, starting with the facts.",
+            "system": "Our system attacks it five ways, starting with the facts."
+          },
+          {
+            "who": "a director",
+            "person": "A director looks at it last, and signs it.",
+            "system": "A director looks at it last, and signs it."
+          }
+        ]
+      }
+    }
+  },
+  "work": {
+    "heading": "Work.",
+    "items": [
+      {
+        "name": "Akij Aviation",
+        "kind": "unconfirmed",
+        "line": "[Held until Asif confirms what was made and that it can be shown.]",
+        "confirmed": false
+      },
+      {
+        "name": "Akij Plus",
+        "kind": "unconfirmed",
+        "line": "[Held until Asif confirms what was made and that it can be shown.]",
+        "confirmed": false
+      },
+      {
+        "name": "Akij Pharma",
+        "kind": "unconfirmed",
+        "line": "[Held until Asif confirms what was made and that it can be shown.]",
+        "confirmed": false
+      },
+      {
+        "name": "GMSC Clinic",
+        "kind": "unconfirmed",
+        "line": "[Held until Asif confirms what was made and that it can be shown.]",
+        "confirmed": false
+      },
+      {
+        "name": "BIMC",
+        "kind": "unconfirmed",
+        "line": "[Held until Asif confirms what was made and that it can be shown.]",
+        "confirmed": false
+      },
+      {
+        "name": "Nexus",
+        "kind": "unconfirmed",
+        "line": "[Held until Asif confirms what was made and that it can be shown.]",
+        "confirmed": false
+      },
+      {
+        "name": "Gunoboti",
+        "kind": "unconfirmed",
+        "line": "[Held until Asif confirms what was made and that it can be shown.]",
+        "confirmed": false
+      },
+      {
+        "name": "Kaiqi",
+        "kind": "unconfirmed",
+        "line": "[Held until Asif confirms what was made and that it can be shown.]",
+        "confirmed": false
+      },
+      {
+        "name": "Chuangfu",
+        "kind": "unconfirmed",
+        "line": "[Held until Asif confirms what was made and that it can be shown.]",
+        "confirmed": false
+      },
+      {
+        "name": "Lumiere Narratives",
+        "kind": "unconfirmed",
+        "line": "[Held until Asif confirms what was made and that it can be shown.]",
+        "confirmed": false
+      }
+    ]
+  },
+  "people": {
+    "heading": "Ask who made it and you get a name.",
+    "items": [
+      {
+        "name": "Asif Farid",
+        "role": "Managing Director and Chief Technology Officer"
+      },
+      {
+        "name": "Nafia Islam",
+        "role": "Chief Executive Officer"
+      },
+      {
+        "name": "Sarwar Jahan",
+        "role": "Chief Marketing Officer"
+      },
+      {
+        "name": "Muaz Rakin",
+        "role": "Chief Strategy Officer and Chief Financial Officer"
+      }
+    ]
+  },
+  "contact": {
+    "heading": "Tell us about your business.",
+    "line": "Write or call, and tell us what the business is.",
+    "reply_promise": "[PENDING ASIF: who replies, and within how many working days.]",
+    "reply_promise_pending_asif": true,
+    "email": "asif@flowstateimpact.com",
+    "phones": [
+      "+88 01616 119242",
+      "+88 01627 935350"
+    ],
+    "cta": "Write to us"
+  },
+  "footer": {
+    "line": "FlowStãte Impact. A strategy and design firm, Dhaka and London."
+  }
+}

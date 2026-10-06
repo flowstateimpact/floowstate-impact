@@ -1,0 +1,19 @@
+{
+  "meta": {"title": "FlowStãte Impact", "description": "A strategy and design firm, Dhaka and London."},
+  "nav": {"cta": "Contact"},
+  "opening": {"eyebrow": "", "line": "A strategy and design firm, Dhaka and London.", "sub": "", "cta_primary": "The audit", "cta_secondary": ""},
+  "services": {"heading": "", "intro": "", "items": [
+    {"id": "branding", "name": "Branding", "line": "", "body": ""},
+    {"id": "websites", "name": "Websites", "line": "", "body": ""},
+    {"id": "videos", "name": "Videos", "line": "", "body": ""},
+    {"id": "images", "name": "Images", "line": "", "body": ""},
+    {"id": "audit", "name": "The audit", "line": "", "body": ""}]},
+  "addon": {"label": "", "heading": "", "body": "", "cta": ""},
+  "checks": {"heading": "", "intro": "", "items": [
+    {"title": "Strangers read it.", "line": ""}, {"title": "It gets a mark.", "line": ""}, {"title": "Three can say no.", "line": ""}, {"title": "Five try to break it.", "line": ""}, {"title": "One last look.", "line": ""}]},
+  "work": {"heading": "", "items": []},
+  "people": {"heading": "", "items": [
+    {"name": "Asif Farid", "role": "MD and CTO"}, {"name": "Nafia Islam", "role": "CEO"}, {"name": "Sarwar Jahan", "role": "CMO"}, {"name": "Muaz Rakin", "role": "CSO and CFO"}]},
+  "contact": {"heading": "", "line": "", "email": "asif@flowstateimpact.com", "phones": ["+88 01616 119242", "+88 01627 935350"], "cta": "Contact"},
+  "footer": {"line": "FlowStãte Impact"}
+}
