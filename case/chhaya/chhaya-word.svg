@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ছায়া, the drawn word under one built roof. Esha, 5 October 2026.
+     Units: the Kohinoor outline units already on disk (stem 11.4, letter height 56.8, baseline y=0).
+     Roof: 20 thick (1.75 stems), overhangs the letters by one stem each end, rests only on the three upright stems.
+     Round forms (ছ, the left of য়) stop 2.8 units short of the roof: the gap of light under a roof.
+     Lamp: the nukta of য়, the one ochre. Everything else takes currentColor. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-4.7 -76.8 194.5 95.2" width="389" height="190.4" fill="#1B1B15" color="#1B1B15">
+  <rect x="-4.7" y="-76.8" width="194.5" height="20" fill="currentColor"/>
+  <!-- ছ, matra cut away, top closed flat at -54 -->
+  <path fill="currentColor" fill-rule="evenodd" d="M6.7 -54 L6.7 -35.9 C6.7 -28.8 11.8 -24.2 20.5 -24.2 C30.5 -24.2 37.4 -31.6 37.4 -39.8 C37.4 -40.3 37.4 -40.8 37.3 -41.2 C42.0 -40.5 44.5 -37.4 44.5 -32.4 C44.5 -24.6 37.2 -19.0 20.5 -19.0 L7.0 -19.0 L7.0 -9.8 C17.2 -8.6 19.1 -8.0 51.0 8.4 L57.9 0.3 L45.0 -6.0 C39.4 -8.7 35.6 -10.3 32.1 -11.2 L32.1 -11.6 C48.1 -13.2 55.6 -21.2 55.6 -32.3 C55.6 -44.1 47.1 -51.1 36.5 -51.1 C34.8 -51.1 32.6 -50.9 30.5 -50.4 C27.26 -52.02 23.55 -52.88 20.87 -53.98 L6.7 -54 Z M27.4 -40.1 C27.4 -36.6 24.7 -33.3 20.6 -33.3 C18.3 -33.3 17.3 -34.6 17.3 -36.4 L17.3 -46.5 C20.1 -44.1 27.4 -44.5 27.4 -40.1 Z"/>
+  <!-- া, the first post, with its bracket into the roof -->
+  <path fill="currentColor" d="M61.0 -56.8 C66.9 -56.8 70.0 -54.7 70.0 -46.4 L70.0 0 L81.4 0 L81.4 -56.8 Z"/>
+  <!-- য, drawn to the same stem: the left stroke hangs, the stem is the second post -->
+  <path fill="none" stroke="currentColor" stroke-width="11.4" stroke-linecap="butt" stroke-linejoin="round" d="M103 -54 C100 -40 99 -26 104 -15 C107.5 -7.5 114 -5.7 120 -5.7 C124 -5.7 127 -7 129.5 -9.5 L146 -34"/>
+  <rect x="140.6" y="-56.8" width="11.4" height="56.8" fill="currentColor"/>
+  <!-- the lamp: the nukta of য় -->
+  <circle cx="117" cy="12.7" r="5.7" fill="#E8432E"/>
+  <!-- া, the third post -->
+  <path fill="currentColor" d="M158.0 -56.8 C163.9 -56.8 167.0 -54.7 167.0 -46.4 L167.0 0 L178.4 0 L178.4 -56.8 Z"/>
+</svg>
