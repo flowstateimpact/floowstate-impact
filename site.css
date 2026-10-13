@@ -873,3 +873,6 @@ html.stuck .menu{background:#131110 url(media/cloth-black.jpg) 0 0/700px auto;bo
 /* round 20 fix: a black reel on the black table lost its edge; each reel is now a print, framed in cream like every other picture */
 .fbox{background:var(--c);padding:7px 7px 9px;box-shadow:0 30px 40px -18px rgba(0,0,0,.95),0 -2px 18px rgba(243,236,223,.1)}
 .fbox.cream{background:var(--k);padding:6px}
+/* round 21 fix: the widest reel opened taller than the screen; the tile and its player now stop at the screen height under the header */
+.reel,.fbox iframe{max-height:calc(100vh - 150px);max-height:calc(100svh - 150px)}
+.fbox iframe{background:#000}
