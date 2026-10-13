@@ -9,6 +9,26 @@
       "source": "/links/",
       "destination": "https://linktr.ee/flowstateimpact",
       "permanent": false
+    },
+    {
+      "source": "/case-heritage.html",
+      "destination": "/heritage-in-motion.html",
+      "permanent": false
+    },
+    {
+      "source": "/case-chhaya.html",
+      "destination": "/chhaya.html",
+      "permanent": false
+    },
+    {
+      "source": "/photos.html",
+      "destination": "/photography.html",
+      "permanent": false
+    },
+    {
+      "source": "/videos.html",
+      "destination": "/films.html",
+      "permanent": false
     }
   ]
 }
