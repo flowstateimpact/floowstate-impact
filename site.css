@@ -876,3 +876,32 @@ html.stuck .menu{background:#131110 url(media/cloth-black.jpg) 0 0/700px auto;bo
 /* round 21 fix: the widest reel opened taller than the screen; the tile and its player now stop at the screen height under the header */
 .reel,.fbox iframe{max-height:calc(100vh - 150px);max-height:calc(100svh - 150px)}
 .fbox iframe{background:#000}
+
+/* 13 Oct 2026, the hang: Websites, Photography and Films hang under "Work" in the top bar, on every page. One joined strip: the outline
+   button's cream line at the bar's small scale, square, the same fill on hover and focus. It is laid out of the row (absolute, inside the
+   nav), so the logo, the five words and the orange button keep every tuned number. The page you are on is the filled cell, and it is inert.
+   Its smoked ground is its own, so the three read over any frame of the film; once the bar has its cloth the ground is the cloth itself */
+.menu nav .hang{display:flex;align-items:stretch;--hg:rgba(19,17,16,.66)}
+html.stuck .menu nav .hang,.menu.open nav .hang{--hg:#131110}
+.menu nav .hang a.hg:not(.stamp){position:relative;top:0;display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;height:26px;min-height:0;margin:0;padding:0 11px 1px;
+  border:1.5px solid #F4EFE6;border-radius:0;background:var(--hg);color:#F4EFE6;font-weight:500;font-size:15px;line-height:1;letter-spacing:.01em;white-space:nowrap;opacity:1;
+  text-decoration:none;transition:background-color .25s var(--ease-settle),color .25s var(--ease-settle)}
+.menu nav .hang a.hg:not(.stamp) + a.hg:not(.stamp){margin:0 0 0 -1.5px}
+.menu nav .hang a.hg:not(.stamp):hover,.menu nav .hang a.hg:not(.stamp):focus-visible,.menu nav .hang a.hg[aria-current]:not(.stamp){background:#F4EFE6;color:#131110;border:1.5px solid #F4EFE6;text-decoration:none}
+.menu nav .hang a.hg:not(.stamp):focus-visible{outline:2px solid var(--orange,#E27F22);outline-offset:3px;z-index:2}
+.menu nav .hang a.hg[aria-current]{pointer-events:none}
+@media (min-width:761px){
+  .menu nav{position:relative}   /* the home rule (absolute, round 11) outranks this; on the other pages it only gives the strip its corner */
+  .menu nav .hang{position:absolute;left:0;top:calc(50% + 16px)}
+  /* a touch on a wide tablet: the cell's reach grows downward to 44, the drawing stays 26 */
+  @media (pointer:coarse){ .menu nav .hang a.hg:not(.stamp)::after{content:"";position:absolute;left:0;right:0;top:0;height:44px} }
+}
+/* home between 761 and 1000 wide: the five words already reach the logo there, so the strip hangs from the row's right end and stays clear of it */
+@media (min-width:761px) and (max-width:1000px){ .first .menu nav .hang{left:auto;right:0} }
+@media (max-width:760px){
+  /* phone: the open menu ends on the same strip, under the five words, on their right edge; each cell 48 high */
+  .menu.open nav .hang{align-self:flex-end;margin-top:12px}
+  .menu.open nav .hang a.hg:not(.stamp){height:48px;min-height:48px;font-size:17px;padding:0 14px 1px;justify-content:center}
+}
+@media (max-width:359px){ .menu.open nav .hang a.hg:not(.stamp){font-size:16px;padding:0 9px 1px} }
+@media (prefers-reduced-motion:reduce){ .menu nav .hang a.hg:not(.stamp){transition:none} }
