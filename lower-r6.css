@@ -450,3 +450,48 @@ html.stuck .menu{background:#131110 url(media/cloth-black.jpg) 0 0/700px auto;bo
 
 /* 13 Oct 2026: the menu words lift 1.5px so they sit on the logo line, by eye; the logo and the button do not move */
 @media (min-width:761px){.menu nav a:not(.stamp){top:-1.5px}}
+
+/* round 20, 13 Oct 2026: the three shelves. Prints on the lit table, each its own size and lean; the fields are the worlds' own two colours */
+.trio{display:flex;flex-wrap:wrap;gap:0 30px;margin:0}
+.worlds,.prints,.films{position:relative;display:grid;grid-template-columns:repeat(12,1fr);gap:72px 40px;align-items:start;margin-bottom:40px}
+.world{grid-column:span var(--s);margin-top:var(--y);display:block;text-decoration:none;color:var(--paper);transform:rotate(var(--r));transition:transform .5s var(--ease-settle)}
+.world .pic{display:block;background:var(--c);padding:7px 7px 9px;box-shadow:0 30px 40px -18px rgba(0,0,0,.95),0 -2px 18px rgba(243,236,223,.08)}
+.world img,.world .field{display:block;width:100%;height:auto;aspect-ratio:var(--ar);object-fit:cover}
+.world .field{display:flex;flex-direction:column;justify-content:flex-end;padding:7% 7% 8%;box-sizing:border-box}
+.world .field b{font-family:var(--stencil);font-weight:700;text-transform:uppercase;line-height:.86;font-size:calc(var(--s) * .62vw + 14px)}
+.world .field i{font-style:normal;font-size:clamp(16px,1.2vw,19px);line-height:1.3;margin-top:12px;max-width:26ch}
+.world .strip{margin:-17px 0 0 -10px;position:relative}
+.world .kind{display:block;margin-top:12px;font-weight:500;font-size:16px;letter-spacing:.08em;text-transform:uppercase;opacity:.72}
+.world .ln{display:block;margin-top:4px;font-size:clamp(17px,1.3vw,20px);line-height:1.3;max-width:34ch}
+.world:hover,.world:focus-visible{transform:translateY(-6px) rotate(0)}
+.world:focus-visible{outline:2px solid var(--orange);outline-offset:6px}
+.setname{margin-bottom:46px}
+.prints{grid-auto-flow:dense}
+.prints .shot{grid-column:span var(--s);margin-top:var(--y);max-width:none;justify-self:stretch}
+.prints.flip .shot.lead{grid-column:8 / span var(--s)}
+.fbox{grid-column:span var(--s);transform:rotate(var(--r));box-shadow:0 30px 40px -18px rgba(0,0,0,.95)}
+.fbox:nth-child(3n+2){margin-top:44px}
+.reel,.fbox iframe{display:block;width:100%;aspect-ratio:16/9;border:0}
+.reel{position:relative;cursor:pointer;text-align:left;padding:clamp(16px,2vw,28px);box-sizing:border-box;font:inherit;
+  background:var(--k) url(media/cloth-black.jpg) center/1400px auto;color:var(--c);display:flex;flex-direction:column;justify-content:space-between;align-items:flex-start}
+.fbox.cream .reel{background:var(--c) url(media/cloth-cream.jpg) center/800px auto;color:var(--k)}
+.fbox.cream .strip{background:var(--k) url(media/cloth-black.jpg) 0 0/1400px auto;color:var(--c)}
+.reel .ttl{font-family:var(--stencil);font-weight:700;text-transform:uppercase;line-height:.88;font-size:clamp(24px,calc(var(--s) * .5vw),92px);max-width:92%}
+.reel .pl{position:absolute;right:clamp(16px,2vw,28px);bottom:clamp(16px,2vw,28px);width:56px;height:56px;border-radius:50%;background:var(--orange);display:grid;place-items:center;transition:transform .45s var(--ease-settle)}
+.reel .pl svg{width:20px;height:20px;fill:var(--k);margin-left:3px}
+.reel:hover .pl,.reel:focus-visible .pl{transform:scale(1.12)}
+.reel:focus-visible{outline:2px solid var(--orange);outline-offset:4px}
+@media (max-width:760px){
+  .worlds,.films{grid-template-columns:1fr;gap:56px}
+  .world,.fbox{grid-column:auto;margin-top:0}
+  .world:nth-child(odd){width:94%;justify-self:start} .world:nth-child(even){width:84%;justify-self:end}
+  .world .field b{font-size:clamp(36px,11vw,54px)}
+  .prints{grid-template-columns:repeat(6,1fr);gap:40px 18px}
+  .prints .shot{grid-column:span 3;margin-top:calc(var(--y) / 3)} .prints .shot.lead,.prints.flip .shot.lead{grid-column:1 / -1}
+  .fbox:nth-child(even){width:90%;justify-self:end} .fbox:nth-child(3n+2){margin-top:0}
+  .reel .ttl{font-size:clamp(28px,9vw,40px)}
+}
+@media (prefers-reduced-motion:reduce){.world,.reel .pl{transition:none}}
+/* round 20 fix: a black reel on the black table lost its edge; each reel is now a print, framed in cream like every other picture */
+.fbox{background:var(--c);padding:7px 7px 9px;box-shadow:0 30px 40px -18px rgba(0,0,0,.95),0 -2px 18px rgba(243,236,223,.1)}
+.fbox.cream{background:var(--k);padding:6px}

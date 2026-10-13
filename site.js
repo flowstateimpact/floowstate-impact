@@ -157,3 +157,10 @@
   window.addEventListener('scroll', function(){ if (!t){ t = true; requestAnimationFrame(s); } }, {passive: true});
   s();
 })();
+
+/* round 20: a film's player is fetched only when its play is pressed */
+(function(){
+  [].forEach.call(document.querySelectorAll('.reel[data-embed]'), function(b){ b.addEventListener('click', function(){
+    var f = document.createElement('iframe'); f.src = b.dataset.embed; f.title = b.getAttribute('aria-label').replace(/^Play /, '');
+    f.allow = 'autoplay; fullscreen; picture-in-picture'; f.allowFullscreen = true; b.replaceWith(f); f.focus(); }); });
+})();

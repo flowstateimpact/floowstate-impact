@@ -119,6 +119,7 @@
       </div>
       <p class="note">Brands we built, mark to film.</p>
       <a class="quiet go" href="work.html">See both</a>
+      <p class="trio"><a class="quiet go" href="websites.html">Websites</a><a class="quiet go" href="photography.html">Photography</a><a class="quiet go" href="films.html">Films</a></p>
     </div>
   </section>
 
@@ -190,11 +191,14 @@
   var lns = $$('.ln', h), hot = $('.hot', h);
   var bandEls = [$('#bandunder'), band, $('#bandedge'), $('#bandtop')].concat(phone ? [read] : []);
 
-  /* the scroll-out: the film eases in and the lines drift as the page leaves. Damped, so it settles rather than tracks */
+  /* the scroll-out: the card comes apart as the page leaves. Damped, so it settles rather than tracks */
   function scrollOut(){
     if (!window.ScrollTrigger) return;
     gsap.registerPlugin(ScrollTrigger);
+    var H = function(){ return first.offsetHeight; };
     gsap.timeline({scrollTrigger: {trigger: first, start: 'top top', end: 'bottom top', scrub: 0.6, invalidateOnRefresh: true}})
+      .to('#clothwrap', {x: function(){ return -0.6 * H(); }, ease: 'none'}, 0)
+      .to(phone ? bandEls : bandEls.concat([$('#veil')]), {x: function(){ return 0.4 * H(); }, ease: 'none'}, 0)
       .to('#film', {scale: 1.06, ease: 'none'}, 0)
       .to(lns, {x: function(i){ return -12 * i; }, ease: 'none'}, 0);
   }

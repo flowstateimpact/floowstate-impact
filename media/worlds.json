@@ -1,0 +1,152 @@
+[
+ {
+  "slug": "borsha",
+  "name": "Borsha",
+  "kind": "Tea house · Dhaka",
+  "line": "Wipe the rain off the glass.",
+  "bg": "#0c1a1c",
+  "fg": "#f3e7cf",
+  "img": "media/worlds/borsha-stall.webp",
+  "url": "https://flowstateimpact.github.io/fifteen-worlds/sites/borsha.html"
+ },
+ {
+  "slug": "meridian",
+  "name": "Meridian",
+  "kind": "Freight line · Chattogram to Felixstowe",
+  "line": "Sail thirty days across a hand-drawn sea chart.",
+  "bg": "#efe8d8",
+  "fg": "#1d2a3a",
+  "img": "",
+  "url": "https://flowstateimpact.github.io/fifteen-worlds/sites/meridian.html"
+ },
+ {
+  "slug": "oud-theory",
+  "name": "Oud Theory",
+  "kind": "Perfumer · London",
+  "line": "A glass bottle made entirely of maths.",
+  "bg": "#2a0b13",
+  "fg": "#f1e6d2",
+  "img": "",
+  "url": "https://flowstateimpact.github.io/fifteen-worlds/sites/oud-theory.html"
+ },
+ {
+  "slug": "nouka",
+  "name": "Nouka",
+  "kind": "Electric ferries · Buriganga",
+  "line": "The boat is silent. You only see its wake.",
+  "bg": "#0f2a24",
+  "fg": "#f5f1ea",
+  "img": "media/worlds/nouka-river.webp",
+  "url": "https://flowstateimpact.github.io/fifteen-worlds/sites/nouka.html"
+ },
+ {
+  "slug": "folio",
+  "name": "Folio",
+  "kind": "Literary quarterly",
+  "line": "Pages you actually turn.",
+  "bg": "#d93a26",
+  "fg": "#f1ece2",
+  "img": "",
+  "url": "https://flowstateimpact.github.io/fifteen-worlds/sites/folio.html"
+ },
+ {
+  "slug": "dark-room",
+  "name": "Dark Room",
+  "kind": "Gallery · Shoreditch",
+  "line": "You hold the only light in the room.",
+  "bg": "#050505",
+  "fg": "#ece7de",
+  "img": "media/worlds/darkroom-casts.webp",
+  "url": "https://flowstateimpact.github.io/fifteen-worlds/sites/dark-room.html"
+ },
+ {
+  "slug": "poysha",
+  "name": "Poysha",
+  "kind": "Savings app · Dhaka",
+  "line": "Coins with real weight. Throw one.",
+  "bg": "#f3ede1",
+  "fg": "#e2401c",
+  "img": "",
+  "url": "https://flowstateimpact.github.io/fifteen-worlds/sites/poysha.html"
+ },
+ {
+  "slug": "badabon",
+  "name": "Badabon",
+  "kind": "Forest lodge · Sundarbans",
+  "line": "Something in the roots is watching you.",
+  "bg": "#070b10",
+  "fg": "#ece6d6",
+  "img": "media/worlds/badabon-channel.webp",
+  "url": "https://flowstateimpact.github.io/fifteen-worlds/sites/badabon.html"
+ },
+ {
+  "slug": "low-frequency",
+  "name": "Low Frequency",
+  "kind": "Recording rooms · Peckham",
+  "line": "The whole page is an instrument.",
+  "bg": "#ff4a1c",
+  "fg": "#121212",
+  "img": "",
+  "url": "https://flowstateimpact.github.io/fifteen-worlds/sites/low-frequency.html"
+ },
+ {
+  "slug": "eleven",
+  "name": "Eleven",
+  "kind": "Residences · Gulshan Lake",
+  "line": "Twenty-four hours in one scroll.",
+  "bg": "#0b1220",
+  "fg": "#f2ede4",
+  "img": "media/worlds/eleven-tower.webp",
+  "url": "https://flowstateimpact.github.io/fifteen-worlds/sites/eleven.html"
+ },
+ {
+  "slug": "taant",
+  "name": "Taant",
+  "kind": "Jamdani weaving · Rupganj",
+  "line": "Scroll is the shuttle. The cloth weaves itself.",
+  "bg": "#efe7d6",
+  "fg": "#22305e",
+  "img": "media/worlds/taant-hands.webp",
+  "url": "https://flowstateimpact.github.io/fifteen-worlds/sites/taant.html"
+ },
+ {
+  "slug": "sonar",
+  "name": "Sonar",
+  "kind": "Goldsmith · Hatton Garden",
+  "line": "Sixteen thousand grains of gold, and your hand.",
+  "bg": "#0b0908",
+  "fg": "#e6c066",
+  "img": "media/worlds/sonar-gold.webp",
+  "url": "https://flowstateimpact.github.io/fifteen-worlds/sites/sonar.html"
+ },
+ {
+  "slug": "eet-o-alo",
+  "name": "Eet o Alo",
+  "kind": "Architects · Dhaka",
+  "line": "Walk through a brick wall while the sun crosses a day.",
+  "bg": "#b5553a",
+  "fg": "#f3e4d6",
+  "img": "",
+  "url": "https://flowstateimpact.github.io/fifteen-worlds/sites/eet-o-alo.html"
+ },
+ {
+  "slug": "haldi",
+  "name": "Haldi",
+  "kind": "Skincare · London",
+  "line": "A serum you can touch and pour.",
+  "bg": "#e8900c",
+  "fg": "#2a1608",
+  "img": "media/worlds/haldi-root.webp",
+  "url": "https://flowstateimpact.github.io/fifteen-worlds/sites/haldi.html"
+ },
+ {
+  "slug": "gate-weave",
+  "name": "Gate Weave",
+  "kind": "Film house · Dhaka and London",
+  "line": "The page is a projector. Scroll to crank it.",
+  "bg": "#060505",
+  "fg": "#efe6d6",
+  "img": "media/worlds/gateweave-roofs.webp",
+  "url": "https://flowstateimpact.github.io/fifteen-worlds/sites/gate-weave.html"
+ }
+]
