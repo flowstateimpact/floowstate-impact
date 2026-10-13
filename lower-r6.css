@@ -1,0 +1,452 @@
+
+/* ---------- round 6: the first screen's cloth carried down the site. Source: lower-r6.css, joined on by build.py ----------
+   Grounds are the two cloths in hard splits. Headings are set to the width of their column by site.js, capped.
+   Orange: one word in a heading on black cloth, the button, the logo. Never on cream: orange on cream measures 2.4 to 1. */
+.dark,.pagehead{background:var(--k) url(media/cloth-black.jpg) center top/1400px auto;color:var(--c)}
+.paper{background:var(--c) url(media/cloth-cream.jpg) left top/800px auto;color:var(--k)}
+.sec,.foot{position:relative;overflow:hidden}
+.wrap{width:auto;margin:0 clamp(20px,3.9vw,56px)}
+.thread{display:none}
+.table::before{background:none}
+/* the flame: gloss on matt, under everything that lies on the cloth, never on a section that carries a film still */
+.sec.dark:not(:has(.workbed))::before,.foot::before,.pagehead:not(:has(.pic))::before{content:"";position:absolute;inset:auto;right:-16vw;top:50%;width:min(110vw,1700px);aspect-ratio:1500/808;height:auto;transform:translateY(-50%);
+  background:#fff;mix-blend-mode:overlay;opacity:.5;pointer-events:none;-webkit-mask:url(media/fsi-flame.svg) center/contain no-repeat;mask:url(media/fsi-flame.svg) center/contain no-repeat}
+.sec.dark:has(.rows)::before{top:-60px;transform:none}
+.foot::before{right:auto;left:-30vw}
+.pagehead:not(:has(.pic))::before{z-index:-1;right:-22vw}
+/* headings: the stencil as the picture. Cloth inside the letters, cream on black and black on cream */
+.h2,.duo .h2,.two .h2,.pagehead .h1{font-size:clamp(44px,7vw,104px);line-height:.84;margin:0 0 .26em -.02em;text-shadow:none}
+.h1 > span,.h2 > span{width:max-content;max-width:none;padding:.03em 0}
+.dark .h2 > span,.pagehead:not(:has(.pic)) .h1 > span{color:transparent;background:url(media/cloth-cream.jpg) 0 0/800px auto;-webkit-background-clip:text;background-clip:text}
+.paper .h2 > span{color:transparent;background:url(media/cloth-black.jpg) 0 0/1400px auto;-webkit-background-clip:text;background-clip:text}
+.dark .hot,.pagehead .hot{color:transparent;background:linear-gradient(#E27F22,#E27F22),url(media/cloth-cream.jpg) 0 0/800px auto;background-blend-mode:multiply;-webkit-background-clip:text;background-clip:text}
+.pagehead:has(.pic) .hot{color:var(--orange);background:none}
+.slot{font-size:clamp(19px,1.6vw,24px);max-width:36ch}
+.sec .stamp,.pagehead .stamp{transform:none;box-shadow:none}
+.sec .stamp::before,.pagehead .stamp::before{display:none}
+.sec .stamp:hover,.pagehead .stamp:hover{transform:none;background:#EB8B30}
+.askbig .h2{align-self:stretch}
+.askbig .stamp{transform:none;font-size:clamp(22px,2.2vw,30px);padding:22px 40px 24px}
+/* labels: cloth cut the other way. Black on cream, cream on black */
+.strip{background:var(--c) url(media/cloth-cream.jpg) 0 0/800px auto;color:var(--k);box-shadow:none}
+.paper .strip,.written .strip,.two .strip{background:var(--k) url(media/cloth-black.jpg) 0 0/1400px auto;color:var(--c);box-shadow:none}
+.written{box-shadow:none}
+.shot,.tape .pic,.workbed .pr{background:var(--c)}
+.foot{padding:76px 0 56px}
+.foot .next a{font-size:clamp(22px,2.2vw,32px)}
+
+@media (min-width:761px){
+  .sec{padding:112px 0}
+  /* home, the audit: the first screen's cream band runs on down the right edge and carries the written answer */
+  #audit{--bw:max(300px,23.6vw);min-height:640px}
+  #audit::after{content:"";position:absolute;right:0;top:0;bottom:0;width:var(--bw);background:var(--c) url(media/cloth-cream.jpg) left top/800px auto}
+  #audit .wrap{position:static;margin-right:calc(var(--bw) + 44px)}
+  #audit .lit{position:static;display:block;margin-top:0}
+  #audit .written{position:absolute;z-index:2;right:28px;top:112px;width:calc(var(--bw) - 56px);padding:0;transform:none;background:none}
+  #audit .written p{font-size:clamp(20px,1.6vw,25px);line-height:1.3;font-weight:500}
+  #audit .written .strips{position:static;margin-top:26px;flex-wrap:wrap;gap:10px}
+  #audit .written .strip{transform:none}
+  #audit .lit > .act{display:contents}
+  #audit .lit .stamp{position:absolute;z-index:2;right:28px;bottom:96px;width:calc(var(--bw) - 56px);text-align:center;padding-left:0;padding-right:0}
+  #audit .tapes{margin-top:8px;gap:22px}
+  #audit::before{right:auto;left:-20vw}
+}
+@media (max-width:760px){
+  .h2,.duo .h2,.two .h2,.pagehead .h1{font-size:clamp(40px,12.5vw,60px)}
+  .written{transform:none;margin:0 -20px;padding:30px 20px 34px}
+  .written .strips{position:static;margin-top:20px}
+  .foot{padding:56px 0 44px}
+}
+@media (max-width:379px){ .pagehead .menu{padding-left:14px;padding-right:10px} .pagehead .menu .right{gap:6px} }
+/* a heading is measured against its column, so no column may grow to fit its heading */
+.pagehead .hero .wrap{flex:1 1 auto;min-width:0}
+.duo > *,.two > *,.rows > *{min-width:0}
+
+/* ---------- round 7, the fix run ---------- */
+/* the free-audit small print, under every main button, never the menu button */
+.fine{font-weight:500;font-size:18px;line-height:1.2;margin:0}
+.fine span{display:block;font-weight:400;font-size:16px;margin-top:5px;opacity:.82}
+.askbig .fine{margin-top:-12px}
+/* Chhaya top: the picture is the Chhaya site itself, with its own menu and Bangla headline. Only the window blinds between
+   them are shown (13 to 45 percent of its height), cut hard; the heading stands on the black cloth below, nothing behind it */
+.pagehead .hero:has(> img.bed) .bed{width:100%;height:auto;aspect-ratio:1.6;object-fit:fill;top:calc(-96px - 8.125vw);clip-path:inset(13% 0 56.5% 0);filter:brightness(.78)}
+.pagehead .hero:has(> img.bed)::after{bottom:auto;height:20vw;background:linear-gradient(180deg,rgba(14,13,12,.6) 0%,rgba(14,13,12,0) 62%)}
+.pagehead .hero:has(> img.bed){padding-top:calc(20vw - 96px)}
+.pagehead .hero:has(> img.bed) .wrap{padding-top:52px}
+.pagehead .hero:has(> img.bed) .h1 > span{color:transparent;background:url(media/cloth-cream.jpg) 0 0/800px auto;-webkit-background-clip:text;background-clip:text}
+@media (min-width:761px){
+  #audit .lit .act > .fine{position:absolute;z-index:2;right:28px;bottom:36px;width:calc(var(--bw) - 56px);text-align:right;color:var(--k)}
+  /* the seven pages: the menu's phone slot is empty on desk, so the links and the button run to the right edge */
+  .pagehead .menu{padding-right:clamp(20px,3.9vw,56px)}
+  .pagehead .menu .right{display:none}
+}
+@media (max-width:760px){
+  /* home, the work: the Heritage print lies on top, so its caption is whole and the Chhaya print slides under it */
+  .workbed .pr.a{z-index:2}
+  .pagehead .hero:has(> img.bed) .bed{width:310vw;max-width:none;left:-129vw;top:calc(-80px - 25.2vw)}
+  .pagehead .hero:has(> img.bed)::after{height:62vw}
+  .pagehead .hero:has(> img.bed){padding-top:calc(62vw - 80px)}
+  .pagehead .hero:has(> img.bed) .wrap{padding-top:40px}
+}
+
+/* ---------- round 8: three changes from the owner ---------- */
+/* every main button and its small print travel as one block: the block is as wide as the button,
+   so the two small lines set flush right end exactly on the button's right edge */
+.act{display:inline-flex;flex-direction:column;align-items:stretch;gap:14px}
+.act > .stamp{text-align:center}
+.act > .fine{text-align:right;margin-top:0}
+.lit > .act{grid-area:act;justify-self:start}
+/* What we do, top: "The audit" as a second button. The main button's box to the pixel (2px line inside the same padding),
+   cream line and cream words on the black cloth; orange stays the main button's alone */
+.go.outline{display:inline-block;margin-top:34px;font-weight:500;font-size:clamp(22px,2.2vw,30px);line-height:1;padding:20px 38px 22px;
+  color:var(--paper);background:transparent;border:2px solid var(--paper);border-radius:0;box-shadow:none;text-decoration:none;
+  transition:background-color .32s cubic-bezier(.22,.61,.36,1),color .32s cubic-bezier(.22,.61,.36,1)}
+.go.outline:hover{background:var(--paper);color:var(--ink)}
+.go.outline:focus-visible{outline:2px solid var(--orange);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){.go.outline{transition:none}}
+
+/* ============ ROUND 9, 13 Oct 2026: ONE FAMILY OF BORDERED LINK ============
+   Every small text link (menu, footer menu, "Next: ...", every `quiet go`, the home "The work") is the little
+   sibling of the round-8 outline button: the same 2px line, square, General Sans 500, clear ground, and it fills on hover and focus.
+   One height, 48px: the height of the menu's orange button. Links in a row are joined into one strip (they share a line),
+   so a row has one top, one bottom and one baseline by construction. Cream line on black cloth, black line on cream cloth. */
+.menu nav a:not(.stamp),.quiet.go,.foot .next a,.foot nav a,.first a.work{
+  display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;min-height:48px;
+  font-weight:500;font-size:clamp(20px,1.5vw,22px);line-height:1;letter-spacing:0;white-space:nowrap;
+  padding:0 .85em 2px;border:2px solid var(--ink);border-radius:0;background:transparent;color:var(--ink);
+  text-decoration:none;opacity:1;box-shadow:none;
+  transition:background-color .45s var(--ease-settle),color .45s var(--ease-settle),border-color .45s var(--ease-settle)}
+.menu nav a:not(.stamp),.dark .quiet.go,.pagehead .quiet.go,.foot .next a,.foot nav a{color:var(--paper);border-color:var(--paper)}
+/* the fill: black on cream cloth, cream on black cloth; the keyboard gets the same fill plus the orange ring */
+.quiet.go:hover,.quiet.go:focus-visible,.first a.work:hover,.first a.work:focus-visible{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.menu nav a:not(.stamp):hover,.menu nav a:not(.stamp):focus-visible,.dark .quiet.go:hover,.dark .quiet.go:focus-visible,
+.pagehead .quiet.go:hover,.pagehead .quiet.go:focus-visible,.foot .next a:hover,.foot .next a:focus-visible,
+.foot nav a:hover,.foot nav a:focus-visible{background:var(--paper);color:var(--ink);border-color:var(--paper)}
+.foot a:focus-visible,.first a.work:focus-visible{outline:2px solid var(--orange);outline-offset:3px}
+.menu nav a:not(.stamp),.foot nav a{position:relative}
+.menu nav a:not(.stamp):focus-visible,.foot nav a:focus-visible{z-index:2}
+/* the strips: the top menu and the footer menu */
+.menu nav,.foot nav{gap:0;align-items:stretch}
+.menu nav a:not(.stamp){padding-inline:clamp(12px,1.25vw,20px)}
+.menu nav a:not(.stamp) + a:not(.stamp),.foot nav a + a{margin-left:-2px}
+.menu nav .stamp{margin-left:clamp(14px,2vw,30px)}
+.foot nav{flex-wrap:nowrap}
+/* the onward link at the foot keeps its size; it is the one big member */
+.foot .next a{font-size:clamp(22px,2.2vw,32px);padding:.4em .7em .48em}
+.first a.work{border-bottom:2px solid var(--ink);font-size:max(20px,calc(18 * var(--u)))}
+@media (min-width:761px){
+  /* home: the strip takes the top and the height of the orange button in the cream band */
+  .first .menu nav{gap:0;align-self:flex-start;margin-top:calc(24 * var(--u) - 22px)}
+  .first .menu nav a:not(.stamp){min-height:0;height:calc(48 * var(--u))}
+  .first a.work{bottom:calc(28 * var(--u))}   /* the same inset under it as beside it */
+}
+@media (max-width:760px){
+  /* phone: the open menu and the footer menu are the same ledger, one cell a line, one left edge */
+  .menu.open nav,.first .menu.open nav{align-items:stretch;gap:0;padding:14px 12px 22px 14px;margin-right:0}
+  .menu.open nav a:not(.stamp),.foot nav a{justify-content:flex-start;min-height:52px;font-size:20px;padding-inline:16px}
+  .menu.open nav a:not(.stamp) + a:not(.stamp),.foot nav a + a{margin-left:0;margin-top:-2px}
+  .foot nav{flex:0 0 100%;flex-direction:column}
+  /* home, phone: 43px is all the first screen leaves under the list, so this one member is slim */
+  .first a.work{font-size:18px;min-height:0;height:33px;padding:0 12px 1px;bottom:4px}
+  .first:has(.menu.open) .filmctl{opacity:0;pointer-events:none}
+}
+@media (prefers-reduced-motion:reduce){.menu nav a:not(.stamp),.quiet.go,.foot .next a,.foot nav a,.first a.work{transition:none}}
+
+/* ============ ROUND 10, 13 Oct 2026: six corrections from the owner ============ */
+/* 1. the two prints swap sizes. Each keeps its centre and its turn; the tag and the clip ride the Heritage print's new top edge (19.65 higher) */
+.print.box{left:calc(16 * var(--u));top:calc(-97.65 * var(--u));width:calc(150 * var(--u))}
+.print.poster{left:calc(16 * var(--u));top:calc(22.6 * var(--u));width:calc(118 * var(--u))}
+.clip{top:calc(-125.65 * var(--u))}
+.labels{top:calc(-97.65 * var(--u))}
+html[data-words="a"] .labels{top:calc(-65.65 * var(--u))}
+
+/* 2 and 3. the white links of the top bar and the foot are plain words again: no line, no box. They answer the pointer and the keyboard
+   with a thin underline that settles in. One rule for both rows */
+.menu nav a:not(.stamp),.foot .next a,.foot nav a{display:inline-flex;align-items:center;min-height:44px;height:auto;padding:0;border:0;border-radius:0;background:none;
+  color:var(--paper);text-decoration:underline;text-decoration-thickness:1.5px;text-underline-offset:.32em;text-decoration-color:transparent;
+  transition:text-decoration-color .45s var(--ease-settle),opacity .45s var(--ease-settle)}
+.menu nav a:not(.stamp):hover,.menu nav a:not(.stamp):focus-visible,.foot .next a:hover,.foot .next a:focus-visible,.foot nav a:hover,.foot nav a:focus-visible{
+  background:none;color:var(--paper);border:0;text-decoration-color:var(--paper)}
+.menu nav a:not(.stamp) + a:not(.stamp),.foot nav a + a{margin:0}
+/* 2. the top bar: logo left; the five words and the orange button together on the right, one baseline */
+.menu nav{gap:clamp(22px,2.3vw,34px);align-items:center}
+.menu nav a:not(.stamp){font-size:clamp(20px,1.5vw,22px);padding-inline:0}
+.menu nav .stamp{margin-left:0}   /* the button keeps the words' own rhythm: one gap, one group */
+@media (min-width:761px){
+  /* home: the button stands in the cream column, so the words end 28 short of the column's edge, the button's own inset mirrored, at its height */
+  .first .menu nav{margin-right:calc(var(--bw) + calc(28 * var(--u)) - 40px);margin-top:calc(24 * var(--u) - 22px);height:calc(48 * var(--u));align-self:flex-start;gap:clamp(22px,2.3vw,34px)}
+  .first .menu nav a:not(.stamp){height:auto;min-height:0}
+  .first .menu .right{display:none}   /* its two phone pieces are hidden on desk; empty, it held the words in the middle of the bar */
+}
+/* 3. the foot: the orange button and the big heading lead; the white words come last, quiet, their right edge on the heading's last letter.
+   site.js measures that letter and sets --fx, the distance from the column's right edge back to it */
+.foot .wrap{display:grid;grid-template-columns:auto 1fr auto;grid-template-areas:"next next next" "mark . nav" "firm . nav";align-items:center;gap:0 32px;padding-right:var(--fx,0px)}
+.foot .next{grid-area:next;justify-self:end;margin:0 0 26px;flex:none}
+.foot .next a{font-size:clamp(26px,2.6vw,38px);font-weight:500;line-height:1.1;padding:0}
+.foot .mark{grid-area:mark;align-self:end}
+.foot .firm{grid-area:firm;align-self:start;margin-top:10px}
+.foot nav{grid-area:nav;justify-self:end;display:flex;flex-wrap:nowrap;gap:clamp(22px,2.3vw,34px);font-size:clamp(20px,1.7vw,24px)}
+.foot nav a{font-size:inherit;font-weight:500;padding:0;justify-content:flex-end}
+.foot{padding-bottom:96px}   /* the corner arrow has its own clear square under the last line */
+@media (max-width:760px){
+  .foot .wrap{grid-template-columns:1fr auto;grid-template-areas:"next next" "mark nav" "firm nav";align-items:start;gap:0 20px}
+  .foot .next{margin-bottom:30px}
+  .foot .next a{font-size:26px}
+  .foot nav{flex-direction:column;align-items:flex-end;gap:0;font-size:22px;flex:none}
+  .foot nav a{min-height:44px;font-size:22px}
+  .foot .mark{align-self:start;margin-top:8px}
+  .foot .firm{align-self:start}
+  .foot{padding-bottom:84px}
+  /* the open phone menu: the same plain words, set right under the menu button, on a solid cloth so nothing shows through */
+  .menu.open{z-index:60}
+  .menu.open nav,.first .menu.open nav{background:var(--k) url(media/cloth-black.jpg) 0 0/700px auto;align-items:flex-end;gap:0;padding:6px 16px 22px 14px;margin-right:0;box-shadow:0 18px 30px -18px rgba(0,0,0,.9)}
+  .menu.open nav a:not(.stamp){justify-content:flex-end;min-height:50px;font-size:22px;padding:0}
+}
+
+/* 4. the cream column: "The work" is gone; its foot carries the outline button, the top button's box mirrored (24 in from the edge, its width, its height, its type).
+   Black line on the cream cloth, so the column keeps one orange button */
+.band-top .colgo{position:absolute;margin:0;padding:0;display:grid;place-items:center;left:calc(28 * var(--u));right:calc(28 * var(--u));bottom:calc(24 * var(--u));height:calc(48 * var(--u));
+  font-size:max(16px,calc(17 * var(--u)));line-height:1;color:var(--ink);border-color:var(--ink);background:transparent}
+.band-top .colgo:hover,.band-top .colgo:focus-visible{background:var(--ink);color:var(--paper)}
+@media (max-width:760px){
+  /* phone: the screen grows by the button and its air; the spare height of a tall phone still goes between the six pairs */
+  .first{height:max(100svh,calc(888 * var(--u)));--g:calc(calc(6.8 * var(--u)) + clamp(0px,calc((100svh - calc(888 * var(--u))) / 5),calc(9 * var(--u))))}
+  .band-top .colgo{left:calc(18 * var(--u));right:calc(16 * var(--u));bottom:calc(20 * var(--u));height:calc(46 * var(--u));font-size:16px}
+}
+
+/* 5. the scroll cue: a hairline with a light running down it into a stencil chevron (the bridge cut at its point, like the letters).
+   It breathes, it never shouts, and it is gone once the page moves. Desk: on the bottom row beside the film's pause button. Phone: on the black cloth strip */
+.cue{position:absolute;z-index:9;left:calc(760 * var(--u));bottom:calc(26 * var(--u));width:20px;height:40px;pointer-events:none;color:var(--c);opacity:.8;transition:opacity .7s var(--ease-settle)}
+html.moved .cue{opacity:0}
+.cue svg{display:block;width:20px;height:40px;overflow:visible}
+.cue .run{animation:cue-run 3.2s cubic-bezier(.45,0,.2,1) infinite}
+.cue .chev{animation:cue-nudge 3.2s cubic-bezier(.22,.8,.2,1) infinite}
+@keyframes cue-run{0%{transform:translateY(-12px);opacity:0}25%{opacity:1}65%,100%{transform:translateY(24px);opacity:0}}
+@keyframes cue-nudge{0%,48%{transform:translateY(0)}64%{transform:translateY(4px)}100%{transform:translateY(0)}}
+@media (max-width:760px){ .cue{left:calc(52 * var(--u) - 10px);top:calc(100svh - 66px);bottom:auto} }
+
+/* 6. the way back up: bottom left, line only, the cue's chevron turned over. It arrives once the page has moved and leaves at the top.
+   Difference blend, so the one cream line reads dark on cream cloth and cream on black */
+.totop{position:fixed;z-index:50;left:max(20px,env(safe-area-inset-left));bottom:max(20px,env(safe-area-inset-bottom));width:44px;height:44px;display:grid;place-items:center;
+  color:#F4EFE6;mix-blend-mode:difference;opacity:0;visibility:hidden;transform:translateY(10px);
+  transition:opacity .55s var(--ease-settle),transform .55s var(--ease-settle),visibility 0s linear .55s}
+.totop.on{opacity:.88;visibility:visible;transform:none;transition:opacity .55s var(--ease-settle),transform .55s var(--ease-settle),visibility 0s}
+.totop svg{width:22px;height:24px;transition:transform .45s var(--ease-settle)}
+.totop:hover{opacity:1}.totop:hover svg{transform:translateY(-3px)}
+.totop:focus-visible{outline:2px solid currentColor;outline-offset:2px;opacity:1}
+@media (max-width:760px){ .totop{left:max(12px,env(safe-area-inset-left));bottom:max(12px,env(safe-area-inset-bottom))} }
+/* round 19: the arrow yields to the words (site.js yieldMap). It stands down quickly as a line or a button comes within reach and returns
+   at its own slow settle. An arrow under the pointer or holding keyboard focus never leaves. Seat and drawing unchanged */
+.totop.on.by:not(:hover):not(:focus-visible){opacity:0;visibility:hidden;transition:opacity .2s var(--ease-settle),visibility 0s linear .2s}
+@media (prefers-reduced-motion:reduce){ .totop.on.by:not(:hover):not(:focus-visible){transition:none} }
+@media (prefers-reduced-motion:reduce){
+  .cue .run,.cue .chev{animation:none}.cue .run{opacity:0}
+  .menu nav a:not(.stamp),.foot .next a,.foot nav a,.totop,.totop svg{transition:none}
+}
+
+/* ============ ROUND 11, 13 Oct 2026: the owner's corrections on the run-10 pictures ============ */
+@media (min-width:761px){
+  /* A. home: the menu is plain words, no line anywhere, and it ends on the right edge of the Y in STRATEGY.
+     The Y is drawn in --u, so its right edge is 1001.6u at every width (measured on the ink, 1440, 1280, 1100); the menu rides the same unit */
+  .first .menu nav{position:absolute;top:calc(24 * var(--u));right:calc(100% - calc(1001.6 * var(--u)) - var(--tb,0px));height:calc(48 * var(--u));margin:0}
+  .first .menu nav a{border:0}
+  .first .menu{--tb:.55px}   /* the last word's ink stops .55 px inside its own box; this lands ink on ink */
+  /* D1. while the first screen is on view the orange button lives at the foot of the cream column; the bar's own copy stays out */
+  html.dk .first .menu nav a.stamp{visibility:hidden;pointer-events:none}
+  /* D2. the column's foot: the orange button, the top one's twin, its small print flush to its right edge.
+     The six offers start where the old top button started (their cap line on 24u) and their rhythm gives way first on a short screen */
+  .first{--g:min(calc(24 * var(--u)),max(calc(6 * var(--u)),calc((100svh - calc(670 * var(--u)) - 62px) / 5)))}
+  .six{top:calc(16 * var(--u))}
+}
+.band-top .colact{position:absolute;z-index:1;left:calc(28 * var(--u));right:calc(28 * var(--u));bottom:calc(24 * var(--u));display:flex;flex-direction:column;align-items:stretch;gap:14px}
+.band-top .colact .colgo{position:relative;left:auto;right:auto;bottom:auto;display:grid;place-items:center;width:100%;height:calc(48 * var(--u));margin:0;padding:0;
+  font-size:max(16px,calc(17 * var(--u)));line-height:1;color:var(--ink);background:var(--orange);border:0;transform:none;box-shadow:none;transition:background-color .3s var(--ease-settle)}
+.band-top .colact .colgo::before{display:none}
+.band-top .colact .colgo:hover{background:#EB8B30;color:var(--ink);transform:none;box-shadow:none}
+.band-top .colact .colgo:focus-visible{background:#EB8B30;color:var(--ink);outline:2px solid var(--ink);outline-offset:3px}
+.band-top .colact .fine{color:var(--ink);text-align:right}
+
+@media (max-width:760px){
+  /* phone: the six offers and the twin cannot share 844 px, so the bar keeps its orange button from the start (the only one in view),
+     the offers take the screen to the fold, and the twin with its small print stands whole just under it */
+  .first{height:max(100svh,calc(1004 * var(--u)));--g:calc(calc(12 * var(--u)) + clamp(0px,calc((100svh - calc(1004 * var(--u))) / 5),calc(9 * var(--u))))}
+  .band-top .colact{left:calc(18 * var(--u));right:calc(16 * var(--u));bottom:calc(20 * var(--u))}
+  .band-top .colact .colgo{height:calc(46 * var(--u));font-size:16px}
+}
+
+/* E1. the scroll cue, clearer and still quiet: a longer rail, a touch more light, and the whole mark nudges down once every 2.8 s */
+.cue{height:54px;opacity:.95}
+.cue svg{height:54px}
+.cue .rail{opacity:.55}
+.cue{animation:cue-drift 2.8s cubic-bezier(.45,0,.2,1) infinite}
+.cue .run{animation:cue-run11 2.8s cubic-bezier(.45,0,.2,1) infinite}
+.cue .chev{animation:none}
+/* one breath: the light runs down the rail (0 to 55 percent), and as it reaches the chevron the whole mark gives once */
+@keyframes cue-run11{0%{transform:translateY(-14px);opacity:0}18%{opacity:1}55%,100%{transform:translateY(38px);opacity:0}}
+@keyframes cue-drift{0%,50%,100%{transform:translateY(0)}66%{transform:translateY(6px)}}
+html.moved .cue{opacity:0;animation-play-state:paused}
+@media (min-width:761px){ .cue{bottom:calc(26 * var(--u) - 7px)} }
+@media (max-width:760px){ .cue{top:calc(100svh - 80px)} }
+@media (prefers-reduced-motion:reduce){ .cue{animation:none} }
+
+/* ============ ROUND 12, 13 Oct 2026: the owner's six pictures, re-read in his order ============ */
+/* 3. the two prints, whole again. The pair moves left as one, so the Heritage corner stands clear of the column's dark cut edge
+   instead of sliding under it; each print keeps its round-10 size and its place against the other */
+.prints{left:calc(908 * var(--u))}
+
+/* 4. the rotating words. Every line sits in one grid cell, so the button is as wide as its widest line and never moves.
+   The old line lifts out, the new one rises in a beat later: opacity and transform only */
+.rot{display:inline-grid;vertical-align:top}
+.rot .rl{grid-area:1/1;white-space:nowrap;text-align:center;opacity:0;transform:translateY(.34em);transition:opacity .26s var(--ease-settle),transform .44s var(--ease-settle)}
+.rot .rl.on{opacity:1;transform:none;transition-delay:.1s}
+.rot .rl.was{transform:translateY(-.34em)}
+
+/* 5. the top button: back on its old box at the head of the cream column (24u down, 28u in, 284u by 48u), fixed, so it is the same button all the way down.
+   .dockline is the outline it wears while the first screen is on view; .dock is the link, and its orange eases in (400 ms) once the first screen has gone */
+.dock,.dockline{--u:calc(min(100vw / 1440,100svh / 776));position:fixed;top:calc(24 * var(--u));right:calc(28 * var(--u));width:calc(284 * var(--u));height:calc(48 * var(--u));
+  box-sizing:border-box;display:grid;place-items:center;margin:0;padding:0;font-weight:500;font-size:max(16px,calc(17 * var(--u)));line-height:1;transform:none}
+.dockline{z-index:54;pointer-events:none;border:2px solid #F4EFE6;color:#F4EFE6;mix-blend-mode:difference;
+  transition:opacity .4s var(--ease-settle),background-color .25s var(--ease-settle),color .25s var(--ease-settle)}
+.dock{z-index:55;border:0;background:rgba(226,127,34,0);color:rgba(27,25,21,0);box-shadow:0 10px 22px -14px rgba(0,0,0,0);
+  transition:background-color .4s var(--ease-settle),color .2s var(--ease-settle),box-shadow .4s var(--ease-settle)}
+.dock::before{display:none}
+.dock:hover{transform:none;box-shadow:0 10px 22px -14px rgba(0,0,0,0)}
+html.past .dock{background:#E27F22;color:rgb(27,25,21);box-shadow:0 10px 22px -14px rgba(0,0,0,.55);
+  transition:background-color .4s var(--ease-settle),color .3s var(--ease-settle) .1s,box-shadow .4s var(--ease-settle)}
+html.past .dock:hover{background:#EB8B30;box-shadow:0 10px 22px -14px rgba(0,0,0,.55)}
+html.past .dockline{opacity:0}
+/* the outline answers the pointer the way the column's old outline button did: it fills, and the words turn */
+html:not(.past) .dock:hover + .dockline,html:not(.past) .dock:focus-visible + .dockline{background:#F4EFE6;color:#000}
+.dock:focus-visible{outline:2px solid var(--orange);outline-offset:3px}
+html.dk .first .menu .mstamp{visibility:hidden;pointer-events:none}
+@media (min-width:761px){
+  /* the six offers step down to make room: 22 px under the button to the cap line of the first word */
+  .first{--k:1;--g:min(calc(24 * var(--u)),max(calc(3 * var(--u)),calc((100svh - calc(718 * var(--u)) - 84px) / 5)))}
+  .six{top:calc(64 * var(--u) + 22px)}
+  .six li:nth-child(1) .w{font-size:calc(53 * var(--u) * var(--k))}.six li:nth-child(2) .w{font-size:calc(74 * var(--u) * var(--k))}.six li:nth-child(3) .w{font-size:calc(66 * var(--u) * var(--k))}
+  .six li:nth-child(4) .w{font-size:calc(77 * var(--u) * var(--k))}.six li:nth-child(5) .w{font-size:calc(38 * var(--u) * var(--k))}.six li:nth-child(6) .w{font-size:calc(55 * var(--u) * var(--k))}
+}
+@media (max-width:760px){
+  .dock,.dockline{--u:calc(100vw / 390);top:calc(16 * var(--u));right:auto;left:calc(176 * var(--u));width:calc(150 * var(--u));height:calc(40 * var(--u));font-size:16px}
+}
+@media (prefers-reduced-motion:reduce){ .dock,html.past .dock,.dockline,.rot .rl{transition:none} }
+/* round 15, phone: the whole first screen inside one screen. The heading and the cream column rise 34 as one piece, the six words step down to 22,
+   and the button with its small print stands 10 off the floor, so the orange button and its two lines end above the fold at 390 by 844 and 360 by 800 */
+@media (max-width:760px){
+  .first{height:max(100svh,calc(844 * var(--u)));--g:calc(calc(6.5 * var(--u)) + clamp(0px,calc((100svh - calc(844 * var(--u)) - 7 * (max(18px,calc(18 * var(--u))) - calc(18 * var(--u))) - (44px - calc(44 * var(--u)))) / 5),calc(9 * var(--u))))}
+  .head.wb{top:calc(129 * var(--u))}
+  .head.wa{top:calc(173.4 * var(--u))}
+  .veil{height:calc(380 * var(--u))}
+  .band-under,.band,.band-top{top:calc(380 * var(--u))}
+  .read{top:calc(390 * var(--u));line-height:calc(20 * var(--u))}
+  .six{top:calc(56 * var(--u))}
+  .six li:nth-child(n) .w{font-size:calc(22 * var(--u))}
+  .six .line,.six small{line-height:max(18px,calc(18 * var(--u)))}
+  .band-top .colact{bottom:calc(10 * var(--u));gap:8px}
+  .band-top .colact .colgo{height:calc(44 * var(--u))}
+  .band-top .colact .fine{font-size:16px}
+  .band-top .colact .fine span{margin-top:3px}
+}
+/* round 15, the bar button on a phone. The widest of the six lines is 180 px at 16 px and the bar has 181 px between the logo and the menu button,
+   so the box takes all the room there is (8 off the logo, 6 off the menu button) and site.js passes over any line that box cannot hold.
+   The logo and the menu button keep their sizes: nothing in the bar is squeezed */
+@media (max-width:760px){
+  .dock,.dockline,.first .menu .mstamp{left:161px;right:62px;width:auto}
+  .menu .logo,.menu .burger{flex:none}
+  .menu .right{flex:0 1 auto;min-width:0;margin-left:8px}
+  .menu .mstamp{flex:0 1 auto;width:204px;min-width:0;display:grid;place-items:center;padding-left:0;padding-right:0;white-space:nowrap}
+}
+@media (max-width:380px){ .dock,.dockline,.first .menu .mstamp{left:140px} .menu .mstamp{padding-left:0;padding-right:0} }
+/* round 15, the foot: the wordmark holds its drawn width and proportions whatever the words beside it are told to do */
+.foot .mark{min-width:136px;flex:none;height:auto;aspect-ratio:1135/442}
+/* round 16, the foot on desk when the heading above ends far to the left (heritage, 775): site.js sets .two, the empty middle column goes,
+   one gap of 24 stands between the wordmark and the white words, and the words end on the heading's last letter */
+@media (min-width:761px){ .foot.two .wrap{grid-template-columns:auto 1fr;grid-template-areas:"next next" "mark nav" "firm nav";column-gap:24px} }
+
+/* round 16, the column's orange button, bigger and bolder. The label is cut in the headline stencil, in capitals, and the box is the top button at one and a half:
+   48 to 72 tall, 17 to 25 type, the same 284 wide and the same edges. A line too long for one row stands as a two-row stack at the same size (lines two and three),
+   so the type never steps down and the box never moves. Where the screen has height the six offers give up 12 of their rhythm. On a short wide screen the column
+   was already full, so --nd counts what is missing for 6 clear above the button: the box gives up to 12 of its height first (72 to 60), then each of the five words that carry the gap sits up to 7
+   closer to its own line. No type shrinks. On a phone the room comes from under the button */
+.band-top .colact .colgo{box-sizing:border-box;height:max(calc(72 * var(--u)),44px);padding:0 8px;font-family:var(--stencil);font-weight:700;text-transform:uppercase;letter-spacing:0;
+  font-size:max(16px,calc(25 * var(--u)));line-height:.95;text-align:center;text-wrap:balance}
+.band-top .colact .colgo .rot{display:grid;width:100%;justify-self:stretch}
+.band-top .colact .colgo .rl{white-space:normal;text-wrap:balance;align-self:center}
+@media (min-width:761px){
+  .first{--g:min(calc(24 * var(--u)),max(calc(3 * var(--u)),calc((100svh - calc(730 * var(--u)) - 84px) / 5)));
+    --nd:calc(calc(720.3 * var(--u)) + 83.2px - 100svh);--dw:clamp(0px,calc(var(--nd) - calc(12 * var(--u))),calc(36 * var(--u)))}
+  .band-top .colact .colgo{height:max(44px,clamp(calc(60 * var(--u)),calc(calc(72 * var(--u)) - var(--nd)),calc(72 * var(--u))))}
+  .six .w{margin-bottom:calc(calc(11.07 * var(--u)) - .145em - var(--dw) / 5)}
+}
+@media (max-width:760px){
+  .band-top .colact{bottom:calc(6 * var(--u));gap:6px}
+  .band-top .colact .colgo{height:calc(56 * var(--u));font-size:max(16px,calc(22 * var(--u)))}
+  .band-top .colact .fine{line-height:1.1}
+  .band-top .colact .fine span{margin-top:2px}
+}
+
+/* ---------- round 17 ---------- */
+/* a. the audit, after you tap: three counted steps. The numeral is the heading's own stencil, cut from the same cream cloth, so the count
+   reads as part of the heading and never as a label. One column for the numerals, one for the lines: a reading surface, set square */
+.steps{list-style:none;margin:0;padding:0;counter-reset:step;display:grid;gap:clamp(12px,1.5vw,22px)}
+.steps li{counter-increment:step;display:grid;grid-template-columns:clamp(46px,5vw,72px) 1fr;align-items:baseline;max-width:none;margin:0}
+.steps li::before{content:counter(step);font-family:var(--stencil);font-weight:700;font-size:clamp(44px,4.4vw,64px);line-height:.84;padding:.05em 0;
+  color:transparent;background:url(media/cloth-cream.jpg) 0 0/800px auto;-webkit-background-clip:text;background-clip:text}
+/* the lines under a heading that stands alone in its column: each line keeps to one row where the column has the room, and breaks even where it has not */
+.inset .slot{text-wrap:balance}
+@media (min-width:761px){ .inset .slot{max-width:none} }
+
+/* b1. what we do, the four rows. The headings were already set to their column; two of them stood in the narrow column, because a flipped row
+   swapped the order and kept the picture's share. Now the words always take the wide share: a tall print needs 400 and no more, and a flipped
+   wide print gives the words 1.1 of 2. Phones are one column and were already full */
+@media (min-width:761px){
+  .rows .duo:has(.shot.tall){grid-template-columns:minmax(0,1fr) clamp(300px,27.8vw,400px)}
+  .rows .duo.flip:has(.shot.tall){grid-template-columns:clamp(300px,27.8vw,400px) minmax(0,1fr)}
+  .rows .duo.flip:has(.shot.wide){grid-template-columns:.9fr 1.1fr}
+}
+/* b2. what we do, consultancy and the AI system: no longer a pair. The cream is a sheet lying on the black table, and it is cut short on the right,
+   so the table the rows above and the ask below stand on shows through as one band. Consultancy keeps the sheet and the big heading;
+   the AI system stands on the table, lower and smaller. Light from the upper left: the sheet's cut edge and both tapes throw their shadow down and right.
+   The AI system's tape lies across the cut, holding the sheet to the table */
+.two .strip{box-shadow:3px 8px 11px -5px rgba(19,17,16,.6)}
+.two > .dark{color:var(--c)}
+.two > .dark .h2 > span{color:transparent;background:url(media/cloth-cream.jpg) 0 0/800px auto;-webkit-background-clip:text;background-clip:text}
+.two > .dark .strip{background:var(--c) url(media/cloth-cream.jpg) 0 0/800px auto;color:var(--k);transform:rotate(1.8deg);box-shadow:3px 8px 12px -4px rgba(0,0,0,.7)}
+@media (min-width:761px){
+  .sec.paper:has(> .two){--bw:max(340px,37vw)}
+  .sec.paper:has(> .two)::after{content:"";position:absolute;z-index:0;right:0;top:0;bottom:0;width:var(--bw);
+    background:linear-gradient(90deg,rgba(0,0,0,.9),rgba(0,0,0,0) 54px),var(--k) url(media/cloth-black.jpg) center top/1400px auto}
+  .two{z-index:1;grid-template-columns:minmax(0,1fr) calc(var(--bw) - clamp(20px,3.9vw,56px) - 44px);gap:108px;align-items:start}
+  .two > .thread + div{padding-bottom:clamp(70px,9.5vw,140px)}
+  .two > .dark{background:none;align-self:end;margin-top:0}
+  .two > .dark .strip{margin-left:-106px}
+}
+@media (max-width:760px){
+  .sec.paper:has(> .two){padding-bottom:0}
+  .two{gap:0}
+  .two > .thread + div{padding-bottom:64px}
+  .two > .dark{margin:0 -20px;padding:0 20px 64px;background:linear-gradient(180deg,rgba(0,0,0,.9),rgba(0,0,0,0) 44px),var(--k) url(media/cloth-black.jpg) center top/1400px auto}
+  .two > .dark .strip{margin:-17px 0 30px 14px}
+}
+
+/* ---------- round 18 ---------- */
+/* b. heritage s3 and chhaya s3, the two flipped screens. Same finding as round 17 b1: the flip swapped the order and left the words in the
+   picture's .85 share, with dead cloth either side of the print. Now the print's column is the print and no more (a tall print needs 400,
+   a plain print 470), it stands on the page's left margin, and the words take everything else. site.js then sets the heading to that column */
+@media (min-width:761px){
+  .sec > .wrap.duo.flip:has(.shot.tall){grid-template-columns:clamp(300px,27.8vw,400px) minmax(0,1fr)}
+  .sec > .wrap.duo.flip:has(.shot:not(.tall):not(.wide)){grid-template-columns:clamp(340px,32.6vw,470px) minmax(0,1fr)}
+}
+/* phone: one column, the heading already full. The four given rows made heritage s3 11 taller than the screen; the print steps 16 closer to its words */
+@media (max-width:760px){ .sec > .wrap.duo.flip{gap:20px} }
+
+/* sticky bar (13 Oct): the menu stays at the top of the window on every page. It was absolute, so nothing in the flow moves.
+   The header is lifted to 53 so its pinned bar clears the sections below and stays under the docked button (54, 55).
+   html.stuck is set by site.js once the page has moved: the bar then wears the same dark cloth as the open phone menu */
+.first,.pagehead{z-index:53}
+.menu,.pagehead .menu{position:fixed}
+html.stuck .menu{background:#131110 url(media/cloth-black.jpg) 0 0/700px auto;box-shadow:0 18px 30px -18px rgba(0,0,0,.9)}
+[id]{scroll-margin-top:96px}
+
+/* 13 Oct 2026: the menu words lift 1.5px so they sit on the logo line, by eye; the logo and the button do not move */
+@media (min-width:761px){.menu nav a:not(.stamp){top:-1.5px}}

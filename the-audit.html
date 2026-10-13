@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>The audit · FlowStãte Impact</title>
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+<header class="pagehead" id="top">
+  <div class="menu">
+    <a class="logo" href="index.html" aria-label="FlowStãte Impact, home"><img class="mk" src="media/fsi-mark.svg" alt="" width="1197" height="1000"><img class="mark" src="media/wordmark.png" alt="FlowStãte Impact" width="1135" height="442"></a>
+    <nav>
+      <a href="work.html">Work</a>
+      <a href="what-we-do.html">What we do</a>
+      <a href="the-audit.html">Audit</a>
+      <a href="the-ai-system.html">AI system</a>
+      <a href="about.html">About</a>
+      <a class="stamp" href="https://linktr.ee/flowstateimpact" target="_blank" rel="noopener">Ask for the audit</a>
+    </nav>
+    <div class="right">
+      <a class="stamp mstamp" href="https://linktr.ee/flowstateimpact" target="_blank" rel="noopener">Ask for the audit</a>
+      <button class="burger" aria-label="Menu" aria-expanded="false"><span></span></button>
+    </div>
+  </div>
+  <div class="hero">
+    <div class="wrap">
+      <h1 class="h1"><span class="d">Everything,</span> <span class="d">read by <span class="hot">one</span> team.</span> <span class="p">Everything,</span> <span class="p">read by</span> <span class="p"><span class="hot">one</span> team.</span></h1>
+      <p class="slot">Then, in writing: which parts carry you, which you carry, where to start.</p>
+      <a class="quiet go" href="#s2">If it's working</a>
+    </div>
+  </div>
+  <div class="grain"></div>
+</header>
+<main>
+  <section class="sec paper" id="s2">
+    <div class="wrap"><div class="thread" aria-hidden="true"></div>
+        <h2 class="h2"><span class="d">Leave it alone</span> <span class="d">is an answer.</span> <span class="p">Leave it</span> <span class="p">alone is</span> <span class="p">an answer.</span></h2>
+        <p class="slot">We won't sell you what already works.</p>
+        <a class="quiet go" href="#s3">What happens next</a>
+    </div>
+  </section>
+  <section class="sec dark" id="s3">
+    <div class="wrap inset">
+        <h2 class="h2"><span class="d">After you <span class="hot">tap.</span></span> <span class="p">After</span> <span class="p">you <span class="hot">tap.</span></span></h2>
+        <ol class="steps"><li class="slot">Pick how to reach us.</li><li class="slot">Your whole business gets read.</li><li class="slot">Where to start, in writing.</li></ol>
+    </div>
+  </section>
+  <section class="sec paper" id="close">
+    <div class="wrap askbig"><div class="thread" aria-hidden="true"></div>
+        <h2 class="h2"><span class="l">Your turn.</span></h2>
+        <div class="act"><a class="stamp" href="https://linktr.ee/flowstateimpact" target="_blank" rel="noopener">Ask for the audit</a>
+          <p class="fine">Free for a limited time*<span>*T&amp;Cs apply</span></p></div>
+        <p class="under" data-waits="words: a line under the button on this page (the file gives one for Home only)"></p>
+    </div>
+  </section>
+</main>
+  <footer class="foot dark">
+    <div class="wrap">
+      <p class="next"><a href="the-ai-system.html">Next: the AI system</a></p>
+      <img class="mark" src="media/wordmark.png" alt="FlowStãte Impact" width="1135" height="442">
+      <nav><a href="work.html">Work</a><a href="what-we-do.html">What we do</a><a href="the-audit.html">Audit</a><a href="the-ai-system.html">AI system</a><a href="about.html">About</a></nav>
+      <p class="firm">Dhaka · London</p>
+    </div>
+  </footer>
+<script src="vendor/gsap.min.js"></script>
+<script src="vendor/ScrollTrigger.min.js"></script>
+<script src="site.js" defer></script>
+<script>
+(function(){
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var bg = document.querySelector('.burger'); if (bg) { bg.addEventListener('click', function(){ var m = bg.closest('.menu'); var o = m.classList.toggle('open'); bg.setAttribute('aria-expanded', o); }); }
+  var hero = document.querySelector('.hero'), v = hero.querySelector('video.bed'), ctl = hero.querySelector('.filmctl');
+  function set(p){ hero.classList.toggle('playing', p); if (ctl) { ctl.dataset.state = p ? 'playing' : 'paused'; ctl.setAttribute('aria-label', p ? 'Pause the film' : 'Play the film'); ctl.setAttribute('aria-pressed', p ? 'true' : 'false'); } }
+  if (v) {
+    v.addEventListener('play', function(){ set(true); }); v.addEventListener('pause', function(){ set(false); });
+    hero.querySelectorAll('.filmctl,[data-plays]').forEach(function(b){ b.addEventListener('click', function(e){ e.preventDefault(); if (v.paused) v.play(); else v.pause(); }); });
+  }
+  if (reduce) document.querySelectorAll('.shot video').forEach(function(x){ x.removeAttribute('autoplay'); x.pause(); });
+})();
+</script>
+</body>
+</html>
