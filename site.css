@@ -905,3 +905,12 @@ html.stuck .menu nav .hang,.menu.open nav .hang{--hg:#131110}
 }
 @media (max-width:359px){ .menu.open nav .hang a.hg:not(.stamp){font-size:16px;padding:0 9px 1px} }
 @media (prefers-reduced-motion:reduce){ .menu nav .hang a.hg:not(.stamp){transition:none} }
+
+/* 16 Oct 2026, his ask: every button in the face of "Where would we start" (Bespoke Stencil caps); a thin black border on every orange button; the back-to-top arrow bigger, in a white ring */
+.stamp,.quiet.go,.go.outline,.dock,.dockline,.colgo{font-family:var(--stencil);font-weight:700;text-transform:uppercase;letter-spacing:0}
+.stamp,.band-top .colact .colgo,.reel .pl{border:1px solid #000;box-sizing:border-box}
+.dock{border:1px solid transparent;box-sizing:border-box}
+html.past .dock{border-color:#000}
+.totop{width:56px;height:56px;border:1.5px solid #fff;border-radius:50%;box-sizing:border-box}
+.totop svg{width:28px;height:30px}
+@media (max-width:760px){.totop{width:50px;height:50px}.totop svg{width:24px;height:26px}}
