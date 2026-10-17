@@ -91,12 +91,18 @@
       r.ok[0] = true; if (!r.ok[r.at]) show(r, 0);
     });
   }
-  if (rots.length) setInterval(function(){
-    /* held while a button is under the pointer or the keyboard, and while the tab is out of sight */
-    if (document.hidden || document.querySelector('a.stamp:hover, a.stamp:focus-visible')) return;
-    at = (at + 1) % ASK.length;
-    rots.forEach(function(r){ if (!r.ok || r.ok[at]) show(r, at); });
-  }, 3200);
+  /* 17 Oct 2026: each button turns on its own beat, a random first wait and its own period, so no two change together */
+  rots.forEach(function(r){
+    r.at = r.at || 0;
+    function step(){
+      if (!(document.hidden || document.querySelector('a.stamp:hover, a.stamp:focus-visible'))){
+        var n = (r.at + 1) % ASK.length;
+        if (!r.ok || r.ok[n]) show(r, n); else r.at = n;
+      }
+      setTimeout(step, 3600 + Math.random() * 2900);
+    }
+    setTimeout(step, 1200 + Math.random() * 3800);
+  });
   var ticking = false, gaps = [];
   function onScroll(){
     ticking = false;

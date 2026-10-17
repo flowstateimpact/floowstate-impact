@@ -86,7 +86,7 @@ html[data-words="a"] .labels{top:calc(-46 * var(--u));padding-right:11px}
 .clothwrap{position:absolute;inset:0;z-index:3;pointer-events:none;will-change:transform}
 .cloth{position:absolute;inset:0;background:var(--k) url(media/cloth-black.jpg) right top/calc(1440 * var(--u)) auto;transform:translateX(calc(var(--cw) - 100%));will-change:transform}
 /* the flame, gloss on matt. It is cut at the cloth's own right edge: gloss belongs to the cloth, never to the film beside it */
-.cloth::before{content:"";position:absolute;left:calc(100% - var(--cw) - calc(300 * var(--u)));top:calc(-80 * var(--u));width:calc(1500 * var(--u));height:calc(808 * var(--u));background:#fff;mix-blend-mode:overlay;opacity:.5;
+.cloth::before{content:"";position:absolute;left:calc(100% - var(--cw) - calc(300 * var(--u)));top:calc(-80 * var(--u));width:calc(1500 * var(--u));height:calc(808 * var(--u));background:#fff;mix-blend-mode:normal;opacity:.12;
   clip-path:inset(0 calc(calc(1200 * var(--u)) - var(--cw)) 0 0);
   -webkit-mask:url(media/fsi-flame.svg) center/contain no-repeat;mask:url(media/fsi-flame.svg) center/contain no-repeat}
 /* 4 its shadow on the film: light from high left */
@@ -388,7 +388,7 @@ html[data-words="a"] .labels{top:calc(-46 * var(--u));padding-right:11px}
 .table::before{background:none}
 /* the flame: gloss on matt, under everything that lies on the cloth, never on a section that carries a film still */
 .sec.dark:not(:has(.workbed))::before,.foot::before,.pagehead:not(:has(.pic))::before{content:"";position:absolute;inset:auto;right:-16vw;top:50%;width:min(110vw,1700px);aspect-ratio:1500/808;height:auto;transform:translateY(-50%);
-  background:#fff;mix-blend-mode:overlay;opacity:.5;pointer-events:none;-webkit-mask:url(media/fsi-flame.svg) center/contain no-repeat;mask:url(media/fsi-flame.svg) center/contain no-repeat}
+  background:#fff;mix-blend-mode:normal;opacity:.12;pointer-events:none;-webkit-mask:url(media/fsi-flame.svg) center/contain no-repeat;mask:url(media/fsi-flame.svg) center/contain no-repeat}
 .sec.dark:has(.rows)::before{top:-60px;transform:none}
 .foot::before{right:auto;left:-30vw}
 .pagehead:not(:has(.pic))::before{z-index:-1;right:-22vw}
@@ -831,7 +831,7 @@ html.stuck .menu{background:#131110 url(media/cloth-black.jpg) 0 0/700px auto;bo
 
 /* round 20, 13 Oct 2026: the three shelves. Prints on the lit table, each its own size and lean; the fields are the worlds' own two colours */
 .trio{display:flex;flex-wrap:wrap;gap:0 30px;margin:0}
-.worlds,.prints,.films{position:relative;display:grid;grid-template-columns:repeat(12,1fr);gap:72px 40px;align-items:start;margin-bottom:40px}
+.worlds,.shelf,.films{position:relative;display:grid;grid-template-columns:repeat(12,1fr);gap:72px 40px;align-items:start;margin-bottom:40px}
 .world{grid-column:span var(--s);margin-top:var(--y);display:block;text-decoration:none;color:var(--paper);transform:rotate(var(--r));transition:transform .5s var(--ease-settle)}
 .world .pic{display:block;background:var(--c);padding:7px 7px 9px;box-shadow:0 30px 40px -18px rgba(0,0,0,.95),0 -2px 18px rgba(243,236,223,.08)}
 .world img,.world .field{display:block;width:100%;height:auto;aspect-ratio:var(--ar);object-fit:cover}
@@ -844,9 +844,9 @@ html.stuck .menu{background:#131110 url(media/cloth-black.jpg) 0 0/700px auto;bo
 .world:hover,.world:focus-visible{transform:translateY(-6px) rotate(0)}
 .world:focus-visible{outline:2px solid var(--orange);outline-offset:6px}
 .setname{margin-bottom:46px}
-.prints{grid-auto-flow:dense}
-.prints .shot{grid-column:span var(--s);margin-top:var(--y);max-width:none;justify-self:stretch}
-.prints.flip .shot.lead{grid-column:8 / span var(--s)}
+.shelf{grid-auto-flow:dense}
+.shelf .shot{grid-column:span var(--s);margin-top:var(--y);max-width:none;justify-self:stretch}
+.shelf.flip .shot.lead{grid-column:8 / span var(--s)}
 .fbox{grid-column:span var(--s);transform:rotate(var(--r));box-shadow:0 30px 40px -18px rgba(0,0,0,.95)}
 .fbox:nth-child(3n+2){margin-top:44px}
 .reel,.fbox iframe{display:block;width:100%;aspect-ratio:16/9;border:0}
@@ -864,8 +864,8 @@ html.stuck .menu{background:#131110 url(media/cloth-black.jpg) 0 0/700px auto;bo
   .world,.fbox{grid-column:auto;margin-top:0}
   .world:nth-child(odd){width:94%;justify-self:start} .world:nth-child(even){width:84%;justify-self:end}
   .world .field b{font-size:clamp(36px,11vw,54px)}
-  .prints{grid-template-columns:repeat(6,1fr);gap:40px 18px}
-  .prints .shot{grid-column:span 3;margin-top:calc(var(--y) / 3)} .prints .shot.lead,.prints.flip .shot.lead{grid-column:1 / -1}
+  .shelf{grid-template-columns:repeat(6,1fr);gap:40px 18px}
+  .shelf .shot{grid-column:span 3;margin-top:calc(var(--y) / 3)} .shelf .shot.lead,.shelf.flip .shot.lead{grid-column:1 / -1}
   .fbox:nth-child(even){width:90%;justify-self:end} .fbox:nth-child(3n+2){margin-top:0}
   .reel .ttl{font-size:clamp(28px,9vw,40px)}
 }
@@ -877,34 +877,6 @@ html.stuck .menu{background:#131110 url(media/cloth-black.jpg) 0 0/700px auto;bo
 .reel,.fbox iframe{max-height:calc(100vh - 150px);max-height:calc(100svh - 150px)}
 .fbox iframe{background:#000}
 
-/* 13 Oct 2026, the hang: Websites, Photography and Films hang under "Work" in the top bar, on every page. One joined strip: the outline
-   button's cream line at the bar's small scale, square, the same fill on hover and focus. It is laid out of the row (absolute, inside the
-   nav), so the logo, the five words and the orange button keep every tuned number. The page you are on is the filled cell, and it is inert.
-   Its smoked ground is its own, so the three read over any frame of the film; once the bar has its cloth the ground is the cloth itself */
-.menu nav .hang{display:flex;align-items:stretch;--hg:rgba(19,17,16,.66)}
-html.stuck .menu nav .hang,.menu.open nav .hang{--hg:#131110}
-.menu nav .hang a.hg:not(.stamp){position:relative;top:0;display:inline-flex;align-items:center;justify-content:center;box-sizing:border-box;height:26px;min-height:0;margin:0;padding:0 11px 1px;
-  border:1.5px solid #F4EFE6;border-radius:0;background:var(--hg);color:#F4EFE6;font-weight:500;font-size:15px;line-height:1;letter-spacing:.01em;white-space:nowrap;opacity:1;
-  text-decoration:none;transition:background-color .25s var(--ease-settle),color .25s var(--ease-settle)}
-.menu nav .hang a.hg:not(.stamp) + a.hg:not(.stamp){margin:0 0 0 -1.5px}
-.menu nav .hang a.hg:not(.stamp):hover,.menu nav .hang a.hg:not(.stamp):focus-visible,.menu nav .hang a.hg[aria-current]:not(.stamp){background:#F4EFE6;color:#131110;border:1.5px solid #F4EFE6;text-decoration:none}
-.menu nav .hang a.hg:not(.stamp):focus-visible{outline:2px solid var(--orange,#E27F22);outline-offset:3px;z-index:2}
-.menu nav .hang a.hg[aria-current]{pointer-events:none}
-@media (min-width:761px){
-  .menu nav{position:relative}   /* the home rule (absolute, round 11) outranks this; on the other pages it only gives the strip its corner */
-  .menu nav .hang{position:absolute;left:0;top:calc(50% + 16px)}
-  /* a touch on a wide tablet: the cell's reach grows downward to 44, the drawing stays 26 */
-  @media (pointer:coarse){ .menu nav .hang a.hg:not(.stamp)::after{content:"";position:absolute;left:0;right:0;top:0;height:44px} }
-}
-/* home between 761 and 1000 wide: the five words already reach the logo there, so the strip hangs from the row's right end and stays clear of it */
-@media (min-width:761px) and (max-width:1000px){ .first .menu nav .hang{left:auto;right:0} }
-@media (max-width:760px){
-  /* phone: the open menu ends on the same strip, under the five words, on their right edge; each cell 48 high */
-  .menu.open nav .hang{align-self:flex-end;margin-top:12px}
-  .menu.open nav .hang a.hg:not(.stamp){height:48px;min-height:48px;font-size:17px;padding:0 14px 1px;justify-content:center}
-}
-@media (max-width:359px){ .menu.open nav .hang a.hg:not(.stamp){font-size:16px;padding:0 9px 1px} }
-@media (prefers-reduced-motion:reduce){ .menu nav .hang a.hg:not(.stamp){transition:none} }
 
 /* 16 Oct 2026, his ask: every button in the face of "Where would we start" (Bespoke Stencil caps); a thin black border on every orange button; the back-to-top arrow bigger, in a white ring */
 .stamp,.quiet.go,.go.outline,.dock,.dockline,.colgo{font-family:var(--stencil);font-weight:700;text-transform:uppercase;letter-spacing:0}
@@ -914,3 +886,49 @@ html.past .dock{border-color:#000}
 .totop{width:56px;height:56px;border:1.5px solid #fff;border-radius:50%;box-sizing:border-box}
 .totop svg{width:28px;height:30px}
 @media (max-width:760px){.totop{width:50px;height:50px}.totop svg{width:24px;height:26px}}
+/* 17 Oct 2026: the back-to-top ring reads on every ground: no difference blend, a smoked disc behind the white ring */
+.totop{mix-blend-mode:normal;color:#fff;background:rgba(19,17,16,.55);border-radius:50%}
+/* 17 Oct 2026: softer, slower word swaps; the header button wears a solid ground on the film; it fits its box on phones */
+.rot .rl{transition:opacity .6s var(--ease-settle),transform .65s var(--ease-settle)}
+.rot .rl.on{transition-delay:.15s}
+.dockline{mix-blend-mode:normal;background:#F4EFE6;color:#131110;border-color:#131110;border-width:1px}
+@media (max-width:760px){ .dock,.dockline{font-size:13px} }
+/* 17 Oct 2026: the footer. Three columns on the black cloth: who we are, where to find us (the office and its map), and the ways in */
+.foot .fwrap{position:relative;z-index:1;margin:0 clamp(20px,3.9vw,56px);padding:clamp(56px,7vw,110px) 0 clamp(40px,4vw,64px);color:#F4EFE6}
+.foot .fwrap .next{margin:0 0 clamp(40px,5vw,72px)}
+.foot .fcols{display:grid;grid-template-columns:1.1fr 1.4fr 1fr;gap:clamp(28px,4vw,64px);align-items:start;border-top:1px solid rgba(244,239,230,.28);padding-top:clamp(28px,3vw,44px)}
+.foot .fmark{display:block;width:min(100%,340px);height:auto}
+.foot .firm{margin:18px 0 0;font-size:16px;letter-spacing:.08em;text-transform:uppercase;opacity:.72}
+.foot .flab{margin:0 0 10px;font-size:15px;letter-spacing:.08em;text-transform:uppercase;opacity:.72}
+.foot address{font-style:normal;font-size:clamp(17px,1.25vw,20px);line-height:1.4;margin:0 0 18px}
+.foot .fmap{display:block;width:100%;aspect-ratio:16/10;border:1px solid rgba(244,239,230,.35);filter:grayscale(1) contrast(1.05) brightness(.9);transition:filter .5s var(--ease-settle)}
+.foot .fmap:hover{filter:none}
+.foot .fgo{display:flex;flex-direction:column;align-items:flex-start;gap:14px}
+.foot .fgo nav{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+.foot .fgo nav a{color:#F4EFE6;text-decoration:none;font-size:clamp(18px,1.4vw,22px)}
+.foot .fgo nav a:hover{color:var(--orange,#E27F22)}
+.foot .fbook{display:inline-grid;place-items:center;min-height:48px;padding:0 24px;background:#E27F22;color:#131110;border:1px solid #131110;text-decoration:none;font-size:17px}
+.foot .fbook:hover{background:#EB8B30}
+.foot .flink{color:#F4EFE6;font-size:16px;text-underline-offset:4px}
+@media (max-width:900px){ .foot .fcols{grid-template-columns:1fr} .foot .fmark{width:min(70%,280px)} }
+.foot .fgo nav{align-items:flex-start;text-align:left;position:static;transform:none}.foot .fgo nav a{margin:0;padding:0;text-align:left}
+/* 17 Oct 2026: Work is the hub. Three doors under the two case studies, each a picture with its name set across it */
+.doors{display:grid;grid-template-columns:1.25fr 1fr 1fr;gap:clamp(16px,2vw,28px);margin:clamp(40px,5vw,72px) 0 0}
+.door{position:relative;display:block;overflow:hidden;aspect-ratio:4/5;background:#131110;box-shadow:0 30px 40px -18px rgba(0,0,0,.95)}
+.door:nth-child(1){aspect-ratio:5/5.2}.door:nth-child(2){margin-top:48px}.door:nth-child(3){margin-top:16px}
+.door img{width:100%;height:100%;object-fit:cover;opacity:.78;transition:transform .8s var(--ease-settle),opacity .5s var(--ease-settle)}
+.door .dn{position:absolute;left:clamp(14px,1.6vw,24px);bottom:clamp(12px,1.4vw,20px);font-family:var(--stencil);font-weight:700;text-transform:uppercase;line-height:.86;color:#F4EFE6;font-size:clamp(30px,3.4vw,58px)}
+.door::after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;background:#E27F22;transform:scaleX(0);transform-origin:left;transition:transform .5s var(--ease-settle)}
+.door:hover img,.door:focus-visible img{transform:scale(1.04);opacity:.95}.door:hover::after,.door:focus-visible::after{transform:none}
+.door:focus-visible{outline:2px solid #E27F22;outline-offset:4px}
+@media (max-width:760px){ .doors{grid-template-columns:1fr 1fr} .door:nth-child(1){grid-column:1/-1;aspect-ratio:16/11} .door:nth-child(2),.door:nth-child(3){margin-top:0} }
+.backwork{display:inline-block;margin:0 0 18px;font-size:16px;letter-spacing:.08em;text-transform:uppercase;color:inherit;text-decoration:none;opacity:.8}
+.backwork:hover{opacity:1;color:#E27F22}
+/* 17 Oct 2026: phones. The stencil caps are wider than the old face, so the buttons and the door names are sized to fit the screen */
+@media (max-width:760px){
+  .door .dn{font-size:clamp(20px,6.4vw,30px)}
+  .menu .stamp{font-size:13px;padding-left:10px;padding-right:10px;white-space:nowrap}
+  .act .stamp,.askbig .stamp{max-width:100%;box-sizing:border-box;font-size:clamp(15px,4.6vw,20px);white-space:normal;text-align:center}
+  .act,.askbig .act{max-width:100%;box-sizing:border-box}
+}
+@media (max-width:760px){ .door .dn{font-size:clamp(17px,5vw,30px);left:12px;right:8px} }
