@@ -985,10 +985,11 @@ html.past .dock{border-color:#000}
    The line's highest point is 18 percent down the picture: about 42px under that last line at 390. The picture's top edge fades in from the ground. */
 @media (max-width:760px){ .pg-audit #s3{padding-bottom:calc(64px + 40vw);
   background:linear-gradient(180deg,#100D0A 0%,rgba(16,13,10,0) 14%) left bottom/100vw 55.82vw no-repeat,#100D0A url(media/textures/final/audit.jpg) left bottom/100vw auto no-repeat} }
-/* AI system page: its headlines run the full width, so the painted motif would sit on the letters. The paper is doubled so only its plain left half, the bare point paper, shows;
-   the motif starts 52.6 percent across, past the right edge. Phones: 240 percent, so the motif starts at 1.26 screen widths and the paper is 1.35 screen widths tall. */
-.pg-ai #s2,.pg-ai #close{background:#F3ECDF url(media/textures/final/system-fragment.jpg) left top/200% auto no-repeat}
-@media (max-width:760px){ .pg-ai #s2,.pg-ai #close{background-size:240% auto} }
+/* AI system page: its own sheet, one small motif of inked squares low on the right (Ava, P16). Anchored right bottom at cover, the motif lands right of the
+   button and below the second headline line: 40 to 710px clear of every letter from 1101 to 2560. Phones: the section grows at the bottom so the motif
+   sits under the button, about 36 percent of the screen wide. */
+.pg-ai #s2,.pg-ai #close{background:#F3ECDF url(media/textures/final/system-page.jpg) right bottom/cover no-repeat}
+@media (max-width:760px){ .pg-ai #s2,.pg-ai #close{padding-bottom:calc(64px + 40vw)} }
 @media (max-width:760px){
   /* phones: the curved edge and its line rise through the gaps of the photo grid, from its lower left to the right edge */
   #audit{background-size:auto 160%;background-position:28% top}
