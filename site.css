@@ -967,9 +967,24 @@ html.past .dock{border-color:#000}
    Work, About and the two film pages: jamdani · Audit: the pattern card · AI system: its paper sections are point paper · Photography: jamdani on its second dark.
    Canvas stays the fallback, and no two dark sections in a row share a picture. */
 .pg-work main>section.dark,.pg-about #s3,.pg-heritage #s3,.pg-chhaya #s3,.pg-photo main>section:nth-of-type(3){background:#161414 url(media/textures/final/work.jpg) center/cover}
-/* Audit page: its headline column starts a third of the way across, and the pencil line climbs from lower left to upper right, so it would cross the words at any size.
-   The picture is 2.7 times the section's height, anchored at its bottom: what shows is the card's lower corner on the dark table, the line (no lower than 58.6 percent down) above the frame. */
-.pg-audit #s3{background:#100D0A url(media/textures/final/audit.jpg) left bottom/auto 270% no-repeat}
+/* Work and Photography: these sections run 1300 to 2900px tall, so cover blew the cloth past its 2400px width and the motifs blurred into rope knots.
+   Here the cloth shows at the screen's width, the same size About shows it at every width, top aligned, and fades into the ground over its last 16vw (96px at least on phones).
+   Past 2400px wide it is enlarged slightly, about 7 percent at 2560. */
+.pg-work main>section.dark,.pg-photo main>section:nth-of-type(3){
+  background:linear-gradient(180deg,rgba(22,20,20,0) calc(100% - max(16vw,96px)),#161414 100%) center top/100vw calc(100vw * .8329) no-repeat,
+    #161414 url(media/textures/final/work.jpg) center top/100vw auto no-repeat}
+/* Audit page: the pattern card sits whole in the top left corner, its curved cut and orange line rising toward the headline and stopping short of it.
+   In the picture the line ends 76.9 percent across and 14.1 percent of the width down. At 42vw the end lands 3.6vw left of the headline column (at least 49px from 1101 up);
+   the picture lifts by up to 5.92vw - 96px so the end stays 24px above the capitals on wide screens. The picture's edges are near black (#040303) on the #100D0A ground,
+   so its right and bottom thirds fade into the ground instead of stepping. */
+.pg-audit #s3{--aw:42vw;--at:min(0px,96px - 5.92vw);
+  background:linear-gradient(90deg,rgba(16,13,10,0) 62%,#100D0A 99%) left 0 top var(--at)/var(--aw) calc(var(--aw) * .5582) no-repeat,
+    linear-gradient(180deg,rgba(16,13,10,0) 55%,#100D0A 99%) left 0 top var(--at)/var(--aw) calc(var(--aw) * .5582) no-repeat,
+    #100D0A url(media/textures/final/audit.jpg) left 0 top var(--at)/var(--aw) auto no-repeat}
+/* Audit page on phones: the section grows 40vw at the bottom and the card sits whole along it, full width, so its curve and line run below "Where to start, in writing."
+   The line's highest point is 18 percent down the picture: about 42px under that last line at 390. The picture's top edge fades in from the ground. */
+@media (max-width:760px){ .pg-audit #s3{padding-bottom:calc(64px + 40vw);
+  background:linear-gradient(180deg,#100D0A 0%,rgba(16,13,10,0) 14%) left bottom/100vw 55.82vw no-repeat,#100D0A url(media/textures/final/audit.jpg) left bottom/100vw auto no-repeat} }
 /* AI system page: its headlines run the full width, so the painted motif would sit on the letters. The paper is doubled so only its plain left half, the bare point paper, shows;
    the motif starts 52.6 percent across, past the right edge. Phones: 240 percent, so the motif starts at 1.26 screen widths and the paper is 1.35 screen widths tall. */
 .pg-ai #s2,.pg-ai #close{background:#F3ECDF url(media/textures/final/system-fragment.jpg) left top/200% auto no-repeat}
