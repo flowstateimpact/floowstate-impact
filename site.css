@@ -987,16 +987,16 @@ html.past .dock{border-color:#000}
   background:linear-gradient(180deg,#100D0A 0%,rgba(16,13,10,0) 14%) left bottom/100vw 55.82vw no-repeat,#100D0A url(media/textures/final/audit.jpg) left bottom/100vw auto no-repeat} }
 /* AI system page: one motif per page (Anwar, P18). #s2 gets Ava's sheet with its open diamond of nine inked cells low on the right, anchored right bottom at cover,
    so it lands right of the button and below the headline. #close keeps the bare point paper: the sheet doubled so only its plain left half shows.
-   Phones: the sheet at 223 percent of the width, right bottom, so the diamond is about 28 percent of the screen wide at 48 to 76 percent across, under the button;
-   the sheet's top edge fades into the ground so the ruled grid never stops on a hard line. */
+   Phones: the sheet at 223 percent of the width, so the diamond is about 28 percent of the screen wide, under the button, its right edge on the text column's right margin
+   (the sheet shifts right by the 24.16vw between the diamond and the sheet's own right edge, less the column margin); the sheet's top edge fades into the ground. */
 .pg-ai #s2{background:#F3ECDF url(media/textures/final/system-page.jpg) right bottom/cover no-repeat}
 .pg-ai #close{background:#F3ECDF url(media/textures/final/system-fragment.jpg) left top/200% auto no-repeat}
-/* 1320 to 1660 wide the diamond's top would come within 23px of "then built."; the sheet is cropped at its top there, so it drops 16px (32px from 1440) without an edge showing */
+/* 1320 to 1660 wide the diamond's corner box would come within 23px of "then built."; the sheet is cropped at its top there, so it drops 16px without an edge showing.
+   Not 32 (Anwar, P20): the bottom cell needs a full grid cell above the dark section below, and at 16 the diamond's middle row sits on the button's middle line. */
 @media (min-width:1320px) and (max-width:1660px){ .pg-ai #s2{background-position:right 0 bottom -16px} }
-@media (min-width:1440px) and (max-width:1660px){ .pg-ai #s2{background-position:right 0 bottom -32px} }
 @media (max-width:760px){
   .pg-ai #s2{padding-bottom:calc(64px + 40vw);
-    background:linear-gradient(180deg,#F3ECDF 0,rgba(243,236,223,0) 30%) right bottom/100% 125.25vw no-repeat,#F3ECDF url(media/textures/final/system-page.jpg) right bottom/223vw auto no-repeat}
+    background:linear-gradient(180deg,#F3ECDF 0,rgba(243,236,223,0) 30%) right bottom/100% 125.25vw no-repeat,#F3ECDF url(media/textures/final/system-page.jpg) right calc(clamp(20px,3.9vw,56px) - 24.16vw) bottom 0/223vw auto no-repeat}
   .pg-ai #close{background-size:240% auto} }
 @media (max-width:760px){
   /* phones: the curved edge and its line rise through the gaps of the photo grid, from its lower left to the right edge */
