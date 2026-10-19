@@ -946,7 +946,11 @@ html.past .dock{border-color:#000}
 #system{background:#F3ECDF url(media/textures/final/system-fragment.jpg) right center/cover}
 #work{background:#161414 url(media/textures/final/work.jpg) center/cover}
 #ask{background:#F4EBDC url(media/textures/final/ask.jpg) center/cover}
-.foot{background:linear-gradient(180deg,#171513 calc(100% - 40.5vw),rgba(23,21,19,0) calc(100% - 27vw)),#171513 url(media/textures/final/footer.jpg) center bottom/100% auto no-repeat}
+/* footer: the twill rises to 120px under the top edge, so no third of it is flat black. The picture's height follows the footer's, never below its natural 40.5vw
+   and never above 60vw or 864px (its size at 1440), so on wide screens it stays near full width and the orange yarn does not swell. The fade starts at the picture's top and runs 13.5vw down. */
+.foot{--twill:clamp(40.5vw,100% - 120px,max(40.5vw,min(60vw,864px)));background:linear-gradient(180deg,#171513 calc(100% - var(--twill)),rgba(23,21,19,0) calc(100% - var(--twill) + 13.5vw)),#171513 url(media/textures/final/footer.jpg) center bottom/auto var(--twill) no-repeat}
+/* the selvedge band, white fringe included, is the bottom 24.1 percent of the picture: at most 14.5vw or 208px tall, or 9.8vw where the picture is at its natural size. The footer's last line keeps 40px of plain twill above it. */
+.foot{padding-bottom:max(96px,calc(max(9.8vw,min(14.5vw,208px)) + 40px - clamp(40px,4vw,64px)))}
 /* the painted motif: one whole buti, clear of the heading, its foot 52px above the section's bottom edge.
    In the picture the left buti spans 52.6 to 72.3 percent across and its foot sits 21.3 percent of the picture's width above the bottom; the right buti starts at 76.7 percent.
    1101 to 1440: the heading scales with the screen, so the paper is 137.5 percent wide; the left buti lands just right of "you keep." and the right one falls off the edge.
@@ -959,11 +963,23 @@ html.past .dock{border-color:#000}
 @media (min-width:761px){ #audit{background-size:max(112.35vw,1014px + 64.9vw) auto;background-position:left calc(100vw - max(300px,23.6vw) - .68 * max(112.35vw,1014px + 64.9vw)) top calc(min(306px, 150px + 9.6vw) - .148 * max(112.35vw,1014px + 64.9vw))} }
 @media (min-width:1441px){ #system{background-size:max(100%,2000px) auto;background-position:left 0 bottom calc(52px - .2133 * max(100vw,2000px))} }
 .strip{background:var(--c) url(media/textures/final/strip-tile.jpg) 0 50%/600px auto}
+/* sub pages: the first dark section takes the cloth of its subject, so a sub page is no longer loom, paper, canvas, paper, canvas.
+   Work, About and the two film pages: jamdani · Audit: the pattern card · AI system: its paper sections are point paper · Photography: jamdani on its second dark.
+   Canvas stays the fallback, and no two dark sections in a row share a picture. */
+.pg-work main>section.dark,.pg-about #s3,.pg-heritage #s3,.pg-chhaya #s3,.pg-photo main>section:nth-of-type(3){background:#161414 url(media/textures/final/work.jpg) center/cover}
+/* Audit page: its headline column starts a third of the way across, and the pencil line climbs from lower left to upper right, so it would cross the words at any size.
+   The picture is 2.7 times the section's height, anchored at its bottom: what shows is the card's lower corner on the dark table, the line (no lower than 58.6 percent down) above the frame. */
+.pg-audit #s3{background:#100D0A url(media/textures/final/audit.jpg) left bottom/auto 270% no-repeat}
+/* AI system page: its headlines run the full width, so the painted motif would sit on the letters. The paper is doubled so only its plain left half, the bare point paper, shows;
+   the motif starts 52.6 percent across, past the right edge. Phones: 240 percent, so the motif starts at 1.26 screen widths and the paper is 1.35 screen widths tall. */
+.pg-ai #s2,.pg-ai #close{background:#F3ECDF url(media/textures/final/system-fragment.jpg) left top/200% auto no-repeat}
+@media (max-width:760px){ .pg-ai #s2,.pg-ai #close{background-size:240% auto} }
 @media (max-width:760px){
   /* phones: the curved edge and its line rise through the gaps of the photo grid, from its lower left to the right edge */
   #audit{background-size:auto 160%;background-position:28% top}
   /* phones: the buti sits below "See inside", its left two thirds showing, cut only by the right edge. In the picture the buti starts 17 percent of the
      picture's width down, so to land below the button the paper is about 1660px wide and the section grows underneath to hold it */
   #system{padding-bottom:calc(38.46vw + 50px);background-size:calc(159.2% + 607px) auto;background-position:left calc(-83.7vw - 132px) top 0}
-  .foot{background:linear-gradient(180deg,#171513 calc(100% - 105vw),rgba(23,21,19,0) calc(100% - 72vw)),#171513 url(media/textures/final/footer.jpg) center bottom/260% auto no-repeat}
+  .foot{background:linear-gradient(180deg,#171513 calc(100% - 155vw),rgba(23,21,19,0) calc(100% - 107vw)),#171513 url(media/textures/final/footer.jpg) center bottom/385% auto no-repeat}
+  .foot{padding-bottom:37.6vw}   /* band 37.6vw tall at this size, plus the 40px the inner wrap already keeps */
 }
