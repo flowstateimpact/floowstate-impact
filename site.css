@@ -932,3 +932,38 @@ html.past .dock{border-color:#000}
   .act,.askbig .act{max-width:100%;box-sizing:border-box}
 }
 @media (max-width:760px){ .door .dn{font-size:clamp(17px,5vw,30px);left:12px;right:8px} }
+
+/* ---------- textures, one per section (20 Oct 2026). Each surface is a cloth or paper from the making of a garment or a jamdani, so the site reads as one workshop.
+   hero: horsehair canvas, the hidden structure that holds a coat's shape · audit: the pattern card, measured before the cut · system: point paper, the weave drawn square by square
+   work: jamdani, the finished cloth · ask: handmade paper, a clean sheet · footer: the selvedge, the cloth's finished edge · pagehead: warp on the loom, where the cloth starts · strip: ribbed tape.
+   The system paper covers its section at every width: its squares are drawn by hand, 53 to 59 px apart, so no code grid can meet them without a seam. */
+.cloth{background-image:url(media/textures/final/hero.jpg)}
+.cloth-head,.menu.open nav,.first .menu.open nav,html.stuck .menu{background-image:url(media/textures/final/hero.jpg)}
+.dark{background:#161413 url(media/textures/final/hero.jpg) center/cover}
+.paper{background:#F4EBDC url(media/textures/final/ask.jpg) center/cover}
+.pagehead{background:#191715 url(media/textures/final/pagehead.jpg) center top/cover}
+#audit{background:#100D0A url(media/textures/final/audit.jpg) left center/cover}
+#system{background:#F3ECDF url(media/textures/final/system-fragment.jpg) right center/cover}
+#work{background:#161414 url(media/textures/final/work.jpg) center/cover}
+#ask{background:#F4EBDC url(media/textures/final/ask.jpg) center/cover}
+.foot{background:linear-gradient(180deg,#171513 calc(100% - 40.5vw),rgba(23,21,19,0) calc(100% - 27vw)),#171513 url(media/textures/final/footer.jpg) center bottom/100% auto no-repeat}
+/* the painted motif: one whole buti, clear of the heading, its foot 52px above the section's bottom edge.
+   In the picture the left buti spans 52.6 to 72.3 percent across and its foot sits 21.3 percent of the picture's width above the bottom; the right buti starts at 76.7 percent.
+   1101 to 1440: the heading scales with the screen, so the paper is 137.5 percent wide; the left buti lands just right of "you keep." and the right one falls off the edge.
+   1441 up: the heading stops growing; the paper is at least 2000px wide, so the left buti starts at 1052px, past "you keep." (1005px). From 2000px both buti show whole. */
+@media (min-width:761px) and (max-width:1440px){ #system{background-size:137.5% auto;background-position:left 0 bottom calc(52px - 29.33vw)} }
+/* the audit's orange pencil line runs in the dark gap between "Read first." and the photos, about 30px under the letters, never under the orange word.
+   In the picture the line's flat part runs from 55 to 68 percent across at 26.5 to 28 percent down; 68 percent is pinned to the cream panel's left edge,
+   so the line's upward tick ends behind the panel and its curved left half dives behind the photo row. The picture grows with the screen (1014px + 64.9vw at least), because
+   any smaller and the flat part would sit higher than the gap, or the top of the section would show bare colour */
+@media (min-width:761px){ #audit{background-size:max(112.35vw,1014px + 64.9vw) auto;background-position:left calc(100vw - max(300px,23.6vw) - .68 * max(112.35vw,1014px + 64.9vw)) top calc(min(306px, 150px + 9.6vw) - .148 * max(112.35vw,1014px + 64.9vw))} }
+@media (min-width:1441px){ #system{background-size:max(100%,2000px) auto;background-position:left 0 bottom calc(52px - .2133 * max(100vw,2000px))} }
+.strip{background:var(--c) url(media/textures/final/strip-tile.jpg) 0 50%/600px auto}
+@media (max-width:760px){
+  /* phones: the curved edge and its line rise through the gaps of the photo grid, from its lower left to the right edge */
+  #audit{background-size:auto 160%;background-position:28% top}
+  /* phones: the buti sits below "See inside", its left two thirds showing, cut only by the right edge. In the picture the buti starts 17 percent of the
+     picture's width down, so to land below the button the paper is about 1660px wide and the section grows underneath to hold it */
+  #system{padding-bottom:calc(38.46vw + 50px);background-size:calc(159.2% + 607px) auto;background-position:left calc(-83.7vw - 132px) top 0}
+  .foot{background:linear-gradient(180deg,#171513 calc(100% - 105vw),rgba(23,21,19,0) calc(100% - 72vw)),#171513 url(media/textures/final/footer.jpg) center bottom/260% auto no-repeat}
+}
