@@ -977,7 +977,7 @@ html.past .dock{border-color:#000}
    In the picture the line ends 76.9 percent across and 14.1 percent of the width down. At 42vw the end lands 3.6vw left of the headline column (at least 49px from 1101 up);
    the picture lifts by up to 5.92vw - 96px so the end stays 24px above the capitals on wide screens. The picture's edges are near black (#040303) on the #100D0A ground,
    so its right and bottom thirds fade into the ground instead of stepping. */
-.pg-audit #s3{--aw:42vw;--at:min(0px,96px - 5.92vw);
+.pg-audit #s3{--aw:42vw;--at:max(-56px,min(0px,96px - 5.92vw));
   background:linear-gradient(90deg,rgba(16,13,10,0) 62%,#100D0A 99%) left 0 top var(--at)/var(--aw) calc(var(--aw) * .5582) no-repeat,
     linear-gradient(180deg,rgba(16,13,10,0) 55%,#100D0A 99%) left 0 top var(--at)/var(--aw) calc(var(--aw) * .5582) no-repeat,
     #100D0A url(media/textures/final/audit.jpg) left 0 top var(--at)/var(--aw) auto no-repeat}
