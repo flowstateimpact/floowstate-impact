@@ -996,6 +996,8 @@ html.past .dock{border-color:#000}
   /* phones: the buti sits below "See inside", its left two thirds showing, cut only by the right edge. In the picture the buti starts 17 percent of the
      picture's width down, so to land below the button the paper is about 1660px wide and the section grows underneath to hold it */
   #system{padding-bottom:calc(38.46vw + 50px);background-size:calc(159.2% + 607px) auto;background-position:left calc(-83.7vw - 132px) top 0}
-  .foot{background:linear-gradient(180deg,#171513 calc(100% - 155vw),rgba(23,21,19,0) calc(100% - 107vw)),#171513 url(media/textures/final/footer.jpg) center bottom/385% auto no-repeat}
+  /* phones: Ava's tall phone file (P17), the centre 960 columns of footer.jpg with the twill extended upward; shown at 154vw wide, the same scale as
+     footer.jpg at 385 percent, so band and yarn land where they did. 2400 rows show 385vw tall, taller than the footer, so the twill reaches the top. */
+  .foot{background:linear-gradient(180deg,#171513 0,rgba(23,21,19,0) 40px),#171513 url(media/textures/final/footer-phone.jpg) center bottom/154vw auto no-repeat}
   .foot{padding-bottom:37.6vw}   /* band 37.6vw tall at this size, plus the 40px the inner wrap already keeps */
 }
