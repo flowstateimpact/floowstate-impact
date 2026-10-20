@@ -1009,3 +1009,45 @@ html.past .dock{border-color:#000}
   .foot{background:linear-gradient(180deg,#171513 0,rgba(23,21,19,0) 40px),#171513 url(media/textures/final/footer-phone.jpg) center bottom/154vw auto no-repeat}
   .foot{padding-bottom:37.6vw}   /* band 37.6vw tall at this size, plus the 40px the inner wrap already keeps */
 }
+
+/* 20 Oct 2026, pass two wave one: buttons */
+/* A. every box re-centred for the stencil caps (ink sat 1.5 to 3 px high everywhere since the 16 Oct face change) */
+/* Measured after the first cut and corrected: a fixed-height centred box moves its ink by HALF the padding difference, a padded inline box by the whole of it. */
+.quiet.go{padding-block:1px 0}
+.go.outline{padding:21.25px 38px 20.75px}
+.sec .stamp{padding:20px 30px 19px}
+.askbig .stamp{padding:23.5px 40px 22.5px}
+.menu nav .stamp{padding-top:14px;padding-bottom:13px}
+.menu .mstamp{padding-top:13px;padding-bottom:12px}
+.dock,.dockline{padding-top:.06em}
+.foot .fbook{transform:none;box-shadow:none;height:48px;min-height:0;font-size:20px;padding:1px 24px 0}
+@media (min-width:761px){.band-top .colact .colgo{padding-top:calc(.9 * var(--u))}}
+@media (max-width:760px){.band-top .colact .colgo{height:auto;min-height:calc(56 * var(--u));padding:6px 8px}}
+/* the rotating lines: the grid is never wider than the box, so the shown line sits centred and a hidden longer line is clipped sideways only
+   (that hidden line used to push the whole stack right and out of the phone dock) */
+.rot{max-width:100%;min-width:0;grid-template-columns:minmax(0,1fr)}
+.rot .rl{min-width:0;overflow:clip visible}
+/* B. the swap family: each button a switch with its own temperament; letters never all at once.
+   Letters stay inline (kerning and the fits() width stay true), so they move on top and opacity, never transform. */
+[data-swap] .rot .rl{opacity:1;transform:none;transition:none;transition-delay:0s}
+[data-swap] .rot .rl i{display:inline;position:relative;top:.3em;opacity:0;font-style:normal;
+  transition:opacity .5s var(--ease-settle),top .55s var(--ease-settle);transition-delay:calc(var(--i) * 14ms)}
+[data-swap] .rot .rl.on i{top:0;opacity:1;transition-delay:calc(260ms + var(--i) * 14ms)}
+[data-swap] .rot .rl.was i{top:-.3em;transition-duration:.18s,.22s}
+/* brush: the dock and the top bar, letters sweep up left to right */
+[data-swap=brush] .rot .rl i{transition-delay:calc(var(--i) * 14ms)}
+[data-swap=brush] .rot .rl.on i{transition-delay:calc(260ms + var(--i) * 14ms)}
+/* press: the column button, nothing in the line moves; the whole line is pressed .985 to 1 with its opacity */
+[data-swap=press] .rot .rl{opacity:0;transform:scale(.985);transition:opacity .5s var(--ease-settle),transform .5s var(--ease-settle)}
+[data-swap=press] .rot .rl.on{opacity:1;transform:none;transition-delay:.22s}
+[data-swap=press] .rot .rl.was{transform:scale(.985);transition-duration:.18s,.18s}
+[data-swap=press] .rot .rl i{top:0;opacity:1;transition:none}
+/* shuffle: the audit stamp, letters leave and arrive from the centre outward */
+[data-swap=shuffle] .rot .rl i{top:.22em;transition-delay:calc(var(--c) * 22ms)}
+[data-swap=shuffle] .rot .rl.on i{top:0;transition-delay:calc(230ms + var(--c) * 22ms)}
+[data-swap=shuffle] .rot .rl.was i{top:-.22em;transition-duration:.18s,.22s}
+/* settle: the ask stamp, letters drop into place from the right end first */
+[data-swap=settle] .rot .rl i{top:-.25em;transition:opacity .5s var(--ease-settle),top .6s var(--ease-settle);transition-delay:calc(var(--j) * 18ms)}
+[data-swap=settle] .rot .rl.on i{top:0;transition-delay:calc(280ms + var(--j) * 18ms)}
+[data-swap=settle] .rot .rl.was i{top:.25em;transition-duration:.18s,.22s}
+@media (prefers-reduced-motion:reduce){ .rl i{transition:none} }

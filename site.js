@@ -74,11 +74,25 @@
     if (b.tagName === 'A') b.setAttribute('aria-label', NAME);
     if (reduce || ASK.length < 2){ b.textContent = ASK[0]; return; }
     var r = document.createElement('span'); r.className = 'rot'; r.setAttribute('aria-hidden', 'true');
-    ASK.forEach(function(t, i){ var l = document.createElement('span'); l.className = 'rl' + (i ? '' : ' on'); l.textContent = t; r.appendChild(l); });
+    ASK.forEach(function(t, i){ var l = document.createElement('span'); l.className = 'rl' + (i ? '' : ' on'); letters(l, t); r.appendChild(l); });
+    /* 20 Oct 2026: each seat swaps in its own temperament (site.css, pass two wave one): the audit stamp shuffles from the centre,
+       the ask stamp settles from the right, the column button is pressed as one piece, the dock and the top bar brush left to right */
+    b.setAttribute('data-swap', b.closest('#audit') ? 'shuffle' : b.closest('#ask') ? 'settle' : b.classList.contains('colgo') ? 'press' : 'brush');
     b.textContent = ''; b.appendChild(r); r.at = 0; rots.push(r);
   });
   /* round 15: a button shows a line only when the line fits its own box with 8 px of air each side. A line too long for one box is passed over
      on that button alone, which keeps the line it has for that beat. Every box keeps its size, so nothing moves when the line changes */
+  /* 20 Oct 2026: every letter of a line in its own <i>, numbered from the left (--i), from the right (--j) and from the centre (--c), so each
+     seat can stagger its own way in CSS. Spaces stay plain text. The line stays inline, so its measured width is the true width */
+  function letters(l, t){
+    var ls = t.replace(/ /g, '').length, n = 0;
+    t.split('').forEach(function(ch){
+      if (ch === ' '){ l.appendChild(document.createTextNode(' ')); return; }
+      var i = document.createElement('i'); i.textContent = ch;
+      i.style.cssText = '--i:' + n + ';--j:' + (ls - 1 - n) + ';--c:' + Math.abs(n - (ls - 1) / 2);
+      l.appendChild(i); n++;
+    });
+  }
   function show(r, i){
     if (i === r.at) return;
     [].forEach.call(r.children, function(l, k){ l.classList.toggle('was', k === r.at); l.classList.toggle('on', k === i); }); r.at = i;
@@ -87,8 +101,14 @@
     var rg = document.createRange();
     rots.forEach(function(r){
       var room = r.parentElement.clientWidth - 16;
-      r.ok = [].map.call(r.children, function(l){ rg.selectNodeContents(l); return rg.getBoundingClientRect().width <= room; });
-      r.ok[0] = true; if (!r.ok[r.at]) show(r, 0);
+      r.ok = [].map.call(r.children, function(l){ rg.selectNodeContents(l); var bx = rg.getBoundingClientRect(), cs = getComputedStyle(l), lh = parseFloat(cs.lineHeight) || 1.2 * parseFloat(cs.fontSize); return bx.width <= room && (bx.height < 1.6 * lh || r.parentElement.classList.contains('colgo')); });
+      /* 20 Oct 2026: no line is forced any more. A line that does not fit gives way to the shortest line that does, or, if none fits, the shortest line */
+      if (!r.ok[r.at]){
+        var best = -1, len = function(k){ return r.children[k].textContent.length; };
+        for (var k = 0; k < r.ok.length; k++) if (r.ok[k] && (best < 0 || len(k) < len(best))) best = k;
+        if (best < 0) for (k = 0; k < r.ok.length; k++) if (best < 0 || len(k) < len(best)) best = k;
+        show(r, best);
+      }
     });
   }
   /* 17 Oct 2026: each button turns on its own beat, a random first wait and its own period, so no two change together */
