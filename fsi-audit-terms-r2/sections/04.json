@@ -1,0 +1,26 @@
+{
+  "n": 4,
+  "heading": "The decisions stay yours, and what you share stays with our team",
+  "target": 400,
+  "attempts": [
+    {
+      "try": 1,
+      "words": 330,
+      "seconds": 13.0,
+      "tok_per_s": 43.3,
+      "problems": [],
+      "advisories": [
+        "7 sentences start with \"we\"; vary the openings."
+      ],
+      "note": "reading grade 8.1 · 19 sentences · average 18 words each · longest 39."
+    }
+  ],
+  "kept_try": 1,
+  "words": 330,
+  "clean": true,
+  "remaining": [],
+  "advisories": [
+    "7 sentences start with \"we\"; vary the openings."
+  ],
+  "finished": "2026-10-25 11:46:52"
+}

@@ -1,0 +1,69 @@
+  asking Claude for the spine (one headless call, no tools) ...
+  Claude answered in 363s (input 4, cached 257560, output 38099 tokens)
+SPINE: Terms of the free audit
+  reader: A small business owner in Dhaka or London who has never met the studio, reading on a phone, maybe in a second language, after tapping the star beside "Free for a limited time".
+   1. You get one free call and one written read-out, and each company gets one  [400 words]
+   2. Places go in order, and the audit stops at one call and one read-out  [600 words]
+   3. Share honest details, keep your call time, and keep the read-out for your own business  [450 words]
+   4. The decisions stay yours, and what you share stays with our team  [400 words]
+   5. Breaking one of five rules can end an audit, and these terms follow Bangladesh law  [500 words]
+  5 sections, about 2350 words
+  GAPS the brief did not fill (the plan wrote around them; supply them if they matter):
+    - Privacy notice: clauses 30 and 32 point to 'our privacy notice', but the brief gives no link or page name for it and does not say it exists yet.
+    - Where to write: clauses 9, 13, 14 and 18 say 'withdraws', 'tell us' or 'send one email' without saying where; confirm whether all of these go to CONTACT_EMAIL or to a reply in the confirmation email thread.
+    - Time zone: clauses 6, 7, 18 and 19 rest on dates, times and '24 hours before', but the brief does not say whose clock counts (Dhaka time or the applicant's) for readers in both Dhaka and London.
+    - Language: the brief does not say what language the call and the read-out are in, or whether a Bangla version of this page exists and which version counts if the two differ.
+    - Company name: the brief writes 'FlowState Impact', while the studio's own name carries the ã (FlowStãte); confirm the registered spelling for a legal page.
+    - After the offer: the button says 'Free for a limited time', and the brief says nothing about whether the audit will cost money afterwards; confirm the page should stay silent on that.
+    - Length: the facts plus 39 clause headings already run to about 2,200 words before any plain-English widening, so this plan targets about 2,350 words against the brief's 1,600 to 1,900; say whether the ceiling or keeping every fact wins, and which clauses may be shortened if the ceiling wins.
+WRITING 5 sections locally on qwen3.8-64k (2026-10-25 11:39:15)
+   1. You get one free call and one written read-out, and each company gets one (about 400 words)
+    try 1: 403 words in 40.5s, clean, 2 advisory
+   2. Places go in order, and the audit stops at one call and one read-out (about 600 words)
+    try 1: 649 words in 43.8s, clean, 2 advisory
+   3. Share honest details, keep your call time, and keep the read-out for your own business (about 450 words)
+    try 1: 523 words in 30.0s, clean, 2 advisory
+   4. The decisions stay yours, and what you share stays with our team (about 400 words)
+    try 1: 391 words in 25.5s, clean, 2 advisory
+   5. Breaking one of five rules can end an audit, and these terms follow Bangladesh law (about 500 words)
+    try 1: 383 words in 24.2s, clean, 2 advisory
+written: 5 section(s) in 2 min (2026-10-25 11:42:02). next: flowlong join /Users/asiffarid/Documents/apps/flowstateimpact-site-glowup/fsi-audit-terms-r2
+  asking Claude for the joins (one headless call, no tools) ...
+  Claude answered in 160s (input 4, cached 267442, output 15722 tokens)
+  editor's note: The facts mostly hold and the voice is calm, like a host explaining house rules. The big problem is shape. Only section 1 opens each clause with its number and fixed heading. Section 2 and section 5 drop the clause numbers entirely. Sections 3 and 4 move the number to the end of each paragraph as a tag such as 'Clause 30 (...) defines this circle of trust'. As a result, pointers like 'clause 34 (Five rules, and what happens when one is broken)' in sections 1 and 3 lead to nothing a reader can find. Content also repeats across sections. Section 1 ends with a paragraph that belongs to clauses 11, 12 and 29. Section 2 ends with a paragraph that runs through section 3's clauses. Section 4 ends on a recap and a preview of the next part. Two lines break the plan's rules. The short version calls the read-out a 'letter'. It also says a waiting-list position is 'not promised a place yet', which hints that a place will come later. The 14-day question email, the 5-working-day notice when the offer ends and the 30 days of talking before court could not be checked, because only the plan was given. The fact check against the spec must confirm them.
+  section 1: 1 sentence(s) re-worded to say "10 places"
+  section 1: 1 sentence(s) re-worded to say "10 free audits"
+  section 2: 1 sentence(s) re-worded to say "place"
+  section 3: 1 sentence(s) re-worded to say "place"
+  section 3: 2 sentence(s) re-worded to say "the first person on the waiting list"
+  section 1: cut "The studio knows who has applied."
+  section 1: cut "This ensures the right people are involved."
+  section 1: cut "The call lasts up to 60 minutes and happens by video."
+  section 1: cut "The read-out arrives by email within 10 working days after that call."
+  section 1: cut "Working days run Sunday to Thursday, not counting public holidays in B"
+  section 1: cut "You are under no obligation to buy anything, and we will not chase you"
+  section 1: opening paragraph re-worded
+  section 1: sentence re-worded (skipped: the sentence was not found verbatim)
+    try 1: 651 words in 32.6s, clean, 1 advisory
+  section 2: regenerated on the editor's instruction (clean)
+    try 1: 432 words in 25.8s, clean
+  section 3: regenerated on the editor's instruction (clean)
+    try 1: 330 words in 13.0s, clean, 1 advisory
+  section 4: regenerated on the editor's instruction (clean)
+    try 1: 512 words in 20.1s, clean, 1 advisory
+  section 5: regenerated on the editor's instruction (clean)
+joins applied. next: flowlong cadence /Users/asiffarid/Documents/apps/flowstateimpact-site-glowup/fsi-audit-terms-r2 (then assemble)
+RHYTHM PASS with the local model qwen3.8-64k on /Users/asiffarid/Documents/apps/flowstateimpact-site-glowup/fsi-audit-terms-r2 (2026-10-25 11:47:13)
+  whole draft before: four or more sentences in a row at nearly the same length (the metronome tell). Cut one to six words or let one run long.; 6 sentences start with "you"; vary the openings.
+  section 1, paragraph 2: 5 sentences, lengths 12, 13, 13, 12, 14; 5 in a row at nearly the same length; lengths barely vary (spread 0.07)
+    try 1 (13.1s): kept, score 5.85 to 0.00
+  section 1, paragraph 4: 6 sentences, lengths 12, 9, 12, 15, 18, 7; 5 in a row at nearly the same length; 1 pair(s) of consecutive sentences open with the same word
+    try 1 (6.5s): rejected, the numbers changed (['10'] to [])
+    try 2 (2.4s): rejected, a name went missing: Being
+  section 4, paragraph 3: 4 sentences, lengths 26, 10, 11, 11; 2 pair(s) of consecutive sentences open with the same word
+    try 1 (5.2s): rejected, length moved from 57 to 37 words
+    try 2 (1.6s): rejected, the numbers changed (['29'] to [])
+  whole draft after: four or more sentences in a row at nearly the same length (the metronome tell). Cut one to six words or let one run long.; 6 sentences start with "you"; vary the openings.
+rhythm pass: 47 paragraphs measured, 3 flagged, 1 re-worded, 2 kept as written. next: flowlong assemble /Users/asiffarid/Documents/apps/flowstateimpact-site-glowup/fsi-audit-terms-r2
+assembled: /Users/asiffarid/Documents/apps/flowstateimpact-site-glowup/fsi-audit-terms-r2/draft.md (2330 words, gate FAIL). reading copy: /Users/asiffarid/Documents/apps/flowstateimpact-site-glowup/fsi-audit-terms-r2/draft.html
+report: /Users/asiffarid/Documents/apps/flowstateimpact-site-glowup/fsi-audit-terms-r2/report.md

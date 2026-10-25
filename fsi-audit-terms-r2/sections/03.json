@@ -1,0 +1,22 @@
+{
+  "n": 3,
+  "heading": "Share honest details, keep your call time, and keep the read-out for your own business",
+  "target": 450,
+  "attempts": [
+    {
+      "try": 1,
+      "words": 432,
+      "seconds": 25.8,
+      "tok_per_s": 43.4,
+      "problems": [],
+      "advisories": [],
+      "note": "reading grade 7.2 · 23 sentences · average 19 words each · longest 37."
+    }
+  ],
+  "kept_try": 1,
+  "words": 432,
+  "clean": true,
+  "remaining": [],
+  "advisories": [],
+  "finished": "2026-10-25 11:46:39"
+}

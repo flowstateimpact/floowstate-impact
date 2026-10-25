@@ -1,0 +1,119 @@
+/* glow-a.css: direction A, THE LINE. The tagline is the first screen; DARE is cut by the fold and lands on the street. */
+
+/* a soft snap between the three whole screens, desktop only, proximity so the long sections never fight the reader */
+@media (min-width:761px){html{scroll-snap-type:y proximity}.snap{scroll-snap-align:start}}
+@media (prefers-reduced-motion:reduce){html{scroll-snap-type:none}}
+
+/* screen one: nothing but type */
+.hero{position:relative;z-index:3;height:var(--sh);min-height:560px}
+.hero .who{position:absolute;right:var(--m);top:72px;text-align:right}
+.hero h1{position:absolute;left:var(--m);bottom:calc(-0.38 * var(--h));font-size:var(--h);--h:12.6vw;will-change:transform}
+.hero h1 span{display:block}
+.hero h1 .os{font-family:var(--sans);font-weight:400;text-transform:none;letter-spacing:-.01em;font-size:.62em;line-height:1.2;color:var(--white)}
+@media (max-width:760px){
+  /* the who-block sits 24px above the line, both anchored to the bottom; the empty ground stays under the nav where a margin reads as a margin */
+  .hero{min-height:0;display:flex;flex-direction:column;justify-content:flex-end;padding:0 var(--m)}
+  .hero .who{position:static;text-align:left;margin-bottom:24px}
+  .hero h1{position:static;--h:17vw;margin-bottom:calc(-0.38 * var(--h))}
+}
+
+/* screens two and three: a film, a picture, one word running off the right edge */
+.screen{position:relative;z-index:1;height:var(--sh);min-height:560px;overflow:hidden}
+.screen .word{top:calc(var(--sh) * 0.30);left:54vw;font-size:30vw;color:var(--white);z-index:2}
+.screen .cap{z-index:4}
+/* the lane film is pulled up under the tagline by 0.07 of a screen, so the lower half of DARE sits on the street */
+.heritage{margin-top:calc(var(--sh) * -0.07)}
+/* the film keeps its right edge: the woman walks in the left third and the right half of the lane is free for the word */
+.heritage .bed{object-position:100% 50%;transform-origin:50% 100%}
+.chhaya .bed{object-position:20% 40%}
+.chhaya .sim{position:absolute;z-index:3;right:var(--m);bottom:0;width:22vw;height:auto;box-shadow:0 30px 80px rgba(0,0,0,.6)}
+.chhaya .word{left:34vw;top:calc(var(--sh) * 0.08);font-size:10vw}
+@media (max-width:760px){
+  .heritage .bed{object-position:50% 50%}
+  .screen .word{font-size:46vw;left:40vw;top:calc(var(--sh) * 0.34)}
+  .chhaya .word{font-size:30vw;left:30vw;top:calc(var(--sh) * 0.10)}
+  .chhaya .sim{width:46vw}
+}
+
+/* screen four: three pictures of three sizes, one shelf */
+.strip{display:flex;align-items:flex-end;gap:calc(var(--m) * .6);padding:calc(var(--m) * 2) var(--m);overflow:hidden}
+.strip .s1w{position:relative;flex:none;width:46vw;height:calc(var(--sh) * 0.6)}
+.strip a{position:relative;display:block;flex:none;overflow:hidden}
+.strip .s1{width:100%;height:100%}
+.strip img,.strip video{width:100%;height:100%;object-fit:cover}
+.strip .s2{width:22vw;height:calc(var(--sh) * 0.7)}
+.strip .s3{width:26vw;height:calc(var(--sh) * 0.5)}
+.strip .cap{max-width:none}
+.strip .play{right:16px;bottom:16px}
+@media (max-width:760px){
+  .strip{flex-direction:column;align-items:flex-start;gap:14px}
+  .strip .s1w{width:100%;height:calc(var(--sh) * 0.52)}
+  .strip .s2{width:66%;height:calc(var(--sh) * 0.62);align-self:flex-end}
+  .strip .s3{width:84%;height:calc(var(--sh) * 0.4)}
+  .strip .s3 img{object-position:18% 50%}
+}
+
+/* what we do: six big words, each line at the far right.
+   The rule between rows is cut once, the way a stencil letter is cut: a bridge holds it together */
+.svc .intro{font-size:16px;margin-bottom:calc(var(--m) * 1.5);max-width:30ch}
+.svc .row{display:grid;grid-template-columns:1fr auto;align-items:end;gap:24px;padding:calc(var(--m) * .55) 0;transition:color .3s;
+  background:linear-gradient(90deg,var(--hair) 0,var(--hair) calc(62% - 12px),transparent calc(62% - 12px),transparent calc(62% + 12px),var(--hair) calc(62% + 12px)) top/100% 1px no-repeat}
+.svc .row:last-of-type{border-bottom:1px solid var(--hair)}
+.svc .row .st{font-size:7vw}
+.svc .row .ln{font-size:13px;text-align:right;max-width:24ch;padding-bottom:.4vw}
+.svc .row .ln small{display:block;font-size:11px;color:var(--dim)}
+.svc .row:hover .st{color:var(--accent)}
+@media (max-width:760px){
+  .svc .row{grid-template-columns:1fr;gap:6px;background:linear-gradient(var(--hair),var(--hair)) top/100% 1px no-repeat}
+  .svc .row .st{font-size:11vw}
+  .svc .row .ln{text-align:left;padding-bottom:4px}
+}
+
+/* audit, AI system, who: the text face at 3.5vw, sentence case, left; the stencil stays loud in few places */
+.block .h{font-family:var(--sans);font-weight:500;font-size:3.5vw;line-height:1.02;letter-spacing:-.02em;text-transform:none;max-width:16ch;margin-bottom:calc(var(--m) * .9)}
+.block p{font-size:16px;max-width:44ch;margin-bottom:calc(var(--m) * .9);text-wrap:pretty}
+@media (max-width:760px){.block .h{font-size:8.5vw}}
+/* the right half of each reading block is a picture, three shapes, three positions, one in front of another:
+   the coat from behind (the audit reads the part of you that you cannot see yourself),
+   one building with every window lit (every department, one memory),
+   a tea stall open in the rain (people who want to grow, and care) */
+.block{position:relative}
+.block .pic{position:absolute;overflow:hidden;margin:0;background:var(--black)}
+.block .pic img{position:absolute;left:0;top:-6%;width:100%;height:112%;object-fit:cover;will-change:transform}
+.audit .pic{z-index:2;right:var(--m);top:calc(var(--m) * 3);width:26vw;height:34vw}
+.audit .pic img{object-position:50% 30%}
+.ai .pic{z-index:1;left:58vw;right:0;top:calc(var(--m) * -1);height:26vw}
+.ai .pic img{object-position:50% 60%}
+.grow .pic{z-index:1;right:calc(var(--m) + 18vw);top:calc(var(--m) * 3);width:20vw;height:20vw}
+.grow .pic img{object-position:48% 50%}
+@media (max-width:760px){
+  .block .pic{position:relative;margin:0 0 calc(var(--m) * 1.2)}
+  .audit .pic{width:72%;height:auto;aspect-ratio:4/5;margin-left:auto;top:auto;right:auto}
+  .ai .pic{left:auto;right:auto;width:calc(100% + var(--m));height:auto;aspect-ratio:16/10;top:auto}
+  .grow .pic{width:56%;height:auto;aspect-ratio:1;top:auto;right:auto}
+}
+
+/* round six: each reading block stands on its own ground, cut hard at its edges the way a stencil's edge is cut, no texture.
+   audit: the corridor's yellow light falling from the right where the coat walks, so the ground warms toward the picture;
+   AI system: the lake dusk above the tower, brightest at its top edge and falling;
+   who: the lane's wet ground throwing the stall's light back up, so the ground lightens toward the bottom */
+.audit{background:linear-gradient(270deg,#372E22 0%,#2E271E 55%)}
+.ai{background:linear-gradient(180deg,#1B1E36 0,#14162A 40%)}
+.grow{background:linear-gradient(0deg,#222A2E 0,#192124 45%)}
+/* who: the one block that breaks the skeleton, picture left and words right; the other two hold still */
+@media (min-width:761px){
+  .grow{padding-left:calc(26vw + var(--m) * 3)}
+  .grow .pic{left:var(--m);right:auto;top:calc(var(--m) * 3);width:26vw;height:20vw;z-index:1}
+  .grow .pic img{object-position:48% 50%}
+}
+
+/* team: one line, names separated by dots. A credit line, not a section: half the section air, so the orange thread runs See the work to the close button under 900px (round six finish) */
+.team{padding-top:calc(var(--m) * 1.5);padding-bottom:calc(var(--m) * 1.5)}
+.team .names{font-weight:500;font-size:2.2vw;line-height:1.2;letter-spacing:-.01em}
+.team .names .dot{color:var(--dim);padding:0 .3em}
+.team .dim{display:block;margin-top:calc(var(--m) * .8);font-size:11px}
+@media (max-width:760px){.team .names{font-size:18px}.team .names .dot{padding:0 .2em}}
+
+/* close */
+.close .st{font-size:12vw;margin-bottom:calc(var(--m) * 1.2)}
+@media (max-width:760px){.close .st{font-size:16vw}}

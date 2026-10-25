@@ -1,0 +1,235 @@
+/* type-a.js: variant A. THE PLATE on the home, THE COMMA and the turning pages on what we do. 25 Oct 2026, Nadir. Original code, no library beyond the vendored GSAP.
+   The plate: a full-screen WebGL sheet in the mark3d manner. The tagline is baked into a texture (R = the cuts, G = DARE's orange spray, B = the printed white).
+   Every pixel casts a ray from the camera to the hinged plate; a cut shows the film behind, the face shows blackened steel lit from the top left,
+   the plate's thickness throws a shadow onto the film inside each cut. DARE rides its own plane that lags the plate, so it is the last thing to lift.
+   Without WebGL, or when the film cannot be read as a texture (double-clicked file), the same layout is drawn as an SVG sheet masked by the letters and hinged by CSS. */
+(function(){
+  "use strict";
+  var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches, still=!!window.__still;
+  var scene=document.querySelector('[data-plate]');
+  if(scene) plate(scene);
+  var comma=document.querySelector('[data-comma]');
+  if(comma) commaPage(comma);
+
+  function cssPx(prop,el){ var p=document.createElement('i'); p.style.cssText='position:absolute;visibility:hidden;width:'+prop+';height:0'; (el||document.body).appendChild(p); var v=parseFloat(getComputedStyle(p).width); p.remove(); return v; }
+  function ease(t){ t=Math.max(0,Math.min(1,t)); return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2; }
+  function seg(p,a,b){ return Math.max(0,Math.min(1,(p-a)/(b-a))); }
+
+  /* ---------- the layout, shared by the texture and the SVG: CSS px, y down ---------- */
+  function layout(W,H,ctx){
+    var L6=cssPx('var(--L6)'), m=cssPx('var(--m)'), L0=cssPx('var(--L0)');
+    var os=Math.round(L6*.48), pitch=L6*.88, cap=.70*L6, maxW=W-2*m;
+    var stencil='700 '+L6+'px "Bespoke Stencil"', sans='400 '+os+'px "General Sans"', small='400 '+L0+'px "General Sans"', smallB='500 '+L0+'px "General Sans"';
+    var track=-.01*L6;
+    function width(font,text,ls){ ctx.font=font; if('letterSpacing' in ctx) ctx.letterSpacing=(ls||0)+'px'; var w=ctx.measureText(text).width; return w; }
+    function wrap(font,words,ls){ var lines=[],cur=[]; words.forEach(function(w){ var t=cur.concat([w]).map(function(x){return x.t}).join(' '); if(cur.length&&width(font,t,ls)>maxW){ lines.push(cur); cur=[w]; } else cur=cur.concat([w]); }); if(cur.length) lines.push(cur); return lines; }
+    var stWords1=[{t:'WE',k:'r'},{t:'MAKE',k:'r'},{t:'THE',k:'r'},{t:'WORK',k:'r'}], stWords2=[{t:'WILL',k:'r'},{t:'NOT',k:'r'},{t:'DARE',k:'g'}];
+    var rows=[];
+    wrap(stencil,stWords1,track).forEach(function(ws){ rows.push({font:stencil,size:L6,ls:track,pitch:pitch,words:ws}); });
+    rows.push({font:sans,size:os,ls:0,pitch:os*1.1,words:[{t:'other',k:'b'},{t:'studios',k:'b'}]});
+    wrap(stencil,stWords2,track).forEach(function(ws){ rows.push({font:stencil,size:L6,ls:track,pitch:pitch,words:ws}); });
+    var block=0; rows.forEach(function(r,i){ block+= i? r.pitch : 0; });
+    block+=cap; // cap top of the first line to the baseline of the last
+    var top=Math.round(H*.5-block*.5+H*.02); // the block sits a touch under the centre; brackets above and below keep it placed
+    var y=top+cap, out=[];
+    rows.forEach(function(r,i){ if(i) y+=r.pitch; var x=m; ctx.font=r.font; if('letterSpacing' in ctx) ctx.letterSpacing=r.ls+'px'; var sp=ctx.measureText(' ').width; var toks=[]; r.words.forEach(function(w){ var ww=ctx.measureText(w.t).width; toks.push({t:w.t,k:w.k,x:x,w:ww}); x+=ww+sp; }); out.push({font:r.font,size:r.size,ls:r.ls,y:Math.round(y),toks:toks}); });
+    var last=out[out.length-1].y;
+    // the bracket: the who block's bold line 24px above the cap top; its two dim lines 24px below the last baseline
+    var brk=24, who=[
+      {t:'A strategy and design firm, working from both.',font:smallB,y:top-brk-Math.round(L0*.25),k:'b',a:1},
+      {t:'Dhaka · London',font:small,y:last+brk+Math.round(L0*.72),k:'b',a:.5},
+      {t:'We shape the brand. You keep the AI we build.',font:small,y:last+brk+Math.round(L0*.72)+Math.round(L0*1.4),k:'b',a:.5}
+    ];
+    return {rows:out,who:who,m:m,capTop:top,base:last,L6:L6,os:os};
+  }
+
+  /* ---------- the plate ---------- */
+  function plate(scene){
+    var stage=scene.querySelector('.stage'), host=scene.querySelector('.plate'), video=scene.querySelector('video'), after=scene.querySelector('.after');
+    var W=0,H=0,dpr=1, lay=null, mode=null, gl=null, prog=null, U={}, texT=null, texV=null, vidOK=false, poster=null, posterOK=false, pm=0, lastT=-1;
+    var p=0; // scroll progress 0..1 over the first screen
+    var meas=document.createElement('canvas').getContext('2d');
+    window.__plate={};
+
+    function texture(){ // the letters and the printed lines, at device pixels
+      var c=document.createElement('canvas'); c.width=Math.round(W*dpr); c.height=Math.round(H*dpr);
+      var x=c.getContext('2d'); x.fillStyle='#000'; x.fillRect(0,0,c.width,c.height); x.scale(dpr,dpr); x.textBaseline='alphabetic';
+      lay.rows.forEach(function(r){ x.font=r.font; if('letterSpacing' in x) x.letterSpacing=r.ls+'px'; r.toks.forEach(function(t){ x.fillStyle=t.k==='r'?'#f00':t.k==='g'?'#0f0':'#00f'; x.fillText(t.t,t.x,r.y); }); });
+      if('letterSpacing' in x) x.letterSpacing='0px';
+      lay.who.forEach(function(w){ x.font=w.font; x.fillStyle='rgb(0,0,'+Math.round(255*w.a)+')'; x.fillText(w.t,lay.m,w.y); });
+      return c;
+    }
+
+    var VS='attribute vec2 a;varying vec2 v;void main(){v=a*.5+.5;gl_Position=vec4(a,0.,1.);}';
+    var FS=[
+      'precision highp float;varying vec2 v;uniform sampler2D uT,uV;uniform vec2 uRes,uVid,uAnc;uniform float uP,uHas;uniform vec4 uA,uB;uniform vec3 uL;',
+      'float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}',
+      // the plate hinged at its top edge: returns plate uv (y down), the ray depth, and the facing
+      'vec4 plate(vec3 d,float ang,float tz,float ty){float W=uRes.x,H=uRes.y;vec3 p0=vec3(0.,H*.5+ty,uP+tz);float s=sin(ang),c=cos(ang);vec3 n=vec3(0.,s,c);vec3 vd=vec3(0.,c,-s);float den=dot(n,d);if(abs(den)<1e-5)return vec4(0.,0.,-1.,0.);float t=dot(n,p0)/den;if(t<=0.)return vec4(0.,0.,-1.,0.);vec3 q=t*d-p0;float r=dot(q,vd);return vec4((q.x+W*.5)/W,-r/H,t,den);}',
+      // the film, cover-fitted, anchored to its right edge like the DOM video
+      'vec3 filmAt(vec2 q){vec3 f0=vec3(.043,.043,.043);if(uHas>.5){float sa=uRes.x/uRes.y,va=uVid.x/uVid.y;vec2 f=vec2(q.x,1.-q.y);if(va>sa){float k=sa/va;f.x=uAnc.x*(1.-k)+f.x*k;}else{float k=va/sa;f.y=uAnc.y*(1.-k)+f.y*k;}f0=texture2D(uV,f).rgb;}return f0;}',
+      'float lum(vec3 c){return dot(c,vec3(.2126,.7152,.0722));}',
+      'void main(){vec2 px=(v-.5)*uRes;vec3 d=normalize(vec3(px,uP));',
+      'vec3 raw=filmAt(v);',
+      // while the sheet is in front of it the street is lit up through a soft curve, one light for the cuts and the exposed edges alike; as the sheet goes the film settles to its own grade
+      'vec3 film=mix(raw,1.-exp(-raw*2.6),uA.w);',
+      'vec3 col=film;',
+      'vec4 m=plate(d,uA.x,uA.y,uA.z);',
+      'if(uA.w>0.&&m.z>0.&&m.x>=0.&&m.x<=1.&&m.y>=0.&&m.y<=1.){',
+      ' vec3 tx=texture2D(uT,m.xy).rgb;float hole=tx.r,white=tx.b;',
+      ' float s=sin(uA.x),c=cos(uA.x);vec3 nf=vec3(0.,-s,-c);float dif=max(dot(nf,uL),0.);vec3 h=normalize(uL-d);float spec=pow(max(dot(nf,h),0.),70.);',
+      // blackened steel: a fine horizontal brush, lit from the top left, one soft sheen that sweeps as the plate tilts
+      ' float g=hash(vec2(floor(m.y*uRes.y*.5),floor(m.x*uRes.x*.015)))*.6+hash(vec2(floor(m.y*uRes.y),3.))*.4;',
+      ' vec3 steel=vec3(.082,.082,.079)*(.7+.55*dif)+vec3(.045,.045,.042)*g*(.4+dif)+vec3(.26,.25,.23)*spec*.32;',
+      ' steel+=vec3(.012)*(1.-m.y);',
+      // the sheet's rim catches the light
+      ' float e=min(min(m.x,1.-m.x)*uRes.x,min(m.y,1.-m.y)*uRes.y);steel+=vec3(.16,.16,.15)*(1.-smoothstep(0.,2.5,e));',
+      // inside a cut the plate's thickness throws a shadow onto the film at the cut's top left; it lengthens as the plate lifts away
+      ' float L=(7.+uA.y*.012)*max(uRes.x/1440.,.6)/uRes.y;vec2 o=vec2(-L*.7*uRes.y/uRes.x,-L);',
+      ' float a1=texture2D(uT,m.xy+o).r,a2=texture2D(uT,m.xy+o*.5).r,a3=texture2D(uT,m.xy+o*1.7).r;float sh=mix(.55,1.,(a1+a2+a3)/3.);',
+      ' vec3 face=mix(steel,vec3(.95,.95,.94)*(.5+.5*dif),white);',
+      // inside a cut the street is a lit window, never a hole: a floor of 24 percent sits under the curve (Anwar, round 2: about 22), the curve rides on top of it with a shoulder at 92 so the bright street never clips, the cut shadow still falls across it
+      ' float aa=smoothstep(.3,.7,hole);vec3 pc=mix(face,.24+.68*film*sh,aa);',
+      ' col=mix(col,pc,uA.w);}',
+      // DARE: orange sprayed on its own plane, the last to lift
+      'vec4 b=plate(d,uB.x,uB.y,uB.z);',
+      'if(uB.w>0.&&b.z>0.&&b.x>=0.&&b.x<=1.&&b.y>=0.&&b.y<=1.){float o=texture2D(uT,b.xy).g;float s=sin(uB.x),c=cos(uB.x);vec3 nf=vec3(0.,-s,-c);float dif=max(dot(nf,uL),0.);vec3 paint=vec3(.886,.498,.133)*(.62+.38*dif);',
+      // as the sheet goes DARE stops being paint on steel and becomes a title card on the film: the film's own grain (its luma against its four neighbours) and a fine speckle pass over the word, and the street's light modulates it
+      ' float card=1.-uA.w;vec2 e=1.5/uRes;float g0=lum(raw);float gb=(lum(filmAt(v+vec2(e.x,0.)))+lum(filmAt(v-vec2(e.x,0.)))+lum(filmAt(v+vec2(0.,e.y)))+lum(filmAt(v-vec2(0.,e.y))))*.25;',
+      ' float grain=clamp((g0-gb)*5.,-.3,.3)+(hash(floor(px*.5)+vec2(7.,3.))-.5)*.16;',
+      ' paint*=1.+grain*card;paint=mix(paint,paint*(.86+.3*g0),card*.7);',
+      ' col=mix(col,paint,smoothstep(.3,.7,o)*uB.w);}',
+      'gl_FragColor=vec4(col,1.);}'
+    ].join('\n');
+
+    function startGL(){
+      var cv=document.createElement('canvas'); gl=cv.getContext('webgl',{alpha:false,antialias:false,depth:false,stencil:false,preserveDrawingBuffer:false});
+      if(!gl) return false;
+      prog=gl.createProgram();
+      [[gl.VERTEX_SHADER,VS],[gl.FRAGMENT_SHADER,FS]].forEach(function(s){ var sh=gl.createShader(s[0]); gl.shaderSource(sh,s[1]); gl.compileShader(sh); if(!gl.getShaderParameter(sh,gl.COMPILE_STATUS)) throw new Error(gl.getShaderInfoLog(sh)); gl.attachShader(prog,sh); });
+      gl.bindAttribLocation(prog,0,'a'); gl.linkProgram(prog); if(!gl.getProgramParameter(prog,gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
+      gl.useProgram(prog);
+      var b=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,b); gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW); gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);
+      ['uT','uV','uRes','uVid','uAnc','uP','uHas','uA','uB','uL'].forEach(function(n){ U[n]=gl.getUniformLocation(prog,n); });
+      texT=gl.createTexture(); texV=gl.createTexture();
+      [texT,texV].forEach(function(t){ gl.bindTexture(gl.TEXTURE_2D,t); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE); });
+      gl.uniform1i(U.uT,0); gl.uniform1i(U.uV,1);
+      var L=[-.45,.55,-.7], l=Math.hypot(L[0],L[1],L[2]); gl.uniform3f(U.uL,L[0]/l,L[1]/l,L[2]/l);
+      gl.uniform2f(U.uAnc,1,.5);
+      host.appendChild(cv); mode='gl'; cv.addEventListener('webglcontextlost',function(e){ e.preventDefault(); gl=null; host.innerHTML=''; mode=null; startSVG(); });
+      // the poster is the film's first frame until the film itself can be read
+      poster=new Image(); poster.onload=function(){ posterOK=true; }; poster.src=video.getAttribute('poster');
+      return true;
+    }
+    function uploadVideo(){
+      if(!gl) return;
+      gl.activeTexture(gl.TEXTURE1); gl.bindTexture(gl.TEXTURE_2D,texV);
+      if(video.readyState>=2&&!video.paused&&video.currentTime!==lastT){
+        try{ gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE,video); vidOK=true; lastT=video.currentTime; gl.uniform2f(U.uVid,video.videoWidth,video.videoHeight); gl.uniform1f(U.uHas,1); }
+        catch(e){ // a double-clicked file: the film cannot be read as a texture. Draw the plate the other way
+          gl=null; host.innerHTML=''; mode=null; startSVG(); return; }
+      } else if(!vidOK&&posterOK&&pm!==1){ try{ gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE,poster); pm=1; gl.uniform2f(U.uVid,poster.naturalWidth,poster.naturalHeight); gl.uniform1f(U.uHas,1); }catch(e){ gl=null; host.innerHTML=''; mode=null; startSVG(); return; } }
+      gl.activeTexture(gl.TEXTURE0);
+    }
+    function sizeGL(){
+      var cv=host.querySelector('canvas'); dpr=Math.min(window.devicePixelRatio||1,2); if(W*dpr>3600) dpr=3600/W;
+      cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr); gl.viewport(0,0,cv.width,cv.height);
+      gl.uniform2f(U.uRes,cv.width,cv.height); gl.uniform1f(U.uP,1200*dpr);
+      gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D,texT); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,false); gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,texture());
+    }
+    function poses(p){ // the sheet hinges at its top edge, recedes and rises clean out of the top of the frame, and is gone (opacity 0) by .74:
+      // never a thumbnail hanging mid-screen. DARE is the paint that went through the stencil onto the street: it holds flat and whole while the sheet leaves,
+      // then dissolves into the film (.76 to .94) a beat before the ghost word arrives (.78)
+      var a1=ease(seg(p,0,.72))*1.02, z1=ease(seg(p,.22,.78))*1500, y1=ease(seg(p,.3,.76))*H*1.6, f1=1-seg(p,.52,.74);
+      var s=seg(p,.74,.94), z2=ease(s)*300, y2=ease(s)*H*.12, f2=1-seg(p,.76,.94);
+      return {A:[a1,z1,y1,f1],B:[0,z2,y2,f2]};
+    }
+    var raf=0, running=true;
+    function drawGL(){
+      raf=0; if(!gl) return;
+      uploadVideo(); if(!gl) return;
+      var k=poses(p), d=dpr;
+      gl.uniform4f(U.uA,k.A[0],k.A[1]*d,k.A[2]*d,k.A[3]); gl.uniform4f(U.uB,k.B[0],k.B[1]*d,k.B[2]*d,k.B[3]);
+      gl.drawArrays(gl.TRIANGLES,0,3);
+      if(running&&!document.hidden&&(p<1||!video.paused)) raf=requestAnimationFrame(drawGL);
+    }
+    function wake(){ if(mode==='gl'&&!raf) raf=requestAnimationFrame(drawGL); }
+
+    /* the SVG sheet: the same layout, the letters cut by a mask, hinged by CSS */
+    function startSVG(){
+      mode='svg'; host.innerHTML='';
+      var NS='http://www.w3.org/2000/svg';
+      function el(n,at,par){ var e=document.createElementNS(NS,n); for(var k in at) e.setAttribute(k,at[k]); (par||null)&&par.appendChild(e); return e; }
+      var svg=el('svg',{class:'sheet',viewBox:'0 0 '+W+' '+H,width:W,height:H,'aria-hidden':'true'},host);
+      var defs=el('defs',{},svg), mask=el('mask',{id:'plate-cut',maskUnits:'userSpaceOnUse',x:0,y:0,width:W,height:H},defs);
+      el('rect',{x:0,y:0,width:W,height:H,fill:'#fff'},mask);
+      var grad=el('linearGradient',{id:'plate-steel',x1:0,y1:0,x2:.4,y2:1},defs); el('stop',{offset:0,'stop-color':'#1d1d1c'},grad); el('stop',{offset:.5,'stop-color':'#131312'},grad); el('stop',{offset:1,'stop-color':'#0f0f0e'},grad);
+      function text(par,t,x,y,font,fill,ls){ var m=/^(\d+) (\d+)px "(.+)"$/.exec(font); var e=el('text',{x:x,y:y,fill:fill,'font-family':'"'+m[3]+'"','font-weight':m[1],'font-size':m[2],'letter-spacing':ls||0,'xml:space':'preserve'},par); e.textContent=t; return e; }
+      lay.rows.forEach(function(r){ r.toks.forEach(function(t){ if(t.k==='r') text(mask,t.t,t.x,r.y,r.font,'#000',r.ls); }); });
+      el('rect',{x:0,y:0,width:W,height:H,fill:'url(#plate-steel)',mask:'url(#plate-cut)'},svg);
+      el('rect',{x:.5,y:.5,width:W-1,height:H-1,fill:'none',stroke:'rgba(242,242,240,.16)'},svg);
+      lay.rows.forEach(function(r){ r.toks.forEach(function(t){ if(t.k==='b') text(svg,t.t,t.x,r.y,r.font,'#F2F2F0',0); }); });
+      lay.who.forEach(function(w){ text(svg,w.t,lay.m,w.y,w.font,'rgba(242,242,240,'+w.a+')',0).setAttribute('letter-spacing',w.a===1?'.15':'.32'); });
+      var dare=el('svg',{class:'dare',viewBox:'0 0 '+W+' '+H,width:W,height:H,'aria-hidden':'true'},host);
+      lay.rows.forEach(function(r){ r.toks.forEach(function(t){ if(t.k==='g') text(dare,t.t,t.x,r.y,r.font,'#E27F22',r.ls); }); });
+      video.classList.add('under');
+      drawSVG();
+    }
+    function drawSVG(){
+      var k=poses(p), s=host.querySelector('.sheet'), d=host.querySelector('.dare'); if(!s) return;
+      s.style.transform='translate3d(0,'+(-k.A[2])+'px,'+(-k.A[1])+'px) rotateX('+(-k.A[0]*180/Math.PI)+'deg)'; s.style.opacity=k.A[3];
+      d.style.transform='translate3d(0,'+(-k.B[2])+'px,'+(-k.B[1])+'px) rotateX('+(-k.B[0]*180/Math.PI)+'deg)'; d.style.opacity=k.B[3];
+    }
+
+    function size(){
+      var r=stage.getBoundingClientRect(); var w=Math.round(r.width), h=Math.round(r.height); if(!w||!h||(w===W&&h===H)) return; W=w; H=h;
+      lay=layout(W,H,meas); window.__plate={capTop:lay.capTop,base:lay.base,L6:lay.L6,W:W,H:H,mode:mode};
+      if(mode==='gl') sizeGL(); else if(mode==='svg') startSVG();
+      if(mode==='gl') wake();
+    }
+    function setP(v){ p=v; window.__plate.p=p; after.style.setProperty('--rev',seg(p,.78,1)); if(mode==='gl') wake(); else drawSVG(); }
+
+    function boot(){
+      var r=stage.getBoundingClientRect(); W=Math.round(r.width); H=Math.round(r.height); lay=layout(W,H,meas);
+      window.__plate={capTop:lay.capTop,base:lay.base,L6:lay.L6,W:W,H:H};
+      var ok=false; if(!still){ try{ ok=startGL(); if(ok) sizeGL(); }catch(e){ ok=false; if(window.console) console.warn('plate:',e.message); } }
+      if(!ok) startSVG(); window.__plate.mode=mode; window.__plate.at=poses; window.__plate.mask=function(){ return texture().toDataURL('image/png'); };
+      if(mode==='gl'){ wake(); video.addEventListener('play',wake); }
+      new ResizeObserver(size).observe(stage);
+      document.addEventListener('visibilitychange',function(){ if(!document.hidden) wake(); });
+      if(reduce||still){ document.documentElement.classList.add('plate-still'); setP(0); return; }
+      window.addEventListener('load',function(){
+        if(!window.gsap||!window.ScrollTrigger){ document.documentElement.classList.add('plate-still'); return; }
+        gsap.registerPlugin(ScrollTrigger);
+        ScrollTrigger.create({trigger:scene,start:'top top',end:'bottom bottom',scrub:true,onUpdate:function(st){ setP(st.progress); }});
+      });
+    }
+    var ready=(document.fonts&&document.fonts.ready)?document.fonts.ready:Promise.resolve();
+    ready.then(function(){ return Promise.all([document.fonts.load('700 100px "Bespoke Stencil"'),document.fonts.load('400 100px "General Sans"'),document.fonts.load('500 12px "General Sans"')]).catch(function(){}); }).then(boot);
+  }
+
+  /* ---------- what we do: the comma, and the pages ---------- */
+  function commaPage(hero){
+    if(!reduce&&!still){ hero.classList.add('arm'); var go=function(){ requestAnimationFrame(function(){ requestAnimationFrame(function(){ hero.classList.add('in'); }); }); }; (document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(go); }
+    if(reduce||still||!matchMedia('(min-width:761px)').matches) return;
+    window.addEventListener('load',function(){
+      if(!window.gsap||!window.ScrollTrigger) return;
+      gsap.registerPlugin(ScrollTrigger);
+      var main=document.querySelector('main'), duos=gsap.utils.toArray('main > .duo'), pics=duos.map(function(d){ return d.querySelector('.pic'); }).filter(Boolean);
+      if(pics.length<2) return;
+      var pages=document.createElement('div'); pages.className='pages'; pages.setAttribute('aria-hidden','false');
+      // the sheets fan 4px to the right per depth, never down, so the stack's top and bottom stay the anchor's box (Anwar, round 2)
+      pics.forEach(function(pc,i){ pages.appendChild(pc); gsap.set(pc,{zIndex:10-i,z:-i*22,x:i*4,y:0});
+        // glow.js bound its row parallax to ".duo .pic img" before the move: that scrub would drift a 1600px image through the sheet. Kill it and its trigger, clear what it set
+        var im=pc.querySelector('img'); if(im){ gsap.getTweensOf(im).forEach(function(t){ if(t.scrollTrigger) t.scrollTrigger.kill(); t.kill(); }); gsap.set(im,{clearProps:'all'}); } });
+      main.appendChild(pages);
+      // the stack holds its place on the right while the ledger of words scrolls past; each row turns its own page as it is read
+      // the stack stands in the right 40 percent of the first screen at rest (Anwar fix 5, his second option) and is pinned from scroll 0 while the ledger reads past it
+      ScrollTrigger.create({trigger:pages,start:0,endTrigger:duos[duos.length-1],end:'bottom 80%',pin:pages,pinSpacing:false,refreshPriority:1});
+      pics.forEach(function(pc,i){ if(i===pics.length-1) return;
+        gsap.fromTo(pc,{rotateY:0},{rotateY:-112,ease:'none',immediateRender:false,scrollTrigger:{trigger:duos[i],start:'bottom 70%',end:'bottom 25%',scrub:.4,onUpdate:function(st){ pc.style.setProperty('--lift',Math.sin(st.progress*Math.PI)*.9); }}});
+      });
+      ScrollTrigger.refresh();
+    });
+  }
+})();

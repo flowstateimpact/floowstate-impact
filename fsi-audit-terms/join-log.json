@@ -1,0 +1,142 @@
+{
+  "applied": "2026-10-25 10:34:11",
+  "terms": [
+    {
+      "n": 2,
+      "prefer": "place",
+      "over": "spot",
+      "sentences": 1
+    },
+    {
+      "n": 2,
+      "prefer": "application",
+      "over": "submission",
+      "sentences": 1
+    },
+    {
+      "n": 4,
+      "prefer": "a paid client",
+      "over": "another client",
+      "sentences": 1
+    }
+  ],
+  "cuts": [
+    {
+      "n": 1,
+      "quote": "This limit applies across the entire offer period, regardless of when you apply.",
+      "done": true
+    },
+    {
+      "n": 2,
+      "quote": "This confirmation tells you your position in the queue clearly.",
+      "done": true
+    },
+    {
+      "n": 2,
+      "quote": "The slot is tied directly to your application and stays there.",
+      "done": true
+    },
+    {
+      "n": 2,
+      "quote": "It only means you are in the queue for that specific offer and wait for space.",
+      "done": true
+    },
+    {
+      "n": 2,
+      "quote": "This is the complete deliverable you receive for free.",
+      "done": true
+    },
+    {
+      "n": 2,
+      "quote": "There are no other items included in this service package.",
+      "done": true
+    },
+    {
+      "n": 2,
+      "quote": "You will always know where things stand and when to expect updates.",
+      "done": true
+    },
+    {
+      "n": 2,
+      "quote": "Otherwise, the document remains exactly as we sent it to you initially.",
+      "done": true
+    },
+    {
+      "n": 2,
+      "quote": "The free audit and any future paid work are two different things entirely.",
+      "done": true
+    }
+  ],
+  "edits": [
+    {
+      "n": 1,
+      "where": "sentence",
+      "instruction": "Rewrite this clause heading as a plain point in everyday words, in the same shape as the other headings, saying that people who work for a competing studio or consultancy cannot take part. Keep the number 5 in front of it.",
+      "done": true
+    },
+    {
+      "n": 1,
+      "where": "sentence",
+      "instruction": "Say calmly that the audit ends if this comes to light later. Drop 'immediately' and 'this situation' so the line sounds like clauses 17 and 34, not a warning.",
+      "done": true
+    },
+    {
+      "n": 2,
+      "where": "sentence",
+      "instruction": "Rewrite this clause heading as a point, not a label. Write the number as the numeral 10, as everywhere else, and say that the places go in the order applications arrive. Keep the number 6 in front of it.",
+      "done": true
+    },
+    {
+      "n": 2,
+      "where": "sentence",
+      "instruction": "In one complete, plain sentence, say there are no extra calls and no rewrites, and that questions are limited to the one email in the next sentence. Drop 'unlimited' and 'provided either'.",
+      "done": true
+    },
+    {
+      "n": 3,
+      "where": "sentence",
+      "instruction": "Make clear that 'after that' means asking to move the call a second time, and that only then does the place pass to the next on the list. Add no other case, notice period or condition.",
+      "done": true
+    },
+    {
+      "n": 3,
+      "where": "sentence",
+      "instruction": "Turn this into a complete sentence with a subject and a verb. It should say calmly that neither side records or shares the call unless both agree first, with no wording that sounds like a ban.",
+      "done": true
+    },
+    {
+      "n": 4,
+      "where": "sentence",
+      "instruction": "Make clear that a trusted contractor who works for us may also see your details, and that they are held to the same duty of privacy as the studio. Add no other party.",
+      "done": true
+    },
+    {
+      "n": 4,
+      "where": "sentence",
+      "instruction": "Use the full glossary term 'competing studio or consultancy' in place of 'competing studio'. Keep every bracketed clause number exactly as it is, and keep every reason on the list.",
+      "done": true
+    }
+  ],
+  "verdicts": [
+    {
+      "n": 1,
+      "delivers_purpose": true,
+      "note": "The short version gives the whole deal and group A is clear. Clause 5's heading reads like a sign on a door, and its last line sounds stricter than the rest."
+    },
+    {
+      "n": 2,
+      "delivers_purpose": true,
+      "note": "Order, trading, the full list and where paid work begins are all covered. Group C is padded with repeats and promises nobody made."
+    },
+    {
+      "n": 3,
+      "delivers_purpose": true,
+      "note": "Covers true details, moved calls and ownership. Clause 18 can be misread and clause 26 is not a complete sentence."
+    },
+    {
+      "n": 4,
+      "delivers_purpose": true,
+      "note": "Limits, no obligation, privacy, endings and the contact line are all there. Three wording faults in clauses 30, 34 and 35."
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "n": 2,
+  "heading": "The 10 places go in the order applications arrive, and a place gives you one call and one read-out",
+  "target": 475,
+  "attempts": [
+    {
+      "try": 1,
+      "words": 550,
+      "seconds": 31.4,
+      "tok_per_s": 34.1,
+      "problems": [
+        "a copula dodge ('serves as' where 'is' is honest): \"..., the document stands as sent. 15. Paid work is...\""
+      ],
+      "advisories": [
+        "four or more sentences in a row at nearly the same length (the metronome tell). Cut one to six words or let one run long.",
+        "sentence lengths barely vary across the piece (average 13 words, very low spread). Human rhythm spikes and falls.",
+        "7 sentences start with \"we\"; vary the openings."
+      ],
+      "note": "reading grade 5.9 · 41 sentences · average 13 words each · longest 22."
+    },
+    {
+      "try": 2,
+      "words": 574,
+      "seconds": 27.7,
+      "tok_per_s": 36.0,
+      "problems": [],
+      "advisories": [
+        "sentence lengths barely vary across the piece (average 15 words, very low spread). Human rhythm spikes and falls.",
+        "3 sentences start with \"what\"; vary the openings."
+      ],
+      "note": "reading grade 7.1 · 37 sentences · average 15 words each · longest 24."
+    }
+  ],
+  "kept_try": 2,
+  "words": 574,
+  "clean": true,
+  "remaining": [],
+  "advisories": [
+    "sentence lengths barely vary across the piece (average 15 words, very low spread). Human rhythm spikes and falls.",
+    "3 sentences start with \"what\"; vary the openings."
+  ],
+  "finished": "2026-10-25 10:30:55"
+}

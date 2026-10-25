@@ -1,0 +1,71 @@
+  asking Claude for the spine (one headless call, no tools) ...
+  Claude answered in 235s (input 2, cached 126308, output 25462 tokens)
+SPINE: Free audit terms: one call, one written read-out, one per company
+  reader: A small business owner in Dhaka or London who has never met us, reading on a phone, maybe in a second language.
+   1. You get one free call and one written read-out, and each company takes part once  [400 words]
+   2. The 10 places go in the order applications arrive, and a place gives you one call and one read-out  [475 words]
+   3. Your part is true details, a kept call, and respect for what each side owns  [425 words]
+   4. You owe us nothing, your details stay private, and any ending or change is told to you  [475 words]
+  4 sections, about 1775 words
+  GAPS the brief did not fill (the plan wrote around them; supply them if they matter):
+    - What the audit looks at (brand, website, marketing, operations or something else): until this is given, the page can only say "about your business".
+    - How someone applies from this page: the link or wording that points to the application form.
+    - How and when the call time is agreed once a place comes up, and who picks it.
+    - Whether the email in clause 7 confirms one of the 10 places or only a position on the waiting list; clause 36 protects "a place already confirmed", so the difference matters.
+    - Whether the "booking confirmation" in clause 37 is the same email as the clause 7 confirmation or a separate one.
+    - What counts as a "competing studio or consultancy" in clauses 5, 17 and 34: branding and design studios only, or any consultancy.
+    - Whether companies outside Bangladesh and the UK may apply.
+    - Which language the call and the read-out are in, and which time zone call times are given in for a London business.
+    - How soon we answer the one email of questions allowed in clause 13.
+    - Whether the page spells the name FlowState Impact, as the brief does, or with the tilde the studio uses elsewhere.
+WRITING 4 sections locally on qwen3.8-64k (2026-10-25 10:28:51)
+   1. You get one free call and one written read-out, and each company takes part once (about 400 words)
+    try 1: 230 words in 39.8s, 1 problem(s), 2 advisory
+      - too short: 230 words against a target of 400
+    try 2: 233 words in 11.6s, 1 problem(s), 2 advisory
+      - too short: 233 words against a target of 400
+    try 3: 260 words in 10.8s, 1 problem(s), 1 advisory
+      - too short: 260 words against a target of 400
+   2. The 10 places go in the order applications arrive, and a place gives you one call and one read-out (about 475 words)
+    try 1: 550 words in 31.4s, 1 problem(s), 3 advisory
+      - a copula dodge ('serves as' where 'is' is honest): "..., the document stands as sent. 15. Paid work is..."
+    try 2: 574 words in 27.7s, clean, 2 advisory
+   3. Your part is true details, a kept call, and respect for what each side owns (about 425 words)
+    try 1: 332 words in 35.3s, clean, 2 advisory
+   4. You owe us nothing, your details stay private, and any ending or change is told to you (about 475 words)
+    try 1: 547 words in 29.7s, clean, 1 advisory
+written: 4 section(s) in 3 min (2026-10-25 10:32:01). next: flowlong join /Users/asiffarid/Documents/apps/flowstateimpact-site-glowup/fsi-audit-terms
+  asking Claude for the joins (one headless call, no tools) ...
+  Claude answered in 128s (input 4, cached 260428, output 12700 tokens)
+  editor's note: The terms read as one document and all four sections do their job. The short version gives the whole deal, the clauses keep their numbers 1 to 39 in order, and the cross-references in clause 34 line up. The main problem is uneven voice. Section 2 is padded: several sentences repeat their own clause, use words from outside the glossary (spot, slot, deliverable, service package), or make promises the brief never gave, such as telling you your place in the queue or that you will always know where things stand. Those sentences are cut. Section 3 has the opposite problem. It is terse, one line is not a full sentence, and clause 18 can be read as moving the call losing you your place. Section 4 has three small faults: the contractor sentence in clause 30 reads backwards, clause 34 shortens the glossary term for a competing studio, and clause 35 calls the reader a client. The phrase 'competing studio' appears in three sections on purpose, because it is the glossary term and clause 34 points back to clause 5, so it stays.
+  section 2: 1 sentence(s) re-worded to say "place"
+  section 2: 1 sentence(s) re-worded to say "application"
+  section 4: 1 sentence(s) re-worded to say "a paid client"
+  section 1: cut "This limit applies across the entire offer period, regardless of when "
+  section 2: cut "This confirmation tells you your position in the queue clearly."
+  section 2: cut "The slot is tied directly to your application and stays there."
+  section 2: cut "It only means you are in the queue for that specific offer and wait fo"
+  section 2: cut "This is the complete deliverable you receive for free."
+  section 2: cut "There are no other items included in this service package."
+  section 2: cut "You will always know where things stand and when to expect updates."
+  section 2: cut "Otherwise, the document remains exactly as we sent it to you initially"
+  section 2: cut "The free audit and any future paid work are two different things entir"
+  section 1: sentence re-worded
+  section 1: sentence re-worded
+  section 2: sentence re-worded
+  section 2: sentence re-worded
+  section 3: sentence re-worded
+  section 3: sentence re-worded
+  section 4: sentence re-worded
+  section 4: sentence re-worded
+joins applied. next: flowlong cadence /Users/asiffarid/Documents/apps/flowstateimpact-site-glowup/fsi-audit-terms (then assemble)
+RHYTHM PASS with the local model qwen3.8-64k on /Users/asiffarid/Documents/apps/flowstateimpact-site-glowup/fsi-audit-terms (2026-10-25 10:35:53)
+  whole draft before: 7 sentences start with "the"; vary the openings.
+  section 4, paragraph 4: 5 sentences, lengths 1, 22, 9, 11, 11; 2 pair(s) of consecutive sentences open with the same word
+    try 1 (10.5s): rejected, length moved from 53 to 41 words
+    try 2 (1.2s): rejected, length moved from 53 to 34 words
+  whole draft after: 7 sentences start with "the"; vary the openings.
+rhythm pass: 51 paragraphs measured, 1 flagged, 0 re-worded, 1 kept as written. next: flowlong assemble /Users/asiffarid/Documents/apps/flowstateimpact-site-glowup/fsi-audit-terms
+assembled: /Users/asiffarid/Documents/apps/flowstateimpact-site-glowup/fsi-audit-terms/draft.md (1645 words, gate FAIL). reading copy: /Users/asiffarid/Documents/apps/flowstateimpact-site-glowup/fsi-audit-terms/draft.html
+report: /Users/asiffarid/Documents/apps/flowstateimpact-site-glowup/fsi-audit-terms/report.md
+exit 0

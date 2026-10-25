@@ -1,0 +1,115 @@
+{
+  "started": "2026-10-25 11:47:13",
+  "model": "qwen3.8-64k",
+  "dry": false,
+  "examined": 47,
+  "flagged": 3,
+  "rewritten": 1,
+  "kept_original": 2,
+  "draft_rhythm_before": [
+    "four or more sentences in a row at nearly the same length (the metronome tell). Cut one to six words or let one run long.",
+    "6 sentences start with \"you\"; vary the openings."
+  ],
+  "sections": [
+    {
+      "n": 1,
+      "paragraphs": [
+        {
+          "i": 2,
+          "before": {
+            "sentences": 5,
+            "lengths": [
+              12,
+              13,
+              13,
+              12,
+              14
+            ],
+            "run": 5,
+            "spread": 0.07,
+            "same_openings": 0,
+            "dull_openings": 0.4,
+            "score": 5.85
+          },
+          "tries": 1,
+          "kept": true,
+          "why": "",
+          "after": {
+            "sentences": 4,
+            "lengths": [
+              26,
+              13,
+              12,
+              14
+            ],
+            "run": 3,
+            "spread": 0.4,
+            "same_openings": 0,
+            "dull_openings": 0.25,
+            "score": 0.0
+          }
+        },
+        {
+          "i": 4,
+          "before": {
+            "sentences": 6,
+            "lengths": [
+              12,
+              9,
+              12,
+              15,
+              18,
+              7
+            ],
+            "run": 5,
+            "spread": 0.33,
+            "same_openings": 1,
+            "dull_openings": 0.33,
+            "score": 4.24
+          },
+          "tries": 2,
+          "kept": false,
+          "why": "the numbers changed (['10'] to []) / a name went missing: Being"
+        }
+      ]
+    },
+    {
+      "n": 4,
+      "paragraphs": [
+        {
+          "i": 3,
+          "before": {
+            "sentences": 4,
+            "lengths": [
+              26,
+              10,
+              11,
+              11
+            ],
+            "run": 3,
+            "spread": 0.53,
+            "same_openings": 2,
+            "dull_openings": 0.0,
+            "score": 2.0
+          },
+          "tries": 2,
+          "kept": false,
+          "why": "length moved from 57 to 37 words / the numbers changed (['29'] to [])"
+        }
+      ]
+    }
+  ],
+  "examples": [
+    {
+      "n": 1,
+      "i": 2,
+      "before": "You get one free call and one written letter about your business. It costs you nothing, and you do not have to buy anything afterwards. There are 10 places, and they go in the order complete applications arrive. One company gets one place, no matter how many people work there. If you are on the waiting list, you are not promised a place yet.",
+      "after": "You get one free call and one written letter about your business, so you do not have to buy anything afterwards because it costs you nothing. There are 10 places, and they go in the order complete applications arrive. One company gets one place, no matter how many people work there. If you are on the waiting list, you are not promised a place yet."
+    }
+  ],
+  "draft_rhythm_after": [
+    "four or more sentences in a row at nearly the same length (the metronome tell). Cut one to six words or let one run long.",
+    "6 sentences start with \"you\"; vary the openings."
+  ],
+  "finished": "2026-10-25 11:47:43"
+}

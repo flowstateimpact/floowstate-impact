@@ -1,0 +1,28 @@
+{
+  "n": 1,
+  "heading": "You get one free call and one written read-out, and each company gets one",
+  "target": 400,
+  "attempts": [
+    {
+      "try": 1,
+      "words": 403,
+      "seconds": 40.5,
+      "tok_per_s": 34.4,
+      "problems": [],
+      "advisories": [
+        "four or more sentences in a row at nearly the same length (the metronome tell). Cut one to six words or let one run long.",
+        "5 sentences start with \"the\"; vary the openings."
+      ],
+      "note": "reading grade 7.2 · 27 sentences · average 15 words each · longest 36."
+    }
+  ],
+  "kept_try": 1,
+  "words": 403,
+  "clean": true,
+  "remaining": [],
+  "advisories": [
+    "four or more sentences in a row at nearly the same length (the metronome tell). Cut one to six words or let one run long.",
+    "5 sentences start with \"the\"; vary the openings."
+  ],
+  "finished": "2026-10-25 11:39:56"
+}

@@ -1,0 +1,30 @@
+/* type-c.css: variant C, THE SMALL LINE (home) and THE READER (what we do). 25 Oct 2026, Nadir. Loads after type-base.css.
+   Home: threat held back. The whole sentence sits sharp and small on one line; behind it, deep in the room, DARE alone is enormous, orange at 18 percent
+   and out of focus. The only big thing is soft and the only sharp thing is small. On scroll the word comes forward into focus and lands on the street. */
+
+.small .line{position:absolute;z-index:2;left:var(--m);right:var(--m);top:50%;transform:translateY(-50%);margin:0;font-family:var(--sans);font-weight:400;font-size:var(--L2);line-height:1.4;letter-spacing:0;text-transform:none;max-width:44ch}
+.small .who{position:absolute;z-index:2;left:var(--m);bottom:calc(var(--m) * 1.2)}
+.small .deep{position:absolute;inset:0;z-index:1;pointer-events:none;perspective:1200px;perspective-origin:50% 50%}
+/* 600px back in the room: it renders at two thirds of its size, which puts its cap top 24px under the sentence */
+.small .deep .st{position:absolute;left:62vw;top:calc(50% + .7em * 0 + 14px + var(--brk) - .05em);font-size:var(--L7);line-height:.8;letter-spacing:0;color:var(--accent);opacity:.18;filter:blur(6px);transform:translateZ(-600px);transform-origin:0 0;white-space:nowrap;will-change:transform,filter,opacity}
+@media (max-width:760px){
+  .small .line{max-width:none}
+  .small .deep .st{left:40vw;top:calc(50% + 26px + var(--brk))}
+}
+
+/* ---- what we do: THE READER ---- */
+/* calm authority. The firm that reads you does not shout: the title in the text face at 92px on 1440, one line, sentence case; no stencil until the close.
+   The full stop is the studio's flame plate, turning slowly in its place. A thin orange line reads the title once on load. */
+.reader{display:flex;flex-direction:column;justify-content:flex-end;padding:0 var(--m) calc(var(--m) * 1.5)}
+.reader .tw{position:relative;margin-bottom:calc(var(--m) * 1.4)}
+.reader .rd{font-family:var(--sans);font-weight:400;font-size:clamp(44px,2px + 6.25vw,120px);line-height:1.02;letter-spacing:-.025em;text-transform:none;white-space:nowrap}
+.reader .stop{display:inline-block;position:relative;width:1.1em;height:.72em;vertical-align:baseline}
+.reader .stop .dot{color:transparent}
+.reader .flame{position:absolute;left:-.08em;bottom:-.43em;width:1.17em;height:1.17em;margin:0}
+.reader .readline{position:absolute;left:0;right:0;bottom:-12px;height:2px;background:var(--accent);transform:scaleX(0);transform-origin:0 50%}
+.reader.go .readline{animation:readline 2.4s cubic-bezier(.6,0,.3,1) .5s forwards}
+@keyframes readline{0%{transform:scaleX(0);transform-origin:0 50%}46%{transform:scaleX(1);transform-origin:0 50%}54%{transform:scaleX(1);transform-origin:100% 50%}100%{transform:scaleX(0);transform-origin:100% 50%}}
+.reader .lines{display:grid;gap:10px;max-width:34ch;font-size:var(--L2);line-height:1.4}
+.reader .lines .go{justify-self:start;margin-top:8px;font-size:var(--L0)}
+@media (max-width:760px){.reader .rd{white-space:normal}.reader .tw{margin-bottom:calc(var(--m) * 1.2)}}
+@media (prefers-reduced-motion:reduce){.reader .readline{transform:none;background:var(--hair)}}

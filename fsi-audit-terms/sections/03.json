@@ -1,0 +1,28 @@
+{
+  "n": 3,
+  "heading": "Your part is true details, a kept call, and respect for what each side owns",
+  "target": 425,
+  "attempts": [
+    {
+      "try": 1,
+      "words": 332,
+      "seconds": 35.3,
+      "tok_per_s": 40.9,
+      "problems": [],
+      "advisories": [
+        "four or more sentences in a row at nearly the same length (the metronome tell). Cut one to six words or let one run long.",
+        "4 sentences start with \"if\"; vary the openings."
+      ],
+      "note": "reading grade 5.5 · 22 sentences · average 15 words each · longest 33."
+    }
+  ],
+  "kept_try": 1,
+  "words": 332,
+  "clean": true,
+  "remaining": [],
+  "advisories": [
+    "four or more sentences in a row at nearly the same length (the metronome tell). Cut one to six words or let one run long.",
+    "4 sentences start with \"if\"; vary the openings."
+  ],
+  "finished": "2026-10-25 10:31:31"
+}

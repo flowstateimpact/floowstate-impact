@@ -1,0 +1,26 @@
+{
+  "n": 4,
+  "heading": "You owe us nothing, your details stay private, and any ending or change is told to you",
+  "target": 475,
+  "attempts": [
+    {
+      "try": 1,
+      "words": 547,
+      "seconds": 29.7,
+      "tok_per_s": 39.3,
+      "problems": [],
+      "advisories": [
+        "10 sentences start with \"we\"; vary the openings."
+      ],
+      "note": "reading grade 7.8 · 34 sentences · average 16 words each · longest 58."
+    }
+  ],
+  "kept_try": 1,
+  "words": 547,
+  "clean": true,
+  "remaining": [],
+  "advisories": [
+    "10 sentences start with \"we\"; vary the openings."
+  ],
+  "finished": "2026-10-25 10:32:01"
+}

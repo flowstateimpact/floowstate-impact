@@ -1,0 +1,67 @@
+/* type-b.css: variant B, THE LEDGER (home) and THE SPINE (what we do). 25 Oct 2026, Nadir. Loads after type-base.css.
+   Home: hush, then the cut. The sentence whispers top left in the text face and shouts bottom right in the stencil, on the fold.
+   WILL, NOT and DARE are three cut plates at three depths (-160, 0, +120 px): the line has thickness, and it answers the hand and the scroll. */
+
+.ledger .led{position:absolute;inset:0;margin:0;font-weight:400}
+.ledger .l1{position:absolute;left:var(--m);top:calc(var(--m) * 2.2);font-family:var(--sans);font-weight:400;font-size:var(--L3);line-height:1.04;letter-spacing:-.02em;text-transform:none;max-width:14ch}
+.ledger .l2{position:absolute;right:calc(var(--m) + .3 * var(--L6));bottom:calc(.54 * var(--L6) + var(--brk));font-family:var(--sans);font-weight:400;font-size:var(--L2);line-height:1.4;letter-spacing:0;text-transform:none;text-align:right}
+/* the one stencil line, on the fold: the lower part of DARE lands on the street. Right edge pulled in by the growth DARE gets from standing nearest */
+.ledger .l3{position:absolute;right:calc(var(--m) + .3 * var(--L6));bottom:calc(-.34 * var(--L6));font-size:var(--L6);line-height:.88;letter-spacing:-.01em;white-space:nowrap;perspective:1200px;perspective-origin:70% 50%;transform-style:preserve-3d;will-change:transform}
+.ledger .pl{display:inline-block;transform:translateZ(var(--z,0));will-change:transform;
+  /* a cut plate has thickness: three steps of its edge show down and to the right of the light, and it throws a soft shadow onto whatever is behind it */
+  text-shadow:1px 1px 0 #3a3a38,2px 2px 0 #2b2b29,3px 3px 0 #1c1c1b,0 28px 48px rgba(0,0,0,.55)}
+.ledger .p1{--z:-160px;transform-origin:100% 50%}
+.ledger .p2{--z:0px;transform-origin:50% 50%}
+.ledger .p3{--z:120px;transform-origin:0 100%;text-shadow:1px 1px 0 #9a5416,2px 2px 0 #7b4211,3px 3px 0 #5b300c,0 28px 48px rgba(0,0,0,.55)}
+.ledger .who{position:absolute;left:var(--m);bottom:calc(var(--m) * 1.2);z-index:2}
+@media (max-width:760px){
+  /* the diagonal becomes a stair of three left-aligned steps: 30, 18, 58 */
+  .ledger{display:flex;flex-direction:column;justify-content:flex-end;padding:0 var(--m)}
+  .ledger .led{position:static;display:grid;gap:14px}
+  .ledger .l1,.ledger .l2,.ledger .l3{position:static;right:auto;bottom:auto;top:auto;text-align:left;max-width:none}
+  .ledger .l3{white-space:normal;margin-bottom:calc(-.34 * var(--L6));line-height:.9}
+  .ledger .who{position:static;order:-1;margin-bottom:var(--brk)}
+  .ledger .pl{text-shadow:1px 1px 0 #3a3a38,2px 2px 0 #1c1c1b,0 16px 28px rgba(0,0,0,.5)}
+  .ledger .p3{text-shadow:1px 1px 0 #9a5416,2px 2px 0 #5b300c,0 16px 28px rgba(0,0,0,.5)}
+}
+
+/* ---- what we do: THE SPINE ---- */
+/* an object on the table. The title runs up the left edge like the spine of a book standing with its back to you; on scroll the slab turns to face you
+   and the title lies flat across the cover at L5. Desktop only: on the phone the book is already open. */
+.spine{display:flex;flex-direction:column;justify-content:flex-end;padding:0 var(--m) calc(var(--m) * 1.5)}
+.spine .cover h1{font-size:var(--L5);line-height:.9;letter-spacing:-.01em;max-width:12ch}
+.spine .lines{display:grid;gap:10px;max-width:34ch;font-size:var(--L2);line-height:1.4;margin-top:calc(var(--m) * 1.2)}
+.spine .lines .go{justify-self:start;margin-top:8px;font-size:var(--L0)}
+.spine .side{display:none}
+@media (min-width:761px){
+  .spine{--D:calc(var(--L4) * 2.7 + 24px);display:block;padding:0;perspective:1400px;perspective-origin:50% 50%}
+  .spine .slab{position:absolute;left:calc(var(--m) + var(--D));top:calc(var(--m) * 1.9);bottom:calc(var(--m) * 1.2);width:calc(100% - var(--m) * 2 - var(--D));transform-style:preserve-3d;transform-origin:0 50%;transform:rotateY(78deg);will-change:transform}
+  .spine .face{position:absolute;top:0;height:100%;backface-visibility:hidden}
+  /* the cover: a shade darker than the page, a hairline edge, lit as it turns to the light */
+  .spine .cover{left:0;width:100%;background:#131312;box-shadow:inset 0 0 0 1px var(--hair);padding:calc(var(--m) * 1.1) calc(var(--m) * 1.2)}
+  .spine .cover::after{content:"";position:absolute;inset:0;background:#000;opacity:var(--shade,.55);pointer-events:none;transition:none}
+  .spine .cover .end{position:relative;z-index:1;display:flex;flex-direction:column;justify-content:space-between;height:100%}
+  .spine .cover h1{flex:0 0 auto;opacity:0}   /* one title at a time: the face title is 0 until the slab passes 45 degrees and 1 as it lands flat (type-b.js) */
+  /* the two lines and the link sit in the document at the right column, x 1055 at 1440 (the column the comma page uses), above the slab */
+  .spine .lines{position:absolute;z-index:3;right:var(--m);bottom:calc(var(--m) * 2.3);width:clamp(300px,24vw,360px);max-width:none;margin:0}
+  /* the spine: three columns of the title at word size, reading bottom to top, READ. in orange; it stands at the left edge and swings edge-on as the cover comes round */
+  .spine .side{left:calc(-1 * var(--D));width:var(--D);background:#0E0E0D;box-shadow:inset 0 0 0 1px var(--hair);transform-origin:100% 50%;transform:rotateY(-90deg);display:flex;flex-direction:row;justify-content:center;align-items:flex-end;gap:0;padding:calc(var(--m) * .9) 10px}
+  .spine .side::after{content:"";position:absolute;inset:0;background:#000;opacity:var(--shade2,0);pointer-events:none}
+  .spine .side .v{writing-mode:vertical-rl;transform:rotate(180deg);font-size:var(--L4);line-height:.9;letter-spacing:0;white-space:nowrap;position:relative;z-index:1}
+  /* the stair of pictures hangs one screen lower, the length of the turn */
+  .wwd.type-b main{--T:calc(max(var(--sh),560px) * 2 + 2.8 * var(--m))}
+}
+/* the phone: the open book hangs from the top, the title's cap at 30 percent of the screen (Anwar round 2, ruling 5; 40 percent would leave 271 CSS px under the nav, the target is 200) */
+@media (max-width:760px){
+  .spine{justify-content:flex-start;padding-top:calc(var(--sh) * .3 - 8px)}
+}
+/* 60, 30, 10: the hero's The audit keeps the orange underline; the four row links are white (Anwar round 2, ruling 7) */
+.wwd.type-b .duo .go{border-bottom-color:var(--white)}
+.wwd.type-b .duo .go:hover{border-bottom-color:var(--accent)}
+@media (prefers-reduced-motion:reduce) and (min-width:761px){
+  .spine .slab{transform:none}
+  .spine .cover h1{opacity:1}
+  .spine .cover::after{opacity:0}
+  .spine .side{display:none}
+  .wwd.type-b main{--T:calc(max(var(--sh),560px) + 2.8 * var(--m))}
+}

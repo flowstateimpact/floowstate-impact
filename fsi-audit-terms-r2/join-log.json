@@ -1,0 +1,132 @@
+{
+  "applied": "2026-10-25 11:44:43",
+  "terms": [
+    {
+      "n": 1,
+      "prefer": "10 places",
+      "over": "ten places",
+      "sentences": 1
+    },
+    {
+      "n": 1,
+      "prefer": "10 free audits",
+      "over": "ten free audits",
+      "sentences": 1
+    },
+    {
+      "n": 2,
+      "prefer": "place",
+      "over": "spot",
+      "sentences": 1
+    },
+    {
+      "n": 3,
+      "prefer": "place",
+      "over": "spot",
+      "sentences": 1
+    },
+    {
+      "n": 3,
+      "prefer": "the first person on the waiting list",
+      "over": "the next person on the waiting list",
+      "sentences": 2
+    }
+  ],
+  "cuts": [
+    {
+      "n": 1,
+      "quote": "The studio knows who has applied.",
+      "done": true
+    },
+    {
+      "n": 1,
+      "quote": "This ensures the right people are involved.",
+      "done": true
+    },
+    {
+      "n": 1,
+      "quote": "The call lasts up to 60 minutes and happens by video.",
+      "done": true
+    },
+    {
+      "n": 1,
+      "quote": "The read-out arrives by email within 10 working days after that call.",
+      "done": true
+    },
+    {
+      "n": 1,
+      "quote": "Working days run Sunday to Thursday, not counting public holidays in Bangladesh.",
+      "done": true
+    },
+    {
+      "n": 1,
+      "quote": "You are under no obligation to buy anything, and we will not chase you.",
+      "done": true
+    }
+  ],
+  "edits": [
+    {
+      "n": 1,
+      "where": "opening",
+      "instruction": "Keep this as the one-breath summary, but name the call as one video call of up to 60 minutes and the read-out as one written read-out sent by email within 10 working days, never 'letter'. Say plainly that a waiting-list position promises nothing, with no word suggesting a place will come later.",
+      "remaining": []
+    },
+    {
+      "n": 1,
+      "where": "sentence",
+      "instruction": "Before defining a place, define the audit (the free offer: one call and one read-out) and the call (the one video call of up to 60 minutes), so the list gives the page's key words in the glossary's sense, then define a place as one of the 10 free audits.",
+      "done": false
+    },
+    {
+      "n": 2,
+      "where": "whole",
+      "instruction": "Regenerate as clauses 6 to 15 in order under the existing headings B and C. Open each clause on its own line with its number and fixed heading, as section 1 does, keep every fact and number, and give every cross-reference as number plus fixed heading, for example clause 9 (A freed place goes to the first person on the waiting list). End on clause 15, leaving out everything that belongs to clause 16 onward (honest details, moving, missing or joining a call late, keeping the read-out, our methods), the restated definition of the waiting list, and the sentence repeating that paid work stands apart.",
+      "clean": true
+    },
+    {
+      "n": 3,
+      "where": "whole",
+      "instruction": "Regenerate as clauses 16 to 26 in order, each opening on its own line with its number and exact fixed heading, as section 1 does (clause 16 is 'The read-out rests on what you share'). Keep every fact, and drop every closing 'Clause N (...)' sentence. Make clause 18 plain about what happens if a second move is needed, without implying that the first move costs the place. Give clause 24's limits in one sentence rather than five of the same shape, and vary openings so fewer sentences start with 'you'.",
+      "clean": true
+    },
+    {
+      "n": 4,
+      "where": "whole",
+      "instruction": "Regenerate as clauses 27 to 33 in order, each opening on its own line with its number and fixed heading, as section 1 does, then one to three plain sentences that keep every fact the current draft gives. Drop every closing 'Clause N (...)' sentence and the final paragraph that recaps and previews, so the section ends on clause 33.",
+      "clean": true
+    },
+    {
+      "n": 5,
+      "where": "whole",
+      "instruction": "Regenerate as clauses 34 to 39 in order, each opening on its own line with its number and fixed heading, as section 1 does. Set clause 34's five rules out as a short numbered list, give every cross-reference as number plus fixed heading, and keep every fact. Leave out the sentence about which clauses point to clause 34, and end on clause 39's contact line, with CONTACT_EMAIL and LAST_UPDATED written exactly as tokens.",
+      "clean": true
+    }
+  ],
+  "verdicts": [
+    {
+      "n": 1,
+      "delivers_purpose": true,
+      "note": "The deal and who may apply both land. The short version says 'letter', hints that a waiting-list place will come, and defines four words rather than the page's key words. Two lines guard instead of inform, and the closing paragraph repeats clauses 11, 12 and 29."
+    },
+    {
+      "n": 2,
+      "delivers_purpose": false,
+      "note": "The facts are present, but clauses 6 to 15 lost their numbers and headings. Its cross-references give bare numbers, and the last paragraph runs into clauses 16 to 23, which belong to section 3."
+    },
+    {
+      "n": 3,
+      "delivers_purpose": false,
+      "note": "Clauses come in order, but each ends with a 'Clause N (...)' tag instead of opening with its number and heading. Clause 16's heading is wrong, clause 17 has no number, clause 18 reads as if the first move costs the place, and clause 24 runs five same-shaped sentences."
+    },
+    {
+      "n": 4,
+      "delivers_purpose": false,
+      "note": "The content is right, but headings trail as slogan-like tags ('circle of trust', 'respects your inbox', 'ends the pressure here'). The section closes on a recap and a preview, which the plan bans."
+    },
+    {
+      "n": 5,
+      "delivers_purpose": false,
+      "note": "Clear and calm, but clauses 34 to 39 carry no numbers or headings, so the pointers to clause 34 land nowhere. One sentence explains which clauses point here, which is the page's own machinery."
+    }
+  ]
+}

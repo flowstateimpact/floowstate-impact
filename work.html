@@ -2,101 +2,93 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="color-scheme" content="light">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Work · FlowStãte Impact</title>
+<link rel="preload" href="fonts/BespokeStencil-700.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="fonts/GeneralSans-Regular.woff2" as="font" type="font/woff2" crossorigin>
+<script>if(/full=(\d+)/.test(location.search)){window.__still=true;document.documentElement.style.setProperty('--sh',RegExp.$1+'px');new MutationObserver(function(){document.querySelectorAll('img[loading=lazy]').forEach(function(i){i.loading='eager'})}).observe(document.documentElement,{childList:true,subtree:true});addEventListener('load',function(){(document.fonts&&document.fonts.ready?document.fonts.ready:Promise.resolve()).then(function(){setTimeout(function(){var f=document.querySelector('.foot');var h=f?Math.ceil(f.getBoundingClientRect().bottom+(window.scrollY||0)):document.documentElement.scrollHeight;document.documentElement.setAttribute('data-docheight',h)},800)})})}</script>
 <link rel="icon" href="media/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="media/favicon-32.png" sizes="32x32" type="image/png">
-<link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="glow.css">
+<link rel="stylesheet" href="glow-a.css">
+<link rel="stylesheet" href="mark3d.css">
 </head>
-<body class="pg-work">
-<header class="pagehead" id="top">
-  <div class="menu">
-    <a class="logo" href="index.html" aria-label="FlowStãte Impact, home"><img class="mk" src="media/fsi-mark.svg" alt="" width="1197" height="1000"><img class="mark" src="media/wordmark.png" alt="FlowStãte Impact" width="1135" height="442"></a>
-    <nav>
-      <a href="work.html">Work</a>
-      <a href="what-we-do.html">What we do</a>
-      <a href="the-audit.html">Audit</a>
-      <a href="the-ai-system.html">AI system</a>
-      <a href="about.html">About</a>
+<body class="inner">
 
-      <a class="stamp" href="https://linktr.ee/flowstateimpact" target="_blank" rel="noopener">Ask for the audit</a>
-    </nav>
-    <div class="right">
-      <a class="stamp mstamp" href="https://linktr.ee/flowstateimpact" target="_blank" rel="noopener">Ask for the audit</a>
-      <button class="burger" aria-label="Menu" aria-expanded="false"><span></span></button>
-    </div>
-  </div>
-  <div class="hero pic">
-    <video class="bed" muted loop playsinline preload="none" poster="media/lane-poster.jpg"><source src="media/lane-phone.mp4" type="video/mp4" media="(max-width:760px)"><source src="media/lane.mp4" type="video/mp4"></video>
-    <div class="wrap">
-      <div class="playrow"><h1 class="h1"><span class="l">Press <span class="hot">play.</span></span></h1><button class="filmctl" data-state="paused" aria-label="Play the film" aria-pressed="false"><svg class="ic-pause" viewBox="0 0 16 16"><rect x="2.5" y="2" width="4" height="12"/><rect x="9.5" y="2" width="4" height="12"/></svg><svg class="ic-play" viewBox="0 0 16 16"><path d="M3.5 2v12l10-6z"/></svg></button></div>
-      <p class="slot">Two brands we built, from mark to film.</p>
-    </div>
-  </div>
-  <div class="grain"></div>
+<header class="top">
+  <a class="logo" href="index.html" aria-label="FlowStãte Impact, home"><img src="media/fsi-mark.svg" alt="" width="24" height="24"><img src="media/wordmark.png" alt="FlowStãte Impact" width="76" height="14"></a>
+  <nav class="links" aria-label="Pages"><a class="hot" href="work.html" aria-current="page">Work</a><a href="what-we-do.html">What we do</a><a href="the-audit.html">Audit</a><a href="the-ai-system.html">AI system</a><a href="about.html">About</a></nav>
+  <a class="ask" href="https://linktr.ee/flowstateimpact">Ask for the audit</a>
 </header>
+
 <main>
-  <section class="sec dark">
-    <div class="wrap">
-      <div class="workbed" style="margin-top:0">
-        <img class="bed" src="work/heritage-camp-6-lane.jpg" alt="">
-        <a class="pr a" href="heritage-in-motion.html"><img class="ph" src="work/heritage-coat-walk.jpg" alt=""><span class="tag">Heritage in Motion</span><span class="ln">A fashion house. Dhaka dressing Dhaka.</span></a>
-        <a class="pr b" href="chhaya.html"><img class="ph" src="work/chhaya-billboard.jpg" alt=""><span class="tag">Chhaya</span><span class="ln">A phone network, said small.</span></a>
-      </div>
-      <p class="note">Your business gets the team that made all of this.</p>
-      <div class="doors">
-        <a class="door" href="websites.html"><img src="media/worlds/eleven-tower.webp" alt="" loading="lazy"><span class="dn">Websites</span></a>
-        <a class="door" href="photography.html"><img src="media/photos/houses-02-800.webp" alt="" loading="lazy"><span class="dn">Photography</span></a>
-        <a class="door" href="films.html"><img src="media/lane-poster.jpg" alt="" loading="lazy"><span class="dn">Films</span></a>
-      </div>
-    </div>
-  </section>
-  <section class="sec paper" id="close">
-    <div class="wrap askbig"><div class="thread" aria-hidden="true"></div>
-        <h2 class="h2"><span class="l">Yours next?</span></h2>
-        <div class="act"><a class="stamp" href="https://linktr.ee/flowstateimpact" target="_blank" rel="noopener">Ask for the audit</a>
-          <p class="fine">Free for a limited time*<span>*T&amp;Cs apply</span></p></div>
-        <p class="under" data-waits="words: a line under the button on this page (the file gives one for Home only)"></p>
-    </div>
-  </section>
+
+<!-- screen one: the lane, waiting. The line is an instruction; the film does not move until you press the one orange thing -->
+<section class="screen crop film-hero" aria-label="Press play.">
+  <video class="bed" id="lane" muted loop playsinline preload="metadata" poster="media/lane-poster.jpg" aria-label="A woman in black walking a Dhaka lane with a tiger bag, from the Heritage in Motion film">
+    <source src="media/lane-phone.mp4" media="(max-width:760px)" type="video/mp4">
+    <source src="media/lane.mp4" type="video/mp4">
+  </video>
+  <div class="line">
+    <h1 class="st" aria-label="Press play.">Press play.<button class="play" data-for="lane" data-on="0" aria-label="Play the film"><svg class="ic-play" viewBox="0 0 14 14"><path d="M2 1l11 6-11 6z"/></svg><svg class="ic-pause" viewBox="0 0 14 14"><path d="M2 1h4v12H2zM8 1h4v12H8z"/></svg></button></h1>
+    <p class="slot">Two brands we built, from mark to film.</p>
+  </div>
+</section>
+
+<!-- Heritage: the street behind, the coat in front, the name beside -->
+<section class="wrow" aria-label="Heritage in Motion">
+  <a class="pics" href="heritage-in-motion.html" aria-label="Heritage in Motion">
+    <figure class="big"><img src="work/heritage-camp-6-lane.jpg" alt="Two women with the tiger bag in a wet Dhaka lane at night, from the Heritage campaign" width="1289" height="1600" loading="lazy" decoding="async"></figure>
+    <figure class="small"><img src="work/heritage-coat-walk.jpg" alt="The Heritage coat from behind, the embroidered eye showing on its lining, in a yellow corridor" width="1288" height="1600" loading="lazy" decoding="async"></figure>
+  </a>
+  <p class="para"><a class="n" href="heritage-in-motion.html">Heritage in Motion</a>A fashion house. Dhaka dressing Dhaka.</p>
+</section>
+
+<!-- Chhaya: the billboard behind, the cards in front, mirrored -->
+<section class="wrow flip" aria-label="Chhaya">
+  <a class="pics" href="chhaya.html" aria-label="Chhaya">
+    <figure class="big fit"><img src="work/chhaya-billboard.jpg" alt="A Bangla billboard for Chhaya in pink and tan" width="1600" height="827" loading="lazy" decoding="async"></figure>
+    <figure class="small"><img src="work/chhaya-objects.jpg" alt="The Chhaya SIM card and recharge card" width="1600" height="1236" loading="lazy" decoding="async"></figure>
+  </a>
+  <p class="para"><a class="n" href="chhaya.html">Chhaya</a>A phone network, said small.</p>
+</section>
+
+<!-- the line between the two brands and the three doors -->
+<section class="sec block tl" aria-label="The team">
+  <h2 class="h">Your business gets the team that made all of this.</h2>
+</section>
+
+<!-- the three doors: three sizes on one shelf, the third running off the edge -->
+<section class="strip" aria-label="Websites, photography and films">
+  <div class="s1w">
+    <a class="s1" href="websites.html"><img src="media/worlds/eleven-tower.webp" alt="One residential building at dusk by the lake, every window lit" width="2048" height="1152" loading="lazy" decoding="async"><span class="cap"><span class="lab">Websites</span></span></a>
+  </div>
+  <a class="s2" href="photography.html"><img src="media/photos/houses-02-1600.webp" srcset="media/photos/houses-02-800.webp 800w, media/photos/houses-02-1600.webp 1600w" sizes="(max-width:760px) 66vw, 22vw" alt="A smiling woman with long dark hair beside a blue glass building" width="1600" height="2400" loading="lazy" decoding="async"><span class="cap"><span class="lab">Photography</span></span></a>
+  <a class="s3" href="films.html"><img src="media/eye-poster.jpg" alt="Hands embroidering an eye in red thread" width="1200" height="502" loading="lazy" decoding="async"><span class="cap"><span class="lab">Films</span></span></a>
+</section>
+
+<!-- close -->
+<section class="sec close" aria-label="Yours next?">
+  <h2 class="st">Yours next?</h2>
+  <div class="btn-row"><a class="btn" href="https://linktr.ee/flowstateimpact" data-swap="settle">Ask for the audit</a><span class="note">Free for a limited time*<span>*T&amp;Cs apply</span></span></div>
+  <p class="under" data-waits="words: a line under the button on this page (the file gives one for Home only)"></p>
+</section>
+
 </main>
-  <footer class="foot dark">
-    <div class="fwrap">
-      <p class="next"><a href="what-we-do.html">Next: What we do</a></p>
-      <div class="fcols">
-        <div class="fid">
-          <img class="fmark" src="media/wordmark.png" alt="FlowStãte Impact" width="1135" height="442" loading="lazy">
-          <p class="firm">Dhaka · London</p>
-        </div>
-        <div class="fvisit">
-          <p class="flab">Visit</p>
-          <address>Akij Motors, 97 Shaheed Tajuddin Ahmed Sharoni,<br>Hatir Jheel Link Rd, Dhaka 1208</address>
-          <iframe class="fmap" title="Map to the FlowStãte office at Akij Motors, Dhaka" src="https://www.google.com/maps?q=Akij+Motors,+97+Shaheed+Tajuddin+Ahmed+Sharoni,+Dhaka+1208&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-        </div>
-        <div class="fgo">
-          <nav><a href="work.html">Work</a><a href="what-we-do.html">What we do</a><a href="the-audit.html">Audit</a><a href="the-ai-system.html">AI system</a><a href="about.html">About</a></nav>
-          <a class="stamp fbook" href="https://linktr.ee/flowstateimpact#592953534" target="_blank" rel="noopener">Book a call</a>
-          <a class="flink" href="https://linktr.ee/flowstateimpact" target="_blank" rel="noopener">Linktree</a>
-        </div>
-      </div>
-    </div>
-  </footer>
-<script src="vendor/gsap.min.js"></script>
-<script src="vendor/ScrollTrigger.min.js"></script>
-<script src="site.js" defer></script>
-<script>
-(function(){
-  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var bg = document.querySelector('.burger'); if (bg) { bg.addEventListener('click', function(){ var m = bg.closest('.menu'); var o = m.classList.toggle('open'); bg.setAttribute('aria-expanded', o); }); }
-  var hero = document.querySelector('.hero'), v = hero.querySelector('video.bed'), ctl = hero.querySelector('.filmctl');
-  function set(p){ hero.classList.toggle('playing', p); if (ctl) { ctl.dataset.state = p ? 'playing' : 'paused'; ctl.setAttribute('aria-label', p ? 'Pause the film' : 'Play the film'); ctl.setAttribute('aria-pressed', p ? 'true' : 'false'); } }
-  if (v) {
-    v.addEventListener('play', function(){ set(true); }); v.addEventListener('pause', function(){ set(false); });
-    hero.querySelectorAll('.filmctl,[data-plays]').forEach(function(b){ b.addEventListener('click', function(e){ e.preventDefault(); if (v.paused) v.play(); else v.pause(); }); });
-  }
-  if (reduce) document.querySelectorAll('.shot video').forEach(function(x){ x.removeAttribute('autoplay'); x.pause(); });
-})();
-</script>
+
+<footer class="foot">
+  <a class="next" href="what-we-do.html">Next: What we do</a>
+  <div class="mark3d" data-mark3d aria-hidden="true"><img class="mark3d-fallback" src="media/fsi-flame.svg" alt="" width="320" height="320"></div>
+  <div class="cols">
+    <div><img class="mark" src="media/wordmark.png" alt="FlowStãte Impact" width="120" height="22"><p class="dim">Dhaka · London</p></div>
+    <div><p class="vis">Visit</p><address>97 Shaheed Tajuddin Ahmed<br>Sharoni, Hatir Jheel Link Rd<br>Dhaka 1208</address></div>
+    <div><nav aria-label="Pages, again"><a href="work.html">Work</a><a href="what-we-do.html">What we do</a><a href="the-audit.html">Audit</a><a href="the-ai-system.html">AI system</a><a href="about.html">About</a></nav><a class="book" href="https://linktr.ee/flowstateimpact#592953534">Book a call</a><a class="lt" href="https://linktr.ee/flowstateimpact">Linktree</a></div>
+  </div>
+</footer>
+
+<script src="vendor/gsap.min.js" defer></script>
+<script src="vendor/ScrollTrigger.min.js" defer></script>
+<script src="glow.js" defer></script>
+<script src="mark3d.js" defer></script>
 </body>
 </html>

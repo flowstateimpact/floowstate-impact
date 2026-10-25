@@ -1,0 +1,45 @@
+{
+  "started": "2026-10-25 10:35:52",
+  "model": "qwen3.8-64k",
+  "dry": false,
+  "examined": 51,
+  "flagged": 1,
+  "rewritten": 0,
+  "kept_original": 1,
+  "draft_rhythm_before": [
+    "7 sentences start with \"the\"; vary the openings."
+  ],
+  "sections": [
+    {
+      "n": 4,
+      "paragraphs": [
+        {
+          "i": 4,
+          "before": {
+            "sentences": 5,
+            "lengths": [
+              1,
+              22,
+              9,
+              11,
+              11
+            ],
+            "run": 3,
+            "spread": 0.69,
+            "same_openings": 2,
+            "dull_openings": 0.0,
+            "score": 2.0
+          },
+          "tries": 2,
+          "kept": false,
+          "why": "length moved from 53 to 41 words / length moved from 53 to 34 words"
+        }
+      ]
+    }
+  ],
+  "examples": [],
+  "draft_rhythm_after": [
+    "7 sentences start with \"the\"; vary the openings."
+  ],
+  "finished": "2026-10-25 10:36:05"
+}

@@ -1,0 +1,58 @@
+{
+  "n": 1,
+  "heading": "You get one free call and one written read-out, and each company takes part once",
+  "target": 400,
+  "attempts": [
+    {
+      "try": 1,
+      "words": 230,
+      "seconds": 39.8,
+      "tok_per_s": 31.6,
+      "problems": [
+        "too short: 230 words against a target of 400"
+      ],
+      "advisories": [
+        "every paragraph runs 3 to 5 sentences (module uniformity). Collapse one to a single line; let one carry more.",
+        "3 sentences start with \"this\"; vary the openings."
+      ],
+      "note": "reading grade 7.6 · 16 sentences · average 14 words each · longest 24."
+    },
+    {
+      "try": 2,
+      "words": 233,
+      "seconds": 11.6,
+      "tok_per_s": 38.4,
+      "problems": [
+        "too short: 233 words against a target of 400"
+      ],
+      "advisories": [
+        "every paragraph runs 3 to 5 sentences (module uniformity). Collapse one to a single line; let one carry more.",
+        "3 sentences start with \"this\"; vary the openings."
+      ],
+      "note": "reading grade 7.8 · 16 sentences · average 14 words each · longest 24."
+    },
+    {
+      "try": 3,
+      "words": 260,
+      "seconds": 10.8,
+      "tok_per_s": 38.0,
+      "problems": [
+        "too short: 260 words against a target of 400"
+      ],
+      "advisories": [
+        "3 sentences start with \"this\"; vary the openings."
+      ],
+      "note": "reading grade 8.7 · 17 sentences · average 15 words each · longest 24."
+    }
+  ],
+  "kept_try": 3,
+  "words": 260,
+  "clean": false,
+  "remaining": [
+    "too short: 260 words against a target of 400"
+  ],
+  "advisories": [
+    "3 sentences start with \"this\"; vary the openings."
+  ],
+  "finished": "2026-10-25 10:29:55"
+}

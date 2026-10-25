@@ -1,0 +1,78 @@
+/* type-a.css: variant A, THE PLATE (home) and THE COMMA (what we do). 25 Oct 2026, Nadir. Loads after type-base.css.
+   Home: the letters are holes cut in a black steel plate; the lane film plays behind it and is seen only through the cuts.
+   DARE is the one word that is not a hole: it is sprayed on the plate in orange. On scroll the plate hinges away at its top edge
+   and the film floods the screen; DARE is the last thing to lift. The real h1 and the who block stay in the document, unseen. */
+
+/* the scene is two screens tall; its stage holds for one screen while the plate goes */
+.scene{position:relative;z-index:3;height:calc(var(--sh) * 2)}
+.scene .stage{position:sticky;top:0;height:var(--sh);min-height:560px;overflow:hidden;background:var(--black);perspective:1200px;perspective-origin:50% 50%}
+.scene .bed{z-index:0}
+.scene .bed.under{object-position:100% 50%}             /* the woman walks in the left third; the right half of the lane is free */
+.scene .plate{position:absolute;inset:0;z-index:2;pointer-events:none}
+.scene .plate canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+/* the drawn plate without WebGL: an SVG sheet masked by the letters, hinged by CSS */
+.scene .plate .sheet,.scene .plate .dare{position:absolute;left:0;top:0;width:100%;height:100%;transform-origin:50% 0;will-change:transform}
+.scene .plate .dare{pointer-events:none}
+/* what comes up as the plate leaves: the word on the film, the caption, the one orange control */
+.scene .after{position:absolute;inset:0;z-index:3;opacity:var(--rev,0);pointer-events:none}
+.scene .after>*{pointer-events:auto}
+.scene .after .word{position:absolute;white-space:nowrap;pointer-events:none;left:54vw;top:calc(var(--sh) * .30);font-size:var(--L7);line-height:.8;letter-spacing:0;color:var(--white)}
+.scene .after .cap{z-index:4}
+.scene .after .play{z-index:5}
+@media (max-width:760px){.scene .after .word{left:34vw;top:calc(var(--sh) * .34)}}
+/* reduced motion: one screen, the plate stands still with the lane's first frame in the cuts; the caption is reachable */
+@media (prefers-reduced-motion:reduce){
+  .scene{height:var(--sh)}
+  .scene .after{--rev:1}
+  .scene .after .word{display:none}
+}
+html.plate-still .scene{height:var(--sh)}
+html.plate-still .scene .after{--rev:1}
+html.plate-still .scene .after .word{display:none}
+
+/* ---- what we do: THE COMMA ---- */
+/* YOUR WHOLE BUSINESS, at L4; READ. at L6, orange, on its own line: a 2 to 1 jump between two stencil sizes. The pause, then the verdict */
+.comma{display:flex;flex-direction:column;justify-content:flex-end;padding:0 var(--m) calc(var(--m) * 1.5)}
+.comma h1{font-size:var(--L4);line-height:.9;letter-spacing:0}
+.comma h1 .l1,.comma h1 .l2{display:block}
+.comma h1 .l2{font-size:var(--L6);line-height:.88;letter-spacing:-.01em;margin-top:calc(var(--L6) * .06)}
+.comma .lines{display:grid;gap:10px;max-width:34ch;font-size:var(--L2);line-height:1.4;margin-top:calc(var(--m) * 1.2)}
+.comma .lines .go{justify-self:start;margin-top:8px;font-size:var(--L0)}
+@media (min-width:761px){
+  .comma .end{display:flex;align-items:flex-end;justify-content:space-between;gap:calc(var(--m) * 2)}
+  .comma .lines{margin-top:0;padding-bottom:calc(var(--L6) * .04);flex:0 0 clamp(300px,24vw,360px)}
+  .comma h1{flex:1 1 auto;min-width:0}
+}
+/* the two lines arrive through the cut, the way the service words do; READ. half a second after the first line */
+.comma.arm h1 .l1,.comma.arm h1 .l2{clip-path:inset(-12% 100% -12% 0%)}
+.comma.in h1 .l1{clip-path:inset(-12% 0% -12% 0%);transition:clip-path .5s cubic-bezier(.6,0,.8,1)}
+.comma.in h1 .l2{clip-path:inset(-12% 0% -12% 0%);transition:clip-path .56s cubic-bezier(.6,0,.8,1) .5s}
+@media (prefers-reduced-motion:reduce){.comma.arm h1 .l1,.comma.arm h1 .l2{clip-path:none;transition:none}}
+/* reduced motion keeps the stair below, so the open takes Anwar's first option: the title's cap top at 40 percent of the screen, the two lines on its cap line at the right */
+@media (prefers-reduced-motion:reduce) and (min-width:761px){
+  .comma{justify-content:flex-start;padding-top:calc(var(--sh) * .4 - 8px)}
+  .comma .end{align-items:flex-start}
+  .comma .lines{padding-bottom:0}
+}
+/* the phone: the title hangs from the top, never pinned to the foot of a full screen (Anwar round 2, ruling 5: the first content row within 200 CSS px of the nav).
+   40 percent of 844 would leave 271 under the nav's last row, so the cap top sits at 30 percent (253) and the lines follow it */
+@media (max-width:760px){
+  .comma{justify-content:flex-start;padding-top:calc(var(--sh) * .3 - 8px)}
+}
+/* 60, 30, 10: the one orange action on the home's first screen is the ask in the bar, so its underline is the thread; the four row links on what we do are white (Anwar round 2, ruling 7) */
+.type-a:not(.inner) .top .ask{border-bottom-color:var(--accent)}
+.wwd.type-a .duo .go{border-bottom-color:var(--white)}
+.wwd.type-a .duo .go:hover{border-bottom-color:var(--accent)}
+
+/* the four row pictures stand as four sheets at four depths and turn one by one like pages being read; the words stay a ledger on the left */
+@media (min-width:761px){
+  .wwd.type-a .duo{min-height:52vh}
+  .wwd.type-a .duo.last{min-height:48vh;padding-bottom:calc(var(--m) * 2.2)}
+  .wwd.type-a .pages{position:absolute;z-index:5;top:calc(var(--m) * 2.2);right:var(--m);width:26vw;height:32.5vw;perspective:1800px;perspective-origin:20% 50%;transform-style:preserve-3d}
+  .wwd.type-a .pages .pic,.wwd.type-a .pages .pic.tall,.wwd.type-a .pages .pic.wide{position:absolute;left:0;top:0;right:auto;width:100%;height:100%;margin:0;transform-origin:0 50%;transform-style:preserve-3d;backface-visibility:hidden;box-shadow:0 30px 80px rgba(0,0,0,.5)}
+  /* a moved sheet carries its own clip and picture sizing: glow.css's .duo .pic rules no longer match it (Anwar round 2, ruling 4) */
+  .wwd.type-a .pages .pic{overflow:hidden}
+  .wwd.type-a .pages .pic img{position:absolute;left:0;top:0;width:100%;height:100%;object-fit:cover;transform:none;will-change:auto}
+  .wwd.type-a .pages .pic::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.55),rgba(0,0,0,0) 40%);opacity:var(--lift,0);pointer-events:none;z-index:4}
+  .wwd.type-a .pages .pic .lab{z-index:5}
+}

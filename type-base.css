@@ -1,0 +1,63 @@
+/* type-base.css: Esha's scale (GLOWUP-TYPE-ESHA.md section 2) as custom properties, and the ladder brought onto every
+   display setting of the home and what-we-do pages, so the one giant line has a middle voice to stand against.
+   25 Oct 2026, Nadir. Loads after glow.css, glow-a.css and mark3d.css; touches sizes, breaks and placement only.
+   Cap heights measured off the woff2 in Chrome (canvas, 1000px): Bespoke Stencil 0.70 em, General Sans 0.718 em, x-height 0.527 em.
+   Display margins below are set from the cap top (0.70 em), never the em box. */
+
+:root{
+  --L0:12px;                                   /* whisper: the who block, captions, labels */
+  --L1:clamp(16px,15px + .1vw,17px);           /* text */
+  --L2:clamp(18px,16.5px + .26vw,22px);        /* lead */
+  --L3:clamp(30px,24px + 1.5vw,54px);          /* heading, the text face at 500 */
+  --L4:clamp(40px,12px + 5vw,96px);            /* word: service words */
+  --L5:clamp(52px,10px + 7.1vw,128px);         /* title: inner page h1, the close */
+  --L6:clamp(58px,17px + 8vw,140px);           /* poster: the home tagline only. Esha's ceiling was 148; at 1920 three lines of 148 run to 31 percent of 1080, 140 holds 29 */
+  --L7:clamp(160px,26vw,480px);                /* picture word: WORK, BRAND, one per screen, aria-hidden */
+  --cap:.70;                                   /* the stencil's cap height per em */
+  --brk:24px;                                  /* the bracket: small text sits this far above and below the one giant line */
+}
+@media (min-width:1800px){:root{--L0:13px}}
+
+/* the stencil's tracking opens as it grows: -.01 at poster and title, 0 at word, +.005 on the phone; line-height .9 (poster .88, picture word .8) */
+.st{line-height:.9;letter-spacing:0}
+@media (max-width:760px){.st{letter-spacing:.005em}}
+
+/* L7: the picture words. One per screen, cut by an edge, behind the subject */
+.screen .word{font-size:var(--L7);line-height:.8;letter-spacing:0}
+.heritage .word{left:54vw;top:calc(var(--sh) * .30)}
+.chhaya .word{left:56vw;top:calc(var(--sh) * .06);font-size:var(--L7);z-index:2}   /* BRAND at the top, behind the SIM pack; WORK sat mid-screen, so the pair is a mirror and not a repeat */
+@media (max-width:760px){
+  .screen .word{font-size:var(--L7);left:34vw;top:calc(var(--sh) * .34)}
+  .chhaya .word{font-size:var(--L7);left:30vw;top:calc(var(--sh) * .08)}
+}
+
+/* L4: the six service words, 84px at 1440 against 101 before; one line, the small line beside each at L0 */
+.svc .row .st{font-size:var(--L4);line-height:.9}
+.svc .row .ln{font-size:var(--L0)}
+@media (max-width:760px){.svc .row .st{font-size:var(--L4)}}
+
+/* L3: the text-face headings (the audit, the AI system, who, the four rows, the pair) */
+.block .h,.duo .h,.pair .h,.tl .h{font-size:var(--L3);line-height:1.04;letter-spacing:-.02em}
+@media (max-width:760px){.block .h,.duo .h,.pair .h,.tl .h{font-size:var(--L3)}}
+
+/* L5: the close. GROWING? GOOD. and TAKE ONLY WHAT YOU NEED. at 112, the one loud note at the end of the page */
+.close .st,.wwd .close .st{font-size:var(--L5);line-height:.9;letter-spacing:-.01em}
+@media (max-width:760px){.close .st,.wwd .close .st{font-size:var(--L5)}}
+
+/* the who block and the bracket lines */
+.who{font-size:var(--L0)}
+.brk{font-size:var(--L0);line-height:1.4;letter-spacing:.027em;font-variant-ligatures:none}
+
+/* the new first screens share this shell; glow.js's hero hooks (.hero, .page-hero) are not matched on purpose: each variant drives its own motion */
+.hero-t{position:relative;z-index:3;height:var(--sh);min-height:560px;overflow:hidden}
+.page-hero-t{position:relative;z-index:3;height:var(--sh);min-height:560px}
+@media (min-width:761px){html{scroll-snap-type:y proximity}.snap{scroll-snap-align:start}}
+@media (prefers-reduced-motion:reduce){html{scroll-snap-type:none}}
+
+/* the nav on an inner page: the current item white, the rest at 60 percent white; no orange in the bar, the page's one orange word stays the only one (Anwar fix 6) */
+.inner .top .links a{color:rgba(242,242,240,.6);opacity:1}
+.inner .top .links a.hot,.inner .top .links a[aria-current="page"]{color:var(--white)}
+.inner .top .links a:hover{color:var(--white)}
+
+/* the real heading stays in the document when a variant draws it another way */
+.sr-h{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}

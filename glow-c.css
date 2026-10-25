@@ -1,0 +1,78 @@
+/* glow-c.css: direction C, THE SENTENCE. The navigation is the headline; the page below is set paragraphs. */
+
+/* screen one: two columns, the nav as the headline, the tagline opposite */
+.hero{position:relative;z-index:3;height:var(--sh);min-height:620px;display:grid;grid-template-columns:45fr 55fr;padding:0 var(--m)}
+.hero .left{padding-top:calc(var(--m) * 2.6);display:flex;flex-direction:column;justify-content:space-between;padding-bottom:calc(var(--m) * 1.2)}
+.bignav{display:grid;gap:.1em}
+.bignav a{font-weight:500;font-size:7vw;line-height:.9;letter-spacing:-.035em;transition:color .35s var(--ease)}
+.bignav:hover a{color:var(--dim)}
+.bignav a:hover{color:var(--accent)}
+.hero .right{position:relative}
+.hero h1{position:absolute;left:0;bottom:calc(-0.38 * var(--h));--h:9.5vw;font-size:var(--h);will-change:transform}
+.hero h1 span{display:block}
+.hero h1 .os{font-family:var(--sans);font-weight:400;text-transform:none;letter-spacing:-.01em;font-size:.62em;line-height:1.2}
+@media (max-width:760px){
+  .hero{grid-template-columns:1fr;grid-template-rows:auto 1fr;min-height:0}
+  .hero .left{padding-top:calc(var(--m) * 4);padding-bottom:0;justify-content:flex-start;gap:28px}
+  .bignav a{font-size:13vw}
+  .hero h1{--h:16vw}
+}
+
+/* the paragraph system: a label hanging in the margin, names heavy, connectives light */
+.psec{position:relative;padding:calc(var(--m) * 3) var(--m) calc(var(--m) * 3) 16vw}
+.psec>.lab{position:absolute;left:var(--m);top:calc(var(--m) * 3 + .9vw);color:var(--dim)}
+.para{font-size:3vw;line-height:1.12;letter-spacing:-.025em;max-width:90vw;color:var(--dim);font-weight:400}
+.para .n{font-weight:500;color:var(--white)}
+.para a.n{border-bottom:2px solid transparent;transition:color .3s,border-color .3s}
+.para a.n:hover{color:var(--accent)}
+.para.small{font-size:2.2vw;letter-spacing:-.015em;line-height:1.18}
+.psec .intro{font-size:16px;margin-bottom:calc(var(--m) * 1.2);color:var(--white)}
+.psec .go,.psec .btn-row{margin-top:calc(var(--m) * 1.2)}
+.psec .go{display:inline-block}
+@media (max-width:760px){
+  .psec{padding-left:var(--m);padding-top:calc(var(--m) * 4)}
+  .psec>.lab{top:calc(var(--m) * 2)}
+  .para{font-size:7.2vw;max-width:none}
+  .para.small{font-size:5.6vw}
+}
+
+/* work: two large pictures in flow, the display word crossing each picture's edge */
+.work{position:relative;padding:calc(var(--m) * 2) 0}
+.work .pic{position:relative;width:48vw}
+.work .pic img{width:100%;height:auto}
+.work .pic .cap{max-width:none}
+.work .one{margin-left:var(--m)}
+.work .two{margin-left:auto;margin-right:var(--m);margin-top:calc(var(--m) * 2)}
+.work .word{position:absolute;white-space:nowrap;font-size:11vw;color:var(--white);z-index:2;pointer-events:none;mix-blend-mode:normal}
+.work .one .word{left:60%;bottom:18%}
+.work .two .word{right:62%;top:14%}
+.work .between{padding:calc(var(--m) * 2.5) var(--m) 0 16vw}
+.work .between .para{color:var(--white)}
+@media (max-width:760px){
+  .work .pic{width:82vw}
+  .work .one .word{left:50%;font-size:18vw}
+  .work .two .word{right:40%;font-size:18vw}
+  .work .between{padding-left:var(--m)}
+}
+
+/* websites: the paragraph swaps its ground to the world under the cursor */
+.worlds{position:relative;overflow:hidden}
+.worlds .bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .5s var(--ease);pointer-events:none}
+.worlds .bg.on{opacity:.55}
+.worlds>*:not(.bg){position:relative;z-index:2}
+
+/* pictures: four full-width rows of differing heights */
+.rows .row{position:relative;display:block;overflow:hidden}
+.rows .row img{width:100%;height:116%;object-fit:cover;will-change:transform}
+.rows .r1{height:calc(var(--sh) * 0.7)}
+.rows .r2{height:calc(var(--sh) * 0.6)}
+.rows .r3{height:calc(var(--sh) * 0.8)}
+.rows .r4{height:calc(var(--sh) * 0.64)}
+.rows .lab{position:absolute;left:var(--m);bottom:var(--m);z-index:2}
+@media (max-width:760px){.rows .r1{height:calc(var(--sh) * .5)}.rows .r2{height:calc(var(--sh) * .42)}.rows .r3{height:calc(var(--sh) * .6)}.rows .r4{height:calc(var(--sh) * .46)}}
+
+/* team and close */
+.team .para{color:var(--white);font-weight:500}
+.team .dim{display:block;margin-top:calc(var(--m) * .8);font-size:11px;color:var(--dim)}
+.close .st{font-size:12vw;margin-bottom:calc(var(--m) * 1.2)}
+@media (max-width:760px){.close .st{font-size:16vw}}

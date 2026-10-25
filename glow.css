@@ -1,0 +1,301 @@
+/* glow.css: the shared base for the three home page directions (24 Oct 2026).
+   Two grounds, one accent, two faces. Solid colour only: no fabric pictures, no grain, no filled letters. */
+
+@font-face{font-family:"Bespoke Stencil";font-weight:700;font-style:normal;font-display:swap;src:url(fonts/BespokeStencil-700.woff2) format("woff2")}
+@font-face{font-family:"General Sans";font-weight:400;font-style:normal;font-display:swap;src:url(fonts/GeneralSans-Regular.woff2) format("woff2")}
+@font-face{font-family:"General Sans";font-weight:500;font-style:normal;font-display:swap;src:url(fonts/GeneralSans-Medium.woff2) format("woff2")}
+
+:root{
+  --black:#0B0B0B;          /* 60: the ground */
+  --white:#F2F2F0;          /* 30: the letters and the light in the pictures */
+  --accent:#E27F22;         /* 10: the thread. DARE, the play control, the one ask. */
+  --dim:rgba(242,242,240,.5);
+  --hair:rgba(242,242,240,.18);
+  --sans:"General Sans",system-ui,sans-serif;
+  --stencil:"Bespoke Stencil",Impact,sans-serif;
+  --m:clamp(20px,2.8vw,40px);          /* the page margin */
+  --small:12px;                        /* the small voice */
+  --ease:cubic-bezier(.22,.8,.2,1);
+  --sh:100svh;                         /* one screen; pinned to a number only for full-page renders */
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%;background:var(--black)}
+body{font-family:var(--sans);font-weight:400;font-size:16px;line-height:1.35;color:var(--white);background:var(--black);overflow-x:hidden}
+img,video{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+::selection{background:var(--accent);color:var(--black)}
+
+/* the two faces */
+.st{font-family:var(--stencil);font-weight:700;line-height:.82;letter-spacing:-.03em;text-transform:uppercase}
+.sm{font-size:var(--small);line-height:1.3;letter-spacing:.027em;font-variant-ligatures:none}
+.lab{font-size:11px;line-height:1.3;letter-spacing:.0124em;text-transform:uppercase;font-weight:500}
+.dim{color:var(--dim)}
+.ph{display:none}
+@media (max-width:760px){.ph{display:inline}}
+.hot{color:var(--accent)}
+
+/* the top bar: 12px, nothing else */
+.top{position:fixed;z-index:40;left:0;right:0;top:0;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:18px var(--m);font-size:var(--small);font-weight:500;letter-spacing:.02em;pointer-events:none}
+.top>*{pointer-events:auto}
+.top .links,.top .ask{mix-blend-mode:difference}
+.top .logo{display:flex;align-items:center;gap:10px}
+.top .logo img:first-child{height:24px;width:auto}
+.top .logo img:last-child{width:76px;height:auto}
+.top .links{display:flex;gap:22px}
+.top .links a{opacity:.85;border-bottom:1px solid transparent;padding-bottom:2px;transition:opacity .3s,border-color .3s}
+.top .links a:hover{opacity:1;border-bottom-color:currentColor}
+.top .ask{border-bottom:1px solid currentColor;padding-bottom:2px}
+/* the bar leaves while you read down and comes back when you look up, cut from the page's own black;
+   at the top of the page it is see-through again, one sheet with the first screen */
+.top{transition:transform .5s var(--ease),background-color .25s}
+.top.away{transform:translateY(-100%)}
+.top.back{background:var(--black);box-shadow:0 1px 0 rgba(242,242,240,.22)}   /* a hairline lower edge; a shadow, so the fixed bar's height does not change */
+.top.back .links,.top.back .ask{mix-blend-mode:normal}
+@media (max-width:760px){
+  .top{flex-wrap:wrap;padding:14px var(--m);row-gap:10px}
+  .top .links{order:3;width:100%;gap:16px;font-size:11px;overflow-x:auto;scrollbar-width:none;justify-content:space-between}   /* the five links span the width: a second deck under the logo row */
+  .top .links::-webkit-scrollbar{display:none}
+}
+
+/* who this is: the 12px block on every first screen */
+.who{font-size:var(--small);line-height:1.4;letter-spacing:.027em;font-variant-ligatures:none;max-width:26ch}
+.who b{font-weight:500;letter-spacing:.0124em}
+.who .dim{display:block}
+
+/* a section with the page margin */
+.sec{padding:calc(var(--m) * 3) var(--m)}
+.sec .lab{display:block;margin-bottom:calc(var(--m) * 1.2);color:var(--dim)}
+.rule{border-top:1px solid var(--hair)}
+
+/* the one ask: a square block, never a pill */
+.btn{display:inline-block;background:var(--accent);color:var(--black);font-weight:500;font-size:13px;letter-spacing:.06em;text-transform:uppercase;padding:18px 26px;line-height:1;transition:background .3s var(--ease),color .3s var(--ease)}
+.btn:hover{background:var(--white)}
+.btn-row{display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+.btn-row .note{font-size:var(--small);color:var(--dim)}
+.btn-row .note span{display:block;font-size:11px}
+.go{font-size:var(--small);font-weight:500;letter-spacing:.02em;border-bottom:1px solid var(--accent);padding-bottom:3px;transition:border-color .3s}
+.go:hover{border-bottom-color:var(--white)}
+/* the thread: every way onward is underlined in the accent, except beside the orange button, where one orange is enough */
+.close .go{border-bottom-color:var(--white)}
+.close .go:hover{border-bottom-color:var(--accent)}
+
+/* the play control: orange, the one moving thing you can touch */
+.play{position:absolute;z-index:5;right:var(--m);bottom:var(--m);width:46px;height:46px;border-radius:50%;background:var(--accent);color:var(--black);display:grid;place-items:center;transition:transform .35s var(--ease)}
+.play{box-shadow:0 0 0 0 rgba(226,127,34,0);transition:box-shadow .5s var(--ease)}
+.play:hover{box-shadow:0 0 0 7px rgba(226,127,34,.22)}
+.play svg{width:14px;height:14px;fill:currentColor}
+.play .ic-pause{display:none}
+.play[data-on="1"] .ic-play{display:none}
+.play[data-on="1"] .ic-pause{display:block}
+
+/* a section word cropped by the right edge (never the tagline) */
+.crop{position:relative;overflow:hidden}
+.crop .word{position:absolute;white-space:nowrap;pointer-events:none}
+
+/* captions that sit on a picture, at the far edge */
+.cap{position:absolute;z-index:3;left:var(--m);bottom:var(--m);display:grid;gap:4px;max-width:46ch}
+.cap .lab{color:var(--white)}
+.cap .ln{font-size:var(--small);color:var(--white)}
+.cap-r{left:auto;right:var(--m);text-align:right}
+
+/* film beds */
+.bed{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+
+/* the footer, shared by the three */
+.foot{padding:calc(var(--m) * 2) var(--m) var(--m);border-top:1px solid var(--hair);font-size:var(--small);display:grid;grid-template-columns:1fr auto;align-items:start}
+.foot .cols{grid-column:1/-1}
+.mark3d{position:relative;width:26vw;height:26vw;margin:calc(var(--m) * -1) 0 calc(var(--m) * .5) auto}
+.mark3d-fallback{width:100%;height:100%;object-fit:contain;opacity:.22}
+@media (max-width:760px){.foot{grid-template-columns:1fr}.mark3d{width:60vw;height:60vw;margin:0 0 calc(var(--m) * .5) auto}}
+.foot .next{display:inline-block;margin-bottom:48px;font-weight:500;border-bottom:1px solid var(--white);padding-bottom:3px}
+.foot .cols{display:grid;grid-template-columns:1.2fr 1.4fr 1fr;gap:32px;align-items:start}
+.foot .mark{width:120px;height:auto;margin-bottom:10px}
+.foot address{font-style:normal;color:var(--dim);max-width:28ch;letter-spacing:.027em;font-variant-ligatures:none}
+.foot .vis{margin-bottom:6px;font-weight:500}
+.foot nav{display:grid;gap:6px;margin-bottom:22px}
+.foot .book{font-weight:500;border-bottom:1px solid var(--white);padding-bottom:3px;margin-right:18px}
+.foot .lt{color:var(--dim)}
+@media (max-width:760px){.foot .cols{grid-template-columns:1fr;gap:28px}}
+/* the hairline under Next runs to the plate's left edge, not its box (the plate sits 0.0939 of the box in from each side); on phones it ends at the plate's right edge */
+.foot .next{margin-right:calc(26vw * -0.0939)}
+@media (max-width:760px){.foot .next{margin-right:calc(60vw * 0.0939)}}
+
+/* the button line swaps: every letter of a changing line moves on its own; the old line clears before the new arrives */
+.rot{display:inline-grid;vertical-align:top}
+.rot .rl{grid-area:1/1;white-space:nowrap;text-align:center;opacity:1}
+.rot .rl i{display:inline;position:relative;top:.3em;opacity:0;font-style:normal;transition:opacity .32s var(--ease),top .46s var(--ease)}
+.rot .rl.on i{top:0;opacity:1;transition-delay:calc(260ms + var(--i) * 14ms)}
+.rot .rl.was i{top:-.3em;transition-duration:.18s,.22s}
+/* shuffle: the audit button, letters leave and arrive from the centre outward */
+[data-swap=shuffle] .rot .rl i{top:.22em;transition-delay:calc(var(--c) * 22ms)}
+[data-swap=shuffle] .rot .rl.on i{top:0;transition-delay:calc(230ms + var(--c) * 22ms)}
+[data-swap=shuffle] .rot .rl.was i{top:-.22em;transition-duration:.18s,.22s}
+/* settle: the closing button, letters drop into place from the right end first */
+[data-swap=settle] .rot .rl i{top:-.25em;transition:opacity .5s var(--ease),top .6s var(--ease);transition-delay:calc(var(--j) * 18ms)}
+[data-swap=settle] .rot .rl.on i{top:0;transition-delay:calc(280ms + var(--j) * 18ms)}
+[data-swap=settle] .rot .rl.was i{top:.25em;transition-duration:.18s,.22s}
+
+/* the paragraph system from direction C, kept for the inner pages: names heavy, connectives light */
+.para{font-size:3vw;line-height:1.12;letter-spacing:-.025em;color:var(--dim);font-weight:400}
+.para .n{font-weight:500;color:var(--white)}
+.para a.n{border-bottom:2px solid transparent;transition:color .3s,border-color .3s}
+.para a.n:hover{color:var(--accent)}
+@media (max-width:760px){.para{font-size:7.2vw}}
+
+/* inner pages: the first screen carries the page's own line, whole, never cropped */
+.page-hero{position:relative;z-index:3;height:var(--sh);min-height:560px;display:flex;flex-direction:column;justify-content:flex-end;padding:0 var(--m) calc(var(--m) * 1.5)}
+.page-hero h1{font-size:11vw;max-width:12ch}
+.page-hero .lines{display:grid;gap:10px;max-width:34ch;font-size:16px;margin-top:calc(var(--m) * 1.2)}
+.page-hero .lines .go{justify-self:start;margin-top:8px}
+@media (min-width:761px){
+  .page-hero .end{display:flex;align-items:flex-end;justify-content:space-between;gap:calc(var(--m) * 2)}
+  .page-hero .lines{margin-top:0;padding-bottom:.6vw}
+  .page-hero h1{font-size:10vw;flex:1 1 auto;min-width:0}
+  .page-hero .lines{flex:0 0 clamp(300px,24vw,360px)}
+}
+@media (max-width:760px){.page-hero h1{font-size:17vw}}
+/* a film screen with the page's line on it */
+.film-hero .line{position:absolute;z-index:3;left:var(--m);bottom:calc(var(--m) * 1.5)}   /* the line and its slot move as one, so the slot stays 18px clear at every scroll */
+.film-hero h1{font-size:10vw;color:var(--white);margin-bottom:18px}
+.film-hero .slot{font-size:16px;color:var(--white)}
+/* the one orange control is the full stop of the instruction: it sits inside the line, after PLAY. */
+.film-hero h1 .play{position:static;display:inline-flex;align-items:center;justify-content:center;vertical-align:middle;margin-left:.2em}
+/* the nav word reads on a darkened sky: the street's light kept out of the bar's 60px, gone by 180px */
+.film-hero::before{content:"";position:absolute;left:0;right:0;top:0;height:180px;z-index:2;pointer-events:none;background:linear-gradient(rgba(11,11,11,.9) 0,rgba(11,11,11,.9) 60px,rgba(11,11,11,0) 180px)}
+@media (max-width:760px){.film-hero h1{font-size:17vw;max-width:6ch}.film-hero .slot{max-width:80vw}}
+
+
+/* ---- inner pages (round five) ---- */
+/* on an inner page the current nav word is the one orange thing in the bar; the links stop inverting over pictures so it stays orange */
+.inner .top .links{mix-blend-mode:normal}
+.inner .top .links .hot{color:var(--accent)}
+
+/* the text heading role for the inner pages: the text face at 3.5vw, weight 500, sentence case, left (Anwar 3) */
+.duo .h,.pair .h,.tl .h{font-family:var(--sans);font-weight:500;font-size:3.5vw;line-height:1.02;letter-spacing:-.02em;text-transform:none;max-width:16ch;margin-bottom:calc(var(--m) * .9)}
+@media (max-width:760px){.duo .h,.pair .h,.tl .h{font-size:8.5vw}}
+
+/* the work page: two pictures, one in front of the other, and the name beside.
+   The big picture is the street; the small one in front is the object, hung over the lower inner corner so it crosses from the picture into the words.
+   The rows mirror: street left and object right, then object left and street right */
+.wrow{position:relative;display:grid;grid-template-columns:54vw 1fr;column-gap:calc(var(--m) * 1.5);align-items:start;padding:calc(var(--m) * 2) var(--m) calc(var(--m) * 2 + 9vw)}
+.wrow .pics{position:relative;display:block;grid-column:1;grid-row:1}
+.wrow .big{position:relative;overflow:hidden;margin:0;width:100%;height:calc(var(--sh) * .88);background:var(--black)}
+.wrow .big img{position:absolute;left:0;top:-5%;width:100%;height:110%;object-fit:cover;will-change:transform}
+.wrow .small{position:absolute;z-index:2;overflow:hidden;margin:0;width:40%;aspect-ratio:4/5;right:-24%;bottom:-15%;box-shadow:0 30px 80px rgba(0,0,0,.6);will-change:transform}
+.wrow .small img{width:100%;height:100%;object-fit:cover}
+.wrow .para{grid-column:2;grid-row:1;padding-top:calc(var(--m) * .5);max-width:16ch}
+.wrow .para .n{display:block;margin-bottom:.15em}
+.wrow.flip{grid-template-columns:1fr 54vw}
+.wrow.flip .pics{grid-column:2}
+.wrow.flip .para{grid-column:1}
+.wrow.flip .big{height:auto;aspect-ratio:1600/827}   /* the billboard shown whole: headline 10 percent in from the left, mark 10 percent from the right */
+.wrow .big.fit img{top:0;height:100%}
+/* grounds: Heritage on the street's night blue, Chhaya on the billboard's sand gone dark */
+.wrow{background:#14162A}
+.wrow.flip{background:#27221A}
+/* the two case names are the links, so they carry the thread */
+.wrow .para a.n{color:var(--accent)}
+.wrow.flip .small{right:auto;left:-24%;aspect-ratio:4/3;bottom:-12%}
+@media (max-width:760px){
+  .wrow,.wrow.flip{grid-template-columns:1fr;column-gap:0;padding:calc(var(--m) * 1.5) var(--m) calc(var(--m) * 2)}
+  .wrow .pics,.wrow.flip .pics{grid-column:1;grid-row:1;margin-right:calc(var(--m) * -1)}
+  .wrow .big,.wrow.flip .big{height:calc(var(--sh) * .62)}
+  .wrow .small,.wrow.flip .small{width:48%;right:auto;left:-4%;bottom:-18%}
+  .wrow.flip .small{bottom:-14%}
+  .wrow .para,.wrow.flip .para{grid-column:1;grid-row:2;padding-top:calc(var(--m) * 1.2 + 30vw);max-width:none}
+  /* row one: the coat sits on the page margin, the street bleeds right; the flipped row mirrors it, the billboard bleeding left and whole */
+  .wrow .small{left:0}
+  .wrow.flip .pics{margin-right:0;margin-left:calc(var(--m) * -1)}
+  .wrow.flip .small{left:auto;right:0}
+  .wrow.flip .big{aspect-ratio:1600/827;height:auto}
+}
+
+/* the one-line heading between the work rows and the three doors */
+.tl .h{max-width:22ch}
+
+/* what we do: text one side, the picture the other, each picture a different shape, hung past the hairline into the next row */
+.duo{position:relative;display:grid;grid-template-columns:1fr 1fr;column-gap:calc(var(--m) * 2);align-items:start;border-top:1px solid var(--hair);padding:calc(var(--m) * 2.2) var(--m)}
+.duo .txt{grid-column:1;grid-row:1;max-width:44ch}
+.duo p{font-size:16px;max-width:44ch;margin-bottom:calc(var(--m) * .9)}
+.duo .pic{position:relative;z-index:2;grid-column:2;grid-row:1;justify-self:end;display:block;overflow:hidden;margin:0 0 calc(var(--m) * -4.4);background:var(--black);box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.duo .pic img{position:absolute;left:0;top:-5%;width:100%;height:110%;object-fit:cover;will-change:transform}
+.duo .pic .lab{position:absolute;z-index:3;left:14px;bottom:12px;color:var(--white)}
+.duo .pic .lab.on-cream{left:auto;right:14px;bottom:auto;top:52%;color:var(--black)}   /* on the Chhaya site's cream wedge, far from its red button */
+.duo .tall{width:26vw;height:32vw}
+.duo .wide{width:44vw;height:27vw}
+.duo.flip .tall{width:22vw;height:30vw}
+.duo.last .pic{width:50vw;height:28vw;margin-left:calc(var(--m) * -1)}
+.duo.flip .txt{grid-column:2}
+.duo.flip .pic{grid-column:1;justify-self:start}
+.duo + .duo .txt{padding-top:calc(var(--m) * 1.6)}
+.duo.last .pic{margin-bottom:0}
+/* grounds: the four rows on the wool black of the box lid, warmed by the SIM table's purple */
+.duo{background:#1F1A1C}
+/* the stair: all four pictures in the right column, each hung in front of the previous one's lower-left corner,
+   left edges stepping down and to the left like frames down a stair wall. The text keeps the left and its own hairline:
+   the pictures are the object cluster, the words stay a ruled ledger */
+/* The stair hangs from the page, not from its rows: a text row is taller than the step the pictures take
+   (measured 25 Oct: 283 to 305px against steps of 276, 254 and 200), so a row-hung stair pulls apart.
+   T is the top of the first heading: the screen, the band's 2.2m, the hairline's .6m. Each picture's top is the one above's bottom less its overlap */
+@media (min-width:761px){
+  .wwd main{position:relative;--T:calc(max(var(--sh),560px) + 2.8 * var(--m))}
+  .duo{position:static;border-top:0;padding:0 var(--m)}
+  .duo .txt,.duo.flip .txt{grid-column:1;border-top:1px solid var(--hair);padding:calc(var(--m) * .6) 0;max-width:52ch}
+  .duo + .duo .txt{padding-top:calc(var(--m) * .6)}
+  .duo p{max-width:52ch}
+  .duo:nth-of-type(2){padding-top:calc(var(--m) * 2.2);min-height:calc(var(--m) * 2.2 + 27.5vw - 120px)}
+  .duo:nth-of-type(3){min-height:calc(22.5vw - 70px)}
+  .duo:nth-of-type(4){min-height:calc(18.75vw - 70px)}
+  .duo.last{padding-bottom:calc(var(--m) * 2.2);min-height:calc(14.2vw + var(--m) * 2.8)}
+  .duo .pic,.duo.flip .pic{position:absolute;margin:0}
+  .duo:not(.flip) .tall{width:22vw;height:27.5vw;top:var(--T);right:var(--m);z-index:2}
+  .duo.flip .tall{width:18vw;height:22.5vw;top:calc(var(--T) + 27.5vw - 120px);right:calc(var(--m) + 11vw);z-index:3}
+  .duo:not(.flip) .wide{width:30vw;height:18.75vw;top:calc(var(--T) + 50vw - 190px);right:calc(var(--m) + 6vw);z-index:4}
+  .duo.last .pic{width:34vw;height:14.2vw;top:calc(var(--T) + 68.75vw - 260px);right:calc(var(--m) + 9vw);z-index:5;margin:0}
+}
+}
+/* the closing line of what we do sits in two lines */
+.wwd .close .st{font-size:10.4vw}
+@media (max-width:760px){.wwd .close .st{font-size:16vw}}
+@media (max-width:760px){
+  .duo,.duo.flip{grid-template-columns:1fr;padding:calc(var(--m) * 1.8) var(--m)}
+  .duo .txt,.duo.flip .txt{grid-column:1;grid-row:1;padding-top:0}
+  .duo .pic,.duo.flip .pic{grid-column:1;grid-row:2;margin:calc(var(--m) * .6) 0 0;justify-self:end}
+  .duo .tall{width:72%;height:auto;aspect-ratio:4/5}
+  .duo .wide,.duo.last .pic{width:calc(100% + var(--m));height:auto;aspect-ratio:16/10;margin-right:calc(var(--m) * -1);margin-left:0}
+  .duo.flip .tall{width:72%}
+}
+
+/* consultancy and the AI system, side by side, one picture set back at the far right */
+.pair{position:relative;display:grid;grid-template-columns:1fr 1fr;column-gap:calc(var(--m) * 2);border-top:1px solid var(--hair);padding:calc(var(--m) * 3) var(--m)}
+.pair .blk{position:relative}
+.pair .lab{display:block;margin-bottom:calc(var(--m) * 1.2);color:var(--dim)}
+.pair p{font-size:16px;max-width:38ch;margin-bottom:calc(var(--m) * .9)}
+.pair .pic{position:absolute;z-index:1;right:0;top:calc(var(--m) * 2.4);width:14vw;height:14vw;overflow:hidden;margin:0}
+.pair .pic img{position:absolute;left:0;top:-5%;width:100%;height:110%;object-fit:cover;will-change:transform}
+.pair .blk.sys .h,.pair .blk.sys p,.pair .blk.sys .go{position:relative;z-index:2;max-width:30ch}
+/* the loom stands in its own column, its top one heading-gap under the heading, so it never touches the words */
+.pair .blk.sys{display:grid;grid-template-columns:1fr 14vw;column-gap:calc(var(--m) * 2);align-content:start}
+.pair .blk.sys .lab,.pair .blk.sys .h{grid-column:1/-1}
+.pair .blk.sys .pic{position:relative;grid-column:2;grid-row:3/span 2;top:auto;right:auto}
+.pair .blk.sys p,.pair .blk.sys .go{grid-column:1}
+.pair .blk.sys .go{justify-self:start;align-self:start}
+/* ground: the loom's daylight on grey cotton */
+.pair{background:#2A2824}
+@media (max-width:760px){
+  .pair{grid-template-columns:1fr;row-gap:calc(var(--m) * 2.4);padding:calc(var(--m) * 2) var(--m)}
+  .pair .pic{position:relative;top:auto;right:auto;width:56%;height:auto;aspect-ratio:1;margin:0 0 calc(var(--m) * 1.2) auto}
+  .pair .blk.sys{grid-template-columns:1fr}
+  .pair .blk.sys .lab{order:1}.pair .blk.sys .h{order:2}.pair .blk.sys .pic{order:3;grid-row:auto;grid-column:1}.pair .blk.sys p{order:4}.pair .blk.sys .go{order:5}
+  .pair .lab{margin-bottom:20px}
+}
+
+/* motion courtesy */
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .rot .rl i{opacity:1;top:0}
+  .top{transition:none}
+}

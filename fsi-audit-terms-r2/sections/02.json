@@ -1,0 +1,26 @@
+{
+  "n": 2,
+  "heading": "Places go in order, and the audit stops at one call and one read-out",
+  "target": 600,
+  "attempts": [
+    {
+      "try": 1,
+      "words": 651,
+      "seconds": 32.6,
+      "tok_per_s": 43.8,
+      "problems": [],
+      "advisories": [
+        "6 sentences start with \"it\"; vary the openings."
+      ],
+      "note": "reading grade 6.5 · 41 sentences · average 16 words each · longest 47."
+    }
+  ],
+  "kept_try": 1,
+  "words": 651,
+  "clean": true,
+  "remaining": [],
+  "advisories": [
+    "6 sentences start with \"it\"; vary the openings."
+  ],
+  "finished": "2026-10-25 11:46:13"
+}

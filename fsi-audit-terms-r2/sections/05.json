@@ -1,0 +1,26 @@
+{
+  "n": 5,
+  "heading": "Breaking one of five rules can end an audit, and these terms follow Bangladesh law",
+  "target": 500,
+  "attempts": [
+    {
+      "try": 1,
+      "words": 512,
+      "seconds": 20.1,
+      "tok_per_s": 42.2,
+      "problems": [],
+      "advisories": [
+        "6 sentences start with \"if\"; vary the openings."
+      ],
+      "note": "reading grade 7.5 · 31 sentences · average 17 words each · longest 36."
+    }
+  ],
+  "kept_try": 1,
+  "words": 512,
+  "clean": true,
+  "remaining": [],
+  "advisories": [
+    "6 sentences start with \"if\"; vary the openings."
+  ],
+  "finished": "2026-10-25 11:47:13"
+}
