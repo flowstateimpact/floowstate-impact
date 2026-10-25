@@ -45,7 +45,7 @@
     if(comp!==1){ st1=wrap(stencil,[WE,MAKE,THE,WORK],ls); st2=wrap(stencil,[WILL,NOT,DARE],ls); }
     var rows=[];
     st1.forEach(function(ws){ rows.push({font:stencil,size:L6,ls:ls,pitch:pitch,words:ws}); });
-    rows.push({font:sans,size:os,ls:0,pitch:os*1.25,words:[{t:'other',k:'b',a:.46},{t:'studios',k:'b',a:.46}],under:comp===3?'last':null});
+    rows.push({font:sans,size:os,ls:0,pitch:os*1.25,words:[{t:'other',k:'b',a:.66},{t:'studios',k:'b',a:.66}],under:comp===3?'last':null});
     st2.forEach(function(ws){ rows.push({font:stencil,size:L6,ls:ls,pitch:pitch,words:ws,align:comp===3?'right':'left'}); });
     // the strategy line, wrapped at the middle size (two lines on the phone)
     var strap=wrap(mid,'A strategy and design firm.'.split(' ').map(function(t){return {t:t}}),0).map(function(ws){ return ws.map(function(w){return w.t}).join(' '); });
