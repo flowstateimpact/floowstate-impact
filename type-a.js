@@ -15,36 +15,73 @@
   function cssNum(prop){ return parseFloat(getComputedStyle(document.documentElement).getPropertyValue(prop))||0; }
   /* the hollow rule, read once from type-base.css so the plate and the DOM words agree */
   function hollow(L6){ var dim=cssNum('--hollow-dim')||.48, C=(dim-.24)/.68; // the cut's output is .24 + .68 x shoulder(film); the shoulder's ceiling is set so the output tops out at dim
-    return {rim:Math.max(cssPx('var(--hollow-rim-min)'),cssPx('var(--hollow-rim)',null,L6)), soft:cssPx('var(--hollow-soft)',null,L6), dim:dim, sat:cssNum('--hollow-sat')||.6, a:C*.926/(.926-C)}; }
+    var rim=Math.max(cssPx('var(--hollow-rim-min)'),cssPx('var(--hollow-rim)',null,L6));
+    return {rim:rim, wall:Math.max(1,cssPx('var(--hollow-wall)',null,L6)), soft:cssPx('var(--hollow-soft)',null,L6), dim:dim, sat:cssNum('--hollow-sat')||.6, a:C*.926/(.926-C)}; }
   function ease(t){ t=Math.max(0,Math.min(1,t)); return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2; }
   function seg(p,a,b){ return Math.max(0,Math.min(1,(p-a)/(b-a))); }
 
   /* ---------- the layout, shared by the texture and the SVG: CSS px, y down ---------- */
+  /* the composition flag: ?comp=1|2|3 on the URL, or data-comp on the scene; the default is the recommended one (NADIR-R4.md section 11).
+     1 THE BIG CUT: three stencil rows, the size grown until the widest row meets the margin (up to 1.25 x the ladder's L6); the film gets a quarter more window.
+     2 THE PRINTED SHEET: the giant centred, the small print at the plate's corners, the way a stencil sheet carries its registration marks.
+     3 THE STAIR: WE MAKE THE WORK flush left, "other studios" tucked under WORK, WILL NOT DARE flush right, so DARE leaves the frame at its right edge. */
+  var COMP=(function(){ var q=location.search.match(/comp=(\d)/), sc=document.querySelector('[data-plate]'); return parseInt(q&&q[1],10)||parseInt(sc&&sc.getAttribute('data-comp'),10)||3; })();
   function layout(W,H,ctx){
-    var L6=cssPx('var(--L6)'), m=cssPx('var(--m)'), L0=cssPx('var(--L0)');
-    var os=Math.round(L6*.30), pitch=L6*.88, cap=.70*L6, maxW=W-2*m;   /* the middle label at 30 percent of the poster size (was 48): a run-in, not a box; it prints at 62 percent white */
-    var stencil='700 '+L6+'px "Bespoke Stencil"', sans='400 '+os+'px "General Sans"', small='400 '+L0+'px "General Sans"', smallB='500 '+L0+'px "General Sans"';
-    var track=-.01*L6;
+    var comp=COMP, L6=cssPx('var(--L6)'), m=cssPx('var(--m)'), L0=cssPx('var(--L0)');
+    var maxW=W-2*m, phone=W<761, track=-.01;
     function width(font,text,ls){ ctx.font=font; if('letterSpacing' in ctx) ctx.letterSpacing=(ls||0)+'px'; var w=ctx.measureText(text).width; return w; }
     function wrap(font,words,ls){ var lines=[],cur=[]; words.forEach(function(w){ var t=cur.concat([w]).map(function(x){return x.t}).join(' '); if(cur.length&&width(font,t,ls)>maxW){ lines.push(cur); cur=[w]; } else cur=cur.concat([w]); }); if(cur.length) lines.push(cur); return lines; }
-    var stWords1=[{t:'WE',k:'r'},{t:'MAKE',k:'r'},{t:'THE',k:'r'},{t:'WORK',k:'r'}], stWords2=[{t:'WILL',k:'r'},{t:'NOT',k:'r'},{t:'DARE',k:'g'}];
+    var WE={t:'WE',k:'r'},MAKE={t:'MAKE',k:'r'},THE={t:'THE',k:'r'},WORK={t:'WORK',k:'r'},WILL={t:'WILL',k:'r'},NOT={t:'NOT',k:'r'},DARE={t:'DARE',k:'g'};
+    var st1,st2;
+    if(comp===1){ // forced rows, then the size that fits the widest of them to the margin, capped at 1.25 x the ladder
+      st1=[[WE,MAKE],[THE,WORK]]; st2=phone?[[WILL,NOT],[DARE]]:[[WILL,NOT,DARE]];
+      var widest=0; st1.concat(st2).forEach(function(ws){ widest=Math.max(widest,width('700 100px "Bespoke Stencil"',ws.map(function(t){return t.t}).join(' '),track*100)); });
+      L6=Math.min(L6*1.25,Math.floor(100*maxW/widest));
+    }
+    var os=Math.round(L6*.30), pitch=L6*.88, cap=.70*L6;   /* the one middle size: 30 percent of the poster (40px at 1440). The strategy line prints at it in full white; "other studios" at it in 36 percent white, a run-in, never a box */
+    var stencil='700 '+L6+'px "Bespoke Stencil"', sans='400 '+os+'px "General Sans"', mid='400 '+os+'px "General Sans"', small='400 '+L0+'px "General Sans"';
+    var ls=track*L6;
+    if(comp!==1){ st1=wrap(stencil,[WE,MAKE,THE,WORK],ls); st2=wrap(stencil,[WILL,NOT,DARE],ls); }
     var rows=[];
-    wrap(stencil,stWords1,track).forEach(function(ws){ rows.push({font:stencil,size:L6,ls:track,pitch:pitch,words:ws}); });
-    rows.push({font:sans,size:os,ls:0,pitch:os*1.25,words:[{t:'other',k:'b',a:.62},{t:'studios',k:'b',a:.62}]});
-    wrap(stencil,stWords2,track).forEach(function(ws){ rows.push({font:stencil,size:L6,ls:track,pitch:pitch,words:ws}); });
-    var block=0; rows.forEach(function(r,i){ block+= i? r.pitch : 0; });
-    block+=cap; // cap top of the first line to the baseline of the last
-    var top=Math.round(H*.5-block*.5+H*.02); // the block sits a touch under the centre; brackets above and below keep it placed
+    st1.forEach(function(ws){ rows.push({font:stencil,size:L6,ls:ls,pitch:pitch,words:ws}); });
+    rows.push({font:sans,size:os,ls:0,pitch:os*1.25,words:[{t:'other',k:'b',a:.36},{t:'studios',k:'b',a:.36}],under:comp===3?'last':null});
+    st2.forEach(function(ws){ rows.push({font:stencil,size:L6,ls:ls,pitch:pitch,words:ws,align:comp===3?'right':'left'}); });
+    // the strategy line, wrapped at the middle size (two lines on the phone)
+    var strap=wrap(mid,'A strategy and design firm, working from both.'.split(' ').map(function(t){return {t:t}}),0).map(function(ws){ return ws.map(function(w){return w.t}).join(' '); });
+    var capM=.718*os, brk=24, lhM=os*1.2;
+    var block=0; rows.forEach(function(r,i){ block+= i? r.pitch : 0; }); block+=cap;
+    var top;
+    if(comp===2){ top=Math.round(H*.5-block*.5+H*.02); }
+    else { // the strategy line is part of the block: its lines sit brk above the cap top, so the whole stack centres
+      var strapH=capM+(strap.length-1)*lhM+brk, under=brk+Math.round(L0*.72)+Math.round(L0*1.4);
+      top=Math.round(H*.5-(block+strapH+under)*.5+strapH+H*.01); }
     var y=top+cap, out=[];
-    rows.forEach(function(r,i){ if(i) y+=r.pitch; var x=m; ctx.font=r.font; if('letterSpacing' in ctx) ctx.letterSpacing=r.ls+'px'; var sp=ctx.measureText(' ').width; var toks=[]; r.words.forEach(function(w){ var ww=ctx.measureText(w.t).width; toks.push({t:w.t,k:w.k,a:w.a||1,x:x,w:ww}); x+=ww+sp; }); out.push({font:r.font,size:r.size,ls:r.ls,y:Math.round(y),toks:toks}); });
-    var last=out[out.length-1].y;
-    // the bracket: the who block's bold line 24px above the cap top; its two dim lines 24px below the last baseline
-    var brk=24, who=[
-      {t:'A strategy and design firm, working from both.',font:smallB,y:top-brk-Math.round(L0*.25),k:'b',a:1},
-      {t:'Dhaka · London',font:small,y:last+brk+Math.round(L0*.72),k:'b',a:.5},
-      {t:'We shape the brand. You keep the AI we build.',font:small,y:last+brk+Math.round(L0*.72)+Math.round(L0*1.4),k:'b',a:.5}
-    ];
-    return {rows:out,who:who,m:m,capTop:top,base:last,L6:L6,os:os,hollow:hollow(L6)};
+    rows.forEach(function(r,i){ if(i) y+=r.pitch; ctx.font=r.font; if('letterSpacing' in ctx) ctx.letterSpacing=r.ls+'px'; var sp=ctx.measureText(' ').width;
+      var ws=r.words.map(function(w){ return {t:w.t,k:w.k,a:w.a||1,w:ctx.measureText(w.t).width}; }), rw=ws.reduce(function(a,w){return a+w.w},0)+sp*(ws.length-1);
+      var x=m; if(r.align==='right') x=W-m-rw; else if(r.under==='last'&&out.length){ var pt=out[out.length-1].toks; x=pt[pt.length-1].x; }
+      var toks=[]; ws.forEach(function(w){ toks.push({t:w.t,k:w.k,a:w.a,x:x,w:w.w}); x+=w.w+sp; });
+      out.push({font:r.font,size:r.size,ls:r.ls,y:Math.round(y),toks:toks,align:r.align||'left'}); });
+    var last=out[out.length-1].y, lastRow=out[out.length-1];
+    // the printed lines around the cut. Each carries its own x and alignment so a composition can put it where the sheet needs it
+    var who=[], navB=(function(){ var t=document.querySelector('.top'); return t?Math.ceil(t.getBoundingClientRect().bottom):60; })();
+    var l2='Dhaka · London', l3='We shape the brand. You keep the AI we build.';
+    if(comp===2){ // the corners: the strategy line under the nav at the left, the two dim lines on one baseline at the foot, left and right
+      strap.forEach(function(t,i){ who.push({t:t,font:mid,x:m,y:navB+brk+Math.round(capM)+i*lhM,k:'b',a:1}); });
+      var fy=H-m-Math.round(L0*.3);
+      if(phone){ who.push({t:l2,font:small,x:m,y:fy-Math.round(L0*1.4),k:'b',a:.5}); who.push({t:l3,font:small,x:m,y:fy,k:'b',a:.5}); }
+      else { who.push({t:l2,font:small,x:m,y:fy,k:'b',a:.5}); who.push({t:l3,font:small,x:W-m,align:'right',y:fy,k:'b',a:.5}); }
+    } else {
+      strap.forEach(function(t,i){ who.push({t:t,font:mid,x:m,y:top-brk-Math.round(os*.3)-(strap.length-1-i)*lhM,k:'b',a:1}); });
+      if(comp===3){ // the corner inside the stair (Anwar, 25 Oct): both dim lines right-aligned at the plate's foot, the lower baseline at H minus 40, so DARE never meets them on scroll
+        var cy=H-40;
+        who.push({t:l2,font:small,x:W-m,align:'right',y:cy-Math.round(L0*1.4),k:'b',a:.5});
+        who.push({t:l3,font:small,x:W-m,align:'right',y:cy,k:'b',a:.5});
+      } else {
+        who.push({t:l2,font:small,x:m,align:'left',y:last+brk+Math.round(L0*.72),k:'b',a:.5});
+        who.push({t:l3,font:small,x:m,align:'left',y:last+brk+Math.round(L0*.72)+Math.round(L0*1.4),k:'b',a:.5});
+      }
+    }
+    return {rows:out,who:who,m:m,capTop:top,base:last,L6:L6,os:os,comp:comp,hollow:hollow(L6)};
   }
 
   /* ---------- the plate ---------- */
@@ -61,10 +98,14 @@
       var x=c.getContext('2d'); x.fillStyle='#000'; x.fillRect(0,0,w,h); x.scale(dpr,dpr); x.textBaseline='alphabetic';
       lay.rows.forEach(function(r){ x.font=r.font; if('letterSpacing' in x) x.letterSpacing=r.ls+'px'; r.toks.forEach(function(t){ x.fillStyle=t.k==='r'?'#f00':t.k==='g'?'#0f0':'rgb(0,0,'+Math.round(255*t.a)+')'; x.fillText(t.t,t.x,r.y); }); });
       if('letterSpacing' in x) x.letterSpacing='0px';
-      lay.who.forEach(function(w){ x.font=w.font; x.fillStyle='rgb(0,0,'+Math.round(255*w.a)+')'; x.fillText(w.t,lay.m,w.y); });
+      lay.who.forEach(function(w){ x.font=w.font; x.textAlign=w.align==='right'?'right':'left'; x.fillStyle='rgb(0,0,'+Math.round(255*w.a)+')'; x.fillText(w.t,w.x,w.y); }); x.textAlign='left';
       // the rim: each cut word stroked at twice the rim width, then kept only inside the glyph, so the lip is exactly one rim wide and the cut keeps its shape
       var rc=document.createElement('canvas'); rc.width=w; rc.height=h;
-      var r=rc.getContext('2d'); r.scale(dpr,dpr); r.textBaseline='alphabetic'; r.lineJoin='miter'; r.miterLimit=3; r.lineWidth=lay.hollow.rim*2; r.strokeStyle='#fff'; r.fillStyle='#fff';
+      var r=rc.getContext('2d'); r.scale(dpr,dpr); r.textBaseline='alphabetic'; r.lineJoin='miter'; r.miterLimit=3; r.fillStyle='#fff';
+      // the wall first, at half alpha and twice (rim + wall) wide: the plate's thickness seen inside the cut, in shadow; then the lip at full alpha over it. The shader reads the two levels
+      r.lineWidth=(lay.hollow.rim+lay.hollow.wall)*2; r.strokeStyle='rgba(255,255,255,.5)';
+      lay.rows.forEach(function(row){ r.font=row.font; if('letterSpacing' in r) r.letterSpacing=row.ls+'px'; row.toks.forEach(function(t){ if(t.k==='r') r.strokeText(t.t,t.x,row.y); }); });
+      r.lineWidth=lay.hollow.rim*2; r.strokeStyle='#fff';
       lay.rows.forEach(function(row){ r.font=row.font; if('letterSpacing' in r) r.letterSpacing=row.ls+'px'; row.toks.forEach(function(t){ if(t.k==='r') r.strokeText(t.t,t.x,row.y); }); });
       // destination-in wipes everything outside each shape it draws, so the cut words go onto one canvas first and trim the stroke in a single pass
       var fc=document.createElement('canvas'); fc.width=w; fc.height=h;
@@ -94,7 +135,7 @@
       'vec3 col=film;',
       'vec4 m=plate(d,uA.x,uA.y,uA.z);',
       'if(uA.w>0.&&m.z>0.&&m.x>=0.&&m.x<=1.&&m.y>=0.&&m.y<=1.){',
-      ' vec4 tx=texture2D(uT,m.xy);float hole=tx.r,white=tx.b,rim=tx.a;',
+      ' vec4 tx=texture2D(uT,m.xy);float hole=tx.r,white=tx.b,rim=smoothstep(.62,.88,tx.a),wall=smoothstep(.14,.38,tx.a);',
       ' float s=sin(uA.x),c=cos(uA.x);vec3 nf=vec3(0.,-s,-c);float dif=max(dot(nf,uL),0.);vec3 h=normalize(uL-d);float spec=pow(max(dot(nf,h),0.),70.);',
       // blackened steel: a fine horizontal brush, lit from the top left, one soft sheen that sweeps as the plate tilts
       ' float g=hash(vec2(floor(m.y*uRes.y*.5),floor(m.x*uRes.x*.015)))*.6+hash(vec2(floor(m.y*uRes.y),3.))*.4;',
@@ -111,6 +152,8 @@
       ' vec3 fs=film;if(hole>.08){vec2 sp=uH.x/uRes;fs=(film+filmLit(v+vec2(sp.x,0.))+filmLit(v-vec2(sp.x,0.))+filmLit(v+vec2(0.,sp.y))+filmLit(v-vec2(0.,sp.y))+filmLit(v+sp)+filmLit(v-sp)+filmLit(v+vec2(sp.x,-sp.y))+filmLit(v-vec2(sp.x,-sp.y)))/9.;',
       '  fs=mix(vec3(lum(fs)),fs,uH.z);fs=uH.y*fs/(fs+uH.y);}',
       ' float aa=smoothstep(.3,.7,hole);vec3 pc=mix(face,.24+.68*fs*sh,aa);',
+      // the cut's wall: the plate's thickness in shadow, one --hollow-wall wide just inside the lip, so the lip always has a dark neighbour whatever the film does
+      ' pc=mix(pc,vec3(.006,.006,.0055)*(.7+.3*dif),wall);',
       // the lit lip of the cut: one rim wide, inside the edge, the plate's own white catching the same light as its face
       ' pc=mix(pc,vec3(.97,.97,.96)*(.85+.15*dif),rim);',
       ' col=mix(col,pc,uA.w);}',
@@ -195,11 +238,13 @@
       // the hollow rule's rim: the cut words stroked at twice the rim and clipped to their own shapes, so the lip is one rim wide inside the edge
       var clip=el('clipPath',{id:'plate-cuts'},defs);
       lay.rows.forEach(function(r){ r.toks.forEach(function(t){ if(t.k==='r') text(clip,t.t,t.x,r.y,r.font,'#fff',r.ls); }); });
+      var wall=el('g',{'clip-path':'url(#plate-cuts)',fill:'none',stroke:'#141413','stroke-width':(lay.hollow.rim+lay.hollow.wall)*2,'stroke-linejoin':'miter'},svg);
+      lay.rows.forEach(function(r){ r.toks.forEach(function(t){ if(t.k==='r') text(wall,t.t,t.x,r.y,r.font,'none',r.ls); }); });
       var lip=el('g',{'clip-path':'url(#plate-cuts)',fill:'none',stroke:'#F2F2F0','stroke-width':lay.hollow.rim*2,'stroke-linejoin':'miter'},svg);
       lay.rows.forEach(function(r){ r.toks.forEach(function(t){ if(t.k==='r') text(lip,t.t,t.x,r.y,r.font,'none',r.ls); }); });
       el('rect',{x:.5,y:.5,width:W-1,height:H-1,fill:'none',stroke:'rgba(242,242,240,.16)'},svg);
       lay.rows.forEach(function(r){ r.toks.forEach(function(t){ if(t.k==='b') text(svg,t.t,t.x,r.y,r.font,'rgba(242,242,240,'+t.a+')',0); }); });
-      lay.who.forEach(function(w){ text(svg,w.t,lay.m,w.y,w.font,'rgba(242,242,240,'+w.a+')',0).setAttribute('letter-spacing',w.a===1?'.15':'.32'); });
+      lay.who.forEach(function(w){ var e=text(svg,w.t,w.x,w.y,w.font,'rgba(242,242,240,'+w.a+')',0); e.setAttribute('letter-spacing',w.a===1?'0':'.32'); if(w.align==='right') e.setAttribute('text-anchor','end'); });
       var dare=el('svg',{class:'dare',viewBox:'0 0 '+W+' '+H,width:W,height:H,'aria-hidden':'true'},host);
       lay.rows.forEach(function(r){ r.toks.forEach(function(t){ if(t.k==='g') text(dare,t.t,t.x,r.y,r.font,'#E27F22',r.ls); }); });
       video.classList.add('under'); video.classList.add('cutlit');   /* the film under the sheet is dimmed, softened and greyed (type-a.css .cutlit) while the sheet stands in front of it */
@@ -214,7 +259,7 @@
 
     function size(){
       var r=stage.getBoundingClientRect(); var w=Math.round(r.width), h=Math.round(r.height); if(!w||!h||(w===W&&h===H)) return; W=w; H=h;
-      lay=layout(W,H,meas); window.__plate={capTop:lay.capTop,base:lay.base,L6:lay.L6,W:W,H:H,mode:mode,rows:lay.rows,hollow:lay.hollow};
+      lay=layout(W,H,meas); window.__plate={capTop:lay.capTop,base:lay.base,L6:lay.L6,os:lay.os,comp:lay.comp,W:W,H:H,mode:mode,rows:lay.rows,who:lay.who,hollow:lay.hollow};
       if(mode==='gl') sizeGL(); else if(mode==='svg') startSVG();
       if(mode==='gl') wake();
     }
@@ -222,7 +267,7 @@
 
     function boot(){
       var r=stage.getBoundingClientRect(); W=Math.round(r.width); H=Math.round(r.height); lay=layout(W,H,meas);
-      window.__plate={capTop:lay.capTop,base:lay.base,L6:lay.L6,W:W,H:H,rows:lay.rows,hollow:lay.hollow};
+      window.__plate={capTop:lay.capTop,base:lay.base,L6:lay.L6,os:lay.os,comp:lay.comp,W:W,H:H,rows:lay.rows,who:lay.who,hollow:lay.hollow};
       var ok=false; if(!still){ try{ ok=startGL(); if(ok) sizeGL(); }catch(e){ ok=false; if(window.console) console.warn('plate:',e.message); } }
       if(!ok) startSVG(); window.__plate.mode=mode; window.__plate.at=poses; window.__plate.mask=function(){ return texture().rgb.toDataURL('image/png'); }; window.__plate.rim=rimPNG;
       if(mode==='gl'){ wake(); video.addEventListener('play',wake); }

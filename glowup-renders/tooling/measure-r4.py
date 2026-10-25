@@ -88,6 +88,122 @@ def line(render,x0,y0,x1,y1):
             elif 61<=l<=160: cutv.append(l)
     print('  box',(x0,y0,x1,y1),'rim-class n=%d luma50=%.1f | cut-class n=%d luma50=%.1f p95=%.1f | rim50:cut95=%.2f'%(len(rimv),pct(rimv,.5) or 0,len(cutv),pct(cutv,.5) or 0,pct(cutv,.95) or 0,contrast(pct(rimv,.5),pct(cutv,.95)) if rimv and cutv else 0))
 
+def honest(render,log,file=None,wall_css=None):
+    """the honest per-word measure (25 Oct, asks round): distance from the rim is computed by dilation, so the sample inside a cut is split into
+       the wall band (within --hollow-wall of the lip), a fringe one rim wide past it (excluded: anti-aliasing), and the open film beyond.
+       Reports the lip against the band it actually borders, the wall against the open film, and the lip against the open film for the record."""
+    L=json.load(open(log)); shot=[s for s in L if (file is None or s['file']==file) and isinstance(s.get('measure'),dict) and 'mask' in s['measure']][0]
+    m=shot['measure']; mw,mh,mbpp,M=read_data_url(m['mask']); rw,rh,rbpp,RM=read_data_url(m['rim'])
+    w,h,bpp,R=png.read(render); dprv=w/(390 if w<1000 else 1440)
+    rim_css=m['hollow']['rim']; wall_c=m['hollow'].get('wall',0) if wall_css is None else wall_css
+    rimD=max(1,int(round(rim_css*dprv))); wallD=int(round(wall_c*dprv)); D=wallD+rimD
+    print('render',w,h,'dpr',dprv,'rim px',round(rim_css*dprv,2),'wall px',round(wall_c*dprv,2),'L6',round(m['L6'],1),'comp',m.get('comp'),'dim',m['hollow']['dim'])
+    out=[]
+    for row in m['rows']:
+        for t in row['toks']:
+            if t['k']!='r': continue
+            x0=max(0,int(t['x']*dprv)-4); x1=min(w,int((t['x']+t['w'])*dprv)+4); y0=max(0,int((row['y']-row['size']*.74)*dprv)); y1=min(h,int((row['y']+row['size']*.06)*dprv))
+            W_=x1-x0; H_=y1-y0
+            dist=[[99]*W_ for _ in range(H_)]; front=[]
+            for yy in range(H_):
+                for xx in range(W_):
+                    if px(RM,rbpp,x0+xx,y0+yy)[0]>128: dist[yy][xx]=0; front.append((xx,yy))
+            d=0
+            while front and d<D:
+                d+=1; nxt=[]
+                for (xx,yy) in front:
+                    for dy in (-1,0,1):
+                        for dx in (-1,0,1):
+                            nx,ny=xx+dx,yy+dy
+                            if 0<=nx<W_ and 0<=ny<H_ and dist[ny][nx]>d: dist[ny][nx]=d; nxt.append((nx,ny))
+                front=nxt
+            rimv=[];wallv=[];openv=[];facev=[]
+            for yy in range(H_):
+                for xx in range(W_):
+                    dd=dist[yy][xx]; incut=px(M,mbpp,x0+xx,y0+yy)[0]>128; l=luma(*px(R,bpp,x0+xx,y0+yy))
+                    if dd==0: rimv.append(l)
+                    elif incut:
+                        if dd<=wallD: wallv.append(l)
+                        elif dd<=D: pass
+                        else: openv.append(l)
+                    elif dd>D: facev.append(l)
+            rim50=pct(rimv,.5); w95=pct(wallv,.95); w50=pct(wallv,.5); o95=pct(openv,.95); o50=pct(openv,.5); f50=pct(facev,.5)
+            c_rim_nb=contrast(rim50,w95) if wallv else (contrast(rim50,o95) if openv else None)
+            c_wall_open=contrast(o50,w95) if (wallv and openv) else None
+            c_rim_open=contrast(rim50,o95) if openv else None
+            print('  %-5s rim n=%5d L=%5.1f | wall n=%5d p50=%5.1f p95=%5.1f | open film n=%6d p50=%5.1f p95=%5.1f | lip:neighbour %s | film50:wall95 %s | lip:film95 %s | plate %s'%(
+                t['t'],len(rimv),rim50 or 0,len(wallv),w50 or 0,w95 or 0,len(openv),o50 or 0,o95 or 0,
+                ('%.2f'%c_rim_nb) if c_rim_nb else 'n/a',('%.2f'%c_wall_open) if c_wall_open else 'n/a',('%.2f'%c_rim_open) if c_rim_open else 'n/a',('%.1f'%f50) if f50 is not None else 'n/a'))
+            out.append((t['t'],len(rimv),rim50,w50,w95,o50,o95,c_rim_nb,c_wall_open,c_rim_open))
+    return out
+
+def zones(render,log,file=None):
+    """honest() split the cut by distance from mask>128, which put the lip-to-wall blend (mask 129 to 254) at distance 0 and the wall-to-film blend
+       (mask 1 to 127) inside the wall band, so bright film fringe set the wall's p95. The rim mask already says what each pixel is: the lip is
+       painted 255, the wall exactly 128 (rgba .5), the film 0. So: lip = mask 240+, wall = mask 120 to 136 inside the cut, film = mask 0 inside the
+       cut and more than one css px from any painted mask pixel (a rim-width gap ate the whole 3 to 8 px film stripe). Blend pixels are excluded from every sample."""
+    L=json.load(open(log)); shot=[s for s in L if (file is None or s['file']==file) and isinstance(s.get('measure'),dict) and 'mask' in s['measure']][0]
+    m=shot['measure']; mw,mh,mbpp,M=read_data_url(m['mask']); rw,rh,rbpp,RM=read_data_url(m['rim'])
+    w,h,bpp,R=png.read(render); dprv=w/(390 if w<1000 else 1440); rimD=max(1,int(round(dprv)))  # blends measured 1 to 2 px wide (WORK, comp1 1440, row trace); the blend pixels are non-zero in the mask and already excluded, this adds one css px
+    print('zones',render.split('/')[-1],'dpr',dprv,'fringe gap px',rimD,'L6',round(m['L6'],1),'comp',m.get('comp'),'dim',m['hollow']['dim'])
+    out=[]
+    for row in m['rows']:
+        for t in row['toks']:
+            if t['k']!='r': continue
+            x0=max(0,int(t['x']*dprv)-4); x1=min(w,int((t['x']+t['w'])*dprv)+4); y0=max(0,int((row['y']-row['size']*.74)*dprv)); y1=min(h,int((row['y']+row['size']*.06)*dprv))
+            W_=x1-x0; H_=y1-y0; near=[[False]*W_ for _ in range(H_)]; front=[]
+            for yy in range(H_):
+                for xx in range(W_):
+                    if px(RM,rbpp,x0+xx,y0+yy)[0]>0: near[yy][xx]=True; front.append((xx,yy))
+            for _ in range(rimD):
+                nxt=[]
+                for (xx,yy) in front:
+                    for dy in (-1,0,1):
+                        for dx in (-1,0,1):
+                            nx,ny=xx+dx,yy+dy
+                            if 0<=nx<W_ and 0<=ny<H_ and not near[ny][nx]: near[ny][nx]=True; nxt.append((nx,ny))
+                front=nxt
+            lip=[];wall=[];film=[]
+            for yy in range(H_):
+                for xx in range(W_):
+                    r=px(RM,rbpp,x0+xx,y0+yy)[0]; incut=px(M,mbpp,x0+xx,y0+yy)[0]>128; l=luma(*px(R,bpp,x0+xx,y0+yy))
+                    if r>=240: lip.append(l)
+                    elif incut and 120<=r<=136: wall.append(l)
+                    elif incut and not near[yy][xx]: film.append(l)
+            l50=pct(lip,.5); w50=pct(wall,.5); w95=pct(wall,.95); f50=pct(film,.5); f95=pct(film,.95)
+            c1=contrast(l50,w95) if wall else None; c2=contrast(f50,w95) if (wall and film) else None; c3=contrast(l50,f95) if film else None
+            print('  %-5s lip n=%5d p50=%5.1f | wall n=%5d p50=%5.1f p95=%5.1f | film n=%6d p50=%5.1f p95=%5.1f | lip:wall95 %s | film50:wall95 %s | lip:film95 %s'%(
+                t['t'],len(lip),l50 or 0,len(wall),w50 or 0,w95 or 0,len(film),f50 or 0,f95 or 0,
+                ('%.2f'%c1) if c1 else 'n/a',('%.2f'%c2) if c2 else 'n/a',('%.2f'%c3) if c3 else 'n/a'))
+            out.append((t['t'],l50,w95,f50,f95,c1,c2,c3))
+    return out
+
+def strap(render,log,file=None):
+    """the strategy line and the label against the WILL NOT line: light above the plate (luma minus 40, clamped) summed over each box, and peak luma"""
+    L=json.load(open(log)); shot=[s for s in L if (file is None or s['file']==file) and isinstance(s.get('measure'),dict) and 'rows' in s['measure']][0]
+    m=shot['measure']; w,h,bpp,R=png.read(render); dprv=w/(390 if w<1000 else 1440); Wc=390 if w<1000 else 1440
+    def box(x0,y0,x1,y1):
+        x0,y0,x1,y1=[int(v*dprv) for v in (x0,y0,x1,y1)]; x0=max(0,x0);y0=max(0,y0);x1=min(w,x1);y1=min(h,y1); tot=0;peak=0;raw=0
+        for y in range(y0,y1):
+            for x in range(x0,x1):
+                l=luma(*px(R,bpp,x,y)); raw+=l; tot+=max(0,l-40); peak=max(peak,l)
+        return tot,peak,raw
+    head=[r for r in m['rows'] if r['toks'][0]['t']=='WILL'][0]; lab=[r for r in m['rows'] if r['toks'][0]['k']=='b'][0]
+    hx0=head['toks'][0]['x']; hx1=head['toks'][-1]['x']+head['toks'][-1]['w']
+    if head['toks'][-1]['t']=='DARE': hx1=head['toks'][1]['x']+head['toks'][1]['w']
+    hs,hp,hr=box(hx0,head['y']-head['size']*.74,hx1,head['y']+head['size']*.06)
+    ls,lp,lr=box(lab['toks'][0]['x'],lab['y']-lab['size']*.76,lab['toks'][-1]['x']+lab['toks'][-1]['w'],lab['y']+lab['size']*.1)
+    print('WILL NOT light above plate',round(hs),'raw',round(hr),'peak',round(hp,1))
+    print('label "other studios" size',lab['size'],'light above plate',round(ls),'= %.1f%% of WILL NOT'%(100*ls/hs),'| raw %.1f%%'%(100*lr/hr),'| peak luma',round(lp,1))
+    tot=0;pk=0;n=0;size=1
+    for wl in m['who']:
+        size=float(wl['font'].split(' ')[1].replace('px',''))
+        if wl.get('a',1)<1: continue
+        x0=wl['x'] if wl.get('align')!='right' else 0; x1=Wc if wl.get('align')!='right' else wl['x']
+        s_,p_,r_=box(x0,wl['y']-size*.76,x1,wl['y']+size*.25); tot+=s_; pk=max(pk,p_); n+=1
+        print('strategy line %d size %spx: "%s" light above plate %d peak %.1f'%(n,size,wl['t'],s_,p_))
+    print('strategy total = %.1f%% of WILL NOT light above plate; L6/strap = %.2f'%(100*tot/hs, m['L6']/size))
+
 if __name__=='__main__':
     c=sys.argv[1]
     if c=='words': words(sys.argv[2],sys.argv[3],sys.argv[4] if len(sys.argv)>4 else None)
@@ -95,3 +211,6 @@ if __name__=='__main__':
     elif c=='bands': bands(sys.argv[2],int(sys.argv[3]) if len(sys.argv)>3 else 900)
     elif c=='errors': errors(sys.argv[2])
     elif c=='line': line(sys.argv[2],*map(int,sys.argv[3:7]))
+    elif c=='honest': honest(sys.argv[2],sys.argv[3],sys.argv[4] if len(sys.argv)>4 else None,float(sys.argv[5]) if len(sys.argv)>5 else None)
+    elif c=='zones': zones(sys.argv[2],sys.argv[3],sys.argv[4] if len(sys.argv)>4 else None)
+    elif c=='strap': strap(sys.argv[2],sys.argv[3],sys.argv[4] if len(sys.argv)>4 else None)

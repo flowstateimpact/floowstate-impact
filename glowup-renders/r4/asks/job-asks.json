@@ -1,0 +1,90 @@
+{
+ "out": "/Users/asiffarid/Documents/apps/flowstateimpact-site-glowup/glowup-renders/r4/asks",
+ "logName": "render-log-asks",
+ "shots": [
+  {
+   "url": "http://127.0.0.1:4327/index-type-a.html?comp=1",
+   "file": "comp1-1440-s0.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 0,
+   "eval": "({mode:__plate.mode,comp:__plate.comp,L6:__plate.L6,os:__plate.os,hollow:__plate.hollow,who:__plate.who,rows:__plate.rows.map(r=>({y:r.y,size:r.size,align:r.align,toks:r.toks.map(t=>({t:t.t,k:t.k,a:t.a,x:Math.round(t.x),w:Math.round(t.w)}))})),mask:__plate.mask(),rim:__plate.rim()})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/index-type-a.html?comp=1",
+   "file": "comp1-1440-s240.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 240,
+   "eval": "({p:__plate.p,pose:__plate.at(__plate.p)})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/index-type-a.html?comp=1",
+   "file": "comp1-390-s0.png",
+   "w": 390,
+   "h": 844,
+   "dpr": 2,
+   "scroll": 0,
+   "eval": "({mode:__plate.mode,comp:__plate.comp,L6:__plate.L6,os:__plate.os,hollow:__plate.hollow,who:__plate.who,rows:__plate.rows.map(r=>({y:r.y,size:r.size,align:r.align,toks:r.toks.map(t=>({t:t.t,k:t.k,a:t.a,x:Math.round(t.x),w:Math.round(t.w)}))})),mask:__plate.mask(),rim:__plate.rim()})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/index-type-a.html?comp=2",
+   "file": "comp2-1440-s0.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 0,
+   "eval": "({mode:__plate.mode,comp:__plate.comp,L6:__plate.L6,os:__plate.os,hollow:__plate.hollow,who:__plate.who,rows:__plate.rows.map(r=>({y:r.y,size:r.size,align:r.align,toks:r.toks.map(t=>({t:t.t,k:t.k,a:t.a,x:Math.round(t.x),w:Math.round(t.w)}))})),mask:__plate.mask(),rim:__plate.rim()})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/index-type-a.html?comp=2",
+   "file": "comp2-1440-s240.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 240,
+   "eval": "({p:__plate.p,pose:__plate.at(__plate.p)})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/index-type-a.html?comp=2",
+   "file": "comp2-390-s0.png",
+   "w": 390,
+   "h": 844,
+   "dpr": 2,
+   "scroll": 0,
+   "eval": "({mode:__plate.mode,comp:__plate.comp,L6:__plate.L6,os:__plate.os,hollow:__plate.hollow,who:__plate.who,rows:__plate.rows.map(r=>({y:r.y,size:r.size,align:r.align,toks:r.toks.map(t=>({t:t.t,k:t.k,a:t.a,x:Math.round(t.x),w:Math.round(t.w)}))})),mask:__plate.mask(),rim:__plate.rim()})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/index-type-a.html?comp=3",
+   "file": "comp3-1440-s0.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 0,
+   "eval": "({mode:__plate.mode,comp:__plate.comp,L6:__plate.L6,os:__plate.os,hollow:__plate.hollow,who:__plate.who,rows:__plate.rows.map(r=>({y:r.y,size:r.size,align:r.align,toks:r.toks.map(t=>({t:t.t,k:t.k,a:t.a,x:Math.round(t.x),w:Math.round(t.w)}))})),mask:__plate.mask(),rim:__plate.rim()})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/index-type-a.html?comp=3",
+   "file": "comp3-1440-s240.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 240,
+   "eval": "({p:__plate.p,pose:__plate.at(__plate.p)})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/index-type-a.html?comp=3",
+   "file": "comp3-390-s0.png",
+   "w": 390,
+   "h": 844,
+   "dpr": 2,
+   "scroll": 0,
+   "eval": "({mode:__plate.mode,comp:__plate.comp,L6:__plate.L6,os:__plate.os,hollow:__plate.hollow,who:__plate.who,rows:__plate.rows.map(r=>({y:r.y,size:r.size,align:r.align,toks:r.toks.map(t=>({t:t.t,k:t.k,a:t.a,x:Math.round(t.x),w:Math.round(t.w)}))})),mask:__plate.mask(),rim:__plate.rim()})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/index-type-a.html",
+   "file": "default-1440-reduce.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 0,
+   "reduce": true,
+   "eval": "({mode:__plate.mode,comp:__plate.comp,L6:__plate.L6,os:__plate.os,hollow:__plate.hollow,who:__plate.who,rows:__plate.rows.map(r=>({y:r.y,size:r.size,align:r.align,toks:r.toks.map(t=>({t:t.t,k:t.k,a:t.a,x:Math.round(t.x),w:Math.round(t.w)}))})),mask:__plate.mask(),rim:__plate.rim()})"
+  }
+ ]
+}

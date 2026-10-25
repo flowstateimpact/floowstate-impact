@@ -24,13 +24,18 @@
   --hollow-rim:.028em;                          /* the rim, scaled to the letter: 3.7px at L6 132, 1.6px at 58, 10.5px at L7 374 */
   --hollow-rim-min:1.5px;                       /* never thinner than this */
   --hollow-floor:48px;                          /* below this a hollow word goes solid white */
-  --hollow-dim:.48;                             /* the picture inside a cut is scaled so its brightest pixel stays under 48 percent (sRGB about 128); the rim then clears 3 to 1 */
-  --hollow-fill:rgba(11,11,11,.52);             /* the DOM form of the same dim: the glyph is filled with the page black at 1 minus the dim, so the window is smoked inside the letter only, never a pane behind it */
+  --hollow-dim:.70;                             /* the picture inside a cut is scaled so its brightest pixel stays under 70 percent (sRGB about 218). Was .48 (smoked glass); Asif asked for half the light back, 25 Oct. The lip no longer reads against the film: it reads against the wall below */
+  --hollow-wall:.012em;                         /* Anwar 25 Oct: .028 ate 61 percent of the film window; .012 gives most of it back. the cut's wall: the plate's thickness in shadow, one band of near-black just inside the lip (3.7px at L6 132). Whatever the film does, the lip has a dark neighbour and the film has a dark border */
+  --hollow-wall-ink:#141413;                    /* the wall's ink on the DOM words and the SVG fallback */
+  --hollow-fill:rgba(11,11,11,.30);             /* the DOM form of the same dim: the glyph is filled with the page black at 1 minus the dim, so the window is smoked inside the letter only, never a pane behind it */
   --hollow-soft:.06em;                          /* blur radius inside a cut on the plate: 7.9px at L6 132 */
   --hollow-sat:.6;                              /* colour inside the cut pulled toward grey by 40 percent */
 }
 /* a hollow word set in markup: a smoked window with a lit rim. The stroke is centred on the edge, so the rim reads half in and half out of the glyph; paint order is left alone (stroke over fill) so the whole rim shows */
 .hollow,.screen .word.hollow,.scene .after .word.hollow{color:var(--hollow-fill);-webkit-text-stroke:max(var(--hollow-rim-min),var(--hollow-rim)) var(--white)}
+/* the wall on a DOM hollow word: the same text under it, stroked wider in the wall's ink, so the dark band shows just inside the white lip (and as a shadow just outside it). Markup carries data-text="the word" */
+.hollow[data-text]{position:relative}
+.hollow[data-text]::before{content:attr(data-text);position:absolute;inset:0;z-index:-1;color:transparent;-webkit-text-stroke:calc(max(var(--hollow-rim-min),var(--hollow-rim)) + 2 * var(--hollow-wall)) var(--hollow-wall-ink)}
 /* only L5, L6 and L7 roles may be hollow (their minimums 52, 58, 160 sit above the floor); L4 may be hollow on desktop only: it falls to 40px on the phone, under the floor, so it goes solid */
 @media (max-width:760px){.hollow.l4{color:var(--white);-webkit-text-stroke:0}}
 
