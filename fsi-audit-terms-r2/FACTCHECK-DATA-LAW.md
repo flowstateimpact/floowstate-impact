@@ -21,3 +21,9 @@ Claim checked (ILYAS-R1.md line 105): "Bangladesh's Personal Data Protection Ord
 - Regulator: National Data Management Authority, under the National Data Management Act 2026 (MiHCM).
 - Authoritative text is in Bangla (Rahman). Securiti's overview (29 Jun 2026) blocked the scraper.
 - Rule unchanged: the notice names "Personal Data Protection Act 2026" and may say it informs people of automated processing; it cites no section numbers until the Act's text is read.
+
+## Addendum 2 (P174, 25 Oct 2026 14:15): sending audit material abroad
+- FrithX (frithx.com/bd, read 25 Oct): s.29 of the Act, "Transfers abroad need a statutory basis, and large transfers of NID, passport, biometric or criminal data must be notified." It also lists s.8: data a processor handles for you is still your processing; s.15: the notice must name "who receives it abroad".
+- Osman Gani Tuhin, lawyer (LinkedIn, 26 Aug 2026): no "simplistic blanket localisation rule"; the class, nature and scale of the data matter; safeguards, approved arrangements and notification in specified cases, including large-scale transfers of sensitive data.
+- MiHCM (Oct 2026, earlier addendum): transfers allowed in defined cases, consent among them.
+- Reading, confidence MEDIUM (three secondary sources agree; the Bangla text on ictd.gov.bd loaded only its menu, not the Act): Route A (AI services abroad) is lawful if the privacy notice names the services and that they are abroad, and the guest consents on the form. Audit material is not NID, passport, biometric or criminal data, so the notification duty does not bite unless a guest sends such documents. Route A2 (names stripped before any AI service) is a choice for trust, not a legal must. Read s.29 in the Act's own text before clause 30 cites it.

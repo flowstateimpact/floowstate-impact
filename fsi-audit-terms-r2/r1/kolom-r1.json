@@ -1,0 +1,91 @@
+{
+  "B1": "You receive one video call of up to 60 minutes. We send one written read-out by email within 10 working days. Places go in the order complete applications arrive. Each company gets one place. This offer costs you nothing.",
+  "B2": "There are 10 places. They go to complete applications by the date and time we receive them, first come, first served, and nothing else decides the order.",
+  "B3": {
+    "heading": "Your place status",
+    "sentence": "Within 2 working days, we send the confirmation email."
+  },
+  "B4": "A company that has had its audit or lost its place under these terms cannot apply again under a different name, a new trading name, or through another person.",
+  "B5": {
+    "heading": "Not for rival studios",
+    "sentence": "If we learn this afterwards, see clause 34 ({{H34}})."
+  },
+  "B6": "The waiting list closes when the offer ends. Everyone still on it is told by email within 5 working days, and their position ends without carrying over to any later offer unless we say so in writing.",
+  "B7": "The audit does not cover design, writing, building, strategy, extra calls, or unlimited questions.",
+  "B8": "Please give us honest and complete details",
+  "B9": {
+    "heading": "Give us true details",
+    "sentence": "If details turn out to be false, see clause 34 ({{H34}})."
+  },
+  "B10": "The audit is not legal, financial, tax, or accounting advice. Consult a qualified professional for these areas.",
+  "B11": "You are under no obligation to buy anything.",
+  "B12": [
+    "We limit ourselves to these five reasons and no others.",
+    "A pause is a short wait while we check whether a rule was really broken. During it you keep your place, and we give you a date by which you will hear the result."
+  ],
+  "B13": [
+    "(1) Providing false details, clause 17.",
+    "(2) Working for, or applying for, a competing studio, clause 5.",
+    "(3) Recording or sharing the call without agreement, clause 26.",
+    "(4) Reselling, publishing or misusing the read-out, clause 24.",
+    "(5) Rude, threatening or abusive behaviour towards anyone in the studio."
+  ],
+  "B14-1": {
+    "heading": "One chance per company",
+    "sentence": "Each company can take part in this offer one time."
+  },
+  "B14-2": {
+    "heading": "Linked firms count as one",
+    "sentence": "If several companies share the same owner, group, or management team, they count as one company for this offer."
+  },
+  "B14-4": {
+    "heading": "Who can fill the form",
+    "sentence": "The person filling in the form must be the owner, a director, or someone the owner has allowed to apply and share business details."
+  },
+  "B14-8": {
+    "heading": "Not for resale",
+    "sentence": "The place cannot leave your company."
+  },
+  "B14-14": {
+    "heading": "Final document",
+    "sentence": "The read-out is finished and not a draft."
+  },
+  "B14-15": {
+    "heading": "New terms",
+    "sentence": "Paid work happens under a new and separate agreement."
+  },
+  "B14-20": {
+    "heading": "Fixed end time",
+    "sentence": "The call ends at the booked time if you join late."
+  },
+  "B14-25": {
+    "heading": "Public use",
+    "sentence": "Using our name, the read-out or quotes from it in marketing or the press needs our written permission first."
+  },
+  "B14-26": {
+    "heading": "Consent required",
+    "sentence": "Both sides must agree before recording or sharing the call."
+  },
+  "B14-30": {
+    "heading": "Who sees your details",
+    "sentence": "Only our audit team views your information, and we use it solely to prepare your audit."
+  },
+  "B14-32": {
+    "heading": "Storage limit",
+    "sentence": "We keep material for 12 months, then delete it if you do not become a paid client."
+  },
+  "B14-33": {
+    "heading": "Optional list",
+    "sentence": "We do not put you on a mailing list unless you say yes."
+  },
+  "B14-37": {
+    "heading": "Full terms",
+    "sentence": "These terms and your confirmation email, which clause 7 ({{H7}}) defines, form the whole agreement for the audit."
+  },
+  "B14-H9": "Next person gets place",
+  "B14-H10": "Offer ends after tenth call",
+  "B14-H18": "Move call once, 24 hours",
+  "B14-H19": "Missed call closes in 15 minutes",
+  "B14-H34": "Five rules and results",
+  "B14-H36": "Offer changes keep your place"
+}
