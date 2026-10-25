@@ -48,7 +48,7 @@
     rows.push({font:sans,size:os,ls:0,pitch:os*1.25,words:[{t:'other',k:'b',a:.46},{t:'studios',k:'b',a:.46}],under:comp===3?'last':null});
     st2.forEach(function(ws){ rows.push({font:stencil,size:L6,ls:ls,pitch:pitch,words:ws,align:comp===3?'right':'left'}); });
     // the strategy line, wrapped at the middle size (two lines on the phone)
-    var strap=wrap(mid,'A strategy and design firm, working from both.'.split(' ').map(function(t){return {t:t}}),0).map(function(ws){ return ws.map(function(w){return w.t}).join(' '); });
+    var strap=wrap(mid,'A strategy and design firm.'.split(' ').map(function(t){return {t:t}}),0).map(function(ws){ return ws.map(function(w){return w.t}).join(' '); });
     var capM=.718*os, brk=24, lhM=os*1.2;
     var block=0; rows.forEach(function(r,i){ block+= i? r.pitch : 0; }); block+=cap;
     var top;
@@ -65,21 +65,19 @@
     var last=out[out.length-1].y, lastRow=out[out.length-1];
     // the printed lines around the cut. Each carries its own x and alignment so a composition can put it where the sheet needs it
     var who=[], navB=(function(){ var t=document.querySelector('.top'); return t?Math.ceil(t.getBoundingClientRect().bottom):60; })();
-    var l2='Dhaka · London', l3='We shape the brand. You keep the AI we build.';
+    var l3='We shape the brand. You keep the AI we build.'; // Dhaka · London left the hero (Asif, 25 Oct: "lets not highlight the london and dhaka so much"); the footer still carries it
     if(comp===2){ // the corners: the strategy line under the nav at the left, the two dim lines on one baseline at the foot, left and right
       strap.forEach(function(t,i){ who.push({t:t,font:mid,x:m,y:navB+brk+Math.round(capM)+i*lhM,k:'b',a:1}); });
       var fy=H-m-Math.round(L0*.3);
-      if(phone){ who.push({t:l2,font:small,x:m,y:fy-Math.round(L0*1.4),k:'b',a:.5}); who.push({t:l3,font:small,x:m,y:fy,k:'b',a:.5}); }
-      else { who.push({t:l2,font:small,x:m,y:fy,k:'b',a:.5}); who.push({t:l3,font:small,x:W-m,align:'right',y:fy,k:'b',a:.5}); }
+      if(phone){ who.push({t:l3,font:small,x:m,y:fy,k:'b',a:.5}); }
+      else { who.push({t:l3,font:small,x:W-m,align:'right',y:fy,k:'b',a:.5}); }
     } else {
       strap.forEach(function(t,i){ who.push({t:t,font:mid,x:m,y:top-brk-Math.round(os*.3)-(strap.length-1-i)*lhM,k:'b',a:1}); });
       if(comp===3){ // the corner inside the stair (Anwar, 25 Oct): both dim lines right-aligned at the plate's foot, the lower baseline at H minus 40, so DARE never meets them on scroll
         var cy=H-40;
-        who.push({t:l2,font:small,x:W-m,align:'right',y:cy-Math.round(L0*1.4),k:'b',a:.5});
         who.push({t:l3,font:small,x:W-m,align:'right',y:cy,k:'b',a:.5});
       } else {
-        who.push({t:l2,font:small,x:m,align:'left',y:last+brk+Math.round(L0*.72),k:'b',a:.5});
-        who.push({t:l3,font:small,x:m,align:'left',y:last+brk+Math.round(L0*.72)+Math.round(L0*1.4),k:'b',a:.5});
+        who.push({t:l3,font:small,x:m,align:'left',y:last+brk+Math.round(L0*.72),k:'b',a:.5});
       }
     }
     return {rows:out,who:who,m:m,capTop:top,base:last,L6:L6,os:os,comp:comp,hollow:hollow(L6)};
