@@ -29,6 +29,8 @@
 html.plate-still .scene{height:var(--sh)}
 html.plate-still .scene .after{--rev:1}
 html.plate-still .scene .after .word{display:none}
+/* the hollow rule on the SVG fallback: while the sheet stands (opacity over .5) the film under it is dimmed, flattened, greyed and softened, so the cuts read as smoked windows under the rim; brightness .6 with contrast .7 is a floor of 9 and a ceiling of 51 percent, the nearest a CSS filter gets to the shader's 24 percent floor and 48 percent ceiling */
+.scene .bed.cutlit{filter:brightness(.6) contrast(.7) saturate(var(--hollow-sat)) blur(calc(var(--L6) * .06))}
 
 /* ---- what we do: THE COMMA ---- */
 /* YOUR WHOLE BUSINESS, at L4; READ. at L6, orange, on its own line: a 2 to 1 jump between two stencil sizes. The pause, then the verdict */
