@@ -18,8 +18,8 @@
 }
 @media (min-width:1800px){:root{--L0:13px}}
 
-/* the hollow rule: a hollow word is a window, never an outline effect; it keeps its own lit rim, the picture behind it is dimmed and softened, and below the floor it goes solid.
-   Set once here; the plate (type-a.js) reads the same numbers, so the shader, the SVG fallback and the DOM words agree. Measured 25 Oct 2026: the rim at 236 against a cut whose brightest pixel is held under 128 gives 3.0 to 1 or better on every word */
+/* the hollow rule: a hollow word is a window, never an outline effect; it keeps its own lit rim, the film behind it plays clear, and below the floor it goes solid.
+   Set once here; the plate (type-a.js) reads the same numbers, so the shader, the SVG fallback and the DOM words agree. Measured 25 Oct 2026: the lip at 236 reads 14 to 1 against the plate and 17 to 1 against the wall; the film carries no floor */
 :root{
   --hollow-rim:.010em;                          /* the rim, scaled to the letter: 1.3px at L6 132, 3.7px at L7 374. Was .028em, then .016em; Asif asked twice for a thinner white line, 25 Oct */
   --hollow-rim-min:.75px;                       /* never thinner than this */

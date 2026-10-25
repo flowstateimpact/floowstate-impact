@@ -39,7 +39,7 @@
       var widest=0; st1.concat(st2).forEach(function(ws){ widest=Math.max(widest,width('700 100px "Bespoke Stencil"',ws.map(function(t){return t.t}).join(' '),track*100)); });
       L6=Math.min(L6*1.25,Math.floor(100*maxW/widest));
     }
-    var os=Math.round(L6*.30), pitch=L6*.88, cap=.70*L6;   /* the one middle size: 30 percent of the poster (40px at 1440). The strategy line prints at it in full white; "other studios" at it in 46 percent white (was 36; Asif asked for slightly brighter, 25 Oct), a run-in, never a box */
+    var os=Math.round(L6*.30), pitch=L6*.88, cap=.70*L6;   /* the one middle size: 30 percent of the poster (40px at 1440). The strategy line prints at it in full white; "other studios" at it in 66 percent white (was 36, then 46; Asif asked brighter twice, 25 Oct), a run-in, never a box */
     var stencil='700 '+L6+'px "Bespoke Stencil"', sans='400 '+os+'px "General Sans"', mid='400 '+os+'px "General Sans"', small='400 '+L0+'px "General Sans"';
     var ls=track*L6;
     if(comp!==1){ st1=wrap(stencil,[WE,MAKE,THE,WORK],ls); st2=wrap(stencil,[WILL,NOT,DARE],ls); }
