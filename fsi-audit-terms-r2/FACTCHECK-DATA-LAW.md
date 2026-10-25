@@ -13,3 +13,11 @@ Claim checked (ILYAS-R1.md line 105): "Bangladesh's Personal Data Protection Ord
 - Any terms or privacy sentence that names the law says "the Personal Data Protection Act 2026", never the 2025 ordinance.
 - Do not state the act number or a specific section unless the Act's text is read first.
 - Ilyas's conclusion stands: a privacy notice is needed before terms.html ships. Whether the Act legally requires it today is unconfirmed until its commencement is read; the notice ships either way, because the terms point to it.
+
+## Addendum, 25 Oct 2026 14:10 (P173): commencement and notice duty, from secondary sources (the Act's own Bangla text still not read)
+- Dated 10 April 2026, Act No. 63 of 2026; replaced the Ordinance 2025 and its February 2026 amendment (MiHCM, "Bangladesh Data Protection Act 2026: What HR Must Do Now", Oct 2026; Anita Ghazi Rahman, LinkedIn, 4 Jul 2026, says "came into effect on 10 April 2026").
+- Most of the Act is treated as in force since 6 November 2025 (MiHCM; FrithX BD page says the same). Two parts wait: section 23 (Chief Data Officer for significant data fiduciaries) and sections 31 to 35 (complaints, administrative fines, compensation) start on a gazette date set once 18 months have passed since the law was issued (MiHCM).
+- Notice duty: fiduciaries must give notice of processing (Rahman). The Act bars processing by automated means without informing the data subject (MiHCM). This bears on terms clause 30 (AI help in the audit): the privacy notice must say AI tools are used and a person signs off.
+- Regulator: National Data Management Authority, under the National Data Management Act 2026 (MiHCM).
+- Authoritative text is in Bangla (Rahman). Securiti's overview (29 Jun 2026) blocked the scraper.
+- Rule unchanged: the notice names "Personal Data Protection Act 2026" and may say it informs people of automated processing; it cites no section numbers until the Act's text is read.
