@@ -218,8 +218,8 @@
       var main=document.querySelector('main'), duos=gsap.utils.toArray('main > .duo'), pics=duos.map(function(d){ return d.querySelector('.pic'); }).filter(Boolean);
       if(pics.length<2) return;
       var pages=document.createElement('div'); pages.className='pages'; pages.setAttribute('aria-hidden','false');
-      // the sheets fan 4px to the right per depth, never down, so the stack's top and bottom stay the anchor's box (Anwar, round 2)
-      pics.forEach(function(pc,i){ pages.appendChild(pc); gsap.set(pc,{zIndex:10-i,z:-i*22,x:i*4,y:0});
+      // the sheets stack square, no sideways fan: a 4px fan showed past the box as a 1px seam at x 1401 (Anwar, round 2, ruling 9); depth alone carries the stack
+      pics.forEach(function(pc,i){ pages.appendChild(pc); gsap.set(pc,{zIndex:10-i,z:-i*22,x:0,y:0});
         // glow.js bound its row parallax to ".duo .pic img" before the move: that scrub would drift a 1600px image through the sheet. Kill it and its trigger, clear what it set
         var im=pc.querySelector('img'); if(im){ gsap.getTweensOf(im).forEach(function(t){ if(t.scrollTrigger) t.scrollTrigger.kill(); t.kill(); }); gsap.set(im,{clearProps:'all'}); } });
       main.appendChild(pages);

@@ -1,0 +1,347 @@
+[
+ {
+  "id": "B1",
+  "clause": "THE SHORT VERSION",
+  "kind": "body",
+  "current": "You get one video call of up to 60 minutes. We then send you one written read-out by email within 10 working days. Places go strictly in the order complete applications arrive. Each company gets only one place. If you are on the waiting list, that position promises nothing. You owe us nothing for this offer.",
+  "fault": "Six sentences of nearly one length, a metronome; 'strictly' is an intensifier; 'that position promises nothing' makes a queue position act.",
+  "must_achieve": "Four or five sentences carrying the same five facts: one video call of up to 60 minutes; one written read-out by email within 10 working days; places go in the order complete applications arrive; one place per company; you owe us nothing. One sentence noticeably short. Said the way a person explains a rule to a friend. The waiting-list idea, if it appears, describes a place in a line, not a promise, with no actor behind it.",
+  "max_words": 55
+ },
+ {
+  "id": "B2",
+  "clause": "6",
+  "kind": "body",
+  "current": "There are 10 places. They go to complete applications by the date and time we receive them. First come, first served. Nothing else decides the order.",
+  "fault": "Two fragments stacked; staccato against the measured register.",
+  "must_achieve": "One or two complete sentences. Keep: there are 10 places; they go to complete applications by the date and time we receive them; the phrase 'first come, first served' as the plain version of the rule; nothing else decides the order.",
+  "max_words": 35
+ },
+ {
+  "id": "B3",
+  "clause": "7",
+  "kind": "heading+sentence",
+  "current": [
+   "7 The confirmation email arrives within 2 working days",
+   "Within 2 working days we send you the confirmation email."
+  ],
+  "fault": "The body sentence repeats the heading word for word.",
+  "must_achieve": "Return a new heading (a short label, 2 to 5 words, no number in it) and a new body sentence that says we send the confirmation email within 2 working days. Heading and sentence share no phrasing.",
+  "max_words": 16
+ },
+ {
+  "id": "B4",
+  "clause": "3",
+  "kind": "body",
+  "current": "A company that has already applied cannot try again under a new name or through another person.",
+  "fault": "As written it bars a company that only withdrew.",
+  "must_achieve": "One sentence: the bar applies only to a company that has had its audit or lost its place under these terms; it cannot apply again under a different name, a new trading name, or through another person.",
+  "max_words": 32
+ },
+ {
+  "id": "B5",
+  "clause": "5",
+  "kind": "heading+sentence",
+  "current": [
+   "5 People from competing studios cannot take part",
+   "If this comes to light later, clause 34 (Five rules, and what happens when one is broken) applies."
+  ],
+  "fault": "Cold heading; 'comes to light' is a detective's phrase.",
+  "must_achieve": "A new heading (3 to 7 words) saying in a host's tone who the offer is not for: other branding, design and consulting studios. A new pointer sentence saying briefly that if we learn this afterwards, clause 34 applies. Write the pointer exactly as: clause 34 ({{H34}}) and end the sentence there.",
+  "max_words": 22
+ },
+ {
+  "id": "B6",
+  "clause": "10",
+  "kind": "body",
+  "current": "When the offer ends, the waiting list closes. Everyone still on it is told by email within 5 working days. Their position ends. It does not carry over to any later offer unless we say so in writing.",
+  "fault": "Four clipped sentences for one idea.",
+  "must_achieve": "Two complete sentences, every fact kept: the waiting list closes when the offer ends; everyone still on it is told by email within 5 working days; their position ends; it does not carry over to any later offer unless we say so in writing.",
+  "max_words": 42
+ },
+ {
+  "id": "B7",
+  "clause": "13",
+  "kind": "body",
+  "current": "We do not carry out any of the work the read-out suggests. There is no design, writing, building, or strategy work. There are no extra calls, unlimited follow-up questions, or rewriting of the read-out.",
+  "fault": "The first sentence repeats the heading; the last repeats clause 14's rule on rewriting.",
+  "must_achieve": "One sentence listing the concrete things the audit does not include: design, writing, building or strategy work, extra calls, unlimited follow-up questions. Do not repeat the heading's words (carry out, suggests). Do not mention rewriting.",
+  "max_words": 24
+ },
+ {
+  "id": "B8",
+  "clause": "16",
+  "kind": "heading",
+  "current": "16 The read-out rests on what you share",
+  "fault": "A document made to act.",
+  "must_achieve": "A new heading, 3 to 7 words, a plain request from us to you that we need honest and complete information.",
+  "max_words": 7
+ },
+ {
+  "id": "B9",
+  "clause": "17",
+  "kind": "heading+sentence",
+  "current": [
+   "17 False details break these terms",
+   "If we find false details, clause 34 (Five rules, and what happens when one is broken) applies: we may take the application off the waiting list, or pause or end the audit, and we tell you why."
+  ],
+  "fault": "The heading accuses; the pointer sentence repeats clause 34's consequences, which belong only to clause 34.",
+  "must_achieve": "A new heading, 3 to 6 words, that asks for true details rather than threatens; the next sentence in the clause begins 'This includes a false company name', so the heading must name what 'this' refers to (giving false details). A new pointer sentence: if details turn out to be false, clause 34 applies. Write the pointer exactly as: clause 34 ({{H34}}) and end the sentence there. Name no consequences.",
+  "max_words": 22
+ },
+ {
+  "id": "B10",
+  "clause": "27",
+  "kind": "body",
+  "current": "This audit is an honest view of your business, not professional advice. For those specific matters, speak to a qualified professional.",
+  "fault": "'Honest' is the studio praising itself; the body leaves the four kinds of advice to the heading.",
+  "must_achieve": "One or two sentences: the audit is not legal, financial, tax or accounting advice; for those, speak to a qualified professional. No self-description of the audit.",
+  "max_words": 28
+ },
+ {
+  "id": "B11",
+  "clause": "29",
+  "kind": "body",
+  "current": "You owe us nothing for the audit and are under no obligation to buy anything.",
+  "fault": "The heading and the short version both just said 'you owe us nothing'.",
+  "must_achieve": "One sentence that opens on the other half: you are under no obligation to buy anything. Do not use the words 'owe' or 'nothing'.",
+  "max_words": 14
+ },
+ {
+  "id": "B12",
+  "clause": "34",
+  "kind": "two-pieces",
+  "current": [
+   "We use this power for these five reasons only, never for any other.",
+   "A pause is a hold used while we check something. During a pause you keep your place, and we tell you when we will decide."
+  ],
+  "fault": "'Power' is guard vocabulary; 'a hold' defines a pause with its synonym; 'when we will decide' reads as the studio choosing at leisure.",
+  "must_achieve": "Return two pieces. Piece one, one sentence: we limit ourselves to these five reasons and no others. Piece two, one or two sentences: a pause is a short wait while we check whether a rule was really broken; during it you keep your place, and we give you a date by which you will hear the result. Never the words power, hold, decide.",
+  "max_words": 48
+ },
+ {
+  "id": "B13",
+  "clause": "34 list",
+  "kind": "list",
+  "current": [
+   "(1) Providing false details, which clause 17 (False details break these terms) describes.",
+   "(2) Working for or applying for a competing studio, as set out in clause 5 (People from competing studios cannot take part).",
+   "(3) Recording or sharing the call without agreement, under clause 26 (No recording or sharing of the call unless both sides agree).",
+   "(4) Reselling, publishing or misusing the read-out, covered by clause 24 (You may not resell, publish or pass off the read-out).",
+   "(5) Rude, threatening or abusive behaviour towards anyone in the studio."
+  ],
+  "fault": "Each item restates a heading it names; four different connectors (which describes, as set out in, under, covered by) are synonym cycling.",
+  "must_achieve": "Five short items, one shape for all five: a plain phrase, then a comma, then 'clause N' with the number alone, then a full stop. Numbers: (1) clause 17, (2) clause 5, (3) clause 26, (4) clause 24, (5) no clause, the phrase alone. Facts: (1) false details; (2) working for, or applying for, a competing studio; (3) recording or sharing the call without agreement; (4) reselling, publishing or misusing the read-out; (5) rude, threatening or abusive behaviour towards anyone in the studio. Keep the (1) to (5) markers.",
+  "max_words": 45
+ },
+ {
+  "id": "B14-1",
+  "clause": "1",
+  "kind": "heading+sentence",
+  "current": [
+   "1 One free audit for each company, once",
+   "Each company can take part in this offer one time."
+  ],
+  "fault": "The first body sentence says the heading again.",
+  "must_achieve": "Return a new heading (a label of 2 to 6 plain words that still states the point; no clause number) and a new body sentence carrying every fact of the current sentence. Heading and sentence share no phrasing. Keep every number exactly.",
+  "max_words": 24
+ },
+ {
+  "id": "B14-2",
+  "clause": "2",
+  "kind": "heading+sentence",
+  "current": [
+   "2 Companies with the same owner, group or management count as one",
+   "If several companies share the same owner, group, or management team, they count as one company for this offer."
+  ],
+  "fault": "The first body sentence says the heading again.",
+  "must_achieve": "Return a new heading (a label of 2 to 6 plain words that still states the point; no clause number) and a new body sentence carrying every fact of the current sentence. Heading and sentence share no phrasing. Keep every number exactly.",
+  "max_words": 24
+ },
+ {
+  "id": "B14-4",
+  "clause": "4",
+  "kind": "heading+sentence",
+  "current": [
+   "4 The owner, a director or someone the owner allows must apply",
+   "The person filling in the form must be the owner, a director, or someone the owner has allowed to apply and share business details."
+  ],
+  "fault": "The first body sentence says the heading again.",
+  "must_achieve": "Return a new heading (a label of 2 to 6 plain words that still states the point; no clause number) and a new body sentence carrying every fact of the current sentence. Heading and sentence share no phrasing. Keep every number exactly.",
+  "max_words": 24
+ },
+ {
+  "id": "B14-8",
+  "clause": "8",
+  "kind": "heading+sentence",
+  "current": [
+   "8 Your place belongs to your company",
+   "A place belongs to your company."
+  ],
+  "fault": "The first body sentence says the heading again.",
+  "must_achieve": "Return a new heading (a label of 2 to 6 plain words that still states the point; no clause number) and a new body sentence carrying every fact of the current sentence. Heading and sentence share no phrasing. Keep every number exactly. The body may simply say the place cannot leave your company; the next sentences already list sale, swap and exchange, so do not repeat them.",
+  "max_words": 24
+ },
+ {
+  "id": "B14-14",
+  "clause": "14",
+  "kind": "heading+sentence",
+  "current": [
+   "14 The read-out is finished, not a draft",
+   "The read-out is a finished document, not a draft."
+  ],
+  "fault": "The first body sentence says the heading again.",
+  "must_achieve": "Return a new heading (a label of 2 to 6 plain words that still states the point; no clause number) and a new body sentence carrying every fact of the current sentence. Heading and sentence share no phrasing. Keep every number exactly.",
+  "max_words": 24
+ },
+ {
+  "id": "B14-15",
+  "clause": "15",
+  "kind": "heading+sentence",
+  "current": [
+   "15 Paid work is a separate agreement",
+   "If you later want paid work, it is a new and separate agreement."
+  ],
+  "fault": "The first body sentence says the heading again.",
+  "must_achieve": "Return a new heading (a label of 2 to 6 plain words that still states the point; no clause number) and a new body sentence carrying every fact of the current sentence. Heading and sentence share no phrasing. Keep every number exactly.",
+  "max_words": 24
+ },
+ {
+  "id": "B14-20",
+  "clause": "20",
+  "kind": "heading+sentence",
+  "current": [
+   "20 A late start still ends at the booked time",
+   "If you join late, the call still ends at its booked time."
+  ],
+  "fault": "The first body sentence says the heading again.",
+  "must_achieve": "Return a new heading (a label of 2 to 6 plain words that still states the point; no clause number) and a new body sentence carrying every fact of the current sentence. Heading and sentence share no phrasing. Keep every number exactly.",
+  "max_words": 24
+ },
+ {
+  "id": "B14-25",
+  "clause": "25",
+  "kind": "heading+sentence",
+  "current": [
+   "25 Our name or the read-out in marketing or the press needs our written permission",
+   "Using our name, the read-out or quotes from it in marketing or the press needs our permission in writing first."
+  ],
+  "fault": "The first body sentence says the heading again.",
+  "must_achieve": "Return a new heading (a label of 2 to 6 plain words that still states the point; no clause number) and a new body sentence carrying every fact of the current sentence. Heading and sentence share no phrasing. Keep every number exactly.",
+  "max_words": 24
+ },
+ {
+  "id": "B14-26",
+  "clause": "26",
+  "kind": "heading+sentence",
+  "current": [
+   "26 No recording or sharing of the call unless both sides agree",
+   "No recording or sharing happens unless both sides agree first."
+  ],
+  "fault": "The first body sentence says the heading again.",
+  "must_achieve": "Return a new heading (a label of 2 to 6 plain words that still states the point; no clause number) and a new body sentence carrying every fact of the current sentence. Heading and sentence share no phrasing. Keep every number exactly.",
+  "max_words": 24
+ },
+ {
+  "id": "B14-30",
+  "clause": "30",
+  "kind": "heading+sentence",
+  "current": [
+   "30 Only the people preparing your audit see what you share",
+   "What you share is seen only by the people who prepare your audit, and we use it only to prepare your audit."
+  ],
+  "fault": "The first body sentence says the heading again.",
+  "must_achieve": "Return a new heading (a label of 2 to 6 plain words that still states the point; no clause number) and a new body sentence carrying every fact of the current sentence. Heading and sentence share no phrasing. Keep every number exactly.",
+  "max_words": 24
+ },
+ {
+  "id": "B14-32",
+  "clause": "32",
+  "kind": "heading+sentence",
+  "current": [
+   "32 We keep audit material for 12 months, then delete it",
+   "We keep audit material for 12 months, then delete it, unless you become a paid client."
+  ],
+  "fault": "The first body sentence says the heading again.",
+  "must_achieve": "Return a new heading (a label of 2 to 6 plain words that still states the point; no clause number) and a new body sentence carrying every fact of the current sentence. Heading and sentence share no phrasing. Keep every number exactly. Facts: 12 months; then deleted; unless you become a paid client.",
+  "max_words": 24
+ },
+ {
+  "id": "B14-33",
+  "clause": "33",
+  "kind": "heading+sentence",
+  "current": [
+   "33 No mailing list unless you say yes",
+   "We do not add you to a mailing list unless you say yes."
+  ],
+  "fault": "The first body sentence says the heading again.",
+  "must_achieve": "Return a new heading (a label of 2 to 6 plain words that still states the point; no clause number) and a new body sentence carrying every fact of the current sentence. Heading and sentence share no phrasing. Keep every number exactly.",
+  "max_words": 24
+ },
+ {
+  "id": "B14-37",
+  "clause": "37",
+  "kind": "heading+sentence",
+  "current": [
+   "37 These terms and your confirmation email are the whole agreement",
+   "These terms and your confirmation email, which clause 7 (The confirmation email arrives within 2 working days) defines, form the whole agreement for the audit."
+  ],
+  "fault": "The first body sentence says the heading again.",
+  "must_achieve": "Return a new heading (a label of 2 to 6 plain words that still states the point; no clause number) and a new body sentence carrying every fact of the current sentence. Heading and sentence share no phrasing. Keep every number exactly. If the sentence points to clause 7, write the pointer exactly as: clause 7 ({{H7}}).",
+  "max_words": 24
+ },
+ {
+  "id": "B14-H9",
+  "clause": "9",
+  "kind": "heading",
+  "current": "9 A freed place goes to the first person on the waiting list",
+  "fault": "Too long to sit inside a cross-reference bracket.",
+  "must_achieve": "A new heading of 4 to 6 words that still states the point. Keep any number in it exactly (24 hours, 15 minutes).",
+  "max_words": 6
+ },
+ {
+  "id": "B14-H10",
+  "clause": "10",
+  "kind": "heading",
+  "current": "10 The offer ends after the tenth call, or when we end it",
+  "fault": "Too long to sit inside a cross-reference bracket.",
+  "must_achieve": "A new heading of 4 to 6 words that still states the point. Keep any number in it exactly (24 hours, 15 minutes).",
+  "max_words": 6
+ },
+ {
+  "id": "B14-H18",
+  "clause": "18",
+  "kind": "heading",
+  "current": "18 You can move your call once, with 24 hours' notice",
+  "fault": "Too long to sit inside a cross-reference bracket.",
+  "must_achieve": "A new heading of 4 to 6 words that still states the point. Keep any number in it exactly (24 hours, 15 minutes).",
+  "max_words": 6
+ },
+ {
+  "id": "B14-H19",
+  "clause": "19",
+  "kind": "heading",
+  "current": "19 A missed call closes after 15 minutes",
+  "fault": "Too long to sit inside a cross-reference bracket.",
+  "must_achieve": "A new heading of 4 to 6 words that still states the point. Keep any number in it exactly (24 hours, 15 minutes).",
+  "max_words": 6
+ },
+ {
+  "id": "B14-H34",
+  "clause": "34",
+  "kind": "heading",
+  "current": "34 Five rules, and what happens when one is broken",
+  "fault": "Too long to sit inside a cross-reference bracket.",
+  "must_achieve": "A new heading of 4 to 6 words that still states the point. Keep any number in it exactly (24 hours, 15 minutes).",
+  "max_words": 6
+ },
+ {
+  "id": "B14-H36",
+  "clause": "36",
+  "kind": "heading",
+  "current": "36 We may change or end the offer, but a place already held is kept",
+  "fault": "Too long to sit inside a cross-reference bracket.",
+  "must_achieve": "A new heading of 4 to 6 words that still states the point. Keep any number in it exactly (24 hours, 15 minutes).",
+  "max_words": 6
+ }
+]
