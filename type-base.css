@@ -21,15 +21,15 @@
 /* the hollow rule: a hollow word is a window, never an outline effect; it keeps its own lit rim, the picture behind it is dimmed and softened, and below the floor it goes solid.
    Set once here; the plate (type-a.js) reads the same numbers, so the shader, the SVG fallback and the DOM words agree. Measured 25 Oct 2026: the rim at 236 against a cut whose brightest pixel is held under 128 gives 3.0 to 1 or better on every word */
 :root{
-  --hollow-rim:.028em;                          /* the rim, scaled to the letter: 3.7px at L6 132, 1.6px at 58, 10.5px at L7 374 */
-  --hollow-rim-min:1.5px;                       /* never thinner than this */
+  --hollow-rim:.016em;                          /* the rim, scaled to the letter: 2.1px at L6 132, 1px at 58, 6px at L7 374. Was .028em; Asif asked for a thinner line, 25 Oct */
+  --hollow-rim-min:1px;                         /* never thinner than this */
   --hollow-floor:48px;                          /* below this a hollow word goes solid white */
-  --hollow-dim:.70;                             /* the picture inside a cut is scaled so its brightest pixel stays under 70 percent (sRGB about 218). Was .48 (smoked glass); Asif asked for half the light back, 25 Oct. The lip no longer reads against the film: it reads against the wall below */
+  --hollow-dim:1;                               /* 1 = clear: the film shows through the cut exactly as it plays, no cap, no floor (Asif, 25 Oct: "bring back the full transparent inside"). Was .70, before that .48 (smoked glass). Below 1 the old capped window returns. The lip reads against the wall below, not the film */
   --hollow-wall:.012em;                         /* Anwar 25 Oct: .028 ate 61 percent of the film window; .012 gives most of it back. the cut's wall: the plate's thickness in shadow, one band of near-black just inside the lip (3.7px at L6 132). Whatever the film does, the lip has a dark neighbour and the film has a dark border */
   --hollow-wall-ink:#141413;                    /* the wall's ink on the DOM words and the SVG fallback */
-  --hollow-fill:rgba(11,11,11,.30);             /* the DOM form of the same dim: the glyph is filled with the page black at 1 minus the dim, so the window is smoked inside the letter only, never a pane behind it */
-  --hollow-soft:.06em;                          /* blur radius inside a cut on the plate: 7.9px at L6 132 */
-  --hollow-sat:.6;                              /* colour inside the cut pulled toward grey by 40 percent */
+  --hollow-fill:rgba(11,11,11,0);               /* the DOM form of the same dim: the glyph is filled with the page black at 1 minus the dim, so the window is smoked inside the letter only, never a pane behind it */
+  --hollow-soft:0em;                            /* blur radius inside a cut on the plate; 0 since the cut went clear (was .06em, 7.9px at L6 132) */
+  --hollow-sat:1;                               /* colour inside the cut kept whole since it went clear (was .6, pulled 40 percent toward grey) */
 }
 /* a hollow word set in markup: a smoked window with a lit rim. The stroke is centred on the edge, so the rim reads half in and half out of the glyph; paint order is left alone (stroke over fill) so the whole rim shows */
 .hollow,.screen .word.hollow,.scene .after .word.hollow{color:var(--hollow-fill);-webkit-text-stroke:max(var(--hollow-rim-min),var(--hollow-rim)) var(--white)}

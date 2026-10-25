@@ -16,7 +16,8 @@
   /* the hollow rule, read once from type-base.css so the plate and the DOM words agree */
   function hollow(L6){ var dim=cssNum('--hollow-dim')||.48, C=(dim-.24)/.68; // the cut's output is .24 + .68 x shoulder(film); the shoulder's ceiling is set so the output tops out at dim
     var rim=Math.max(cssPx('var(--hollow-rim-min)'),cssPx('var(--hollow-rim)',null,L6));
-    return {rim:rim, wall:Math.max(1,cssPx('var(--hollow-wall)',null,L6)), soft:cssPx('var(--hollow-soft)',null,L6), dim:dim, sat:cssNum('--hollow-sat')||.6, a:C*.926/(.926-C)}; }
+    var clear=dim>=1; // dim 1 = a clear window: the film as it plays, no shoulder, no floor
+    return {rim:rim, wall:Math.max(1,cssPx('var(--hollow-wall)',null,L6)), soft:cssPx('var(--hollow-soft)',null,L6)||0, dim:dim, sat:clear?1:(cssNum('--hollow-sat')||.6), a:clear?1:C*.926/(.926-C), clear:clear?1:0}; }
   function ease(t){ t=Math.max(0,Math.min(1,t)); return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2; }
   function seg(p,a,b){ return Math.max(0,Math.min(1,(p-a)/(b-a))); }
 
@@ -38,13 +39,13 @@
       var widest=0; st1.concat(st2).forEach(function(ws){ widest=Math.max(widest,width('700 100px "Bespoke Stencil"',ws.map(function(t){return t.t}).join(' '),track*100)); });
       L6=Math.min(L6*1.25,Math.floor(100*maxW/widest));
     }
-    var os=Math.round(L6*.30), pitch=L6*.88, cap=.70*L6;   /* the one middle size: 30 percent of the poster (40px at 1440). The strategy line prints at it in full white; "other studios" at it in 36 percent white, a run-in, never a box */
+    var os=Math.round(L6*.30), pitch=L6*.88, cap=.70*L6;   /* the one middle size: 30 percent of the poster (40px at 1440). The strategy line prints at it in full white; "other studios" at it in 46 percent white (was 36; Asif asked for slightly brighter, 25 Oct), a run-in, never a box */
     var stencil='700 '+L6+'px "Bespoke Stencil"', sans='400 '+os+'px "General Sans"', mid='400 '+os+'px "General Sans"', small='400 '+L0+'px "General Sans"';
     var ls=track*L6;
     if(comp!==1){ st1=wrap(stencil,[WE,MAKE,THE,WORK],ls); st2=wrap(stencil,[WILL,NOT,DARE],ls); }
     var rows=[];
     st1.forEach(function(ws){ rows.push({font:stencil,size:L6,ls:ls,pitch:pitch,words:ws}); });
-    rows.push({font:sans,size:os,ls:0,pitch:os*1.25,words:[{t:'other',k:'b',a:.36},{t:'studios',k:'b',a:.36}],under:comp===3?'last':null});
+    rows.push({font:sans,size:os,ls:0,pitch:os*1.25,words:[{t:'other',k:'b',a:.46},{t:'studios',k:'b',a:.46}],under:comp===3?'last':null});
     st2.forEach(function(ws){ rows.push({font:stencil,size:L6,ls:ls,pitch:pitch,words:ws,align:comp===3?'right':'left'}); });
     // the strategy line, wrapped at the middle size (two lines on the phone)
     var strap=wrap(mid,'A strategy and design firm, working from both.'.split(' ').map(function(t){return {t:t}}),0).map(function(ws){ return ws.map(function(w){return w.t}).join(' '); });
@@ -149,9 +150,9 @@
       ' vec3 face=mix(steel,vec3(.95,.95,.94)*(.5+.5*dif),white);',
       // the hollow rule inside a cut (type-base.css): the street is softened (nine taps, --hollow-soft wide), pulled toward grey (--hollow-sat), and run through a shoulder whose ceiling is set so the cut's brightest pixel stays under --hollow-dim;
       // Anwar's 24 percent floor stays under it and the cut shadow still falls across it. So the window is always lit and never brighter than the rim can stand 3 to 1 above
-      ' vec3 fs=film;if(hole>.08){vec2 sp=uH.x/uRes;fs=(film+filmLit(v+vec2(sp.x,0.))+filmLit(v-vec2(sp.x,0.))+filmLit(v+vec2(0.,sp.y))+filmLit(v-vec2(0.,sp.y))+filmLit(v+sp)+filmLit(v-sp)+filmLit(v+vec2(sp.x,-sp.y))+filmLit(v-vec2(sp.x,-sp.y)))/9.;',
+      ' vec3 fs=film;if(hole>.08&&uH.w<.5){vec2 sp=uH.x/uRes;fs=(film+filmLit(v+vec2(sp.x,0.))+filmLit(v-vec2(sp.x,0.))+filmLit(v+vec2(0.,sp.y))+filmLit(v-vec2(0.,sp.y))+filmLit(v+sp)+filmLit(v-sp)+filmLit(v+vec2(sp.x,-sp.y))+filmLit(v-vec2(sp.x,-sp.y)))/9.;',
       '  fs=mix(vec3(lum(fs)),fs,uH.z);fs=uH.y*fs/(fs+uH.y);}',
-      ' float aa=smoothstep(.3,.7,hole);vec3 pc=mix(face,.24+.68*fs*sh,aa);',
+      ' float aa=smoothstep(.3,.7,hole);vec3 pc=mix(face,uH.w>.5?film*sh:.24+.68*fs*sh,aa);',   // clear (uH.w): the film itself, only the plate's own thickness shadow on it
       // the cut's wall: the plate's thickness in shadow, one --hollow-wall wide just inside the lip, so the lip always has a dark neighbour whatever the film does
       ' pc=mix(pc,vec3(.006,.006,.0055)*(.7+.3*dif),wall);',
       // the lit lip of the cut: one rim wide, inside the edge, the plate's own white catching the same light as its face
@@ -201,7 +202,7 @@
       var cv=host.querySelector('canvas'); dpr=Math.min(window.devicePixelRatio||1,2); if(W*dpr>3600) dpr=3600/W;
       cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr); gl.viewport(0,0,cv.width,cv.height);
       gl.uniform2f(U.uRes,cv.width,cv.height); gl.uniform1f(U.uP,1200*dpr);
-      var t=texture(), hk=lay.hollow; gl.uniform4f(U.uH,hk.soft*dpr,hk.a,hk.sat,0);
+      var t=texture(), hk=lay.hollow; gl.uniform4f(U.uH,hk.soft*dpr,hk.a,hk.sat,hk.clear);
       // uploaded as raw bytes, never as a canvas: a canvas upload would premultiply the rim's alpha into the cut's red and lose the cut wherever the rim is 0
       gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D,texT); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,false); gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,false); gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,t.w,t.h,0,gl.RGBA,gl.UNSIGNED_BYTE,new Uint8Array(t.data.buffer));
     }
