@@ -37,3 +37,25 @@
 
 ## Note, no change ordered
 The ground's stated reason died with the stall. It still does a job, lightening toward the team line and the close. The comment should say that.
+
+## R11b, after the fix (28 Oct 2026)
+
+### Verdict
+- 1440: PASS.
+- 800, 1280, 1920: PASS on the numbers. No section frame at those widths was looked at; the frames caught the hero.
+- 390: PASS stands. The fix lines sit inside the desktop block (type-a.css:53-59, inside the 761 px query that opens at line 40).
+
+### Observed
+- 1440 frame, read by pixel: the ink of "to grow." ends on row 583, the ink of "See the work" on row 582. One pixel apart.
+- The orange underline of "See the work" sits on row 590. The thread from See inside runs on into this section.
+- Heading 72 px, two lines, the break as specified. The heading runs to about x 697; the right column starts at x 1054. A gap of about 357 px between the two masses.
+- The right column's first ink is on row 438; the heading's cap top is on row 456. The column starts 18 px higher.
+- The chat's box bottoms: 800 -1, 1280 +1, 1440 +1, 1920 +5 px (heading minus link).
+
+### Concluded
+- The field now reads as held space. Two masses face each other across it and land on one foot line, so the emptiness has a reason.
+- The 5 px at 1920 is most likely the heading's bigger descent below its baseline (96 px type against 72), not a baseline miss. This is inferred and not measured: the true-baseline run did not finish inside the time box.
+- Not a fault: the 18 px top offset. The shared foot line is the alignment that matters here.
+
+### No change ordered
+- The ground's comment (glow-a.css:101-102) still names the stall. The R11 note stands.
