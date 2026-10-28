@@ -5,7 +5,7 @@
 
 /* the scene is two screens tall; its stage holds for one screen while the plate goes */
 .scene{position:relative;z-index:3;height:calc(var(--sh) * 2)}
-.scene .stage{position:sticky;top:0;height:var(--sh);min-height:560px;overflow:hidden;background:var(--black);perspective:1200px;perspective-origin:50% 50%}
+.scene .stage{position:sticky;top:0;height:var(--sh);min-height:560px;overflow:hidden;background:var(--black) var(--ground) right top/cover no-repeat;perspective:1200px;perspective-origin:50% 50%}
 .scene .bed{z-index:0}
 .scene .bed.under{object-position:100% 50%}             /* the woman walks in the left third; the right half of the lane is free */
 .scene .plate{position:absolute;inset:0;z-index:2;pointer-events:none}
@@ -31,6 +31,25 @@ html.plate-still .scene .after{--rev:1}
 html.plate-still .scene .after .word{display:none}
 /* the hollow rule on the SVG fallback: while the sheet stands (opacity over .5) the film under it is dimmed, flattened, greyed and softened, so the cuts read as smoked windows under the rim; brightness .6 with contrast .7 is a floor of 9 and a ceiling of 51 percent, the nearest a CSS filter gets to the shader's 24 percent floor and 48 percent ceiling */
 .scene .bed.cutlit{filter:brightness(.6) contrast(.7) saturate(var(--hollow-sat)) blur(calc(var(--L6) * .06))}
+
+/* ---- the home's work, bigger (Asif via the chat, 28 Oct: every work picture at 1200px or more at 1440) ---- */
+/* the shelf of three becomes three sheets stepping down the wall, each tucked a hand's width under the one above, so each reads as laid on top of the next:
+   the film flush left, the portrait flush right, the website flush left again, three heights. The Chhaya screen is already the full width;
+   the SIM pack stays the small object laid on the billboard. The three reading blocks put their picture between the heading and the words,
+   at three widths and three edges: the coat runs off the right edge, the tower off the left, the stall stands inside the margins */
+@media (min-width:761px){
+  .type-a:not(.inner) .strip{flex-direction:column;align-items:flex-start;gap:0;padding:calc(var(--m) * 2) var(--m) calc(var(--m) * 2.4)}
+  .type-a:not(.inner) .strip .s1w{width:84vw;height:auto;aspect-ratio:1920/804;z-index:3;box-shadow:0 40px 90px rgba(0,0,0,.6)}
+  .type-a:not(.inner) .strip .s2{width:86vw;height:54vw;align-self:flex-end;margin-top:-6vw;z-index:2;box-shadow:0 40px 90px rgba(0,0,0,.6)}
+  .type-a:not(.inner) .strip .s2 img{object-position:50% 24%}
+  .type-a:not(.inner) .strip .s3{width:90vw;height:43vw;margin-top:-6vw;z-index:1}
+  .type-a:not(.inner) .strip .s3 img{object-position:50% 40%}
+  .type-a:not(.inner) .block .pic{position:relative;left:auto;right:auto;top:auto;display:block;margin:0 0 calc(var(--m) * 1.1)}
+  .type-a:not(.inner) .audit .pic{width:86vw;height:54vw;margin-left:auto;margin-right:calc(var(--m) * -1)}
+  .type-a:not(.inner) .audit .pic img{object-position:50% 62%}
+  .type-a:not(.inner) .ai .pic{width:90vw;height:43vw;margin-left:calc(var(--m) * -1)}
+  .type-a:not(.inner) .grow .pic{width:84vw;height:48vw;margin-left:6vw}
+}
 
 /* ---- what we do: THE COMMA ---- */
 /* YOUR WHOLE BUSINESS, at L4; READ. at L6, orange, on its own line: a 2 to 1 jump between two stencil sizes. The pause, then the verdict */
@@ -62,7 +81,7 @@ html.plate-still .scene .after .word{display:none}
   .comma{justify-content:flex-start;padding-top:calc(var(--sh) * .3 - 8px)}
 }
 /* 60, 30, 10: the one orange action on the home's first screen is the ask in the bar, so its underline is the thread; the four row links on what we do are white (Anwar round 2, ruling 7) */
-.type-a:not(.inner) .top .ask{border-bottom-color:var(--accent)}
+.type-a:not(.inner) .top .ask{border-bottom-color:var(--accent);mix-blend-mode:normal;border-bottom-width:2px;padding-bottom:1px}   /* the difference blend turned the orange line white or blue over film; normal keeps it the one orange in the bar */
 .wwd.type-a .duo .go{border-bottom-color:var(--white)}
 .wwd.type-a .duo .go:hover{border-bottom-color:var(--accent)}
 

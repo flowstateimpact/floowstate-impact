@@ -1,5 +1,7 @@
 /* glow.css: the shared base for the three home page directions (24 Oct 2026).
-   Two grounds, one accent, two faces. Solid colour only: no fabric pictures, no grain, no filled letters. */
+   One accent, two faces, no filled letters. The ground is warm black with one made material on it: the combed plaster wall
+   (G2, the studio mark combed into plaster, generated through the prompt lab, Anwar PASS WITH NOTE 28 Oct), baked flat to an unlit 18/16/12 black. --ground is the ONE switch point
+   for that wall: the plate's face, its SVG fallback and the stage behind the film all read it, so swapping the picture is one line here. */
 
 @font-face{font-family:"Bespoke Stencil";font-weight:700;font-style:normal;font-display:swap;src:url(fonts/BespokeStencil-700.woff2) format("woff2")}
 @font-face{font-family:"General Sans";font-weight:400;font-style:normal;font-display:swap;src:url(fonts/GeneralSans-Regular.woff2) format("woff2")}
@@ -7,6 +9,7 @@
 
 :root{
   --black:#0B0B0B;          /* 60: the ground */
+  --ground:url(media/ground/plaster-desk.jpg);   /* the wall: 2352x1320, cover anchored right top, the mark's tail under DARE. The phone file swaps in under 760px below */
   --white:#F2F2F0;          /* 30: the letters and the light in the pictures */
   --accent:#E27F22;         /* 10: the thread. DARE, the play control, the one ask. */
   --dim:rgba(242,242,240,.5);
@@ -35,6 +38,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .dim{color:var(--dim)}
 .ph{display:none}
 @media (max-width:760px){.ph{display:inline}}
+@media (max-width:760px){:root{--ground:url(media/ground/plaster-phone.jpg)}}   /* 660x1428 (G2 x 2140..2549, y 650..1536 scaled 1.6x): the tail rises behind the headline to its point above it */
 .hot{color:var(--accent)}
 
 /* the top bar: 12px, nothing else */

@@ -1,6 +1,6 @@
 /* type-a.js: variant A. THE PLATE on the home, THE COMMA and the turning pages on what we do. 25 Oct 2026, Nadir. Original code, no library beyond the vendored GSAP.
    The plate: a full-screen WebGL sheet in the mark3d manner. The tagline is baked into a texture (R = the cuts, G = DARE's orange spray, B = the printed white).
-   Every pixel casts a ray from the camera to the hinged plate; a cut shows the film behind, the face shows blackened steel lit from the top left,
+   Every pixel casts a ray from the camera to the hinged plate; a cut shows the film behind, the face is the combed plaster wall from --ground (glow.css), unlit, its edge lit only while it tilts,
    the plate's thickness throws a shadow onto the film inside each cut. DARE rides its own plane that lags the plate, so it is the last thing to lift.
    Without WebGL, or when the film cannot be read as a texture (double-clicked file), the same layout is drawn as an SVG sheet masked by the letters and hinged by CSS. */
 (function(){
@@ -86,7 +86,7 @@
   /* ---------- the plate ---------- */
   function plate(scene){
     var stage=scene.querySelector('.stage'), host=scene.querySelector('.plate'), video=scene.querySelector('video'), after=scene.querySelector('.after');
-    var W=0,H=0,dpr=1, lay=null, mode=null, gl=null, prog=null, U={}, texT=null, texV=null, vidOK=false, poster=null, posterOK=false, pm=0, lastT=-1;
+    var W=0,H=0,dpr=1, lay=null, mode=null, gl=null, prog=null, U={}, texT=null, texV=null, texG=null, gImg=null, gSrc='', vidOK=false, poster=null, posterOK=false, pm=0, lastT=-1;
     var p=0; // scroll progress 0..1 over the first screen
     var meas=document.createElement('canvas').getContext('2d');
     window.__plate={};
@@ -117,9 +117,24 @@
     }
     function rimPNG(){ var t=texture(), c=document.createElement('canvas'); c.width=t.w; c.height=t.h; var x=c.getContext('2d'); x.fillStyle='#000'; x.fillRect(0,0,t.w,t.h); x.drawImage(t.rim,0,0); return c.toDataURL('image/png'); }
 
+    /* the wall: the plate's face is the combed plaster, read from --ground (glow.css, the one switch point) through the stage's own computed background,
+       so the CSS ground, the GL face and the SVG face can never disagree. Drawn at the plate canvas's device size, cover, anchored right top, resampled with
+       high quality smoothing so the shader samples it one to one at rest: the moire guard for the fine comb grooves */
+    function groundURL(){ var b=getComputedStyle(stage).backgroundImage||'', m=/url\(["']?([^"')]+)["']?\)/.exec(b); return m?m[1]:''; }
+    function loadGround(){ var u=groundURL(); if(!u||u===gSrc) return; gSrc=u; var im=new Image(); im.decoding='async';
+      im.onload=function(){ if(gSrc!==u) return; gImg=im; if(mode==='gl'){ uploadGround(); wake(); } }; im.src=u; }
+    function uploadGround(){
+      if(!gl||!gImg||!W) return;
+      var w=Math.round(W*dpr), h=Math.round(H*dpr), c=document.createElement('canvas'); c.width=w; c.height=h;
+      var x=c.getContext('2d'); x.imageSmoothingEnabled=true; x.imageSmoothingQuality='high'; x.fillStyle='#12100C'; x.fillRect(0,0,w,h);
+      var iw=gImg.naturalWidth, ih=gImg.naturalHeight, k=Math.max(w/iw,h/ih), dw=iw*k, dh=ih*k; x.drawImage(gImg,w-dw,0,dw,dh);
+      gl.activeTexture(gl.TEXTURE2); gl.bindTexture(gl.TEXTURE_2D,texG); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,false); gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,false);
+      gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE,c); gl.uniform1f(U.uHasG,1); gl.activeTexture(gl.TEXTURE0);
+    }
+
     var VS='attribute vec2 a;varying vec2 v;void main(){v=a*.5+.5;gl_Position=vec4(a,0.,1.);}';
     var FS=[
-      'precision highp float;varying vec2 v;uniform sampler2D uT,uV;uniform vec2 uRes,uVid,uAnc;uniform float uP,uHas;uniform vec4 uA,uB,uH;uniform vec3 uL;',
+      'precision highp float;varying vec2 v;uniform sampler2D uT,uV,uG;uniform vec2 uRes,uVid,uAnc;uniform float uP,uHas,uHasG;uniform vec4 uA,uB,uH;uniform vec3 uL;',
       'float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}',
       // the plate hinged at its top edge: returns plate uv (y down), the ray depth, and the facing
       'vec4 plate(vec3 d,float ang,float tz,float ty){float W=uRes.x,H=uRes.y;vec3 p0=vec3(0.,H*.5+ty,uP+tz);float s=sin(ang),c=cos(ang);vec3 n=vec3(0.,s,c);vec3 vd=vec3(0.,c,-s);float den=dot(n,d);if(abs(den)<1e-5)return vec4(0.,0.,-1.,0.);float t=dot(n,p0)/den;if(t<=0.)return vec4(0.,0.,-1.,0.);vec3 q=t*d-p0;float r=dot(q,vd);return vec4((q.x+W*.5)/W,-r/H,t,den);}',
@@ -136,12 +151,10 @@
       'if(uA.w>0.&&m.z>0.&&m.x>=0.&&m.x<=1.&&m.y>=0.&&m.y<=1.){',
       ' vec4 tx=texture2D(uT,m.xy);float hole=tx.r,white=tx.b,rim=smoothstep(.62,.88,tx.a),wall=smoothstep(.14,.38,tx.a);',
       ' float s=sin(uA.x),c=cos(uA.x);vec3 nf=vec3(0.,-s,-c);float dif=max(dot(nf,uL),0.);vec3 h=normalize(uL-d);float spec=pow(max(dot(nf,h),0.),70.);',
-      // blackened steel: a fine horizontal brush, lit from the top left, one soft sheen that sweeps as the plate tilts
-      ' float g=hash(vec2(floor(m.y*uRes.y*.5),floor(m.x*uRes.x*.015)))*.6+hash(vec2(floor(m.y*uRes.y),3.))*.4;',
-      ' vec3 steel=vec3(.082,.082,.079)*(.7+.55*dif)+vec3(.045,.045,.042)*g*(.4+dif)+vec3(.26,.25,.23)*spec*.32;',
-      ' steel+=vec3(.012)*(1.-m.y);',
-      // the sheet's rim catches the light
-      ' float e=min(min(m.x,1.-m.x)*uRes.x,min(m.y,1.-m.y)*uRes.y);steel+=vec3(.16,.16,.15)*(1.-smoothstep(0.,2.5,e));',
+      // the face is the wall itself: the combed plaster, unlit, sampled in plate space so it travels with the sheet as it hinges. No lamp on it; the light lives in the work
+      ' vec3 steel=uHasG>.5?texture2D(uG,m.xy).rgb:vec3(.0706,.0627,.0471);',
+      // the sheet's edge catches the light only once it starts to tilt; at rest the wall runs to the frame with no drawn border
+      ' float e=min(min(m.x,1.-m.x)*uRes.x,min(m.y,1.-m.y)*uRes.y);steel+=vec3(.16,.16,.15)*(1.-smoothstep(0.,2.5,e))*smoothstep(0.,.05,uA.x);',
       // inside a cut the plate's thickness throws a shadow onto the film at the cut's top left; it lengthens as the plate lifts away
       ' float L=(7.+uA.y*.012)*max(uRes.x/1440.,.6)/uRes.y;vec2 o=vec2(-L*.7*uRes.y/uRes.x,-L);',
       ' float a1=texture2D(uT,m.xy+o).r,a2=texture2D(uT,m.xy+o*.5).r,a3=texture2D(uT,m.xy+o*1.7).r;float sh=mix(.55,1.,(a1+a2+a3)/3.);',
@@ -175,10 +188,10 @@
       gl.bindAttribLocation(prog,0,'a'); gl.linkProgram(prog); if(!gl.getProgramParameter(prog,gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
       gl.useProgram(prog);
       var b=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,b); gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW); gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);
-      ['uT','uV','uRes','uVid','uAnc','uP','uHas','uA','uB','uL','uH'].forEach(function(n){ U[n]=gl.getUniformLocation(prog,n); });
-      texT=gl.createTexture(); texV=gl.createTexture();
-      [texT,texV].forEach(function(t){ gl.bindTexture(gl.TEXTURE_2D,t); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE); });
-      gl.uniform1i(U.uT,0); gl.uniform1i(U.uV,1);
+      ['uT','uV','uG','uRes','uVid','uAnc','uP','uHas','uHasG','uA','uB','uL','uH'].forEach(function(n){ U[n]=gl.getUniformLocation(prog,n); });
+      texT=gl.createTexture(); texV=gl.createTexture(); texG=gl.createTexture();
+      [texT,texV,texG].forEach(function(t){ gl.bindTexture(gl.TEXTURE_2D,t); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE); });
+      gl.uniform1i(U.uT,0); gl.uniform1i(U.uV,1); gl.uniform1i(U.uG,2); gl.uniform1f(U.uHasG,0);
       var L=[-.45,.55,-.7], l=Math.hypot(L[0],L[1],L[2]); gl.uniform3f(U.uL,L[0]/l,L[1]/l,L[2]/l);
       gl.uniform2f(U.uAnc,1,.5);
       host.appendChild(cv); mode='gl'; cv.addEventListener('webglcontextlost',function(e){ e.preventDefault(); gl=null; host.innerHTML=''; mode=null; startSVG(); });
@@ -203,6 +216,7 @@
       var t=texture(), hk=lay.hollow; gl.uniform4f(U.uH,hk.soft*dpr,hk.a,hk.sat,hk.clear);
       // uploaded as raw bytes, never as a canvas: a canvas upload would premultiply the rim's alpha into the cut's red and lose the cut wherever the rim is 0
       gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D,texT); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,false); gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,false); gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,t.w,t.h,0,gl.RGBA,gl.UNSIGNED_BYTE,new Uint8Array(t.data.buffer));
+      uploadGround();
     }
     function poses(p){ // the sheet hinges at its top edge, recedes and rises clean out of the top of the frame, and is gone (opacity 0) by .74:
       // never a thumbnail hanging mid-screen. DARE is the paint that went through the stencil onto the street: it holds flat and whole while the sheet leaves,
@@ -230,10 +244,11 @@
       var svg=el('svg',{class:'sheet',viewBox:'0 0 '+W+' '+H,width:W,height:H,'aria-hidden':'true'},host);
       var defs=el('defs',{},svg), mask=el('mask',{id:'plate-cut',maskUnits:'userSpaceOnUse',x:0,y:0,width:W,height:H},defs);
       el('rect',{x:0,y:0,width:W,height:H,fill:'#fff'},mask);
-      var grad=el('linearGradient',{id:'plate-steel',x1:0,y1:0,x2:.4,y2:1},defs); el('stop',{offset:0,'stop-color':'#1d1d1c'},grad); el('stop',{offset:.5,'stop-color':'#131312'},grad); el('stop',{offset:1,'stop-color':'#0f0f0e'},grad);
-      function text(par,t,x,y,font,fill,ls){ var m=/^(\d+) (\d+)px "(.+)"$/.exec(font); var e=el('text',{x:x,y:y,fill:fill,'font-family':'"'+m[3]+'"','font-weight':m[1],'font-size':m[2],'letter-spacing':ls||0,'xml:space':'preserve'},par); e.textContent=t; return e; }
+      function text(par,t,x,y,font,fill,ls){ var m=/^(\d+) ([\d.]+)px "(.+)"$/.exec(font);   /* the size may be fractional: --L6 is 17px + 8vw, 132.2px at 1440 */ var e=el('text',{x:x,y:y,fill:fill,'font-family':'"'+m[3]+'"','font-weight':m[1],'font-size':m[2],'letter-spacing':ls||0,'xml:space':'preserve'},par); e.textContent=t; return e; }
       lay.rows.forEach(function(r){ r.toks.forEach(function(t){ if(t.k==='r') text(mask,t.t,t.x,r.y,r.font,'#000',r.ls); }); });
-      el('rect',{x:0,y:0,width:W,height:H,fill:'url(#plate-steel)',mask:'url(#plate-cut)'},svg);
+      // the face: the unlit wall's own black under the plaster picture, both cut by the letters; the picture is re-read from --ground each time the sheet is drawn, so crossing 760px swaps desk and phone files
+      el('rect',{x:0,y:0,width:W,height:H,fill:'#12100C',mask:'url(#plate-cut)'},svg);
+      var gu=groundURL(); if(gu) el('image',{href:gu,x:0,y:0,width:W,height:H,preserveAspectRatio:'xMaxYMin slice',mask:'url(#plate-cut)'},svg);
       // the hollow rule's rim: the cut words stroked at twice the rim and clipped to their own shapes, so the lip is one rim wide inside the edge
       var clip=el('clipPath',{id:'plate-cuts'},defs);
       lay.rows.forEach(function(r){ r.toks.forEach(function(t){ if(t.k==='r') text(clip,t.t,t.x,r.y,r.font,'#fff',r.ls); }); });
@@ -241,7 +256,7 @@
       lay.rows.forEach(function(r){ r.toks.forEach(function(t){ if(t.k==='r') text(wall,t.t,t.x,r.y,r.font,'none',r.ls); }); });
       var lip=el('g',{'clip-path':'url(#plate-cuts)',fill:'none',stroke:'#F2F2F0','stroke-width':lay.hollow.rim*2,'stroke-linejoin':'miter'},svg);
       lay.rows.forEach(function(r){ r.toks.forEach(function(t){ if(t.k==='r') text(lip,t.t,t.x,r.y,r.font,'none',r.ls); }); });
-      el('rect',{x:.5,y:.5,width:W-1,height:H-1,fill:'none',stroke:'rgba(242,242,240,.16)'},svg);
+      el('rect',{class:'edge',x:.5,y:.5,width:W-1,height:H-1,fill:'none',stroke:'rgba(242,242,240,.16)',opacity:0},svg);   // the edge shows only while the sheet tilts, as in the shader
       lay.rows.forEach(function(r){ r.toks.forEach(function(t){ if(t.k==='b') text(svg,t.t,t.x,r.y,r.font,'rgba(242,242,240,'+t.a+')',0); }); });
       lay.who.forEach(function(w){ var e=text(svg,w.t,w.x,w.y,w.font,'rgba(242,242,240,'+w.a+')',0); e.setAttribute('letter-spacing',w.a===1?'0':'.32'); if(w.align==='right') e.setAttribute('text-anchor','end'); });
       var dare=el('svg',{class:'dare',viewBox:'0 0 '+W+' '+H,width:W,height:H,'aria-hidden':'true'},host);
@@ -251,7 +266,7 @@
     }
     function drawSVG(){
       var k=poses(p), s=host.querySelector('.sheet'), d=host.querySelector('.dare'); if(!s) return;
-      s.style.transform='translate3d(0,'+(-k.A[2])+'px,'+(-k.A[1])+'px) rotateX('+(-k.A[0]*180/Math.PI)+'deg)'; s.style.opacity=k.A[3];
+      s.style.transform='translate3d(0,'+(-k.A[2])+'px,'+(-k.A[1])+'px) rotateX('+(-k.A[0]*180/Math.PI)+'deg)'; s.style.opacity=k.A[3]; var ed=s.querySelector('.edge'); if(ed){ var q=Math.min(1,k.A[0]/.05); ed.setAttribute('opacity',(q*q*(3-2*q)).toFixed(3)); }
       d.style.transform='translate3d(0,'+(-k.B[2])+'px,'+(-k.B[1])+'px) rotateX('+(-k.B[0]*180/Math.PI)+'deg)'; d.style.opacity=k.B[3];
       video.classList.toggle('cutlit',k.A[3]>.5);
     }
@@ -259,7 +274,7 @@
     function size(){
       var r=stage.getBoundingClientRect(); var w=Math.round(r.width), h=Math.round(r.height); if(!w||!h||(w===W&&h===H)) return; W=w; H=h;
       lay=layout(W,H,meas); window.__plate={capTop:lay.capTop,base:lay.base,L6:lay.L6,os:lay.os,comp:lay.comp,W:W,H:H,mode:mode,rows:lay.rows,who:lay.who,hollow:lay.hollow};
-      if(mode==='gl') sizeGL(); else if(mode==='svg') startSVG();
+      loadGround(); if(mode==='gl') sizeGL(); else if(mode==='svg') startSVG();
       if(mode==='gl') wake();
     }
     function setP(v){ p=v; window.__plate.p=p; after.style.setProperty('--rev',seg(p,.78,1)); if(mode==='gl') wake(); else drawSVG(); }
@@ -268,7 +283,7 @@
       var r=stage.getBoundingClientRect(); W=Math.round(r.width); H=Math.round(r.height); lay=layout(W,H,meas);
       window.__plate={capTop:lay.capTop,base:lay.base,L6:lay.L6,os:lay.os,comp:lay.comp,W:W,H:H,rows:lay.rows,who:lay.who,hollow:lay.hollow};
       var ok=false; if(!still){ try{ ok=startGL(); if(ok) sizeGL(); }catch(e){ ok=false; if(window.console) console.warn('plate:',e.message); } }
-      if(!ok) startSVG(); window.__plate.mode=mode; window.__plate.at=poses; window.__plate.mask=function(){ return texture().rgb.toDataURL('image/png'); }; window.__plate.rim=rimPNG;
+      if(!ok) startSVG(); loadGround(); window.__plate.mode=mode; window.__plate.ground=function(){ return {src:gSrc,loaded:!!gImg}; }; window.__plate.at=poses; window.__plate.mask=function(){ return texture().rgb.toDataURL('image/png'); }; window.__plate.rim=rimPNG;
       if(mode==='gl'){ wake(); video.addEventListener('play',wake); }
       new ResizeObserver(size).observe(stage);
       document.addEventListener('visibilitychange',function(){ if(!document.hidden) wake(); });
