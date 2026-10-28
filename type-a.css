@@ -36,7 +36,7 @@ html.plate-still .scene .after .word{display:none}
 /* the shelf of three becomes three sheets stepping down the wall, each tucked a hand's width under the one above, so each reads as laid on top of the next:
    the film flush left, the portrait flush right, the website flush left again, three heights. The Chhaya screen is already the full width;
    the SIM pack stays the small object laid on the billboard. The three reading blocks put their picture between the heading and the words,
-   at three widths and three edges: the coat runs off the right edge, the tower off the left, the stall stands inside the margins */
+   at three widths and three edges: the coat runs off the right edge, the tower off the left; Who has no picture */
 @media (min-width:761px){
   .type-a:not(.inner) .strip{flex-direction:column;align-items:flex-start;gap:0;padding:calc(var(--m) * 2) var(--m) calc(var(--m) * 2.4)}
   .type-a:not(.inner) .strip .s1w{width:84vw;height:auto;aspect-ratio:1920/804;z-index:3;box-shadow:0 40px 90px rgba(0,0,0,.6)}
@@ -48,7 +48,7 @@ html.plate-still .scene .after .word{display:none}
   .type-a:not(.inner) .audit .pic{width:86vw;height:54vw;margin-left:auto;margin-right:calc(var(--m) * -1)}
   .type-a:not(.inner) .audit .pic img{object-position:50% 62%}
   .type-a:not(.inner) .ai .pic{width:90vw;height:43vw;margin-left:calc(var(--m) * -1)}
-  .type-a:not(.inner) .grow .pic{width:84vw;height:48vw;margin-left:calc(-20vw - var(--m) * 2)}   /* the section keeps its 26vw + 3m indent for the words (glow-a.css:105); the picture steps back out of it to stand 6vw inside the margin */
+  .type-a:not(.inner) .grow{padding-left:var(--m)}   /* Who carries no picture (Asif, 28 Oct: the tea stall is out), so the indent glow-a.css:105 kept for it goes and the words stand on the margin like the other blocks */
 }
 
 /* ---- what we do: THE COMMA ---- */
