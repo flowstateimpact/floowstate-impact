@@ -1,0 +1,36 @@
+{
+ "passes": 16,
+ "length": [
+  504.5,
+  899.4
+ ],
+ "overlap": [
+  54.3,
+  115.6
+ ],
+ "jog": [
+  4.6,
+  13.9
+ ],
+ "tilt_deg": [
+  0.0,
+  0.5
+ ],
+ "bow": [
+  6.1,
+  9.9
+ ],
+ "gap_over_tooth": [
+  1.9,
+  2.2
+ ],
+ "sets": 5,
+ "breaks_per_set": [
+  2,
+  2,
+  2,
+  3,
+  2
+ ],
+ "every_set_breaks": true
+}

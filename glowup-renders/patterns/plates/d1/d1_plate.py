@@ -1,9 +1,15 @@
 # d1_plate.py: Beyond Black ground plates. Black pigment plaster, a comb dragged through it, shaded in linear light, dithered.
 # Standard library only (numpy is not installed).
-# Ava, D1 Beyond Black. Run 1 and 2: 25 Oct 2026. Run 3: 28 Oct 2026.
+# Ava, D1 Beyond Black. Run 1 and 2: 25 Oct 2026. Run 3 and run 4: 28 Oct 2026.
 # STAND-IN for the final material (a real combed panel shot in raking light).
 #
-# usage: python3 d1_plate.py [--rib] lurk|seam|high|phone|phone2 ...
+# usage: python3 d1_plate.py [--rib|--run3] lurk|seam|high|phone|phone2 ...
+#   default (run 4): COMB PASSES, NOT BOARDS. Each set of grooves is one comb, dragged an arm's reach at a time
+#     (500 to 900px at 1440, 220 to 320 at 390). A pass sets down with a slanted seam of piled plaster and wider
+#     tooth pits, tilts up to 0.6 degrees, bows 6 to 10px, and lifts out in a ragged tapering tail. The next pass
+#     starts 40 to 120px back over that tail, jogged 4 to 14px, and wipes the old grooves under it to a ghost.
+#     Sets are separated by 1.6 to 2.2 tooth spacings of untouched land (Anwar's spec, ANWAR-GATE-R3.md section 1).
+#   --run3: run 3 geometry (full-width grooves, comb tooth offsets repeating), writes plate-<name>-run3.png.
 #   default profile (run 3): GROOVES CUT INTO FLAT LAND, land to groove about 4 to 1. Each comb tooth cuts a narrow
 #     channel: one steep kept edge, one slanted wall with a small burr of pushed-up plaster on its lip (the sgraffito
 #     knife is slanted away from the edge you keep). Tooth widths differ (worn comb), depth swells and fades along the
@@ -37,8 +43,10 @@ BONE = (1.0, .90, .76)             # light off the bone letters: bone, a shade w
 ORANGE = (lin(0xE2), lin(0x7F), lin(0x22))   # the audit button, #E27F22
 
 # objects that sit on the wall (frame px): their own area is covered by the node, the plate skips it
+COMB_D = dict(sp=[27, 24, 28, 25, 29, 23], plen=(500, 900), ovl=(40, 120), jog=(4, 14), bow=(6, 10))     # 1440
+COMB_P = dict(sp=[12, 10.5, 12.5, 11, 12, 11], plen=(220, 320), ovl=(18, 54), jog=(2, 6.3), bow=(2.7, 4.5))  # 390, x0.45
 FR = {
- "lurk":   dict(W=1440, H=900, sp=[104, 96, 110, 100, 92, 106], peak=44, d0=210, win=380, seed=11),
+ "lurk":   dict(W=1440, H=900, sp=[104, 96, 110, 100, 92, 106], peak=50, d0=300, win=380, seed=11),   # run 4: peak 44 to 50, d0 210 to 300
  "high":   dict(W=1440, H=900, sp=[104, 96, 110, 100, 92, 106], peak=70, d0=200, win=380, seed=13,
                 cover=[(120, 600, 416, 678)]),
  "seam":   dict(W=1440, H=900, sp=[104, 96, 110, 100, 92, 106], peak=44, d0=190, win=380, seed=12,
@@ -59,7 +67,7 @@ def vnoise(L, x, y):
     a = r0[ix] + (r0[ix + 1] - r0[ix]) * tx; b = r1[ix] + (r1[ix + 1] - r1[ix]) * tx
     return a + (b - a) * ty
 
-def centres(rnd, H, sp, k):
+def centres(rnd, H, sp, k):   # run 3 (and rib) geometry
     # comb passes of six teeth, small offsets between passes
     cs = []; y = -sum(sp) * 0.37
     while y < H + 200:
@@ -113,7 +121,7 @@ def groove_section(u):
     b = math.exp(-((u - 0.6) / 0.1) ** 2)
     return g, b
 
-def build_groove(W, H, sp, seed):
+def build_groove_run3(W, H, sp, seed):
     rnd = random.Random(seed)
     k = W / 1440.0 if W > 600 else 0.6
     cs = centres(rnd, H, sp, k)
@@ -202,6 +210,148 @@ def picture_emitters(path, ox, oy, cell, wt, z=18.0):
             out.append((ox + cx + cell / 2, oy + cy + cell / 2, z, tuple(a / n * wt for a in acc)))
     return out
 
+def comb_passes(rnd, W, H, cm):
+    """Run 4. The plasterer's passes, in the order they were made: set by set top to bottom, pass by pass along."""
+    sp = cm["sp"]; offs = [0.0]
+    for s in sp: offs.append(offs[-1] + s)
+    span = offs[-1]; ms = sum(sp) / len(sp); sc = 1.0 if W > 600 else 0.45
+    sets = []; y = -rnd.uniform(0.2, 0.9) * span
+    gaps = []
+    while y < H + 10:
+        sets.append(y); g = rnd.uniform(1.6, 2.2) * ms; gaps.append(g); y += span + g
+    P = []
+    for si, ynom in enumerate(sets):
+        d = 1 if rnd.random() < 0.75 else -1                 # mostly left to right
+        L = rnd.uniform(*cm["plen"])
+        xa = -rnd.uniform(0.1, 0.55) * L if d == 1 else W + rnd.uniform(0.1, 0.55) * L
+        y0 = ynom + rnd.uniform(-4, 4) * sc; prev = None
+        while True:
+            th = math.tan(math.radians(rnd.uniform(-0.6, 0.6)))
+            bow = rnd.uniform(*cm["bow"]) * rnd.choice((-1, 1))
+            slope = math.tan(math.radians(rnd.uniform(8, 28))) * rnd.choice((-1, 1))   # comb held at a slant: the set-down seam
+            p = dict(set=si, d=d, xa=xa, L=L, y0=y0, th=th, bow=bow, slope=slope, offs=offs,
+                     tail=rnd.uniform(0.10, 0.22) * L, rag=[rnd.uniform(-1, 1) * 12 * sc for _ in offs],
+                     sdj=[rnd.uniform(-1, 1) * 2 * sc for _ in offs], pa=rnd.uniform(0, 6.28), pb=rnd.uniform(0, 6.28),
+                     dep=[rnd.uniform(0.18, 0.42) for _ in offs], ov=None, jog=None)
+            if prev is not None: p["ov"], p["jog"] = prev
+            P.append(p)
+            xe = xa + d * L
+            if (d == 1 and xe >= W) or (d == -1 and xe <= 0): break
+            ov = rnd.uniform(*cm["ovl"]); xn = xe - d * ov
+            yat = pass_y(p, xn)
+            jm = rnd.uniform(*cm["jog"])
+            if abs(yat - ynom) > 6 * sc: js = -1 if yat > ynom else 1      # the hand pulls back toward the row
+            else: js = rnd.choice((-1, 1))
+            y0 = yat + js * jm; xa = xn; L = rnd.uniform(*cm["plen"]); prev = (ov, js * jm)
+    return P, gaps, ms
+
+def pass_y(p, x):
+    s = p["d"] * (x - p["xa"]); t = min(max(s / p["L"], 0.0), 1.0)
+    return p["y0"] + p["th"] * s + p["bow"] * 4 * t * (1 - t)
+
+def build_groove(W, H, sp, seed, cm=None, log=None):
+    """Run 4: comb passes. Land as run 3; grooves stamped pass by pass, each later pass wiping what it covers."""
+    rnd = random.Random(seed)
+    k = W / 1440.0 if W > 600 else 0.6
+    cm = cm or (COMB_D if W > 600 else COMB_P)
+    sc = 1.0 if W > 600 else 0.45
+    P, gaps, ms = comb_passes(rnd, W, H, cm)
+    toothw = [rnd.uniform(0.72, 1.3) for _ in P[0]["offs"]]     # one worn comb for the whole wall
+    gw0 = ms / 3.2
+    N = W * H
+    cut = [0.0] * N; burr = [0.0] * N; gm = [0.0] * N
+    for p in P:
+        d = p["d"]; offs = p["offs"]; L = p["L"]; xa = p["xa"]; span = offs[-1]
+        x_lo = int(max(0, min(xa, xa + d * L) - 3 * gw0 - abs(p["slope"]) * span)); x_hi = int(min(W - 1, max(xa, xa + d * L) + 3 * gw0 + abs(p["slope"]) * span))
+        if x_hi < 0 or x_lo >= W: continue
+        # 1. the comb's body wipes what it passes over (old grooves left as a ghost), between set-down seam and lift-out
+        for x in range(x_lo, x_hi + 1):
+            yc = pass_y(p, x)
+            ya = int(max(0, yc - 0.6 * gw0 * 1.4)); yb = int(min(H - 1, yc + span + 0.9 * gw0 * 1.4))
+            for y in range(ya, yb + 1):
+                v = y - yc
+                xsd = xa + d * p["slope"] * v
+                s = d * (x - xsd)
+                if s < 0 or s > L - 0.5 * p["tail"]: continue
+                i = y * W + x
+                cut[i] *= 0.2; burr[i] *= 0.3; gm[i] *= 0.2
+        # 2. the teeth
+        for j, o in enumerate(offs):
+            gw = gw0 * toothw[j]; dep = gw * p["dep"][j]
+            xs = xa + d * (p["slope"] * o + p["sdj"][j])
+            Lj = L - d * 0 + p["rag"][j] - p["slope"] * o * 0
+            tl = p["tail"]
+            for x in range(x_lo, x_hi + 1):
+                s = d * (x - xs)
+                if s < -1.6 * gw or s > Lj: continue
+                if s < 0: a = math.exp(-(s / (0.45 * gw)) ** 2)
+                elif s > Lj - tl: a = (1.0 - ss(Lj - tl, Lj, s)) ** 0.8
+                else: a = 1.0
+                sd = math.exp(-(max(s, 0.0) / (14 * sc)) ** 2)
+                wf = (1.0 + 0.4 * sd) * (1.0 - 0.45 * (ss(Lj - tl, Lj, s) if s > Lj - tl else 0.0))
+                df = 1.0 + 0.25 * sd
+                bb = 1.0 + 2.0 * math.exp(-(max(s, 0.0) / (16 * sc)) ** 2)
+                m = 0.75 + 0.15 * math.sin(2 * math.pi * x / (700 * sc) + p["pa"]) + 0.10 * math.sin(2 * math.pi * x / (190 * sc) + p["pb"])
+                yj = pass_y(p, x) + o + 0.7 * sc * math.sin(x / (37.0 * sc) + p["pa"] + j)
+                w_ = gw * wf
+                ya = int(max(0, yj - 0.5 * w_)); yb = int(min(H - 1, yj + 0.85 * w_ + 1))
+                for y in range(ya, yb + 1):
+                    g, b = groove_section((y - yj) / w_)
+                    if g <= 0 and b <= 0: continue
+                    i = y * W + x
+                    cv = dep * m * a * df * g
+                    if cv > cut[i]: cut[i] = cv
+                    bv = 0.2 * dep * m * a * bb * b
+                    if bv > burr[i]: burr[i] = bv
+                    gv = g * m * a
+                    if gv > gm[i]: gm[i] = gv
+        # 3. the set-down seam: plaster piled where the comb's heel came down, across the whole set
+        dm = gw0 * 0.3
+        for x in range(x_lo, x_hi + 1):
+            yc = pass_y(p, x)
+            ya = int(max(0, yc - 0.6 * gw0)); yb = int(min(H - 1, yc + span + 0.8 * gw0))
+            for y in range(ya, yb + 1):
+                v = y - yc; xsd = xa + d * p["slope"] * v
+                s = d * (x - xsd) + 0.8 * gw0
+                if abs(s) > 1.6 * gw0: continue
+                endf = ss(-0.6 * gw0, 0.3 * gw0, v) * ss(span + 0.8 * gw0, span - 0.3 * gw0, v)
+                bv = 0.55 * dm * math.exp(-(s / (0.6 * gw0)) ** 2) * endf
+                i = y * W + x
+                if bv > burr[i]: burr[i] = bv
+    if log is not None:
+        log.update(passes=P, gaps=gaps, ms=ms, W=W, H=H)
+    n4 = lattice(rnd, W, H, 4 * max(k, .75)); n8 = lattice(rnd, W, H, 8 * max(k, .75)); n28 = lattice(rnd, W, H, 28 * max(k, .75))
+    n140 = lattice(rnd, W, H, 140 * max(k, .6)); n380 = lattice(rnd, W, H, 380 * max(k, .6))
+    hgt = [0.0] * N; occ = [0.0] * N; alb = [0.0] * N
+    tooth = 0.6 if W < 600 else 1.0
+    for y in range(H):
+        for x in range(W):
+            i = y * W + x
+            slow = vnoise(n140, x, y); big = vnoise(n380, x, y)
+            land = 1.6 * slow + 2.4 * big + tooth * (0.25 * vnoise(n4, x, y) + 0.35 * vnoise(n8, x, y) + 0.6 * vnoise(n28, x, y))
+            gg = min(gm[i], 1.0)
+            hgt[i] = land - cut[i] + burr[i] * (1.0 - gg)
+            occ[i] = 1.0 - 0.08 * gg
+            alb[i] = 1.0 + 0.07 * slow + 0.04 * big
+    return hgt, occ, alb
+
+def pass_stats(log):
+    """Measured geometry: pass lengths, overlaps, jogs, tilts, bows, set gaps, and breaks per groove inside the frame."""
+    P = log["passes"]; W = log["W"]; H = log["H"]
+    inside = lambda p: any(0 <= pass_y(p, x) + p["offs"][-1] and pass_y(p, x) <= H for x in (max(0, min(p["xa"], p["xa"] + p["d"] * p["L"])), min(W, max(p["xa"], p["xa"] + p["d"] * p["L"]))))
+    vis = [p for p in P if inside(p)]
+    Ls = [p["L"] for p in vis]; ov = [p["ov"] for p in vis if p["ov"] is not None]; jg = [abs(p["jog"]) for p in vis if p["jog"] is not None]
+    tilt = [math.degrees(math.atan(abs(p["th"]))) for p in vis]; bow = [abs(p["bow"]) for p in vis]
+    # breaks inside the frame, per visible set: number of set-down seams with 0 < x < W
+    br = {}
+    for p in vis:
+        if 0 < p["xa"] < W: br[p["set"]] = br.get(p["set"], 0) + 1
+    sets = sorted(set(p["set"] for p in vis))
+    r = lambda a: (round(min(a), 1), round(max(a), 1)) if a else None
+    return dict(passes=len(vis), length=r(Ls), overlap=r(ov), jog=r(jg), tilt_deg=r(tilt), bow=r(bow),
+                gap_over_tooth=r([g / log["ms"] for g in log["gaps"]]), sets=len(sets),
+                breaks_per_set=[br.get(s, 0) for s in sets], every_set_breaks=all(br.get(s, 0) >= 1 for s in sets))
+
 def emitters(name):
     if name == "lurk":     # the heading is the lamp: AN AI SYSTEM / YOU KEEP. at (104, 300), 749 wide
         return cut_emitters(D + "/type/lurk-h2.png", 104, 300, 749, 24, BONE, 1.0)
@@ -232,9 +382,15 @@ def emitters(name):
     return out
 
 # ---------------------------------------------------------------- render
-def render(name, rib=False):
+def render(name, rib=False, run3=False):
     cfg = FR[name]; W, H = cfg["W"], cfg["H"]
-    hgt, occ, alb = (build_rib if rib else build_groove)(W, H, cfg["sp"], cfg["seed"])
+    log = {}
+    if rib: hgt, occ, alb = build_rib(W, H, cfg["sp"], cfg["seed"])
+    elif run3: hgt, occ, alb = build_groove_run3(W, H, cfg["sp"], cfg["seed"])
+    else:
+        hgt, occ, alb = build_groove(W, H, cfg["sp"], cfg["seed"], log=log)
+        st = pass_stats(log); print(name, "geometry", json.dumps(st))
+        json.dump(st, open(f"{D}/geom-{name}.json", "w"), indent=1)
     albedo = [lin(v) / (AMB * 1.012) for v in REST]   # so the unlit ground lands on REST
     rnd = random.Random(7)
     N = W * H
@@ -317,12 +473,12 @@ def render(name, rib=False):
                 st = stats["rest"]; st[0] += out[0]; st[1] += out[1]; st[2] += out[2]; st[3] += 1
             if out[0] > stats["max"]: stats["max"] = out[0]
         rows.append(bytes(row))
-    fn = f"{D}/plate-{name}{'-rib' if rib else ''}.png"
+    fn = f"{D}/plate-{name}{'-rib' if rib else ('-run3' if run3 else '')}.png"
     pngio.write(fn, W, rows, 3)
     r = stats["rest"]
     print(name, "rib" if rib else "groove", "lamps", len(em), "rest", [round(r[k] / max(r[3], 1), 1) for k in range(3)],
           "rest px %", round(100.0 * r[3] / N, 1), "peak99.7", round(peakat(P), 1), "max", round(stats["max"], 1), "->", fn)
 
 if __name__ == "__main__":
-    rib = "--rib" in sys.argv
-    for nm in [a for a in sys.argv[1:] if not a.startswith("--")]: render(nm, rib)
+    rib = "--rib" in sys.argv; run3 = "--run3" in sys.argv
+    for nm in [a for a in sys.argv[1:] if not a.startswith("--")]: render(nm, rib, run3)
