@@ -42,7 +42,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .top>*{pointer-events:auto}
 .top .links,.top .ask{mix-blend-mode:difference}
 .top .logo{display:flex;align-items:center;gap:10px}
-.top .logo img:first-child{height:24px;width:auto}
+.top .logo img:first-child{height:24px;width:auto;object-position:-999px 0;background:#E8E2D6;-webkit-mask:url(media/fsi-mark.svg) center/contain no-repeat;mask:url(media/fsi-mark.svg) center/contain no-repeat}   /* the flame in the top bar is bone, painted through its own shape; orange stays for DARE and the audit (lock card decision two, taken in CEO mode 28 Oct 2026). Favicon, footer and card keep the orange file */
 .top .logo img:last-child{width:76px;height:auto}
 .top .links{display:flex;gap:22px}
 .top .links a{opacity:.85;border-bottom:1px solid transparent;padding-bottom:2px;transition:opacity .3s,border-color .3s}

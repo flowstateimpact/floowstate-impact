@@ -1,0 +1,288 @@
+<!doctype html><meta charset="utf-8">
+<title>hero reveal storyboard compositor (Nadir, 25 Oct 2026)</title>
+<!-- Draws each beat of Anwar's 4.2s hero reveal as one still, for the Figma storyboard. Not shipped.
+     The real fonts, the real layout numbers (render-log-bright.json), real frames of lane.mp4, and a STAND-IN ground:
+     Beyond Black plaster, grooves combed into flat land (about 4 to 1), and NO lamp of its own.
+     Run 3 (Nadir, 28 Oct 2026): the only light in the room is the work. The film playing inside the hollow letters spills
+     onto the plaster around each word and fades within about 350px; DARE, the one orange word, throws the warmest light. -->
+<style>
+@font-face{font-family:"Bespoke Stencil";src:url(/fonts/BespokeStencil-700.woff2) format("woff2");font-weight:700}
+@font-face{font-family:"General Sans";src:url(/fonts/GeneralSans-Regular.woff2) format("woff2");font-weight:400}
+@font-face{font-family:"General Sans";src:url(/fonts/GeneralSans-Medium.woff2) format("woff2");font-weight:500}
+body{margin:0;background:#000}
+</style>
+<script>
+"use strict";
+const S=2; // device scale
+const BONE=[232,226,214], ORANGE=[226,127,34];
+const DESK={W:1440,H:900,L6:132.188,rim:1.3125,wall:1.578,
+  rows:[{y:424,size:132.188,toks:[['WE','r',40],['MAKE','r',280],['THE','r',694],['WORK','r',976]]},
+        {y:590,size:132.188,toks:[['WILL','r',391],['NOT','r',743],['DARE','g',1053]]}],
+  strap:{t:'A strategy and design firm.',x:40,y:295,size:40},
+  other:{t:'other studios',x:976,y:474,size:40},
+  bottom:{t:'We shape the brand. You keep the AI we build.',x:1400,y:860,size:12},
+  pitch:96, land:4, gdepth:3.2, tooth:1.6,
+  emit:{cell:8, lz:16, d0:100, film:5.0, dare:1.0, peak:74}, film:'lane', chrome:'desk'};  // no lamp: the letters are the light
+const PHONE={W:390,H:844,L6:58,rim:.75,wall:1,
+  rows:[{y:357,size:58,toks:[['WE','r',20],['MAKE','r',125]]},{y:408,size:58,toks:[['THE','r',20],['WORK','r',144]]},
+        {y:480,size:58,toks:[['WILL','r',93],['NOT','r',247]]},{y:531,size:58,toks:[['DARE','g',218]]}],
+  strap:{t:'A strategy and design firm.',x:20,y:287,size:17},
+  other:{t:'other studios',x:144,y:429,size:17},
+  bottom:{t:'We shape the brand. You keep the AI we build.',x:370,y:804,size:12},
+  pitch:58, land:4, gdepth:2.2, tooth:.7,
+  emit:{cell:6, lz:10, d0:62, film:5.0, dare:1.0, peak:70}, film:'lanephone', chrome:'phone'};
+
+function rng(seed){return function(){seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;}}
+function canvas(w,h){const c=document.createElement('canvas');c.width=w;c.height=h;return c;}
+function img(src){return new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=src;});}
+function ease(t){t=Math.max(0,Math.min(1,t));return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2;}
+function seg(t,a,b){return Math.max(0,Math.min(1,(t-a)/(b-a)));}
+
+/* ---- the stand-in ground: black-pigment plaster, horizontal grooves combed into flat land, no light of its own ---- */
+function lin(v){ v/=255; return v<=.04045?v/12.92:Math.pow((v+.055)/1.055,2.4); }
+function srgb(l){ if(l<=0) return 0; return 255*(l<=.0031308?12.92*l:1.055*Math.pow(l,1/2.4)-.055); }
+function vlat(R,cell,W,H){ const gw=Math.ceil(W/cell)+4, gh=Math.ceil(H/cell)+4, a=new Float32Array(gw*gh); for(let i=0;i<a.length;i++) a[i]=R()*2-1; return {a,gw,cell}; }
+function vn(L,x,y){ const fx=x/L.cell+1, fy=y/L.cell+1, ix=fx|0, iy=fy|0; let tx=fx-ix, ty=fy-iy; tx=tx*tx*(3-2*tx); ty=ty*ty*(3-2*ty);
+  const r0=iy*L.gw+ix, r1=r0+L.gw, A=L.a; const u=A[r0]+(A[r0+1]-A[r0])*tx, v=A[r1]+(A[r1+1]-A[r1])*tx; return u+(v-u)*ty; }
+function sstep(a,b,x){ const t=Math.max(0,Math.min(1,(x-a)/(b-a))); return t*t*(3-2*t); }
+const groundCache={};
+function ground(sp){
+  const key=sp.W; if(groundCache[key]) return groundCache[key];
+  const w=sp.W*S,h=sp.H*S, R=rng(sp.W*7+3), ks=sp.W>600?1:.7;
+  // one comb pass: groove centres at an even pitch (+-10 percent), each groove its own width (land to groove about 4 to 1) and depth
+  const cs=[],gw=[],gd=[],gp=[]; let y=-160;
+  while(y<sp.H+160){ const p=sp.pitch*(0.9+0.2*R()); cs.push(y); gw.push(p/(sp.land+1)*(0.85+0.3*R())); gd.push(sp.gdepth*(0.65+0.6*R())); gp.push([R()*6.28,620+R()*900,R()*400]); y+=p; }
+  const nEdge=vlat(R,3*ks,sp.W,sp.H), nLift=vlat(R,260*ks,sp.W,sp.H*4), t1=vlat(R,2.2*ks,sp.W,sp.H), t2=vlat(R,8*ks,sp.W,sp.H), t3=vlat(R,38*ks,sp.W,sp.H), alb=vlat(R,150*ks,sp.W,sp.H);
+  const H=new Float32Array(w*h), ao=new Float32Array(w*h), al=new Float32Array(w*h);
+  for(let j=0;j<h;j++){ const yy=j/S;
+    for(let i=0;i<w;i++){ const xx=i/S, n=j*w+i;
+      const yw=yy-3.2*Math.sin(xx/sp.W*5.2+yy/310)-1.4*Math.sin(xx/sp.W*13.1+yy/120+1.7);   // the hand drifts, slowly
+      let lo=0,hi=cs.length-1; while(hi-lo>1){const m=(lo+hi)>>1; if(cs[m]<=yw) lo=m; else hi=m;}
+      const g=(yw-cs[lo]<cs[hi]-yw)?lo:hi, q=gp[g];
+      const dy=yw-cs[g]+0.45*vn(nEdge,xx,yy);                                   // a combed edge is never ruled
+      const half=gw[g]*0.5, sabs=Math.abs(dy/half);
+      let c=0.74+0.26*(0.5+0.5*Math.sin(xx/q[1]*6.28+q[0]));                   // trowel pressure along the stroke
+      c*=1-0.8*sstep(0.28,0.62,vn(nLift,xx+q[2],g*11.3));                     // here and there the comb lifted
+      let hz=0, gf=0;
+      if(sabs<1){ gf=(1-sstep(0.3,1,sabs))*c; hz=-gd[g]*gf*(1-0.1*sabs*sabs); }        // the cut: rounded floor, crisp walls
+      else if(sabs<1.7) hz=0.13*gd[g]*c*Math.sin(Math.PI*(sabs-1)/0.7);               // the burr the comb pushed up
+      hz+=sp.tooth*(0.10*vn(t1,xx,yy)+0.22*vn(t2,xx,yy)+0.55*vn(t3,xx,yy));          // plaster tooth on the land
+      H[n]=hz; ao[n]=1-0.38*gf; al[n]=1+0.07*vn(alb,xx,yy); } }
+  const nx=new Float32Array(w*h), ny=new Float32Array(w*h), nz=new Float32Array(w*h);
+  for(let j=1;j<h-1;j++) for(let i=1;i<w-1;i++){ const n=j*w+i;
+    const a=-(H[n+1]-H[n-1])*S*.5, b=-(H[n+w]-H[n-w])*S*.5, l=1/Math.sqrt(a*a+b*b+1); nx[n]=a*l; ny[n]=b*l; nz[n]=l; }
+  for(let n=0;n<w*h;n++) if(nz[n]===0) nz[n]=1;
+  const g={nx,ny,nz,ao,al,w,h}; groundCache[key]=g; return g;
+}
+const REST=[14.6,13.3,11.0].map(lin);       // the unlit wall, sRGB 15 13 11: red over blue, warm black
+const TINT=[1,REST[1]/REST[0],REST[2]/REST[0]]; // the black pigment's colour: whatever light lands, it comes back warm
+
+/* ---- the light: every 8px block of each lit letter is an emitter, coloured by the film inside it; DARE is the hottest.
+       Summed as an irradiance vector per channel on a 4px grid, then dotted with each pixel's normal, so the light
+       shows in the relief (groove walls and plaster tooth facing the word) more than on the flat land. ---- */
+function lightField(sp,M,F,k,tw,dd){
+  const E=sp.emit, B=E.cell*S, w=sp.W*S, h=sp.H*S, em=[];
+  const OL=ORANGE.map(lin);
+  for(let by=0;by<h;by+=B) for(let bx=0;bx<w;bx+=B){ let af=0,ad=0,r=0,g=0,b=0,sx=0,sy=0;
+    for(let y=by;y<Math.min(h,by+B);y++) for(let x=bx;x<Math.min(w,bx+B);x++){ const p=(y*w+x)*4, a=M.fill[p+3]/255, d=M.dare[p+3]/255;
+      if(a>0&&F&&k>0){ r+=a*lin(F[p]*tw[0]); g+=a*lin(F[p+1]*tw[1]); b+=a*lin(F[p+2]*tw[2]); af+=a; sx+=a*k*x; sy+=a*k*y; }
+      if(d>0&&dd>0){ ad+=d; sx+=d*dd*x; sy+=d*dd*y; } }
+    const wf=af*k, wd=ad*dd; if(wf+wd<=0) continue;
+    const A=1/(S*S); // device pixels to css px squared
+    em.push([sx/(wf+wd)/S, sy/(wf+wd)/S, (r*k*E.film+OL[0]*wd*E.dare)*A, (g*k*E.film+OL[1]*wd*E.dare)*A, (b*k*E.film+OL[2]*wd*E.dare)*A]); }
+  const C=4, gw=Math.ceil(sp.W/C)+2, gh=Math.ceil(sp.H/C)+2, fld=new Float32Array(gw*gh*9), lz=E.lz, d02=E.d0*E.d0, cut=(5*E.d0)**2;
+  for(let gy=0;gy<gh;gy++) for(let gx=0;gx<gw;gx++){ const X=gx*C, Y=gy*C, o=(gy*gw+gx)*9; let a0=0,a1=0,a2=0,a3=0,a4=0,a5=0,a6=0,a7=0,a8=0;
+    for(let e=0;e<em.length;e++){ const q=em[e], dx=q[0]-X, dy=q[1]-Y, r2=dx*dx+dy*dy; if(r2>cut) continue;
+      const d2=r2+lz*lz, u=d2/d02, f=1/((1+u+0.15*u*u)*Math.sqrt(d2)), fx=dx*f, fy=dy*f, fz=lz*f;
+      a0+=q[2]*fx; a1+=q[2]*fy; a2+=q[2]*fz; a3+=q[3]*fx; a4+=q[3]*fy; a5+=q[3]*fz; a6+=q[4]*fx; a7+=q[4]*fy; a8+=q[4]*fz; }
+    fld[o]=a0;fld[o+1]=a1;fld[o+2]=a2;fld[o+3]=a3;fld[o+4]=a4;fld[o+5]=a5;fld[o+6]=a6;fld[o+7]=a7;fld[o+8]=a8; }
+  return {fld,gw,C,n:em.length};
+}
+/* the light's power is set once per screen, on the finished state, so the brightest 0.5 percent of lit plaster lands near E.peak (sRGB red) */
+const powerCache={};
+function lightPower(sp,M,Lf){
+  const G=ground(sp), w=G.w, h=G.h, vals=[];
+  for(let n=0;n<w*h;n+=13){ if(M.fill[n*4+3]||M.dare[n*4+3]) continue; const i=n%w, j=(n/w)|0, v=shade(Lf,G,n,i/S,j/S,0); vals.push(v); }
+  vals.sort((a,b)=>a-b); const p=vals[Math.floor(vals.length*.995)]||1; return (lin(sp.emit.peak)-REST[0])/p;
+}
+function shade(Lf,G,n,x,y,ch){ const C=Lf.C, gx=x/C, gy=y/C, ix=gx|0, iy=gy|0, tx=gx-ix, ty=gy-iy, F=Lf.fld, o=(iy*Lf.gw+ix)*9+ch*3, o2=o+Lf.gw*9;
+  const ex=(F[o]*(1-tx)+F[o+9]*tx)*(1-ty)+(F[o2]*(1-tx)+F[o2+9]*tx)*ty, ey=(F[o+1]*(1-tx)+F[o+10]*tx)*(1-ty)+(F[o2+1]*(1-tx)+F[o2+10]*tx)*ty, ez=(F[o+2]*(1-tx)+F[o+11]*tx)*(1-ty)+(F[o2+2]*(1-tx)+F[o2+11]*tx)*ty;
+  return Math.max(0,G.nx[n]*ex+G.ny[n]*ey+G.nz[n]*ez); }
+
+/* ---- text masks at device scale ---- */
+function setFont(x,size,weight,fam){ x.font=weight+' '+size+'px "'+fam+'"'; }
+function glyphCanvases(sp){
+  const w=sp.W*S,h=sp.H*S;
+  const fill=canvas(w,h), dare=canvas(w,h), rim=canvas(w,h), wall=canvas(w,h);
+  const all=[fill,dare,rim,wall].map(c=>{const x=c.getContext('2d');x.scale(S,S);x.textBaseline='alphabetic';return x;});
+  const [f,dg,r,wl]=all;
+  for(const row of sp.rows){ const ls=-0.01*row.size;
+    for(const x of all){ setFont(x,row.size,700,'Bespoke Stencil'); x.letterSpacing=ls+'px'; }
+    for(const [t,k,px] of row.toks){
+      if(k==='g'){ dg.fillStyle='#fff'; dg.fillText(t,px,row.y); continue; }
+      f.fillStyle='#fff'; f.fillText(t,px,row.y);
+      r.lineJoin=wl.lineJoin='miter'; r.miterLimit=wl.miterLimit=3;
+      r.strokeStyle=wl.strokeStyle='#fff';
+      r.lineWidth=sp.rim*2; r.strokeText(t,px,row.y);
+      wl.lineWidth=(sp.rim+sp.wall)*2; wl.strokeText(t,px,row.y);
+    } }
+  for(const x of [r,wl]){ x.setTransform(1,0,0,1,0,0); x.globalCompositeOperation='destination-in'; x.drawImage(fill,0,0); }
+  const px=c=>c.getContext('2d').getImageData(0,0,w,h).data;
+  return {fill:px(fill),dare:px(dare),rim:px(rim),wall:px(wall)};
+}
+const glyphCache={};
+
+/* ---- the film, cover-fitted and anchored to its right edge, like the plate ---- */
+async function filmPixels(sp,name){
+  const im=await img('/glowup-renders/patterns/figma/hero-reveal/frames/'+name+'.png');
+  const w=sp.W*S,h=sp.H*S,c=canvas(w,h),x=c.getContext('2d');
+  const sa=w/h, va=im.naturalWidth/im.naturalHeight; let sx=0,sy=0,sw=im.naturalWidth,sh=im.naturalHeight;
+  if(va>sa){ sw=sh*sa; sx=im.naturalWidth-sw; } else { sh=sw/sa; sy=(im.naturalHeight-sh)*.5; }
+  x.drawImage(im,sx,sy,sw,sh,0,0,w,h); return x.getImageData(0,0,w,h).data;
+}
+
+/* ---- the chrome: logo, navigation, the ask, at the positions measured off today's render ---- */
+async function chrome(sp){
+  const w=sp.W*S,h=sp.H*S,c=canvas(w,h),x=c.getContext('2d'); x.scale(S,S); x.textBaseline='alphabetic';
+  const mk0=await img('/media/fsi-mark.svg'), wm=await img('/media/wordmark.png');
+  // the flame mark in the top bar is bone, not orange (Asif, 28 Oct 2026, Decision two): orange stays for DARE, the audit line and the ask
+  const mk=canvas(240,200), mx=mk.getContext('2d'); mx.drawImage(mk0,0,0,240,200); mx.globalCompositeOperation='source-in'; mx.fillStyle='rgb('+BONE+')'; mx.fillRect(0,0,240,200);
+  const white='rgba(242,240,234,.94)';
+  if(sp.chrome==='desk'){
+    x.drawImage(mk,40,20,24*1.1967,24); x.drawImage(wm,78,18,77,77*442/1135);
+    setFont(x,13,500,'General Sans'); x.fillStyle=white;
+    [['Work',573],['What we do',626],['Audit',715],['AI system',768],['About',847]].forEach(([t,px])=>x.fillText(t,px,35));
+    const t='Ask for the audit', tw=x.measureText(t).width; x.fillText(t,1400-tw,35);
+    x.fillStyle='rgb('+ORANGE+')'; x.fillRect(1400-tw,40,tw,2);
+  } else {
+    x.drawImage(mk,20,17,24*1.1967,24); x.drawImage(wm,58,14,77,77*442/1135);
+    setFont(x,13.5,500,'General Sans'); x.fillStyle=white;
+    const t='Ask for the audit', tw=x.measureText(t).width; x.fillText(t,370-tw,31);
+    x.fillStyle='rgb('+ORANGE+')'; x.fillRect(370-tw,36,tw,2);
+    setFont(x,11.5,500,'General Sans'); x.fillStyle=white;
+    x.fillText('Work',20,65); x.fillText('What we do',84,65); x.fillText('Audit',183,65); x.fillText('AI system',248,65);
+    const aw=x.measureText('About').width; x.fillText('About',370-aw,65);
+  }
+  return c;
+}
+function textLayer(sp,o,alpha,align){ const c=canvas(sp.W*S,sp.H*S),x=c.getContext('2d'); x.scale(S,S); x.textBaseline='alphabetic';
+  setFont(x,o.size,400,'General Sans'); x.textAlign=align||'left'; x.fillStyle='rgba('+BONE+','+alpha+')'; x.fillText(o.t,o.x,o.y); return c; }
+
+/* ---- one beat ---- */
+async function beat(sp,st){
+  const w=sp.W*S,h=sp.H*S, G=ground(sp);
+  const gk=sp.W; if(!glyphCache[gk]) glyphCache[gk]=glyphCanvases(sp); const M=glyphCache[gk];
+  const F=st.k>0?await filmPixels(sp,st.film):null;
+  const out=canvas(w,h), ox=out.getContext('2d'), id=ox.createImageData(w,h), o=id.data;
+  const k=ease(st.k), kr=ease(st.k), dd=ease(st.dare), g=ease(st.g);
+  const tw=[1,0.80+0.20*Math.pow(k,.7),0.62+0.38*Math.pow(k,.7)]; // the film warms as it comes up, like a lamp
+  const R2=rng(11), filmL=[];
+  if(!powerCache[sp.W]){ const fin=BEATS.find(q=>q[1]===sp&&q[2].dare===1&&q[2].chrome===1);   // calibrate on the finished frame
+    powerCache[sp.W]=lightPower(sp,M,lightField(sp,M,await filmPixels(sp,fin[2].film),1,[1,1,1],1)); }
+  const P=powerCache[sp.W], Lf=(k>0||dd>0)?lightField(sp,M,F,k,tw,dd):null, pk=lin(sp.emit.peak)*1.35, x2=1/S;
+  for(let n=0,p=0;n<w*h;n++,p+=4){
+    const di=(R2()-.5)*0.9, base=G.al[n]*(1-0.22*(1-G.ao[n]))*g;   // unlit, the grooves all but vanish: a dark room shows no relief        // di: sub-level dither, invisible, kills banding
+    let lr=REST[0]*base, lg=REST[1]*base, lb=REST[2]*base;
+    if(Lf&&!M.fill[p+3]){ const xx=(n%w)*x2, yy=((n/w)|0)*x2, sh=G.al[n]*G.ao[n]*P;
+      const er=shade(Lf,G,n,xx,yy,0)*sh, eg=shade(Lf,G,n,xx,yy,1)*sh*TINT[1], eb=shade(Lf,G,n,xx,yy,2)*sh*TINT[2];   // light returns in the pigment's own warmth
+      lr+=pk*(1-Math.exp(-er/pk)); lg+=pk*(1-Math.exp(-eg/pk)); lb+=pk*(1-Math.exp(-eb/pk)); }   // soft shoulder, never a blown pool
+    let r=srgb(lr)+di, gg=srgb(lg)+di, b=srgb(lb)+di;
+    const m=M.fill[p+3]/255;
+    if(m>0&&F){
+      let wr=F[p]*tw[0], wg=F[p+1]*tw[1], wb=F[p+2]*tw[2];
+      wr=r*(1-k)+wr*k; wg=gg*(1-k)+wg*k; wb=b*(1-k)+wb*k;
+      const wa=(M.wall[p+3]/255)*k; wr+=(1.6-wr)*wa; wg+=(1.6-wg)*wa; wb+=(1.5-wb)*wa;
+      const ra=(M.rim[p+3]/255)*kr; wr+=(238-wr)*ra; wg+=(234-wg)*ra; wb+=(226-wb)*ra;
+      r+=(wr-r)*m; gg+=(wg-gg)*m; b+=(wb-b)*m;
+    }
+    const dm=M.dare[p+3]/255;
+    if(dm>0&&dd>0){ const sh=(0.985+0.03*Math.max(-1,Math.min(1,-G.ny[n]*3)))*(0.93+0.07*G.ao[n]); // the paint takes the plaster's grooves
+      const a=dm*dd; r+=(ORANGE[0]*sh-r)*a; gg+=(ORANGE[1]*sh-gg)*a; b+=(ORANGE[2]*sh-b)*a; }
+    if(m>0.99&&F&&k>0.99&&M.rim[p+3]===0&&M.wall[p+3]===0&&(n&7)===0) filmL.push(lumOf(r,gg,b));
+    o[p]=r; o[p+1]=gg; o[p+2]=b; o[p+3]=255; }
+  ox.putImageData(id,0,0);
+  if(filmL.length){ filmL.sort((a,b)=>a-b); const rimL=lumOf(238,234,226), q=f=>filmL[Math.floor(f*(filmL.length-1))];
+    out.rimContrast={vsFilmMedian:+contrast(rimL,q(.5)).toFixed(1),vsFilmP95:+contrast(rimL,q(.95)).toFixed(1),vsWall:+contrast(rimL,lumOf(1.6,1.6,1.5)).toFixed(1)}; }
+  if(st.strap>0) { ox.globalAlpha=ease(st.strap); ox.drawImage(textLayer(sp,sp.strap,1),0,0); }
+  if(st.other>0) { ox.globalAlpha=ease(st.other); ox.drawImage(textLayer(sp,sp.other,.66),0,0); }
+  if(st.chrome>0){ ox.globalAlpha=ease(st.chrome); ox.drawImage(textLayer(sp,sp.bottom,.5,'right'),0,0); ox.drawImage(await chrome(sp),0,0); }
+  ox.globalAlpha=1;
+  return out;
+}
+
+/* ---- 60/30/10 by painted area: orange family, black family, the rest (bone type, film, rim) ---- */
+function shares(c){ const x=c.getContext('2d'), d=x.getImageData(0,0,c.width,c.height).data; let o=0,k=0,t=0,ofull=0;
+  for(let p=0;p<d.length;p+=4){ const r=d[p],g=d[p+1],b=d[p+2], mx=Math.max(r,g,b), mn=Math.min(r,g,b), l=.2126*r+.7152*g+.0722*b;
+    const sat=mx?(mx-mn)/mx:0, hue=(r>=g&&g>=b&&mx-mn>0)?60*(g-b)/(mx-mn):-1;
+    if(sat>.55&&hue>=12&&hue<=42&&mx>70){ o++; if(mx>200) ofull++; } else if(l<48) k++; else t++; }
+  const N=d.length/4; return {black:+(100*k/N).toFixed(1),bone_film:+(100*t/N).toFixed(1),orange:+(100*o/N).toFixed(2),orange_full:+(100*ofull/N).toFixed(2)}; }
+
+
+/* ---- probes: red down empty-ground columns, falloff from the words, rim contrast against the film ---- */
+function probe(c,sp){ const x=c.getContext('2d'), d=x.getImageData(0,0,c.width,c.height).data, W=c.width;
+  const red=(cx,cy)=>{ let s=0; for(let a=0;a<S;a++) for(let b=0;b<S;b++) s+=d[((cy*S+b)*W+cx*S+a)*4]; return s/(S*S); };
+  const rgb=(cx,cy)=>{ const p=((cy*S)*W+cx*S)*4; return [d[p],d[p+1],d[p+2]]; };
+  const desk=sp.W>600, cols=desk?[120,700,1100,1380]:[40,195,350], y0=desk?620:560, y1=desk?820:760, out={};
+  for(const cx of cols){ let lo=1e9,hi=0,sum=0,n=0; for(let cy=y0;cy<=y1;cy++){ const v=red(cx,cy); lo=Math.min(lo,v); hi=Math.max(hi,v); sum+=v; n++; }
+    out['x'+cx]={min:+lo.toFixed(1),max:+hi.toFixed(1),swing:+(hi-lo).toFixed(1),mean:+(sum/n).toFixed(1)}; }
+  // falloff: band mean red at distances from the nearest word edge, measured on columns through the right third
+  const fx=desk?1200:300, ys=desk?{above_WORK:[329,[50,150,250]],below_DARE:[590,[30,100,200,250]]}:{below_DARE:[531,[30,100,200]]}, fall={};
+  for(const [k,[edge,ds]] of Object.entries(ys)){ fall[k]={}; for(const dd of ds){ const cy=k.startsWith('above')?edge-dd:edge+dd; let s=0,n=0; for(let cx=fx-60;cx<=fx+60;cx+=2){ s+=red(cx,cy); n++; } fall[k]['d'+dd]=+(s/n).toFixed(1); } }
+  out.falloff=fall; return out; }
+function lumOf(r,g,b){ const f=v=>{v/=255;return v<=.04045?v/12.92:Math.pow((v+.055)/1.055,2.4);}; return .2126*f(r)+.7152*f(g)+.0722*f(b); }
+function contrast(a,b){ const A=Math.max(a,b),B=Math.min(a,b); return (A+.05)/(B+.05); }
+
+/* the beats: [name, spec, time, state] */
+const BEATS=[
+ ['b1-0.20s',DESK,{g:0,strap:0,k:0,other:0,dare:0,chrome:0}],
+ ['b2-0.70s',DESK,{g:seg(.70,.4,1.0),strap:0,k:0,other:0,dare:0,chrome:0}],
+ ['b3-1.15s',DESK,{g:1,strap:seg(1.15,1.0,1.3),k:0,other:0,dare:0,chrome:0}],
+ ['b4-1.80s',DESK,{g:1,strap:1,k:seg(1.80,1.3,2.3),film:'lane-0',other:0,dare:0,chrome:0}],
+ ['b5-2.60s',DESK,{g:1,strap:1,k:1,film:'lane-0.3',other:0,dare:0,chrome:0}],
+ ['b6-2.75s',DESK,{g:1,strap:1,k:1,film:'lane-0.45',other:seg(2.75,2.6,2.9),dare:0,chrome:0}],
+ ['b7-3.10s',DESK,{g:1,strap:1,k:1,film:'lane-0.8',other:1,dare:0,chrome:0}],
+ ['b8-3.60s',DESK,{g:1,strap:1,k:1,film:'lane-1.3',other:1,dare:seg(3.60,3.3,3.9),chrome:0}],
+ ['b9-4.20s',DESK,{g:1,strap:1,k:1,film:'lane-1.9',other:1,dare:1,chrome:1}],
+ ['f10-phone-still',PHONE,{g:1,strap:1,k:1,film:'lanephone-0',other:1,dare:1,chrome:1}],
+];
+window.make=async function(i){ await document.fonts.load('700 100px "Bespoke Stencil"'); await document.fonts.load('400 20px "General Sans"'); await document.fonts.load('500 20px "General Sans"');
+  const [name,sp,st]=BEATS[i]; const c=await beat(sp,st);
+  const small=canvas(sp.W,sp.H); small.getContext('2d').drawImage(c,0,0,sp.W,sp.H);
+  const half=canvas(sp.W/2,sp.H/2); half.getContext('2d').imageSmoothingQuality='high'; half.getContext('2d').drawImage(c,0,0,sp.W/2,sp.H/2);
+  return {name,url:c.toDataURL('image/jpeg',.94),half:half.toDataURL('image/png'),shares:shares(small),probe:probe(c,sp),rim:c.rimContrast||null,state:st}; };
+window.count=BEATS.length;
+
+/* ---- the stencil bridge test: today's bridges beside bridges at about 40 percent width. An illustration made from the glyph mask, no font cut ---- */
+function dt(mask,w,h,inside){ // chamfer distance (3-4) to the nearest pixel of the other class, in pixels
+  const D=new Float32Array(w*h), INF=1e9; for(let n=0;n<w*h;n++) D[n]=(mask[n]===inside)?INF:0;
+  for(let y=0;y<h;y++) for(let x=0;x<w;x++){ const n=y*w+x; if(!D[n]) continue; let v=D[n];
+    if(x>0) v=Math.min(v,D[n-1]+3); if(y>0){ v=Math.min(v,D[n-w]+3); if(x>0) v=Math.min(v,D[n-w-1]+4); if(x<w-1) v=Math.min(v,D[n-w+1]+4);} D[n]=v; }
+  for(let y=h-1;y>=0;y--) for(let x=w-1;x>=0;x--){ const n=y*w+x; if(!D[n]) continue; let v=D[n];
+    if(x<w-1) v=Math.min(v,D[n+1]+3); if(y<h-1){ v=Math.min(v,D[n+w]+3); if(x<w-1) v=Math.min(v,D[n+w+1]+4); if(x>0) v=Math.min(v,D[n+w-1]+4);} D[n]=v; }
+  for(let n=0;n<w*h;n++) D[n]/=3; return D; }
+window.bridges=async function(which){ await document.fonts.load('700 100px "Bespoke Stencil"');
+  const sp=which==='desk'?DESK:PHONE, row=sp.rows[which==='desk'?0:1], toks=row.toks.filter(t=>t[0]==='THE'||t[0]==='WORK');
+  const x0=toks[0][2]-14, x1=which==='desk'?1400:336, y0=row.y-row.size*.76, y1=row.y+row.size*.08;
+  const cw=Math.round((x1-x0)*S), ch=Math.round((y1-y0)*S);
+  const c=canvas(cw,ch), x=c.getContext('2d'); x.scale(S,S); x.textBaseline='alphabetic'; setFont(x,row.size,700,'Bespoke Stencil'); x.letterSpacing=(-0.01*row.size)+'px'; x.fillStyle='#fff';
+  toks.forEach(([t,,px])=>x.fillText(t,px-x0,row.y-y0));
+  const d=x.getImageData(0,0,cw,ch).data, N=cw*ch, mask=new Uint8Array(N); for(let n=0;n<N;n++) mask[n]=d[n*4+3]>127?1:0;
+  // close the bridges: grow by r, shrink by r. The filled pixels are the bridges (and a hair of every inner corner)
+  const r=Math.round(row.size*S*0.045), out0=dt(mask,cw,ch,0), grown=new Uint8Array(N); for(let n=0;n<N;n++) grown[n]=out0[n]<=r?1:0;
+  const back=dt(grown,cw,ch,1), closed=new Uint8Array(N); for(let n=0;n<N;n++) closed[n]=back[n]>r?1:0;
+  let gmax=0; const bridge=new Uint8Array(N); for(let n=0;n<N;n++){ if(closed[n]&&!mask[n]){ bridge[n]=1; gmax=Math.max(gmax,out0[n]); } }
+  const gap=2*gmax; // the bridge width in device pixels
+  const narrow=new Uint8Array(N); for(let n=0;n<N;n++) narrow[n]=mask[n]||(bridge[n]&&out0[n]<=gap*0.30)?1:0;
+  // draw both as the hollow window: the film inside, the wall, the bone rim, on the stand-in ground
+  const G=ground(sp), F=await filmPixels(sp,which==='desk'?'lane-0':'lanephone-0');
+  function draw(mk){ const c2=canvas(cw,ch), x2=c2.getContext('2d'), id=x2.createImageData(cw,ch), o=id.data, inD=dt(mk,cw,ch,1);
+    const rimPx=Math.max(sp.rim*S,1.5), wallPx=sp.wall*S;
+    for(let yy=0;yy<ch;yy++) for(let xx=0;xx<cw;xx++){ const n=yy*cw+xx, p=n*4, gx=Math.round(x0*S)+xx, gy=Math.round(y0*S)+yy, gn=gy*G.w+gx;
+      const bs=G.al[gn]*G.ao[gn]; let r=srgb(REST[0]*bs), g=srgb(REST[1]*bs), b=srgb(REST[2]*bs);
+      if(mk[n]){ const fp=gn*4; r=F[fp]; g=F[fp+1]; b=F[fp+2]; const di=inD[n];
+        if(di<=rimPx+wallPx){ r=1.6; g=1.6; b=1.5; } if(di<=rimPx){ r=238; g=234; b=226; } }
+      o[p]=r;o[p+1]=g;o[p+2]=b;o[p+3]=255; }
+    x2.putImageData(id,0,0); return c2.toDataURL('image/png'); }
+  return {today:draw(mask),narrow:draw(narrow),gapDevicePx:gap,gapCssPx:+(gap/S).toFixed(2),w:cw,h:ch};
+};
+</script>
