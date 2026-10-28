@@ -1,0 +1,140 @@
+{
+ "out": "/Users/asiffarid/Documents/apps/flowstateimpact-site-glowup/glowup-renders/type-fixes",
+ "logName": "render-log-fixes",
+ "shots": [
+  {
+   "url": "http://127.0.0.1:4327/index.html",
+   "file": "home-a-1440.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 0,
+   "eval": "({plate:{p:window.__plate.p,capTop:window.__plate.capTop,L6:window.__plate.L6},at650:window.__plate.at(650/900),h1:(()=>{const e=document.querySelector('.hero-t h1, .scene h1, .page-hero-t h1, .spine .cover h1, h1');if(!e)return null;const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,op:getComputedStyle(e).opacity}})()})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/index.html",
+   "file": "home-a-390.png",
+   "w": 390,
+   "h": 844,
+   "dpr": 2,
+   "scroll": 0
+  },
+  {
+   "url": "http://127.0.0.1:4327/index.html",
+   "file": "home-a-1440-s300.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 300
+  },
+  {
+   "url": "http://127.0.0.1:4327/index.html",
+   "file": "home-a-1440-s650.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 650,
+   "eval": "({p:window.__plate.p, pose:window.__plate.at(window.__plate.p), rev:(document.querySelector('.scene .after')?getComputedStyle(document.querySelector('.scene .after')).opacity:null)})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/index.html",
+   "file": "home-a-1920.png",
+   "w": 1920,
+   "h": 1080,
+   "scroll": 0
+  },
+  {
+   "url": "http://127.0.0.1:4327/index.html",
+   "file": "home-a-1440-reduce.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 0,
+   "reduce": true
+  },
+  {
+   "url": "http://127.0.0.1:4327/index.html",
+   "file": "home-a-mask.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 0,
+   "eval": "({mask:window.__plate.mask(), capTop:window.__plate.capTop, L6:window.__plate.L6})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/what-we-do-type-a.html",
+   "file": "wwd-a-1440.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 0,
+   "eval": "({h1:(()=>{const e=document.querySelector('.hero-t h1, .scene h1, .page-hero-t h1, .spine .cover h1, h1');if(!e)return null;const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,op:getComputedStyle(e).opacity}})(), pages:(()=>{const e=document.querySelector('.pages');if(!e)return null;const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height}})()})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/what-we-do-type-a.html",
+   "file": "wwd-a-390.png",
+   "w": 390,
+   "h": 844,
+   "dpr": 2,
+   "scroll": 0
+  },
+  {
+   "url": "http://127.0.0.1:4327/what-we-do-type-a.html",
+   "file": "wwd-a-1440-s450.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 450,
+   "eval": "({h1:(()=>{const e=document.querySelector('.hero-t h1, .scene h1, .page-hero-t h1, .spine .cover h1, h1');if(!e)return null;const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,op:getComputedStyle(e).opacity}})(), pages:(()=>{const e=document.querySelector('.pages');if(!e)return null;const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height}})()})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/what-we-do-type-a.html",
+   "file": "wwd-a-1440-s1100.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 1100
+  },
+  {
+   "url": "http://127.0.0.1:4327/what-we-do-type-a.html",
+   "file": "wwd-a-1440-reduce.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 0,
+   "reduce": true,
+   "eval": "({h1:(()=>{const e=document.querySelector('.hero-t h1, .scene h1, .page-hero-t h1, .spine .cover h1, h1');if(!e)return null;const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,op:getComputedStyle(e).opacity}})(), pages:(()=>{const e=document.querySelector('.pages');if(!e)return null;const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height}})()})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/what-we-do-type-b.html",
+   "file": "wwd-b-1440.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 0,
+   "eval": "({h1:(()=>{const e=document.querySelector('.hero-t h1, .scene h1, .page-hero-t h1, .spine .cover h1, h1');if(!e)return null;const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,op:getComputedStyle(e).opacity}})(), lines:(()=>{const e=document.querySelector('.spine .lines');if(!e)return null;const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height}})(), faceOp:(document.querySelector('.spine .cover h1')?getComputedStyle(document.querySelector('.spine .cover h1')).opacity:null)})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/what-we-do-type-b.html",
+   "file": "wwd-b-390.png",
+   "w": 390,
+   "h": 844,
+   "dpr": 2,
+   "scroll": 0
+  },
+  {
+   "url": "http://127.0.0.1:4327/what-we-do-type-b.html",
+   "file": "wwd-b-1440-s450.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 450,
+   "eval": "({h1:(()=>{const e=document.querySelector('.hero-t h1, .scene h1, .page-hero-t h1, .spine .cover h1, h1');if(!e)return null;const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,op:getComputedStyle(e).opacity}})(), lines:(()=>{const e=document.querySelector('.spine .lines');if(!e)return null;const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height}})(), faceOp:(document.querySelector('.spine .cover h1')?getComputedStyle(document.querySelector('.spine .cover h1')).opacity:null)})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/what-we-do-type-b.html",
+   "file": "wwd-b-1440-s1100.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 1100
+  },
+  {
+   "url": "http://127.0.0.1:4327/what-we-do-type-b.html",
+   "file": "wwd-b-1440-reduce.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 0,
+   "reduce": true,
+   "eval": "({h1:(()=>{const e=document.querySelector('.hero-t h1, .scene h1, .page-hero-t h1, .spine .cover h1, h1');if(!e)return null;const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,op:getComputedStyle(e).opacity}})(), lines:(()=>{const e=document.querySelector('.spine .lines');if(!e)return null;const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height}})(), faceOp:(document.querySelector('.spine .cover h1')?getComputedStyle(document.querySelector('.spine .cover h1')).opacity:null)})"
+  }
+ ]
+}

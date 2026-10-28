@@ -29,6 +29,11 @@
       "source": "/videos.html",
       "destination": "/films.html",
       "permanent": false
+    },
+    {
+      "source": "/index-type-a.html",
+      "destination": "/",
+      "permanent": false
     }
   ]
 }

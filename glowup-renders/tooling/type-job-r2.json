@@ -1,0 +1,162 @@
+{
+ "out": "/Users/asiffarid/Documents/apps/flowstateimpact-site-glowup/glowup-renders/type-r2",
+ "logName": "render-log-r2",
+ "shots": [
+  {
+   "url": "http://127.0.0.1:4327/index.html",
+   "file": "home-a-1440.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 0,
+   "eval": "({plate:{capTop:window.__plate.capTop,L6:window.__plate.L6,mode:window.__plate.mode}, askBorder:getComputedStyle(document.querySelector('.top .ask')).borderBottomColor, ask:(()=>{const r=document.querySelector('.top .ask').getBoundingClientRect();return [r.x,r.y,r.width,r.height]})(), vid:(()=>{const v=document.querySelector('.scene video');return [v.currentTime,v.paused,v.readyState]})()})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/index.html",
+   "file": "home-a-1440-f2.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 0,
+   "wait": 2900,
+   "eval": "({vid:(()=>{const v=document.querySelector('.scene video');return [v.currentTime,v.paused,v.readyState]})(), mode:window.__plate.mode})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/index.html",
+   "file": "home-a-1440-f3.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 0,
+   "wait": 4900,
+   "eval": "({vid:(()=>{const v=document.querySelector('.scene video');return [v.currentTime,v.paused,v.readyState]})(), mode:window.__plate.mode})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/index.html",
+   "file": "home-a-390.png",
+   "w": 390,
+   "h": 844,
+   "dpr": 2,
+   "scroll": 0,
+   "eval": "({ask:(()=>{const r=document.querySelector('.top .ask').getBoundingClientRect();return [r.x,r.y,r.width,r.height]})(), askBorder:getComputedStyle(document.querySelector('.top .ask')).borderBottomColor})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/index.html",
+   "file": "home-a-1440-s300.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 300
+  },
+  {
+   "url": "http://127.0.0.1:4327/index.html",
+   "file": "home-a-1440-s650.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 650,
+   "eval": "({p:window.__plate.p, pose:window.__plate.at(window.__plate.p), rev:(document.querySelector('.scene .after')?getComputedStyle(document.querySelector('.scene .after')).opacity:null)})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/index.html",
+   "file": "home-a-1920.png",
+   "w": 1920,
+   "h": 1080,
+   "scroll": 0
+  },
+  {
+   "url": "http://127.0.0.1:4327/index.html",
+   "file": "home-a-1440-reduce.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 0,
+   "reduce": true
+  },
+  {
+   "url": "http://127.0.0.1:4327/index.html",
+   "file": "home-a-mask.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 0,
+   "eval": "({mask:window.__plate.mask(), capTop:window.__plate.capTop, L6:window.__plate.L6})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/what-we-do-type-a.html",
+   "file": "wwd-a-1440.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 0,
+   "eval": "({imgs:[...document.querySelectorAll('.pages .pic img')].map(i=>{const q=i.getBoundingClientRect();return {t:gsap.getTweensOf(i).length,r:[q.x,q.y,q.width,q.height].map(Math.round),tf:getComputedStyle(i).transform}}), pics:[...document.querySelectorAll('.pages .pic')].map(i=>{const q=i.getBoundingClientRect();return [q.x,q.y,q.width,q.height].map(Math.round)}), pages:(()=>{const r=document.querySelector('.pages').getBoundingClientRect();return [r.x,r.y,r.width,r.height]})(), h1:(()=>{const r=document.querySelector('h1').getBoundingClientRect();return [r.x,r.y,r.width,r.height]})()})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/what-we-do-type-a.html",
+   "file": "wwd-a-390.png",
+   "w": 390,
+   "h": 844,
+   "dpr": 2,
+   "scroll": 0,
+   "eval": "({bottom:document.elementsFromPoint(195,843).map(e=>e.tagName+'.'+e.className).slice(0,5), bottom2:document.elementsFromPoint(195,842).map(e=>e.tagName+'.'+e.className).slice(0,3), h1:(()=>{const r=document.querySelector('h1').getBoundingClientRect();return [r.x,r.y,r.width,r.height]})(), go:(()=>{const r=document.querySelector('.page-hero-t .go').getBoundingClientRect();return [r.x,r.y,r.width,r.height]})(), nav:(()=>{const r=document.querySelector('.top .links').getBoundingClientRect();return [r.x,r.y,r.width,r.height]})()})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/what-we-do-type-a.html",
+   "file": "wwd-a-1440-s450.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 450,
+   "eval": "({imgs:[...document.querySelectorAll('.pages .pic img')].map(i=>{const q=i.getBoundingClientRect();return {t:gsap.getTweensOf(i).length,r:[q.x,q.y,q.width,q.height].map(Math.round),tf:getComputedStyle(i).transform}}), pics:[...document.querySelectorAll('.pages .pic')].map(i=>{const q=i.getBoundingClientRect();return [q.x,q.y,q.width,q.height].map(Math.round)}), pages:(()=>{const r=document.querySelector('.pages').getBoundingClientRect();return [r.x,r.y,r.width,r.height]})(), h1:(()=>{const r=document.querySelector('h1').getBoundingClientRect();return [r.x,r.y,r.width,r.height]})()})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/what-we-do-type-a.html",
+   "file": "wwd-a-1440-s1100.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 1100,
+   "eval": "({imgs:[...document.querySelectorAll('.pages .pic img')].map(i=>{const q=i.getBoundingClientRect();return {t:gsap.getTweensOf(i).length,r:[q.x,q.y,q.width,q.height].map(Math.round),tf:getComputedStyle(i).transform}}), pics:[...document.querySelectorAll('.pages .pic')].map(i=>{const q=i.getBoundingClientRect();return [q.x,q.y,q.width,q.height].map(Math.round)}), pages:(()=>{const r=document.querySelector('.pages').getBoundingClientRect();return [r.x,r.y,r.width,r.height]})(), h1:(()=>{const r=document.querySelector('h1').getBoundingClientRect();return [r.x,r.y,r.width,r.height]})()})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/what-we-do-type-a.html",
+   "file": "wwd-a-1440-reduce.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 0,
+   "reduce": true,
+   "eval": "({h1:(()=>{const e=document.querySelector('.hero-t h1, .scene h1, .page-hero-t h1, .spine .cover h1, h1');if(!e)return null;const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,op:getComputedStyle(e).opacity}})(), pages:(()=>{const e=document.querySelector('.pages');if(!e)return null;const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height}})()})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/what-we-do-type-b.html",
+   "file": "wwd-b-1440.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 0,
+   "eval": "({h1:(()=>{const e=document.querySelector('.hero-t h1, .scene h1, .page-hero-t h1, .spine .cover h1, h1');if(!e)return null;const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,op:getComputedStyle(e).opacity}})(), lines:(()=>{const e=document.querySelector('.spine .lines');if(!e)return null;const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height}})(), faceOp:(document.querySelector('.spine .cover h1')?getComputedStyle(document.querySelector('.spine .cover h1')).opacity:null)})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/what-we-do-type-b.html",
+   "file": "wwd-b-390.png",
+   "w": 390,
+   "h": 844,
+   "dpr": 2,
+   "scroll": 0,
+   "eval": "({bottom:document.elementsFromPoint(195,843).map(e=>e.tagName+'.'+e.className).slice(0,5), bottom2:document.elementsFromPoint(195,842).map(e=>e.tagName+'.'+e.className).slice(0,3), h1:(()=>{const r=document.querySelector('h1').getBoundingClientRect();return [r.x,r.y,r.width,r.height]})(), go:(()=>{const r=document.querySelector('.page-hero-t .go').getBoundingClientRect();return [r.x,r.y,r.width,r.height]})(), nav:(()=>{const r=document.querySelector('.top .links').getBoundingClientRect();return [r.x,r.y,r.width,r.height]})()})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/what-we-do-type-b.html",
+   "file": "wwd-b-1440-s450.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 450,
+   "eval": "({h1:(()=>{const e=document.querySelector('.hero-t h1, .scene h1, .page-hero-t h1, .spine .cover h1, h1');if(!e)return null;const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,op:getComputedStyle(e).opacity}})(), lines:(()=>{const e=document.querySelector('.spine .lines');if(!e)return null;const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height}})(), faceOp:(document.querySelector('.spine .cover h1')?getComputedStyle(document.querySelector('.spine .cover h1')).opacity:null)})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/what-we-do-type-b.html",
+   "file": "wwd-b-1440-s1100.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 1100
+  },
+  {
+   "url": "http://127.0.0.1:4327/what-we-do-type-b.html",
+   "file": "wwd-b-1440-reduce.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 0,
+   "reduce": true,
+   "eval": "({h1:(()=>{const e=document.querySelector('.hero-t h1, .scene h1, .page-hero-t h1, .spine .cover h1, h1');if(!e)return null;const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,op:getComputedStyle(e).opacity}})(), lines:(()=>{const e=document.querySelector('.spine .lines');if(!e)return null;const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height}})(), faceOp:(document.querySelector('.spine .cover h1')?getComputedStyle(document.querySelector('.spine .cover h1')).opacity:null)})"
+  }
+ ]
+}

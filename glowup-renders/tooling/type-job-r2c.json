@@ -1,0 +1,71 @@
+{
+ "out": "/Users/asiffarid/Documents/apps/flowstateimpact-site-glowup/glowup-renders/type-r2",
+ "logName": "render-log-r2c",
+ "shots": [
+  {
+   "url": "http://127.0.0.1:4327/index.html",
+   "file": "home-a-1440.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 0,
+   "eval": "({plate:{capTop:window.__plate.capTop,L6:window.__plate.L6,mode:window.__plate.mode}, askBorder:getComputedStyle(document.querySelector('.top .ask')).borderBottomColor, ask:(()=>{const r=document.querySelector('.top .ask').getBoundingClientRect();return [r.x,r.y,r.width,r.height]})(), vid:(()=>{const v=document.querySelector('.scene video');return [v.currentTime,v.paused,v.readyState]})()})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/index.html",
+   "file": "home-a-1440-f2.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 0,
+   "wait": 2900,
+   "eval": "({vid:(()=>{const v=document.querySelector('.scene video');return [v.currentTime,v.paused,v.readyState]})(), mode:window.__plate.mode})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/index.html",
+   "file": "home-a-1440-f3.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 0,
+   "wait": 4900,
+   "eval": "({vid:(()=>{const v=document.querySelector('.scene video');return [v.currentTime,v.paused,v.readyState]})(), mode:window.__plate.mode})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/index.html",
+   "file": "home-a-390.png",
+   "w": 390,
+   "h": 844,
+   "dpr": 2,
+   "scroll": 0,
+   "eval": "({ask:(()=>{const r=document.querySelector('.top .ask').getBoundingClientRect();return [r.x,r.y,r.width,r.height]})(), askBorder:getComputedStyle(document.querySelector('.top .ask')).borderBottomColor})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/index.html",
+   "file": "home-a-1440-s300.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 300
+  },
+  {
+   "url": "http://127.0.0.1:4327/index.html",
+   "file": "home-a-1440-s650.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 650,
+   "eval": "({p:window.__plate.p, pose:window.__plate.at(window.__plate.p), rev:(document.querySelector('.scene .after')?getComputedStyle(document.querySelector('.scene .after')).opacity:null)})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/index.html",
+   "file": "home-a-1920.png",
+   "w": 1920,
+   "h": 1080,
+   "scroll": 0
+  },
+  {
+   "url": "http://127.0.0.1:4327/index.html",
+   "file": "home-a-1440-reduce.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 0,
+   "reduce": true
+  }
+ ]
+}

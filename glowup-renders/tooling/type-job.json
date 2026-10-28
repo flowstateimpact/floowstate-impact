@@ -1,0 +1,239 @@
+{
+ "out": "/Users/asiffarid/Documents/apps/flowstateimpact-site-glowup/glowup-renders/type",
+ "shots": [
+  {
+   "url": "http://127.0.0.1:4327/index.html",
+   "file": "home-a-1440.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 0,
+   "eval": "({plate:window.__plate, h1:(()=>{const e=document.querySelector('.hero-t h1, .scene h1, .page-hero-t h1');if(!e)return null;const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,fs:getComputedStyle(e).fontSize}})()})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/index.html",
+   "file": "home-a-390.png",
+   "w": 390,
+   "h": 844,
+   "dpr": 2,
+   "scroll": 0,
+   "eval": "({plate:window.__plate, h1:(()=>{const e=document.querySelector('.hero-t h1, .scene h1, .page-hero-t h1');if(!e)return null;const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,fs:getComputedStyle(e).fontSize}})()})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/index.html",
+   "file": "home-a-1440-s300.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 300
+  },
+  {
+   "url": "http://127.0.0.1:4327/index.html",
+   "file": "home-a-1440-s650.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 650
+  },
+  {
+   "url": "http://127.0.0.1:4327/index.html",
+   "file": "home-a-1920.png",
+   "w": 1920,
+   "h": 1080,
+   "scroll": 0,
+   "eval": "({plate:window.__plate, h1:(()=>{const e=document.querySelector('.hero-t h1, .scene h1, .page-hero-t h1');if(!e)return null;const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,fs:getComputedStyle(e).fontSize}})()})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/index.html",
+   "file": "home-a-1440-reduce.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 0,
+   "reduce": true
+  },
+  {
+   "url": "http://127.0.0.1:4327/what-we-do-type-a.html",
+   "file": "wwd-a-1440.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 0,
+   "eval": "({plate:window.__plate, h1:(()=>{const e=document.querySelector('.hero-t h1, .scene h1, .page-hero-t h1');if(!e)return null;const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,fs:getComputedStyle(e).fontSize}})()})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/what-we-do-type-a.html",
+   "file": "wwd-a-390.png",
+   "w": 390,
+   "h": 844,
+   "dpr": 2,
+   "scroll": 0,
+   "eval": "({plate:window.__plate, h1:(()=>{const e=document.querySelector('.hero-t h1, .scene h1, .page-hero-t h1');if(!e)return null;const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,fs:getComputedStyle(e).fontSize}})()})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/what-we-do-type-a.html",
+   "file": "wwd-a-1440-s450.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 450
+  },
+  {
+   "url": "http://127.0.0.1:4327/what-we-do-type-a.html",
+   "file": "wwd-a-1440-s1100.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 1100
+  },
+  {
+   "url": "http://127.0.0.1:4327/index-type-b.html",
+   "file": "home-b-1440.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 0,
+   "eval": "({plate:window.__plate, h1:(()=>{const e=document.querySelector('.hero-t h1, .scene h1, .page-hero-t h1');if(!e)return null;const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,fs:getComputedStyle(e).fontSize}})()})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/index-type-b.html",
+   "file": "home-b-390.png",
+   "w": 390,
+   "h": 844,
+   "dpr": 2,
+   "scroll": 0,
+   "eval": "({plate:window.__plate, h1:(()=>{const e=document.querySelector('.hero-t h1, .scene h1, .page-hero-t h1');if(!e)return null;const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,fs:getComputedStyle(e).fontSize}})()})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/index-type-b.html",
+   "file": "home-b-1440-s300.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 300
+  },
+  {
+   "url": "http://127.0.0.1:4327/index-type-b.html",
+   "file": "home-b-1440-s650.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 650
+  },
+  {
+   "url": "http://127.0.0.1:4327/index-type-b.html",
+   "file": "home-b-1920.png",
+   "w": 1920,
+   "h": 1080,
+   "scroll": 0,
+   "eval": "({plate:window.__plate, h1:(()=>{const e=document.querySelector('.hero-t h1, .scene h1, .page-hero-t h1');if(!e)return null;const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,fs:getComputedStyle(e).fontSize}})()})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/index-type-b.html",
+   "file": "home-b-1440-reduce.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 0,
+   "reduce": true
+  },
+  {
+   "url": "http://127.0.0.1:4327/what-we-do-type-b.html",
+   "file": "wwd-b-1440.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 0,
+   "eval": "({plate:window.__plate, h1:(()=>{const e=document.querySelector('.hero-t h1, .scene h1, .page-hero-t h1');if(!e)return null;const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,fs:getComputedStyle(e).fontSize}})()})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/what-we-do-type-b.html",
+   "file": "wwd-b-390.png",
+   "w": 390,
+   "h": 844,
+   "dpr": 2,
+   "scroll": 0,
+   "eval": "({plate:window.__plate, h1:(()=>{const e=document.querySelector('.hero-t h1, .scene h1, .page-hero-t h1');if(!e)return null;const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,fs:getComputedStyle(e).fontSize}})()})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/what-we-do-type-b.html",
+   "file": "wwd-b-1440-s450.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 450
+  },
+  {
+   "url": "http://127.0.0.1:4327/what-we-do-type-b.html",
+   "file": "wwd-b-1440-s1100.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 1100
+  },
+  {
+   "url": "http://127.0.0.1:4327/index-type-c.html",
+   "file": "home-c-1440.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 0,
+   "eval": "({plate:window.__plate, h1:(()=>{const e=document.querySelector('.hero-t h1, .scene h1, .page-hero-t h1');if(!e)return null;const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,fs:getComputedStyle(e).fontSize}})()})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/index-type-c.html",
+   "file": "home-c-390.png",
+   "w": 390,
+   "h": 844,
+   "dpr": 2,
+   "scroll": 0,
+   "eval": "({plate:window.__plate, h1:(()=>{const e=document.querySelector('.hero-t h1, .scene h1, .page-hero-t h1');if(!e)return null;const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,fs:getComputedStyle(e).fontSize}})()})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/index-type-c.html",
+   "file": "home-c-1440-s300.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 300
+  },
+  {
+   "url": "http://127.0.0.1:4327/index-type-c.html",
+   "file": "home-c-1440-s650.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 650
+  },
+  {
+   "url": "http://127.0.0.1:4327/index-type-c.html",
+   "file": "home-c-1920.png",
+   "w": 1920,
+   "h": 1080,
+   "scroll": 0,
+   "eval": "({plate:window.__plate, h1:(()=>{const e=document.querySelector('.hero-t h1, .scene h1, .page-hero-t h1');if(!e)return null;const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,fs:getComputedStyle(e).fontSize}})()})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/index-type-c.html",
+   "file": "home-c-1440-reduce.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 0,
+   "reduce": true
+  },
+  {
+   "url": "http://127.0.0.1:4327/what-we-do-type-c.html",
+   "file": "wwd-c-1440.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 0,
+   "eval": "({plate:window.__plate, h1:(()=>{const e=document.querySelector('.hero-t h1, .scene h1, .page-hero-t h1');if(!e)return null;const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,fs:getComputedStyle(e).fontSize}})()})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/what-we-do-type-c.html",
+   "file": "wwd-c-390.png",
+   "w": 390,
+   "h": 844,
+   "dpr": 2,
+   "scroll": 0,
+   "eval": "({plate:window.__plate, h1:(()=>{const e=document.querySelector('.hero-t h1, .scene h1, .page-hero-t h1');if(!e)return null;const r=e.getBoundingClientRect();return {x:r.x,y:r.y,w:r.width,h:r.height,fs:getComputedStyle(e).fontSize}})()})"
+  },
+  {
+   "url": "http://127.0.0.1:4327/what-we-do-type-c.html",
+   "file": "wwd-c-1440-s450.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 450
+  },
+  {
+   "url": "http://127.0.0.1:4327/what-we-do-type-c.html",
+   "file": "wwd-c-1440-s1100.png",
+   "w": 1440,
+   "h": 900,
+   "scroll": 1100
+  }
+ ]
+}
