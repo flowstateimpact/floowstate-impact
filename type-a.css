@@ -49,6 +49,14 @@ html.plate-still .scene .after .word{display:none}
   .type-a:not(.inner) .audit .pic img{object-position:50% 62%}
   .type-a:not(.inner) .ai .pic{width:90vw;height:43vw;margin-left:calc(var(--m) * -1)}
   .type-a:not(.inner) .grow{padding-left:var(--m)}   /* Who carries no picture (Asif, 28 Oct: the tea stall is out), so the indent glow-a.css:105 kept for it goes and the words stand on the margin like the other blocks */
+  /* Anwar R11: without the photo the column left a hole, so the title and the lines face each other across the field, as on What we do (type-a.css:65); "to grow." and "See the work" share one baseline */
+  .type-a:not(.inner) .grow{display:grid;grid-template-columns:minmax(0,1fr) clamp(300px,24vw,360px);grid-template-rows:auto 1fr auto auto auto;column-gap:calc(var(--m) * 2)}
+  .type-a:not(.inner) .grow .lab{grid-column:1 / -1;grid-row:1}
+  .type-a:not(.inner) .grow .h{grid-column:1;grid-row:2 / 6;align-self:last baseline;font-size:5vw;margin-bottom:0}
+  .type-a:not(.inner) .grow p{grid-column:2}
+  .type-a:not(.inner) .grow p:nth-of-type(1){grid-row:3}
+  .type-a:not(.inner) .grow p:nth-of-type(2){grid-row:4}
+  .type-a:not(.inner) .grow .go{grid-column:2;grid-row:5;justify-self:start;align-self:last baseline;margin-bottom:0}
 }
 
 /* ---- what we do: THE COMMA ---- */
