@@ -1,0 +1,304 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>FlowStãte Impact</title>
+<script>
+(function(){var d=document.documentElement;
+  d.setAttribute('data-words',/[?&]words=a\b/i.test(location.search)?'a':'b');
+  if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches)d.className+=' strike';})();
+</script>
+<link rel="icon" href="media/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="media/favicon-32.png" sizes="32x32" type="image/png">
+<link rel="stylesheet" href="site.css">
+<noscript><style>.strike .cloth{transform:translateX(calc(var(--cw) - 100%))!important}.strike *{visibility:visible!important}</style></noscript>
+</head>
+<body>
+
+<header class="first" id="top">
+  <div class="film" id="film">
+    <video id="lane" muted loop playsinline autoplay preload="auto" poster="media/lane-poster.jpg">
+      <source src="media/lane-phone.mp4" type="video/mp4" media="(max-width:760px)">
+      <source src="media/lane.mp4" type="video/mp4">
+    </video>
+  </div>
+  <div class="veil" id="veil"></div>
+  <div class="prints" id="prints" aria-hidden="true">
+    <div class="print poster"><img src="work/chhaya-poster.jpg" alt="" width="398" height="560"></div>
+    <div class="print box"><img src="work/heritage-box.jpg" alt="" width="451" height="560"></div>
+    <svg class="clip" viewBox="0 0 46 92" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M9 30v46a14 14 0 0 0 28 0V16a9 9 0 0 0-18 0v54a4 4 0 0 0 8 0V30" stroke="#C9C4BA" stroke-width="3.2" stroke-linecap="round"/>
+      <path d="M9 30v46a14 14 0 0 0 28 0V16a9 9 0 0 0-18 0v54a4 4 0 0 0 8 0V30" stroke="#F5F2EC" stroke-width="1.1" stroke-linecap="round" transform="translate(-.6 -.6)"/>
+    </svg>
+    <div class="labels">Heritage in Motion · Chhaya</div>
+  </div>
+  <div class="band-under" id="bandunder" aria-hidden="true"><ul class="six" role="list"><li><span class="w">Branding</span><span class="line">Known before you speak.</span></li><li><span class="w">Images</span><span class="line">Pictures people save.</span></li><li><span class="w">Website</span><span class="line">It answers for you.</span></li><li><span class="w">Videos</span><span class="line">Watched, then visited.</span></li><li class="akij"><span class="w">Consultancy,</span><small>with Akij Dynamics</small><span class="line">What you sell, read too.</span></li><li><span class="w">AI system</span><span class="line">You stop repeating yourself.</span></li></ul></div>
+  <div class="clothwrap" id="clothwrap"><div class="cloth" id="cloth"></div></div>
+  <div class="cloth-head"></div>
+
+  <div class="heads" id="heads">
+    <canvas id="cuts" aria-hidden="true"></canvas>
+    <h1 class="head wa"><span class="ln">Your business</span><span class="ln">walks out</span><span class="ln">with what it</span><span class="ln hot">actually</span><span class="ln">needs.</span></h1>
+    <h1 class="head wb"><span class="ln">Strategy</span><span class="ln">design</span><span class="ln hot">and</span><span class="ln">systems</span></h1>
+  </div>
+
+  <div class="band" id="band" aria-hidden="true"><ul class="six" role="list"><li><span class="w">Branding</span><span class="line">Known before you speak.</span></li><li><span class="w">Images</span><span class="line">Pictures people save.</span></li><li><span class="w">Website</span><span class="line">It answers for you.</span></li><li><span class="w">Videos</span><span class="line">Watched, then visited.</span></li><li class="akij"><span class="w">Consultancy,</span><small>with Akij Dynamics</small><span class="line">What you sell, read too.</span></li><li><span class="w">AI system</span><span class="line">You stop repeating yourself.</span></li></ul></div>
+  <div class="band-edge" id="bandedge"></div>
+  <div class="band-top" id="bandtop">
+    <ul class="six" role="list"><li><span class="w">Branding</span><span class="line">Known before you speak.</span></li><li><span class="w">Images</span><span class="line">Pictures people save.</span></li><li><span class="w">Website</span><span class="line">It answers for you.</span></li><li><span class="w">Videos</span><span class="line">Watched, then visited.</span></li><li class="akij"><span class="w">Consultancy,</span><small>with Akij Dynamics</small><span class="line">What you sell, read too.</span></li><li><span class="w">AI system</span><span class="line">You stop repeating yourself.</span></li></ul>
+    <div class="act colact"><a class="stamp colgo" href="https://linktr.ee/flowstateimpact" target="_blank" rel="noopener">Ask for the audit</a><p class="fine">Free for a limited time*<span>*T&amp;Cs apply</span></p></div>
+  </div>
+  <p class="read wa" id="read-a">Our team reads it all <br>and can say no.</p>
+  <p class="read wb" id="read-b">We shape the brand. <br>You keep the AI we build.</p>
+
+  <div class="menu">
+    <a class="logo" href="index.html" aria-label="FlowStãte Impact, home"><img class="mk" src="media/fsi-mark.svg" alt="" width="1197" height="1000"><img class="mark" src="media/wordmark.png" alt="FlowStãte Impact" width="1135" height="442"></a>
+    <nav>
+      <a href="work.html">Work</a>
+      <a href="what-we-do.html">What we do</a>
+      <a href="the-audit.html">Audit</a>
+      <a href="the-ai-system.html">AI system</a>
+      <a href="about.html">About</a>
+
+      <a class="stamp" href="https://linktr.ee/flowstateimpact" target="_blank" rel="noopener">Ask for the audit</a>
+    </nav>
+    <div class="right">
+      <a class="stamp mstamp" href="https://linktr.ee/flowstateimpact" target="_blank" rel="noopener">Ask for the audit</a>
+      <button class="burger" aria-label="Menu" aria-expanded="false"><span></span></button>
+    </div>
+  </div>
+  <button class="filmctl" id="filmctl" data-state="playing" aria-label="Pause the film" aria-pressed="false">
+    <svg class="ic-pause" viewBox="0 0 16 16"><rect x="2.5" y="2" width="4" height="12"/><rect x="9.5" y="2" width="4" height="12"/></svg>
+    <svg class="ic-play" viewBox="0 0 16 16"><path d="M3.5 2v12l10-6z"/></svg>
+  </button>
+
+  <div class="cue" aria-hidden="true"><svg viewBox="0 0 20 54" fill="none" stroke="currentColor">
+    <defs><clipPath id="cuerail"><rect x="0" y="0" width="20" height="39"/></clipPath></defs>
+    <line class="rail" x1="10" y1="0" x2="10" y2="38" stroke-width="1.5"/>
+    <g clip-path="url(#cuerail)"><line class="run" x1="10" y1="0" x2="10" y2="14" stroke-width="1.75"/></g>
+    <path class="chev" d="M3.5 41.5L9.1 47.1M10.9 47.1L16.5 41.5" stroke-width="2" stroke-linecap="butt"/>
+  </svg></div>
+  <div class="grain"></div>
+</header>
+
+<main>
+  <section class="sec dark table" id="audit">
+    <div class="wrap">
+      <h2 class="h2"><span class="l">Read <span class="hot">first.</span></span></h2>
+      <div class="lit">
+        <div class="written paper">
+          <p>You get, in writing, which parts of your business carry you, which you carry, and where to start. Leave it alone is an answer.</p>
+          <div class="strips"><span class="strip">Consultancy</span><span class="strip">AI system</span></div>
+        </div>
+        <div class="act"><a class="stamp" href="https://linktr.ee/flowstateimpact" target="_blank" rel="noopener">Ask for the audit</a>
+          <p class="fine">Free for a limited time*<span>*T&amp;Cs apply</span></p></div>
+        <div class="tapes">
+          <div class="tape"><div class="pic"><img src="work/heritage-box.jpg" alt=""></div><span class="strip">Branding</span></div>
+          <div class="tape"><div class="pic"><img src="work/chhaya-photo-pack-1-sim-starter.jpg" alt=""></div><span class="strip">Images</span></div>
+          <div class="tape"><div class="pic"><img src="work/chhaya-web-hero.jpg" alt=""></div><span class="strip">Website</span></div>
+          <div class="tape"><div class="pic"><img src="work/heritage-film-04.jpg" alt=""></div><span class="strip">Videos</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec paper" id="system">
+    <div class="wrap"><div class="thread" aria-hidden="true"></div>
+        <h2 class="h2"><span class="l">An AI system</span> <span class="l">you keep.</span></h2>
+        <p class="slot">Every department, one memory.</p>
+        <a class="quiet go" href="the-ai-system.html">See inside</a>
+    </div>
+  </section>
+
+  <section class="sec dark" id="work">
+    <div class="wrap">
+      <h2 class="h2"><span class="d">Built whole.</span> <span class="p">Built</span> <span class="p">whole.</span></h2>
+      <div class="workbed">
+        <img class="bed" src="media/lane-poster.jpg" alt="">
+        <a class="pr a" href="heritage-in-motion.html"><img class="ph" src="work/heritage-coat-walk.jpg" alt=""><span class="tag">Heritage in Motion</span><span class="ln">Dhaka dressing Dhaka.</span></a>
+        <a class="pr b" href="chhaya.html"><img class="ph" src="work/chhaya-billboard.jpg" alt=""><span class="tag">Chhaya</span><span class="ln">A phone network, said small.</span></a>
+      </div>
+      <p class="note">Brands we built, mark to film.</p>
+      <a class="quiet go" href="work.html">See both</a>
+      <p class="trio"><a class="quiet go" href="websites.html">Websites</a><a class="quiet go" href="photography.html">Photography</a><a class="quiet go" href="films.html">Films</a></p>
+    </div>
+  </section>
+
+  <section class="sec paper" id="ask">
+    <div class="wrap askbig"><div class="thread" aria-hidden="true"></div>
+        <h2 class="h2"><span class="d">Growing? Good.</span> <span class="p">Growing?</span> <span class="p">Good.</span></h2>
+        <div class="act"><a class="stamp" href="https://linktr.ee/flowstateimpact" target="_blank" rel="noopener">Ask for the audit</a>
+          <p class="fine">Free for a limited time*<span>*T&amp;Cs apply</span></p></div>
+        <p class="under" data-waits="words: a line under the button on this page (the file gives one for Home only)"></p>
+    </div>
+  </section>
+  <script src="site.js" defer></script>
+</main>
+  <footer class="foot dark">
+    <div class="fwrap">
+      <p class="next"><a href="work.html">Next: the work</a></p>
+      <div class="fcols">
+        <div class="fid">
+          <img class="fmark" src="media/wordmark.png" alt="FlowStãte Impact" width="1135" height="442" loading="lazy">
+          <p class="firm">Dhaka · London</p>
+        </div>
+        <div class="fvisit">
+          <p class="flab">Visit</p>
+          <address>97 Shaheed Tajuddin Ahmed<br>Sharoni, Hatir Jheel Link Rd<br>Dhaka 1208</address>
+          <iframe class="fmap" title="Map to the FlowStãte office, Dhaka" src="https://www.google.com/maps?q=97+Shaheed+Tajuddin+Ahmed+Sharoni,+Dhaka+1208&amp;output=embed" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        <div class="fgo">
+          <nav><a href="work.html">Work</a><a href="what-we-do.html">What we do</a><a href="the-audit.html">Audit</a><a href="the-ai-system.html">AI system</a><a href="about.html">About</a></nav>
+          <a class="stamp fbook" href="https://linktr.ee/flowstateimpact#592953534" target="_blank" rel="noopener">Book a call</a>
+          <a class="flink" href="https://linktr.ee/flowstateimpact" target="_blank" rel="noopener">Linktree</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+
+<!--first-js-->
+<script src="vendor/gsap.min.js"></script>
+<script src="vendor/ScrollTrigger.min.js"></script>
+<script>
+(function(){
+  var doc = document.documentElement;
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var $ = function(s, r){ return (r || document).querySelector(s); };
+  var $$ = function(s, r){ return [].slice.call((r || document).querySelectorAll(s)); };
+  var first = $('.first'), v = $('#lane'), ctl = $('#filmctl');
+
+  /* the film: plays unless the visitor asked for stillness; the control always works */
+  function setState(playing){
+    ctl.dataset.state = playing ? 'playing' : 'paused';
+    ctl.setAttribute('aria-label', playing ? 'Pause the film' : 'Play the film');
+    ctl.setAttribute('aria-pressed', playing ? 'false' : 'true');
+  }
+  if (reduce){ v.removeAttribute('autoplay'); v.pause(); setState(false); }
+  else { var p = v.play(); if (p && p.catch) p.catch(function(){ setState(false); }); }
+  ctl.addEventListener('click', function(){ if (v.paused) v.play(); else v.pause(); });
+  v.addEventListener('play', function(){ setState(true); });
+  v.addEventListener('pause', function(){ setState(false); });
+
+  var bg = $('.burger'); if (bg){ bg.addEventListener('click', function(){ var m = bg.closest('.menu'); var o = m.classList.toggle('open'); bg.setAttribute('aria-expanded', o); }); }
+
+  /* the six offers: hover or tap lifts the veil off that word's cut; the other five lines step back */
+  var six = $('.band-top .six'), top6 = $$('li', six), under6 = $$('.band-under .six li');
+  function openOffer(i){
+    under6.forEach(function(u, k){ u.classList.toggle('open', k === i); });
+    top6.forEach(function(t, k){ t.classList.toggle('on', k === i); });
+    six.classList.toggle('has', i >= 0);
+  }
+  top6.forEach(function(li, i){
+    li.addEventListener('pointerenter', function(e){ if (e.pointerType === 'mouse') openOffer(i); });
+    li.addEventListener('pointerleave', function(e){ if (e.pointerType === 'mouse') openOffer(-1); });
+    li.addEventListener('click', function(){ openOffer(li.classList.contains('on') ? -1 : i); });
+  });
+
+  function inPlace(){ doc.classList.remove('strike'); }
+  if (reduce || !window.gsap){ inPlace(); return; }
+
+  var phone = window.matchMedia('(max-width:760px)').matches;
+  var cloth = $('#cloth'), band = $('#band'), heads = $('#heads'), cv = $('#cuts');
+  var h = $('.head.w' + (doc.getAttribute('data-words') === 'a' ? 'a' : 'b'));
+  var read = $('#read-' + (doc.getAttribute('data-words') === 'a' ? 'a' : 'b'));
+  var lns = $$('.ln', h), hot = $('.hot', h);
+  var bandEls = [$('#bandunder'), band, $('#bandedge'), $('#bandtop')].concat(phone ? [read] : []);
+
+  /* the scroll-out: the card comes apart as the page leaves. Damped, so it settles rather than tracks */
+  function scrollOut(){
+    if (!window.ScrollTrigger) return;
+    gsap.registerPlugin(ScrollTrigger);
+    var H = function(){ return first.offsetHeight; };
+    gsap.timeline({scrollTrigger: {trigger: first, start: 'top top', end: 'bottom top', scrub: 0.6, invalidateOnRefresh: true}})
+      .to('#clothwrap', {x: function(){ return -0.6 * H(); }, ease: 'none'}, 0)
+      .to(phone ? bandEls : bandEls.concat([$('#veil')]), {x: function(){ return 0.4 * H(); }, ease: 'none'}, 0)
+      .to('#film', {scale: 1.06, ease: 'none'}, 0)
+      .to(lns, {x: function(i){ return -12 * i; }, ease: 'none'}, 0);
+  }
+
+  /* after the sweep the shine rests as a faint highlight; on desk it follows the pointer, slowly (damping .05), and settles */
+  function sheen(){
+    if (phone || !window.matchMedia('(pointer: fine)').matches) return;
+    var tx = null, cx = null, raf = null;
+    function tick(){ cx += (tx - cx) * 0.05; h.style.setProperty('--sx', cx.toFixed(1) + 'px'); raf = Math.abs(tx - cx) > 0.3 ? requestAnimationFrame(tick) : null; }
+    first.addEventListener('pointermove', function(e){ tx = e.clientX - h.getBoundingClientRect().left; if (cx === null) cx = parseFloat(getComputedStyle(h).getPropertyValue('--sx')) || tx; if (!raf) raf = requestAnimationFrame(tick); }, {passive: true});
+  }
+
+  /* THE STRIKE. The headline arrives as holes in the black cloth, the film at full brightness inside them;
+     cream floods the holes; the orange word lands last; then the cloth draws back and the cream band comes in. */
+  function strike(){
+    inPlace();
+    var X1 = new DOMMatrix(getComputedStyle(cloth).transform).m41;          /* where the cloth rests */
+    var bw = band.getBoundingClientRect().width + 24;
+    var hr = heads.getBoundingClientRect(), dpr = Math.min(window.devicePixelRatio || 1, 2);
+    var cs = getComputedStyle(h), F = parseFloat(cs.fontSize), L = parseFloat(cs.lineHeight);
+    cv.width = Math.round(hr.width * dpr); cv.height = Math.round(hr.height * dpr);
+    var ctx = cv.getContext('2d'), font = '700 ' + F + 'px "Bespoke Stencil"';
+    ctx.font = font;
+    var rows = lns.map(function(ln){
+      var r = ln.getBoundingClientRect(), t = ln.textContent.toUpperCase();
+      /* the baseline of a line box in this face: half the pitch plus 0.355 of the size (measured: ascent .98, descent .27) */
+      return {el: ln, text: t, x: r.left - hr.left, top: r.top - hr.top, y: r.top - hr.top + L / 2 + 0.355 * F, tw: ctx.measureText(t).width, cut: 0, a: 1, hot: ln === hot};
+    });
+    var poster = new Image(); poster.src = v.currentSrc && v.poster ? v.poster : 'media/lane-poster.jpg';
+    function draw(){
+      var vr = v.getBoundingClientRect();
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      ctx.globalCompositeOperation = 'source-over'; ctx.clearRect(0, 0, hr.width, hr.height);
+      ctx.font = font; ctx.textBaseline = 'alphabetic'; ctx.fillStyle = '#000';
+      rows.forEach(function(r){
+        if (r.cut <= 0 || r.a <= 0) return;
+        ctx.save(); ctx.globalAlpha = r.a; ctx.beginPath(); ctx.rect(r.x - 6, r.top - L * 0.2, (r.tw + 12) * r.cut, L * 1.4); ctx.clip();
+        ctx.fillText(r.text, r.x, r.y); ctx.restore();
+      });
+      ctx.globalCompositeOperation = 'source-in';
+      var src = v.readyState >= 2 ? v : (poster.complete && poster.naturalWidth ? poster : null);
+      if (src) ctx.drawImage(src, vr.left - hr.left, vr.top - hr.top, vr.width, vr.height);
+      else { ctx.fillStyle = '#9a8f82'; ctx.fillRect(0, 0, hr.width, hr.height); }
+      /* a thin cream lift inside the letters only: where the film is black (her dress) the letter still stands off the cloth */
+      ctx.globalCompositeOperation = 'source-atop'; ctx.fillStyle = 'rgba(244,239,230,.2)'; ctx.fillRect(0, 0, hr.width, hr.height);
+    }
+    gsap.set(cloth, {x: 0});
+    gsap.set(bandEls, {x: bw});
+    gsap.set(lns, {clipPath: 'inset(0% 100% 0% 0%)'});
+    gsap.set(hot, {clipPath: 'none', autoAlpha: 0});
+    if (!phone) gsap.set(read, {autoAlpha: 0});
+    /* the canvas lives exactly as long as the film is inside the letters (until the orange word has taken its row).
+       Its life is a rendered property of the timeline, not a callback, so the timeline can be parked or run back through it */
+    var live = false, once = false;
+    function film(on){ if (on === live) return; live = on; if (on) gsap.ticker.add(draw); else gsap.ticker.remove(draw); }
+    var reel = {}; Object.defineProperty(reel, 'on', {get: function(){ return 0; }, set: function(){ film(true); }});
+    var tl = gsap.timeline({paused: true, onComplete: function(){
+      film(false);
+      gsap.set([cloth, read].concat(bandEls, lns, $$('.w', band)), {clearProps: 'all'});
+      if (!once){ once = true; scrollOut(); sheen(); }
+    }});
+    film(true); draw();
+    tl.to(reel, {on: 1, duration: 1.24, ease: 'none'}, 0);
+    tl.set(cv, {display: 'none'}, 1.24);
+    rows.forEach(function(r, i){ tl.to(r, {cut: 1, duration: 0.42, ease: 'power4.out'}, 0.04 + 0.06 * i); });
+    var k = 0;
+    rows.forEach(function(r){ if (r.hot) return; tl.to(r.el, {clipPath: 'inset(0% 0% 0% 0%)', duration: 0.3, ease: 'power2.in'}, 0.7 + 0.033 * k); k++; });
+    rows.forEach(function(r){ if (r.hot) tl.to(r, {a: 0, duration: 0.12, ease: 'power2.out'}, 1.1); });
+    tl.fromTo(hot, {scale: 1.06, rotation: 1, autoAlpha: 0, transformOrigin: '0% 85%'}, {scale: 1, rotation: 0, autoAlpha: 1, duration: 0.25, ease: 'back.out(2)'}, 1.1);
+    tl.to(cloth, {x: X1, duration: 0.8, ease: 'expo.inOut'}, 1.2);
+    tl.to(bandEls, {x: 0, duration: 0.7, ease: 'expo.out'}, 1.2);
+    tl.from($$('.w', band), {x: bw * 0.35, duration: 0.7, ease: 'expo.out', stagger: 0.05}, 1.2);
+    /* the sweep: the light's strength has to be on both ends of the tween or it never leaves its resting .16 */
+    tl.fromTo(h, {'--sx': '-40px', '--sa': 0.9}, {'--sx': Math.round(hr.width + 160) + 'px', '--sa': 0.9, duration: 0.95, ease: 'sine.inOut'}, 1.35);
+    if (!phone) tl.fromTo(read, {autoAlpha: 0, y: 12}, {autoAlpha: 1, y: 0, duration: 0.6, ease: 'power3.out'}, 1.42);
+    tl.add(function(){ h.style.removeProperty('--sx'); h.style.removeProperty('--sa'); }, 2.32);
+    window.__strike = tl;
+    tl.play();
+  }
+  var go = false, start = function(){ if (go) return; go = true; try { strike(); } catch (e) { inPlace(); } };
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(start);
+  setTimeout(start, 1500);   /* a slow font never holds the black cloth shut */
+})();
+</script>
+<!--/first-js-->
+</body>
+</html>

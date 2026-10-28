@@ -29,17 +29,6 @@
       "source": "/videos.html",
       "destination": "/films.html",
       "permanent": false
-    },
-    {
-      "source": "/index.html",
-      "destination": "/",
-      "permanent": false
-    }
-  ],
-  "rewrites": [
-    {
-      "source": "/",
-      "destination": "/index-type-a.html"
     }
   ]
 }
