@@ -48,7 +48,7 @@ html.plate-still .scene .after .word{display:none}
   .type-a:not(.inner) .audit .pic{width:86vw;height:54vw;margin-left:auto;margin-right:calc(var(--m) * -1)}
   .type-a:not(.inner) .audit .pic img{object-position:50% 62%}
   .type-a:not(.inner) .ai .pic{width:90vw;height:43vw;margin-left:calc(var(--m) * -1)}
-  .type-a:not(.inner) .grow .pic{width:84vw;height:48vw;margin-left:6vw}
+  .type-a:not(.inner) .grow .pic{width:84vw;height:48vw;margin-left:calc(-20vw - var(--m) * 2)}   /* the section keeps its 26vw + 3m indent for the words (glow-a.css:105); the picture steps back out of it to stand 6vw inside the margin */
 }
 
 /* ---- what we do: THE COMMA ---- */
