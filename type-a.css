@@ -20,9 +20,9 @@
 .scene .after .cap{z-index:4}
 .scene .after .play{z-index:5}
 @media (max-width:760px){.scene .after .word{left:34vw;top:calc(var(--sh) * .34)}}
-/* the film's own name stands where WORK stood (Asif, 29 Oct: "there is a WO thing ... find something better to put there"): two lines, right-aligned to the margin so the whole name stays on screen */
-.scene .after .word{left:auto;right:var(--m);text-align:right;white-space:normal}
-@media (max-width:760px){.scene .after .word{left:auto;font-size:16vw}}
+/* FILM where WORK stood (Asif, 29 Oct: "there is a WO thing ... find something better to put there"). Anwar R12 (d): the film's name as a title card read 1.6 to 1 on the pale wall; FILM over the film, BRAND over the brand, whole, on the dark side (7.5 to 1); the film's name stays in the caption */
+.scene .after .word{left:var(--m);right:auto;text-align:left;white-space:nowrap}
+@media (max-width:760px){.scene .after .word{font-size:16vw}}
 /* reduced motion: one screen, the plate stands still with the lane's first frame in the cuts; the caption is reachable */
 @media (prefers-reduced-motion:reduce){
   .scene{height:var(--sh)}
@@ -99,7 +99,7 @@ html.plate-still .scene .after .word{display:none}
 .type-a .top .ask:hover{background:var(--white)}
 @media (max-width:760px){
   .type-a .top .links{font-size:14px;gap:16px}
-  .type-a .top .ask{font-size:13px;padding:8px 12px}
+  .type-a .top .ask{font-size:13px;padding:8px 12px;background:transparent;color:var(--white);box-shadow:inset 0 0 0 1.5px var(--accent)}   /* Anwar R12 (a): on the phone a solid stamp competed with DARE on the same edge; an orange outline keeps DARE the one orange mass */
 }
 .wwd.type-a .duo .go{border-bottom-color:var(--white)}
 .wwd.type-a .duo .go:hover{border-bottom-color:var(--accent)}

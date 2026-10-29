@@ -61,7 +61,8 @@
     else { // the strategy line is part of the block: its lines sit brk above the cap top, so the whole stack centres
       var l3n=(comp===3&&phone)?2:1, under=comp===3?brk+Math.round(capM)+(l3n-1)*lhM+40:brk+Math.round(L0*.72)+Math.round(L0*1.4);
       var strapH=capM+(strap.length-1)*lhM+brk;
-      top=Math.round(H*.5-(block+strapH+under)*.5+strapH+H*.01); }
+      top=Math.round(H*.5-(block+strapH+under)*.5+strapH+H*.01);
+      if(comp===3&&phone){ var lineTop=H-40-lhM-Math.round(capM); top=Math.round(navH+(lineTop-navH-block-strapH)/2+strapH); } } // Anwar R12 (c): on the phone the block centres between the nav and the bottom lines
     var y=top+cap, out=[];
     rows.forEach(function(r,i){ if(i) y+=r.pitch; ctx.font=r.font; if('letterSpacing' in ctx) ctx.letterSpacing=r.ls+'px'; var sp=ctx.measureText(' ').width;
       var ws=r.words.map(function(w){ return {t:w.t,k:w.k,a:w.a||1,w:ctx.measureText(w.t).width}; }), rw=ws.reduce(function(a,w){return a+w.w},0)+sp*(ws.length-1);
