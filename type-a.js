@@ -130,18 +130,26 @@
     function groundURL(){ var b=getComputedStyle(stage).backgroundImage||'', m=/url\(["']?([^"')]+)["']?\)/.exec(b); return m?m[1]:''; }
     function loadGround(){ var u=groundURL(); if(!u||u===gSrc) return; gSrc=u; var im=new Image(); im.decoding='async';
       im.onload=function(){ if(gSrc!==u) return; gImg=im; if(mode==='gl'){ uploadGround(); wake(); } }; im.src=u; }
+    /* R13, the wall breathes (ground.js): the plate samples the wall through the same three swings as the fixed layer on every other page,
+       so the texture is drawn with a 2 percent margin on every side (the swing is 1.4 by .9 percent, the breath 1.2) and the rest view is the
+       inner rectangle, mapped by uGs. At device pixel ratio 1 it is drawn at twice the plate's size: a moving sample of a one to one texture
+       pulses between sharp and soft as it crosses each pixel, the shimmer in the grooves the brief names; at two to one the pulse is a quarter
+       of the size and under the eye. At ratio 2 the plate is already that fine, and the texture stays one to one (the 4096 texture limit) */
     function uploadGround(){
       if(!gl||!gImg||!W) return;
-      var w=Math.round(W*dpr), h=Math.round(H*dpr), c=document.createElement('canvas'); c.width=w; c.height=h;
-      var x=c.getContext('2d'); x.imageSmoothingEnabled=true; x.imageSmoothingQuality='high'; x.fillStyle='#12100C'; x.fillRect(0,0,w,h);
-      var iw=gImg.naturalWidth, ih=gImg.naturalHeight, k=Math.max(w/iw,h/ih), dw=iw*k, dh=ih*k; x.drawImage(gImg,w-dw,0,dw,dh);
+      var w=Math.round(W*dpr), h=Math.round(H*dpr), pw=Math.ceil(w*.02), ph=Math.ceil(h*.02), tw=w+2*pw, th=h+2*ph;
+      var maxT=gl.getParameter(gl.MAX_TEXTURE_SIZE)||4096, ss=(dpr<1.5&&tw*2<=maxT&&th*2<=maxT)?2:1;
+      var c=document.createElement('canvas'); c.width=tw*ss; c.height=th*ss;
+      var x=c.getContext('2d'); x.imageSmoothingEnabled=true; x.imageSmoothingQuality='high'; x.fillStyle='#12100C'; x.fillRect(0,0,c.width,c.height);
+      var iw=gImg.naturalWidth, ih=gImg.naturalHeight, k=Math.max(c.width/iw,c.height/ih), dw=iw*k, dh=ih*k; x.drawImage(gImg,c.width-dw,0,dw,dh);
       gl.activeTexture(gl.TEXTURE2); gl.bindTexture(gl.TEXTURE_2D,texG); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,false); gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,false);
-      gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE,c); gl.uniform1f(U.uHasG,1); gl.activeTexture(gl.TEXTURE0);
+      gl.texImage2D(gl.TEXTURE_2D,0,gl.RGB,gl.RGB,gl.UNSIGNED_BYTE,c); gl.uniform1f(U.uHasG,1); gl.uniform4f(U.uGs,w/tw,h/th,pw/tw,ph/th); gl.activeTexture(gl.TEXTURE0);
+      window.__plate.groundTex={w:c.width,h:c.height,pad:[pw,ph],ss:ss};
     }
 
     var VS='attribute vec2 a;varying vec2 v;void main(){v=a*.5+.5;gl_Position=vec4(a,0.,1.);}';
     var FS=[
-      'precision highp float;varying vec2 v;uniform sampler2D uT,uV,uG;uniform vec2 uRes,uVid,uAnc;uniform float uP,uHas,uHasG;uniform vec4 uA,uB,uH;uniform vec3 uL;',
+      'precision highp float;varying vec2 v;uniform sampler2D uT,uV,uG;uniform vec2 uRes,uVid,uAnc;uniform float uP,uHas,uHasG;uniform vec4 uA,uB,uH,uGs;uniform vec3 uL,uGd;',
       'float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}',
       // the plate hinged at its top edge: returns plate uv (y down), the ray depth, and the facing
       'vec4 plate(vec3 d,float ang,float tz,float ty){float W=uRes.x,H=uRes.y;vec3 p0=vec3(0.,H*.5+ty,uP+tz);float s=sin(ang),c=cos(ang);vec3 n=vec3(0.,s,c);vec3 vd=vec3(0.,c,-s);float den=dot(n,d);if(abs(den)<1e-5)return vec4(0.,0.,-1.,0.);float t=dot(n,p0)/den;if(t<=0.)return vec4(0.,0.,-1.,0.);vec3 q=t*d-p0;float r=dot(q,vd);return vec4((q.x+W*.5)/W,-r/H,t,den);}',
@@ -159,7 +167,8 @@
       ' vec4 tx=texture2D(uT,m.xy);float hole=tx.r,white=tx.b,rim=smoothstep(.62,.88,tx.a),wall=smoothstep(.14,.38,tx.a);',
       ' float s=sin(uA.x),c=cos(uA.x);vec3 nf=vec3(0.,-s,-c);float dif=max(dot(nf,uL),0.);vec3 h=normalize(uL-d);float spec=pow(max(dot(nf,h),0.),70.);',
       // the face is the wall itself: the combed plaster, unlit, sampled in plate space so it travels with the sheet as it hinges. No lamp on it; the light lives in the work
-      ' vec3 steel=uHasG>.5?texture2D(uG,m.xy).rgb:vec3(.0706,.0627,.0471);',
+      // R13: the wall breathes. uGd is the swing (x, y in plate widths and heights) and the breath (z, scale about the centre), from ground.js; uGs maps the plate onto the padded texture
+      ' vec2 gq=((m.xy-.5)/uGd.z+.5-uGd.xy)*uGs.xy+uGs.zw;vec3 steel=uHasG>.5?texture2D(uG,gq).rgb:vec3(.0706,.0627,.0471);',
       // the sheet's edge catches the light only once it starts to tilt; at rest the wall runs to the frame with no drawn border
       ' float e=min(min(m.x,1.-m.x)*uRes.x,min(m.y,1.-m.y)*uRes.y);steel+=vec3(.16,.16,.15)*(1.-smoothstep(0.,2.5,e))*smoothstep(0.,.05,uA.x);',
       // inside a cut the plate's thickness throws a shadow onto the film at the cut's top left; it lengthens as the plate lifts away
@@ -195,10 +204,10 @@
       gl.bindAttribLocation(prog,0,'a'); gl.linkProgram(prog); if(!gl.getProgramParameter(prog,gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
       gl.useProgram(prog);
       var b=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,b); gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW); gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);
-      ['uT','uV','uG','uRes','uVid','uAnc','uP','uHas','uHasG','uA','uB','uL','uH'].forEach(function(n){ U[n]=gl.getUniformLocation(prog,n); });
+      ['uT','uV','uG','uRes','uVid','uAnc','uP','uHas','uHasG','uA','uB','uL','uH','uGs','uGd'].forEach(function(n){ U[n]=gl.getUniformLocation(prog,n); });
       texT=gl.createTexture(); texV=gl.createTexture(); texG=gl.createTexture();
       [texT,texV,texG].forEach(function(t){ gl.bindTexture(gl.TEXTURE_2D,t); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE); });
-      gl.uniform1i(U.uT,0); gl.uniform1i(U.uV,1); gl.uniform1i(U.uG,2); gl.uniform1f(U.uHasG,0);
+      gl.uniform1i(U.uT,0); gl.uniform1i(U.uV,1); gl.uniform1i(U.uG,2); gl.uniform1f(U.uHasG,0); gl.uniform4f(U.uGs,1,1,0,0); gl.uniform3f(U.uGd,0,0,1);
       var L=[-.45,.55,-.7], l=Math.hypot(L[0],L[1],L[2]); gl.uniform3f(U.uL,L[0]/l,L[1]/l,L[2]/l);
       gl.uniform2f(U.uAnc,1,.5);
       host.appendChild(cv); mode='gl'; cv.addEventListener('webglcontextlost',function(e){ e.preventDefault(); gl=null; host.innerHTML=''; mode=null; startSVG(); });
@@ -236,12 +245,13 @@
     function drawGL(){
       raf=0; if(!gl) return;
       uploadVideo(); if(!gl) return;
-      var k=poses(p), d=dpr;
-      gl.uniform4f(U.uA,k.A[0],k.A[1]*d,k.A[2]*d,k.A[3]); gl.uniform4f(U.uB,k.B[0],k.B[1]*d,k.B[2]*d,k.B[3]);
+      var k=poses(p), d=dpr, wd=drift();
+      gl.uniform4f(U.uA,k.A[0],k.A[1]*d,k.A[2]*d,k.A[3]); gl.uniform4f(U.uB,k.B[0],k.B[1]*d,k.B[2]*d,k.B[3]); gl.uniform3f(U.uGd,wd.x,wd.y,wd.s);
       gl.drawArrays(gl.TRIANGLES,0,3);
       if(running&&!document.hidden&&(p<1||!video.paused)) raf=requestAnimationFrame(drawGL);
     }
     function wake(){ if(mode==='gl'&&!raf) raf=requestAnimationFrame(drawGL); }
+    function drift(){ var w=window.__wall; return (w&&!reduce&&!still)?w.at(w.now()):{x:0,y:0,s:1}; }   // ground.js; without it, or under reduced motion, the wall stands
 
     /* the SVG sheet: the same layout, the letters cut by a mask, hinged by CSS */
     function startSVG(){
@@ -255,7 +265,9 @@
       lay.rows.forEach(function(r){ r.toks.forEach(function(t){ if(t.k==='r') text(mask,t.t,t.x,r.y,r.font,'#000',r.ls); }); });
       // the face: the unlit wall's own black under the plaster picture, both cut by the letters; the picture is re-read from --ground each time the sheet is drawn, so crossing 760px swaps desk and phone files
       el('rect',{x:0,y:0,width:W,height:H,fill:'#12100C',mask:'url(#plate-cut)'},svg);
-      var gu=groundURL(); if(gu) el('image',{href:gu,x:0,y:0,width:W,height:H,preserveAspectRatio:'xMaxYMin slice',mask:'url(#plate-cut)'},svg);
+      // R13: the picture rides the same three swings as the wall layer on every other page (ground.css .wall-x .wall-y .wall-s), drawn 2 percent over on every side so the swing never shows an edge; the mask stays on the still group outside them
+      var gu=groundURL(); if(gu){ var ex=Math.ceil(W*.02), ey=Math.ceil(H*.02), gm=el('g',{mask:'url(#plate-cut)'},svg), gx=el('g',{class:'wall-x'},gm), gy=el('g',{class:'wall-y'},gx), gs=el('g',{class:'wall-s'},gy);
+        el('image',{href:gu,x:-ex,y:-ey,width:W+2*ex,height:H+2*ey,preserveAspectRatio:'xMaxYMin slice'},gs); }
       // the hollow rule's rim: the cut words stroked at twice the rim and clipped to their own shapes, so the lip is one rim wide inside the edge
       var clip=el('clipPath',{id:'plate-cuts'},defs);
       lay.rows.forEach(function(r){ r.toks.forEach(function(t){ if(t.k==='r') text(clip,t.t,t.x,r.y,r.font,'#fff',r.ls); }); });
@@ -290,7 +302,7 @@
       var r=stage.getBoundingClientRect(); W=Math.round(r.width); H=Math.round(r.height); lay=layout(W,H,meas);
       window.__plate={capTop:lay.capTop,base:lay.base,L6:lay.L6,os:lay.os,comp:lay.comp,W:W,H:H,rows:lay.rows,who:lay.who,hollow:lay.hollow};
       var ok=false; if(!still){ try{ ok=startGL(); if(ok) sizeGL(); }catch(e){ ok=false; if(window.console) console.warn('plate:',e.message); } }
-      if(!ok) startSVG(); loadGround(); window.__plate.mode=mode; window.__plate.ground=function(){ return {src:gSrc,loaded:!!gImg}; }; window.__plate.at=poses; window.__plate.mask=function(){ return texture().rgb.toDataURL('image/png'); }; window.__plate.rim=rimPNG;
+      if(!ok) startSVG(); loadGround(); window.__plate.mode=mode; window.__plate.ground=function(){ return {src:gSrc,loaded:!!gImg}; }; window.__plate.at=poses; window.__plate.drift=drift; window.__plate.mask=function(){ return texture().rgb.toDataURL('image/png'); }; window.__plate.rim=rimPNG;
       if(mode==='gl'){ wake(); video.addEventListener('play',wake); }
       new ResizeObserver(size).observe(stage);
       document.addEventListener('visibilitychange',function(){ if(!document.hidden) wake(); });

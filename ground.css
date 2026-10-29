@@ -1,0 +1,43 @@
+/* ground.css: the wall under every page. 29 Oct 2026, Nadir. One half of a pair with ground.js.
+   The studio's own mark combed into black plaster (G2, Anwar PASS WITH NOTE 28 Oct) is the one ground of the site. The home's plate wears it
+   as its face (type-a.js reads it as the texture uG); every other page carries it as one fixed layer behind the content, so the dark sections
+   that used to wear loom, jamdani and selvedge cloth now open onto the same wall the home has. The cream paper sections are untouched.
+   THE MOTION: the wall breathes. Three slow swings, nested so they add: side to side in 52 s, up and down in 73 s, in and out in 61 s,
+   each an ease-in-out swing that reverses at its end (alternate), so the three never line up again inside a reading. It reads as light
+   crossing plaster, not as a slide, and there is no loop seam because nothing jumps: every leg ends where the next begins.
+   The numbers live here as custom properties; ground.js reads them, so the plate's shader and this layer move by one set of figures.
+   prefers-reduced-motion: no animation, the wall stands at the middle of its path, the same pixels the drift crosses. */
+:root{
+  --wall:url(media/ground/plaster-desk.jpg);   /* 2352x1320, cover, anchored right top, as on the home: the mark's tail at the right */
+  --wall-black:#12100C;                         /* the plaster's own black, the fill behind the picture while it loads */
+  --wall-x:1.4vw;                               /* the side to side swing, each way */
+  --wall-y:.9vh;                                /* the up and down swing, each way */
+  --wall-s:1.012;                               /* the breath: scale 1 to this and back */
+  --wall-tx:52s;--wall-ty:73s;--wall-ts:61s;    /* one swing each way, in seconds */
+}
+@media (max-width:760px){:root{--wall:url(media/ground/plaster-phone.jpg)}}   /* 660x1428: the tail rises up the phone */
+
+/* the pages that carry the wall as a layer: html.has-wall, set in the markup so the sections open before any script runs */
+html.has-wall{background:var(--wall-black)}
+html.has-wall body{background:transparent}
+.wall{position:fixed;z-index:-1;left:-3vw;top:-3vh;width:106vw;height:114vh;pointer-events:none;overflow:hidden;will-change:transform}   /* 3 percent over on every side for the swing, 8vh more below for the scroll */
+.wall-x,.wall-y,.wall-s{position:absolute;inset:0;will-change:transform;transform-box:fill-box;transform-origin:50% 50%}   /* the same three classes ride the SVG sheet on the home, where they are <g> elements: transform-box makes the SVG centre the picture's own */
+.wall-s{background:var(--wall-black) var(--wall) right top/cover no-repeat}
+.wall-x{animation:wall-x var(--wall-tx) cubic-bezier(.42,0,.58,1) calc(var(--wall-tx) / -2) infinite alternate}   /* a negative delay of half a swing starts each leg at its middle: the wall is at rest on the first frame and moves from there */
+.wall-y{animation:wall-y var(--wall-ty) cubic-bezier(.42,0,.58,1) calc(var(--wall-ty) / -2) infinite alternate}
+.wall-s{animation:wall-s var(--wall-ts) cubic-bezier(.42,0,.58,1) calc(var(--wall-ts) / -2) infinite alternate}
+@keyframes wall-x{from{transform:translate3d(calc(var(--wall-x) * -1),0,0)}to{transform:translate3d(var(--wall-x),0,0)}}
+@keyframes wall-y{from{transform:translate3d(0,calc(var(--wall-y) * -1),0)}to{transform:translate3d(0,var(--wall-y),0)}}
+@keyframes wall-s{from{transform:scale(1)}to{transform:scale(var(--wall-s))}}
+@media (prefers-reduced-motion:reduce){.wall-x,.wall-y,.wall-s{animation:none}}
+html.wall-still .wall-x,html.wall-still .wall-y,html.wall-still .wall-s{animation:none}   /* set by ground.js for full-page renders (window.__still) */
+
+/* the site.css pages: the dark grounds open onto the wall. Only the grounds change: the cream paper, the cloth inside the stencil letters,
+   the strips and the cards keep their own surfaces. The flame that lay on the cloth goes, because the wall is the mark already. */
+html.has-wall .pagehead,html.has-wall #top,html.has-wall main > .sec.dark,html.has-wall #s3.dark,html.has-wall #close.dark,html.has-wall .foot,html.has-wall #audit,html.has-wall #work{background:none}
+html.has-wall .sec.dark::before,html.has-wall .foot::before,html.has-wall .pagehead::before{display:none}
+html.has-wall.stuck .menu,html.has-wall .menu.open nav{background:var(--wall-black)}   /* the pinned bar and the open phone menu sit on the plaster's black, so the drifting wall never shows through type */
+@media (max-width:760px){html.has-wall .two > .dark{background:none}}
+
+/* the glow.css pages (work, what we do): the body was the black; the wall is the body now. The fixed top bar keeps its black once the page has moved. */
+html.has-wall .top.back{background:var(--wall-black)}
