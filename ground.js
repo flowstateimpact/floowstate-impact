@@ -12,10 +12,12 @@
   /* the figures, read once from ground.css so the two renderers cannot disagree */
   function prop(n){ return getComputedStyle(doc).getPropertyValue(n).trim(); }
   function num(s){ return parseFloat(s)||0; }
+  /* the home loads no ground.css, so every figure falls back on its own to the value written there (29 Oct, P9: an empty
+     --wall-s read as 0 and gave a breath of -1, shrinking the plate's wall to under a tenth) */
+  function fig(n,d){ var s=prop(n); return s?num(s):d; }
   var F={ // amplitudes as fractions of the viewport (the plate is the viewport on the home), periods in seconds for one swing each way
-    ax:num(prop('--wall-x'))/100, ay:num(prop('--wall-y'))/100, as:num(prop('--wall-s'))-1,
-    tx:num(prop('--wall-tx'))||52, ty:num(prop('--wall-ty'))||73, ts:num(prop('--wall-ts'))||61 };
-  if(!F.ax&&!F.ay&&!F.as){ F.ax=.014; F.ay=.009; F.as=.012; }   // ground.css missing: the same figures as written there
+    ax:fig('--wall-x',1.4)/100, ay:fig('--wall-y',.9)/100, as:fig('--wall-s',1.012)-1,
+    tx:fig('--wall-tx',52)||52, ty:fig('--wall-ty',73)||73, ts:fig('--wall-ts',61)||61 };
 
   /* cubic-bezier(.42,0,.58,1), the CSS ease-in-out, solved for y at a given x so the plate and the layer share one curve */
   function bez(x){ if(x<=0) return 0; if(x>=1) return 1; var t=x;
