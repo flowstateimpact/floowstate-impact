@@ -20,6 +20,9 @@
 .scene .after .cap{z-index:4}
 .scene .after .play{z-index:5}
 @media (max-width:760px){.scene .after .word{left:34vw;top:calc(var(--sh) * .34)}}
+/* the film's own name stands where WORK stood (Asif, 29 Oct: "there is a WO thing ... find something better to put there"): two lines, right-aligned to the margin so the whole name stays on screen */
+.scene .after .word{left:auto;right:var(--m);text-align:right;white-space:normal}
+@media (max-width:760px){.scene .after .word{left:auto;font-size:16vw}}
 /* reduced motion: one screen, the plate stands still with the lane's first frame in the cuts; the caption is reachable */
 @media (prefers-reduced-motion:reduce){
   .scene{height:var(--sh)}
@@ -89,7 +92,15 @@ html.plate-still .scene .after .word{display:none}
   .comma{justify-content:flex-start;padding-top:calc(var(--sh) * .3 - 8px)}
 }
 /* 60, 30, 10: the one orange action on the home's first screen is the ask in the bar, so its underline is the thread; the four row links on what we do are white (Anwar round 2, ruling 7) */
-.type-a:not(.inner) .top .ask{border-bottom-color:var(--accent);mix-blend-mode:normal;border-bottom-width:2px;padding-bottom:1px}   /* the difference blend turned the orange line white or blue over film; normal keeps it the one orange in the bar */
+/* the top buttons, more prominent (Asif, 29 Oct: "make the top buttons more prominent"): the links at the text size in full white, the ask a solid orange stamp with black letters, square, never a pill */
+.type-a .top .links{font-size:var(--L1);gap:28px}
+.type-a .top .links a{opacity:1}
+.type-a .top .ask{font-size:var(--L1);font-weight:600;letter-spacing:.01em;mix-blend-mode:normal;background:var(--accent);color:var(--black);border:0;padding:10px 18px}
+.type-a .top .ask:hover{background:var(--white)}
+@media (max-width:760px){
+  .type-a .top .links{font-size:14px;gap:16px}
+  .type-a .top .ask{font-size:13px;padding:8px 12px}
+}
 .wwd.type-a .duo .go{border-bottom-color:var(--white)}
 .wwd.type-a .duo .go:hover{border-bottom-color:var(--accent)}
 
@@ -105,3 +116,5 @@ html.plate-still .scene .after .word{display:none}
   .wwd.type-a .pages .pic::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.55),rgba(0,0,0,0) 40%);opacity:var(--lift,0);pointer-events:none;z-index:4}
   .wwd.type-a .pages .pic .lab{z-index:5}
 }
+/* BRAND, halved with the rest, anchored to the right margin so the whole word stays on screen (it ran off the edge at 56vw) */
+.type-a .chhaya .word{left:auto;right:var(--m)}

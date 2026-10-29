@@ -34,15 +34,20 @@
     function wrap(font,words,ls){ var lines=[],cur=[]; words.forEach(function(w){ var t=cur.concat([w]).map(function(x){return x.t}).join(' '); if(cur.length&&width(font,t,ls)>maxW){ lines.push(cur); cur=[w]; } else cur=cur.concat([w]); }); if(cur.length) lines.push(cur); return lines; }
     var WE={t:'WE',k:'r'},MAKE={t:'MAKE',k:'r'},THE={t:'THE',k:'r'},WORK={t:'WORK',k:'r'},WILL={t:'WILL',k:'r'},NOT={t:'NOT',k:'r'},DARE={t:'DARE',k:'g'};
     var st1,st2;
-    if(comp===1){ // forced rows, then the size that fits the widest of them to the margin, capped at 1.25 x the ladder
+    if(comp===1||comp===3){ // forced rows, then the size that fits the widest of them to the margin. Comp 3 (Asif, 29 Oct: "the see through letters need to be a lot bigger") grows to the margin, capped only by the screen's height
       st1=[[WE,MAKE],[THE,WORK]]; st2=phone?[[WILL,NOT],[DARE]]:[[WILL,NOT,DARE]];
       var widest=0; st1.concat(st2).forEach(function(ws){ widest=Math.max(widest,width('700 100px "Bespoke Stencil"',ws.map(function(t){return t.t}).join(' '),track*100)); });
-      L6=Math.min(L6*1.25,Math.floor(100*maxW/widest));
+      var fitW=Math.floor(100*maxW/widest);
+      if(comp===1) L6=Math.min(L6*1.25,fitW);
+      else { var nRows=st1.length+st2.length, navH=(function(){ var t=document.querySelector('.top'); return t?Math.ceil(t.getBoundingClientRect().bottom):60; })();
+        // the stack in L6 units: the rows' pitch .88, the run-in .30 x 1.25, the cap .70, the strategy line about .30 + 24px above, the bottom line about .30 + 64px below
+        var fitH=Math.floor((H-navH-24-88-32)/((nRows-1)*.88+.375+.70+.66));
+        L6=Math.min(fitW,fitH); }
     }
     var os=Math.round(L6*.30), pitch=L6*.88, cap=.70*L6;   /* the one middle size: 30 percent of the poster (40px at 1440). The strategy line prints at it in full white; "other studios" at it in 66 percent white (was 36, then 46; Asif asked brighter twice, 25 Oct), a run-in, never a box */
     var stencil='700 '+L6+'px "Bespoke Stencil"', sans='400 '+os+'px "General Sans"', mid='400 '+os+'px "General Sans"', small='400 '+L0+'px "General Sans"';
     var ls=track*L6;
-    if(comp!==1){ st1=wrap(stencil,[WE,MAKE,THE,WORK],ls); st2=wrap(stencil,[WILL,NOT,DARE],ls); }
+    if(comp===2){ st1=wrap(stencil,[WE,MAKE,THE,WORK],ls); st2=wrap(stencil,[WILL,NOT,DARE],ls); }
     var rows=[];
     st1.forEach(function(ws){ rows.push({font:stencil,size:L6,ls:ls,pitch:pitch,words:ws}); });
     rows.push({font:sans,size:os,ls:0,pitch:os*1.25,words:[{t:'other',k:'b',a:.66},{t:'studios',k:'b',a:.66}],under:comp===3?'last':null});
@@ -54,7 +59,8 @@
     var top;
     if(comp===2){ top=Math.round(H*.5-block*.5+H*.02); }
     else { // the strategy line is part of the block: its lines sit brk above the cap top, so the whole stack centres
-      var strapH=capM+(strap.length-1)*lhM+brk, under=brk+Math.round(L0*.72)+Math.round(L0*1.4);
+      var l3n=(comp===3&&phone)?2:1, under=comp===3?brk+Math.round(capM)+(l3n-1)*lhM+40:brk+Math.round(L0*.72)+Math.round(L0*1.4);
+      var strapH=capM+(strap.length-1)*lhM+brk;
       top=Math.round(H*.5-(block+strapH+under)*.5+strapH+H*.01); }
     var y=top+cap, out=[];
     rows.forEach(function(r,i){ if(i) y+=r.pitch; ctx.font=r.font; if('letterSpacing' in ctx) ctx.letterSpacing=r.ls+'px'; var sp=ctx.measureText(' ').width;
@@ -73,9 +79,9 @@
       else { who.push({t:l3,font:small,x:W-m,align:'right',y:fy,k:'b',a:.5}); }
     } else {
       strap.forEach(function(t,i){ who.push({t:t,font:mid,x:m,y:top-brk-Math.round(os*.3)-(strap.length-1-i)*lhM,k:'b',a:1}); });
-      if(comp===3){ // the corner inside the stair (Anwar, 25 Oct): both dim lines right-aligned at the plate's foot, the lower baseline at H minus 40, so DARE never meets them on scroll
-        var cy=H-40;
-        who.push({t:l3,font:small,x:W-m,align:'right',y:cy,k:'b',a:.5});
+      if(comp===3){ // the bottom-right edge, at the middle size and near full white like the strategy line (Asif, 29 Oct: "on bottom right edge and make it readable better like the middle text"); two lines on the phone
+        var l3s=phone?['We shape the brand.','You keep the AI we build.']:[l3], cy=H-40;
+        l3s.forEach(function(t,i){ who.push({t:t,font:mid,x:W-m,align:'right',y:cy-(l3s.length-1-i)*lhM,k:'b',a:.92}); });
       } else {
         who.push({t:l3,font:small,x:m,align:'left',y:last+brk+Math.round(L0*.72),k:'b',a:.5});
       }

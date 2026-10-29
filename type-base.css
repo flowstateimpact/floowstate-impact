@@ -12,7 +12,7 @@
   --L4:clamp(40px,12px + 5vw,96px);            /* word: service words */
   --L5:clamp(52px,10px + 7.1vw,128px);         /* title: inner page h1, the close */
   --L6:clamp(58px,17px + 8vw,140px);           /* poster: the home tagline only. Esha's ceiling was 148; at 1920 three lines of 148 run to 31 percent of 1080, 140 holds 29 */
-  --L7:clamp(160px,26vw,480px);                /* picture word: WORK, BRAND, one per screen, aria-hidden */
+  --L7:clamp(80px,13vw,240px);                 /* picture word: HERITAGE IN MOTION, BRAND, one per screen, aria-hidden. Halved 29 Oct (Asif: "the other large letters are too big halve that size"); was clamp(160px,26vw,480px) */
   --cap:.70;                                   /* the stencil's cap height per em */
   --brk:24px;                                  /* the bracket: small text sits this far above and below the one giant line */
 }
