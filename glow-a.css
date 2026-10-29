@@ -96,7 +96,7 @@
 /* round six: each reading block stands on its own ground, cut hard at its edges the way a stencil's edge is cut, no texture.
    audit: the corridor's yellow light falling from the right where the coat walks, so the ground warms toward the picture;
    AI system: the lake dusk above the tower, brightest at its top edge and falling;
-   who: the lane's wet ground throwing the stall's light back up, so the ground lightens toward the bottom */
+   who: lightens toward the bottom (first drawn for the tea-stall picture, which was taken off on 28 Oct; the block is words only now) */
 .audit{background:linear-gradient(270deg,#372E22 0%,#2E271E 55%)}
 .ai{background:linear-gradient(180deg,#1B1E36 0,#14162A 40%)}
 .grow{background:linear-gradient(0deg,#222A2E 0,#192124 45%)}
