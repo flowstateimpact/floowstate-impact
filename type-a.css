@@ -118,7 +118,7 @@ html.plate-still .scene .after .word{display:none}
    (data-light), so the right wall of every cut catches and the face falls off toward the right; the plate turns 14 degrees about its vertical axis as the
    screen scrolls past (data-turn), on top of its idle breathing and the pointer, so the light moves across a real thickness. One 14px line in the corner:
    the two cities, already on the site. Never glass, never chrome: the blackened steel as it is in the footer, forty times the area */
-.plate-screen{position:relative;z-index:1;height:var(--sh);min-height:560px;overflow:hidden;background:var(--black)}
+.plate-screen{position:relative;z-index:1;height:var(--sh);min-height:560px;overflow:hidden;background:none}   /* Anwar R14: the plate hangs on the wall, its shadow and sprayed mark land on plaster as under the footer */
 .plate-screen .mark3d{position:absolute;inset:0;width:100%;height:100%;margin:0;aspect-ratio:auto;--pw:calc(min(100cqw / 2.62, 100cqh / 1.75) * 2.128)}   /* the CSS fallback plate (reduced motion, no WebGL) keeps the same width as the live one */
 .plate-screen .mark3d::before{background:linear-gradient(104deg,#2e2d2b 0%,#1a1a19 30%,#121211 58%,#0f0f0e 100%);box-shadow:inset 1px 1px 0 rgba(242,242,240,.16),inset -1px -1px 0 rgba(0,0,0,.7),3.6cqw 2.4cqw 3cqw -1cqw rgba(0,0,0,.4)}   /* the same light from the left on the still plate */
 .plate-screen .line{position:absolute;left:var(--m);bottom:var(--m);z-index:3;margin:0;font-size:14px;line-height:1.3;letter-spacing:.027em;color:var(--white);font-variant-ligatures:none}
@@ -131,7 +131,8 @@ html.plate-still .scene .after .word{display:none}
 .type-a:not(.inner) .strip .s1w,.type-a:not(.inner) .strip .s2,.type-a:not(.inner) .strip .s3{position:relative;display:block;width:100%;height:var(--sh);min-height:560px;margin:0;overflow:hidden;box-shadow:none;aspect-ratio:auto;align-self:auto;z-index:auto}
 .type-a:not(.inner) .strip .s1{position:absolute;inset:0;width:100%;height:100%}
 .type-a:not(.inner) .strip img,.type-a:not(.inner) .strip video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 50%}
-.type-a:not(.inner) .strip .s2 img{object-position:50% 42%}   /* Asif, 30 Oct: the wide meeting-room picture (houses-03); her face sits left of centre, the speaker's shoulder frames the right */
+.type-a:not(.inner) .strip .s2 img{object-position:50% 42%}
+@media (max-width:760px){.type-a:not(.inner) .strip .s2 img{object-position:30% 42%}.type-a:not(.inner) .strip .s3 img{object-position:28% 50%}}   /* Anwar R14: on the phone the face and the ring stay in frame */   /* Asif, 30 Oct: the wide meeting-room picture (houses-03); her face sits left of centre, the speaker's shoulder frames the right */
 .type-a:not(.inner) .strip .s3 img{object-position:50% 40%}
 .type-a:not(.inner) .strip .s1w::after,.type-a:not(.inner) .strip .s2::after,.type-a:not(.inner) .strip .s3::after{content:"";position:absolute;left:0;right:0;bottom:0;height:30%;background:linear-gradient(to top,rgba(10,9,8,.6),rgba(10,9,8,0));pointer-events:none;z-index:2}
 .type-a:not(.inner) .strip .cap{max-width:46ch}
@@ -144,3 +145,4 @@ html.plate-still .scene .after .word{display:none}
   .type-a:not(.inner) .strip .s1w::after,.type-a:not(.inner) .strip .s2::after,.type-a:not(.inner) .strip .s3::after{height:42%;background:linear-gradient(to top,rgba(10,9,8,.78),rgba(10,9,8,.3) 55%,rgba(10,9,8,0))}
   .type-a:not(.inner) .strip .s1 video{object-position:52% 50%}
 }
+@media (min-width:761px){.type-a:not(.inner) .strip .s2::after{background:linear-gradient(to top,rgba(10,9,8,.72),rgba(10,9,8,0))}}   /* Anwar R14: the pale meeting-room picture, caption at 4.5 to 1 or better */

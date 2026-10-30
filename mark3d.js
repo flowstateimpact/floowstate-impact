@@ -19,7 +19,7 @@
   var VS = "attribute vec2 a;void main(){gl_Position=vec4(a,0.,1.);}";
   var FS = [
     "precision highp float;",
-    "uniform sampler2D uS;uniform vec2 uRes,uView;uniform mat3 uR;uniform float uD,uTime;uniform vec3 uL;",
+    "uniform sampler2D uS;uniform vec2 uRes,uView;uniform mat3 uR;uniform float uD,uTime,uBack;uniform vec3 uL;",
     "const float ZC=6.,TH=.09,H=.045,TB=.03,RG=" + RANGE.toFixed(3) + ";",
     "const vec2 HB=vec2(" + HB[0] + "," + HB[1] + "),HR=vec2(" + HR[0] + "," + HR[1] + ");",
     "const vec3 HO=vec3(" + HOLE.join(",") + ");",
@@ -81,7 +81,7 @@
     "   vis=min(vis,smoothstep(-pen,pen,sB((o+lL*tf).xy)));",
     "   vec2 eg=uView-abs(g);float fade=smoothstep(0.,.06,min(eg.x,eg.y));",
     "   float sh=(1.-vis)*.34*fade;",
-    "   vec3 pc=ACC*(.4+.6*vis);",
+    "   vec3 pc=ACC*uBack*(.4+.6*vis);",
     "   float a=pnt+(1.-pnt)*sh;",
     "   back=vec4(pc*pnt,a);",   // premultiplied: the shadow is black
     "  }",
@@ -233,7 +233,7 @@
     gl.texImage2D(gl.TEXTURE_2D, 0, gl.LUMINANCE_ALPHA, TEXW, TEXH, 0, gl.LUMINANCE_ALPHA, gl.UNSIGNED_BYTE, bake());
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
-    var U = {}; ["uS", "uRes", "uView", "uR", "uD", "uTime", "uL"].forEach(function (n) { U[n] = gl.getUniformLocation(p, n); });
+    var U = {}; ["uS", "uRes", "uView", "uR", "uD", "uTime", "uL", "uBack"].forEach(function (n) { U[n] = gl.getUniformLocation(p, n); });
     this.U = U;
     // R14 (30 Oct): a plate may carry its own fit, light and scroll turn in data attributes, so the hero-scale plate on the home
     // (data-fit="2.62 1.75" data-fit-phone="2.25 1.75" data-light="-.78 .34 .53" data-turn="-14") is the same object under a raking light,
@@ -242,6 +242,8 @@
     this.fit = nums(ds.fit, [2.62, 1.96]); this.fitPhone = nums(ds.fitPhone, this.fit); this.turn = parseFloat(ds.turn) || 0; this.clampY = 9 + Math.abs(this.turn) * .5;
     var L = nums(ds.light, [-.3, .42, .86]), l = Math.hypot(L[0], L[1], L[2]);
     gl.uniform3f(U.uL, L[0] / l, L[1] / l, L[2] / l); gl.uniform1i(U.uS, 0);
+    // Anwar R14: data-back dims the orange seen through the cut on one plate only (the hero-scale plate, .4); absent, 1
+    var bk = parseFloat(ds.back); gl.uniform1f(U.uBack, isFinite(bk) ? bk : 1);
     // it arrives a little tipped and lifted, then settles: the heft of something put down
     this.ax = spring(5 * DEG); this.ay = spring(-6 * DEG); this.d = spring(.42);
     this.visible = false; this.drawn = false; this.w = 0; this.h = 0;
