@@ -8,26 +8,17 @@
 <link rel="icon" href="media/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="media/favicon-32.png" sizes="32x32" type="image/png">
 <link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="bar.css">
 <link rel="stylesheet" href="ground.css">
 </head>
 <body class="pg-chhaya">
+<header class="top">
+  <a class="logo" href="index.html" aria-label="FlowStãte Impact, home"><img src="media/fsi-mark.svg" alt="" width="24" height="24"><img src="media/wordmark.png" alt="FlowStãte Impact" width="76" height="14"></a>
+  <nav class="links" aria-label="Pages"><a class="hot" aria-current="page" href="work.html">Work</a><span class="kinds"><a href="websites.html">Websites</a><a href="films.html">Films</a><a href="photography.html">Pictures</a></span><a href="what-we-do.html">What we do</a><a href="the-audit.html">Audit</a><a href="the-ai-system.html">AI system</a><a href="about.html">About</a></nav>
+  <a class="ask" href="https://linktr.ee/flowstateimpact">Ask for the audit</a>
+</header>
+<nav class="knav" aria-label="Websites, films and pictures"><a class="k kin" href="websites.html"><b>01</b><span>Websites</span></a><a class="k" href="films.html"><b>02</b><span>Films</span></a><a class="k" href="photography.html"><b>03</b><span>Pictures</span></a><a class="k" href="heritage-in-motion.html"><span class="nx">Next: Heritage in Motion</span></a></nav>
 <header class="pagehead" id="top">
-  <div class="menu">
-    <a class="logo" href="index.html" aria-label="FlowStãte Impact, home"><img class="mk" src="media/fsi-mark.svg" alt="" width="1197" height="1000"><img class="mark" src="media/wordmark.png" alt="FlowStãte Impact" width="1135" height="442"></a>
-    <nav>
-      <a href="work.html">Work</a>
-      <a href="what-we-do.html">What we do</a>
-      <a href="the-audit.html">Audit</a>
-      <a href="the-ai-system.html">AI system</a>
-      <a href="about.html">About</a>
-
-      <a class="stamp" href="https://linktr.ee/flowstateimpact" target="_blank" rel="noopener">Ask for the audit</a>
-    </nav>
-    <div class="right">
-      <a class="stamp mstamp" href="https://linktr.ee/flowstateimpact" target="_blank" rel="noopener">Ask for the audit</a>
-      <button class="burger" aria-label="Menu" aria-expanded="false"><span></span></button>
-    </div>
-  </div>
   <div class="hero pic">
     <img class="bed" src="work/chhaya-web-hero.jpg" alt="">
     <div class="wrap">
@@ -103,6 +94,7 @@
 <script src="vendor/ScrollTrigger.min.js"></script>
 <script src="ground.js" defer></script>
 <script src="site.js" defer></script>
+<script src="bar.js" defer></script>
 <script>
 (function(){
   var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;

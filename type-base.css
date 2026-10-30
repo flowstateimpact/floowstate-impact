@@ -21,8 +21,9 @@
 /* the hollow rule: a hollow word is a window, never an outline effect; it keeps its own lit rim, the film behind it plays clear, and below the floor it goes solid.
    Set once here; the plate (type-a.js) reads the same numbers, so the shader, the SVG fallback and the DOM words agree. Measured 25 Oct 2026: the lip at 236 reads 14 to 1 against the plate and 17 to 1 against the wall; the film carries no floor */
 :root{
-  --hollow-rim:.010em;                          /* the rim, scaled to the letter: 1.3px at L6 132, 3.7px at L7 374. Was .028em, then .016em; Asif asked twice for a thinner white line, 25 Oct */
-  --hollow-rim-min:.75px;                       /* never thinner than this */
+  --hollow-rim:.001em;                          /* the rim, scaled to the letter. Was .028em, .016em, .010em (1.8px at L6 178); Asif, 31 Oct: "keep 10% of it", so a tenth: .18px at 1440, under one device pixel, so the floor below carries it */
+  --hollow-rim-min:.5px;                        /* never thinner than this: one device pixel on a 2x screen; the plate texture draws the lip at exactly one device pixel whatever the ratio */
+  --hollow-lip:.4;                              /* the lip's white, 0 to 1. A line cannot be drawn thinner than one device pixel, so the rest of the tenth is carried here: one device pixel at four tenths white is 9 to 13 percent of the old rim's ink at 1440 and 1870 on a 2x screen (R15, 31 Oct) */
   --hollow-floor:48px;                          /* below this a hollow word goes solid white */
   --hollow-dim:1;                               /* 1 = clear: the film shows through the cut exactly as it plays, no cap, no floor (Asif, 25 Oct: "bring back the full transparent inside"). Was .70, before that .48 (smoked glass). Below 1 the old capped window returns. The lip reads against the wall below, not the film */
   --hollow-wall:.012em;                         /* Anwar 25 Oct: .028 ate 61 percent of the film window; .012 gives most of it back. the cut's wall: the plate's thickness in shadow, one band of near-black just inside the lip (3.7px at L6 132). Whatever the film does, the lip has a dark neighbour and the film has a dark border */
@@ -30,10 +31,12 @@
   --hollow-fill:rgba(11,11,11,0);               /* the DOM form of the same dim: the glyph is filled with the page black at 1 minus the dim, so the window is smoked inside the letter only, never a pane behind it */
   --hollow-soft:0em;                            /* blur radius inside a cut on the plate; 0 since the cut went clear (was .06em, 7.9px at L6 132) */
   --hollow-sat:1;                               /* colour inside the cut kept whole since it went clear (was .6, pulled 40 percent toward grey) */
+  --plate-etch:.5;                             /* R15 (Asif, 31 Oct: "the pattern of fsi on the black opaque screen"): how hard the mark's combed grooves in the plate's face catch the left light, 0 flat to about 2; the shader in type-a.js shades the wall's own relief, the SVG fallback embosses it */
   --plate-see:.22;                             /* how much of the street shows through the black plate itself, 0 solid to .9 (Asif, 30 Oct: "make the hero section black bit opaque so we see through bit of the video as well"); the cuts stay the clear window */
 }
+@media (max-width:760px){:root{--plate-etch:.3}}   /* the phone wall (660x1428) is drawn 1.6x up, so the same gain turns its grooves to grain; lower there */
 /* a hollow word set in markup: a smoked window with a lit rim. The stroke is centred on the edge, so the rim reads half in and half out of the glyph; paint order is left alone (stroke over fill) so the whole rim shows */
-.hollow,.screen .word.hollow,.scene .after .word.hollow{color:var(--hollow-fill);-webkit-text-stroke:max(var(--hollow-rim-min),var(--hollow-rim)) var(--white)}
+.hollow,.screen .word.hollow,.scene .after .word.hollow{color:var(--hollow-fill);-webkit-text-stroke:max(var(--hollow-rim-min),var(--hollow-rim)) color-mix(in srgb,var(--white) calc(var(--hollow-lip) * 100%),transparent)}
 /* the wall on a DOM hollow word: the same text under it, stroked wider in the wall's ink, so the dark band shows just inside the white lip (and as a shadow just outside it). Markup carries data-text="the word" */
 .hollow[data-text]{position:relative}
 .hollow[data-text]::before{content:attr(data-text);position:absolute;inset:0;z-index:-1;color:transparent;-webkit-text-stroke:calc(max(var(--hollow-rim-min),var(--hollow-rim)) + 2 * var(--hollow-wall)) var(--hollow-wall-ink)}

@@ -41,28 +41,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 @media (max-width:760px){:root{--ground:url(media/ground/plaster-phone.jpg)}}   /* 660x1428 (G2 x 2140..2549, y 650..1536 scaled 1.6x): the tail rises behind the headline to its point above it */
 .hot{color:var(--accent)}
 
-/* the top bar: 12px, nothing else */
-.top{position:fixed;z-index:40;left:0;right:0;top:0;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:18px var(--m);font-size:var(--small);font-weight:500;letter-spacing:.02em;pointer-events:none}
-.top>*{pointer-events:auto}
-.top .links,.top .ask{mix-blend-mode:difference}
-.top .logo{display:flex;align-items:center;gap:10px}
-.top .logo img:first-child{height:24px;width:auto;object-position:-999px 0;background:#E8E2D6;-webkit-mask:url(media/fsi-mark.svg) center/contain no-repeat;mask:url(media/fsi-mark.svg) center/contain no-repeat}   /* the flame in the top bar is bone, painted through its own shape; orange stays for DARE and the audit (lock card decision two, taken in CEO mode 28 Oct 2026). Favicon, footer and card keep the orange file */
-.top .logo img:last-child{width:76px;height:auto}
-.top .links{display:flex;gap:22px}
-.top .links a{opacity:.85;border-bottom:1px solid transparent;padding-bottom:2px;transition:opacity .3s,border-color .3s}
-.top .links a:hover{opacity:1;border-bottom-color:currentColor}
-.top .ask{border-bottom:1px solid currentColor;padding-bottom:2px}
-/* the bar leaves while you read down and comes back when you look up, cut from the page's own black;
-   at the top of the page it is see-through again, one sheet with the first screen */
-.top{transition:transform .5s var(--ease),background-color .25s}
-.top.away{transform:translateY(-100%)}
-.top.back{background:var(--black);box-shadow:0 1px 0 rgba(242,242,240,.22)}   /* a hairline lower edge; a shadow, so the fixed bar's height does not change */
-.top.back .links,.top.back .ask{mix-blend-mode:normal}
-@media (max-width:760px){
-  .top{flex-wrap:wrap;padding:14px var(--m);row-gap:10px}
-  .top .links{order:3;width:100%;gap:16px;font-size:11px;overflow-x:auto;scrollbar-width:none;justify-content:space-between}   /* the five links span the width: a second deck under the logo row */
-  .top .links::-webkit-scrollbar{display:none}
-}
+/* the top bar lives in bar.css since R15 nav (31 Oct 2026): one bar on all eleven pages */
 
 /* who this is: the 12px block on every first screen */
 .who{font-size:var(--small);line-height:1.4;letter-spacing:.027em;font-variant-ligatures:none;max-width:26ch}
@@ -174,8 +153,6 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
 /* ---- inner pages (round five) ---- */
 /* on an inner page the current nav word is the one orange thing in the bar; the links stop inverting over pictures so it stays orange */
-.inner .top .links{mix-blend-mode:normal}
-.inner .top .links .hot{color:var(--accent)}
 
 /* the text heading role for the inner pages: the text face at 3.5vw, weight 500, sentence case, left (Anwar 3) */
 .duo .h,.pair .h,.tl .h{font-family:var(--sans);font-weight:500;font-size:3.5vw;line-height:1.02;letter-spacing:-.02em;text-transform:none;max-width:16ch;margin-bottom:calc(var(--m) * .9)}

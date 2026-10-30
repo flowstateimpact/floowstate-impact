@@ -6,10 +6,7 @@
 (function(){
   var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches, still=!!window.__still;
 
-  // the top bar: see-through on the first screen, gone while you read down, back on the page's own black when you look up
-  var bar=document.querySelector('.top'), ly=0;
-  function barState(){ var y=window.scrollY||0; if(y<120){ bar.classList.remove('away','back'); } else if(y>ly+4){ bar.classList.add('away'); bar.classList.remove('back'); } else if(y<ly-4){ bar.classList.remove('away'); bar.classList.add('back'); } ly=y; }
-  if(bar&&!still){ addEventListener('scroll',barState,{passive:true}); barState(); }
+  // the top bar is bar.js since R15 nav
 
   // the films: one orange control each. A film plays only while it is on screen; a film without autoplay waits to be pressed,
   // except a film marked data-view, which plays once by itself the first time it is seen (the eye on home A)

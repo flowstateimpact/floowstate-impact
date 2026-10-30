@@ -48,11 +48,11 @@
   top.innerHTML = '<svg viewBox="0 0 22 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="butt" stroke-linejoin="miter" aria-hidden="true"><path d="M3 10.5L10.1 3.4M11.9 3.4L19 10.5M11 7.5V13.5M11 15.5V22"/></svg>';
   var th = [].filter.call(document.querySelectorAll('.first .head, .pagehead .h1'), function(h){ return getComputedStyle(h).display !== 'none'; })[0];
   if (th){ if (!th.id) th.id = 'pagetop'; top.setAttribute('aria-labelledby', th.id); }
-  document.body.appendChild(top);
+  if (!document.querySelector('header.top')) document.body.appendChild(top);   /* R16 (Anwar R15 5.5): on the pages wearing the one bar the arrow is a widget on the rail's edge; the bar's return on scroll up is the way home. The draft pages keep it */
   top.addEventListener('click', function(e){
     e.preventDefault();
     window.scrollTo({top: 0, behavior: reduce ? 'auto' : 'smooth'});
-    var lg = document.querySelector('.menu .logo'); if (lg) lg.focus({preventScroll: true});
+    var lg = document.querySelector('.top .logo, .menu .logo'); if (lg) lg.focus({preventScroll: true});
   });
   var first = document.querySelector('header.first'), bar = first && first.querySelector('.menu nav a.stamp');
   /* round 12, home: the top button is one fixed button from the first frame. A line while the first screen is on view, orange once it has gone.

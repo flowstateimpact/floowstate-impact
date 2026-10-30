@@ -1,0 +1,90 @@
+/* bar.css: the one top bar and the in-page navigator, on all eleven linked pages (R15 nav, 31 Oct 2026; R16 fixes the same day, Anwar's list).
+   The bar is the hairline from home A, moved out of glow.css so the eight site.css pages wear the same one: leaves while you read down and
+   returns on the page's own black when you look up. The three kinds of work (Websites, Films, Pictures) stand after Work in the quieter
+   weight behind a 12px hairline, and one 1px line walks under the words to the one under the pointer and home to the page's own word
+   (mechanic: Motion Primitives animated-background, the shared layoutId that follows the hovered item and returns on leave; re-made as one
+   absolutely placed 1px line moved by left and width). The tokens repeat glow.css's values so the site.css pages get them too.
+   R16: one size on every page (the home's L1, Asif 29 Oct "more prominent"); the ask is the underlined word everywhere; the bar (60) and the
+   rail (58) stand above the page header (site.css .pagehead, 53), so a case banner never paints over them; the rail keeps its order, has no
+   scroll meter, rests at .7, waits while a banner's picture is in the top half, and on the phone is a grounded strip riding the bar's state. */
+:root{--m:clamp(20px,2.8vw,40px);--small:12px;--L1:clamp(16px,15px + .1vw,17px);--accent:#E27F22;--black:#0B0B0B;--white:#F2F2F0;--hair:rgba(242,242,240,.18);--ease:cubic-bezier(.22,.8,.2,1)}
+
+/* the top bar: the words at the text size, nothing else */
+.top{position:fixed;z-index:60;left:0;right:0;top:0;display:flex;align-items:center;justify-content:space-between;gap:24px;padding:18px var(--m);font-size:var(--small);font-weight:500;letter-spacing:.02em;color:var(--white);pointer-events:none}
+.top>*{pointer-events:auto}
+.top a{text-decoration:none;color:inherit}
+.top .links,.top .ask{mix-blend-mode:difference}
+.top .logo{display:flex;align-items:center;gap:10px;margin:0}
+.top .logo img:first-child{height:24px;width:auto;object-position:-999px 0;background:#E8E2D6;-webkit-mask:url(media/fsi-mark.svg) center/contain no-repeat;mask:url(media/fsi-mark.svg) center/contain no-repeat}   /* the flame in the bar is bone; orange stays for DARE and the audit */
+.top .logo img:last-child{width:76px;height:auto}
+.top .links{position:relative;display:flex;align-items:center;gap:28px;font-size:var(--L1)}
+.top .links a{opacity:1;padding-bottom:2px;transition:opacity .3s}
+/* the ask: the word at L1, weight 600, white, a hairline under it, the one look on all eleven pages (Anwar R15 6). The home's orange block
+   is one switch away in type-a.css (body class ask-block on index.html) */
+.top .ask{font-size:var(--L1);font-weight:600;letter-spacing:.01em;border-bottom:1px solid currentColor;padding-bottom:2px}
+body:has(.pagehead .hero.pic) .top .ask{mix-blend-mode:normal}   /* on a photograph difference blend is a coin toss (bone on the Chhaya magenta goes green); the banner's top scrim carries the word instead */
+/* the three kinds: after Work, the quieter weight, behind a hairline the height of the type */
+.top .kinds{display:flex;align-items:center;gap:14px;margin-left:-8px;padding-left:12px;border-left:1px solid currentColor;line-height:1}
+.top .kinds a{font-weight:400;opacity:.6}
+.top .kinds a:hover{opacity:1}
+/* the line that walks: it rests under the page's own word, goes to the word under the pointer, and comes home */
+.top .ind{position:absolute;left:0;bottom:-4px;height:1px;width:0;background:currentColor;opacity:0;pointer-events:none;transition:left .45s var(--ease),width .45s var(--ease),opacity .3s}
+/* on an inner page the current word is the one orange thing in the bar, so the words stop inverting over pictures */
+.top .links:has(.hot){mix-blend-mode:normal}
+.top .links .hot{color:var(--accent);opacity:1}
+.top .links:has(.hot) .ind{background:var(--white)}
+/* the bar leaves while you read down and comes back when you look up, cut from the page's own black;
+   at the top of the page it is see-through again, one sheet with the first screen */
+.top{transition:transform .5s var(--ease),background-color .25s}
+.top.away{transform:translateY(-100%)}
+.top.back{background:var(--black);box-shadow:0 1px 0 rgba(242,242,240,.22)}
+.top.back .links,.top.back .ask{mix-blend-mode:normal}
+@media (max-width:760px){
+  .top{flex-wrap:wrap;padding:14px var(--m);row-gap:10px}
+  .top .links{order:3;width:100%;flex-wrap:wrap;gap:16px;row-gap:8px;font-size:14px;justify-content:space-between}   /* the five words span the width, a second deck under the logo row */
+  .top .kinds{display:none}   /* two decks, not three (Anwar R15 4.2): the three kinds live in the strip at the foot of the work pages, reached through Work */
+  .top .ask{font-size:14px}
+  .top .ind{display:none}
+}
+
+/* the page header under the bar: the bar is 60px on desktop, so the header's top padding sized for the old 96px menu comes down with it
+   (Anwar R15 7, item 8); the phone keeps site.css's 80px, which is the two-deck bar's height. A soft black scrim is baked into the top of a
+   picture banner so the bar's words read in normal blend on it (Anwar R15 4) */
+@media (min-width:761px){
+  .pagehead{padding-top:60px}
+  .pagehead .hero .bed{top:-60px;height:calc(100% + 60px)}
+  .pagehead .hero.pic::after{top:-60px}
+  [id]{scroll-margin-top:60px}
+}
+.pagehead .hero.pic::before{content:"";position:absolute;left:0;right:0;top:-96px;height:206px;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.5) 96px,rgba(0,0,0,0) 206px)}
+@media (max-width:760px){ .pagehead .hero.pic::before{top:-80px;height:190px;background:linear-gradient(180deg,rgba(0,0,0,.5) 80px,rgba(0,0,0,0) 190px)} }
+
+/* ---- the in-page navigator on the six work pages, THE RAIL: Websites, Films, Pictures, and on a case page its kind and the next piece.
+   A hairline the height of the three stations at the left edge, the words reading up in their fixed order, the current station's number
+   the one orange thing. It stands on the wall at all times: while a banner's picture or film is still in the top half of the screen it waits
+   (bar.js adds .wait), and arrives over the plaster in .3s. */
+.knav{position:fixed;z-index:58;left:calc(var(--m) * .45);top:50%;transform:translateY(-50%);display:flex;flex-direction:column;align-items:flex-start;gap:26px;padding:14px 0 14px 12px;font-size:var(--small);font-weight:500;letter-spacing:.02em;color:var(--white);pointer-events:none;transition:opacity .3s,transform .5s var(--ease)}
+.knav .k{pointer-events:auto;position:relative;display:flex;align-items:center;gap:8px;text-decoration:none;color:inherit;opacity:.7;transition:opacity .3s;writing-mode:vertical-rl;transform:rotate(180deg)}
+.knav .k:hover,.knav .k:focus-visible{opacity:1}
+.knav .k b{font-weight:400;font-variant-numeric:tabular-nums}
+.knav .k .nx{font-weight:400}
+.knav .k[aria-current]{opacity:1}
+.knav .k[aria-current] b{color:var(--accent)}
+.knav .k.kin{opacity:.85}
+.knav::before{content:"";position:absolute;left:0;top:0;bottom:0;width:1px;background:var(--hair)}
+.knav .k::before{content:"";position:absolute;left:-12px;top:50%;width:5px;height:1px;background:currentColor;opacity:.5;transform:translateY(-50%)}
+.knav.wait{opacity:0}
+.knav.wait .k{pointer-events:none}
+@media (max-width:760px){
+  /* the phone strip: grounded on the page's black, the hairline on its top edge, the stations left-aligned at the wrap margin; it leaves
+     with the bar while you read down and returns on the first scroll up, never over a picture (Anwar R15 5.6) */
+  .knav{left:0;right:0;top:auto;bottom:0;transform:none;flex-direction:row;align-items:center;justify-content:flex-start;gap:22px;padding:14px var(--m) max(14px,env(safe-area-inset-bottom));background:var(--black)}
+  .knav .k{writing-mode:horizontal-tb;transform:none}
+  .knav .k::before{display:none}
+  .knav::before{top:0;bottom:auto;left:0;right:0;height:1px;width:auto}
+  .knav.away{transform:translateY(100%)}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .top,.top .ind,.knav,.knav .k{transition:none}
+}

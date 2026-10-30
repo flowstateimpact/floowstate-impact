@@ -84,14 +84,13 @@ html.plate-still .scene .after .word{display:none}
   .comma{justify-content:flex-start;padding-top:calc(var(--sh) * .3 - 8px)}
 }
 /* 60, 30, 10: the one orange action on the home's first screen is the ask in the bar, so its underline is the thread; the four row links on what we do are white (Anwar round 2, ruling 7) */
-/* the top buttons, more prominent (Asif, 29 Oct: "make the top buttons more prominent"): the links at the text size in full white, the ask a solid orange stamp with black letters, square, never a pill */
-.type-a .top .links{font-size:var(--L1);gap:28px}
-.type-a .top .links a{opacity:1}
-.type-a .top .ask{font-size:var(--L1);font-weight:600;letter-spacing:.01em;mix-blend-mode:normal;background:var(--accent);color:var(--black);border:0;padding:10px 18px}
-.type-a .top .ask:hover{background:var(--white)}
+/* R16 (Anwar R15 4.1 and 6): the bar's size and the ask's look live in bar.css for all eleven pages (the links at L1 in full white, the ask the
+   underlined word at L1, weight 600). The home's solid orange stamp (Asif, 29 Oct: "make the top buttons more prominent") is one switch away,
+   Asif's call: add the class ask-block to the body on index.html line 21 and the three rules below return, with Anwar R12 (a)'s phone outline */
+.type-a.ask-block .top .ask{mix-blend-mode:normal;background:var(--accent);color:var(--black);border:0;padding:10px 18px}
+.type-a.ask-block .top .ask:hover{background:var(--white)}
 @media (max-width:760px){
-  .type-a .top .links{font-size:14px;gap:16px}
-  .type-a .top .ask{font-size:13px;padding:8px 12px;background:transparent;color:var(--white);box-shadow:inset 0 0 0 1.5px var(--accent)}   /* Anwar R12 (a): on the phone a solid stamp competed with DARE on the same edge; an orange outline keeps DARE the one orange mass */
+  .type-a.ask-block .top .ask{font-size:13px;padding:8px 12px;background:transparent;color:var(--white);box-shadow:inset 0 0 0 1.5px var(--accent)}   /* Anwar R12 (a): on the phone a solid stamp competed with DARE on the same edge; an orange outline keeps DARE the one orange mass */
 }
 .wwd.type-a .duo .go{border-bottom-color:var(--white)}
 .wwd.type-a .duo .go:hover{border-bottom-color:var(--accent)}

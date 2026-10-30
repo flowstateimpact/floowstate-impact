@@ -17,7 +17,8 @@
   function hollow(L6){ var dim=cssNum('--hollow-dim')||.48, C=(dim-.24)/.68; // the cut's output is .24 + .68 x shoulder(film); the shoulder's ceiling is set so the output tops out at dim
     var rim=Math.max(cssPx('var(--hollow-rim-min)'),cssPx('var(--hollow-rim)',null,L6));
     var clear=dim>=1; // dim 1 = a clear window: the film as it plays, no shoulder, no floor
-    return {rim:rim, wall:Math.max(1,cssPx('var(--hollow-wall)',null,L6)), soft:cssPx('var(--hollow-soft)',null,L6)||0, dim:dim, sat:clear?1:(cssNum('--hollow-sat')||.6), a:clear?1:C*.926/(.926-C), clear:clear?1:0}; }
+    var lip=getComputedStyle(document.documentElement).getPropertyValue('--hollow-lip').trim(); lip=lip===''?1:Math.max(0,Math.min(1,parseFloat(lip)));   // R15: the lip's white; the rim is one device pixel wide and this carries the rest of Asif's tenth
+    return {rim:rim, lip:lip, wall:Math.max(1,cssPx('var(--hollow-wall)',null,L6)), soft:cssPx('var(--hollow-soft)',null,L6)||0, dim:dim, sat:clear?1:(cssNum('--hollow-sat')||.6), a:clear?1:C*.926/(.926-C), clear:clear?1:0}; }
   function ease(t){ t=Math.max(0,Math.min(1,t)); return t<.5?4*t*t*t:1-Math.pow(-2*t+2,3)/2; }
   function seg(p,a,b){ return Math.max(0,Math.min(1,(p-a)/(b-a))); }
 
@@ -62,7 +63,8 @@
       var l3n=(comp===3&&phone)?2:1, under=comp===3?brk+Math.round(capM)+(l3n-1)*lhM+40:brk+Math.round(L0*.72)+Math.round(L0*1.4);
       var strapH=capM+(strap.length-1)*lhM+brk;
       top=Math.round(H*.5-(block+strapH+under)*.5+strapH+H*.01);
-      if(comp===3&&phone){ var lineTop=H-40-lhM-Math.round(capM); top=Math.round(navH+(lineTop-navH-block-strapH)/2+strapH); } } // Anwar R12 (c): on the phone the block centres between the nav and the bottom lines
+      if(comp===3&&phone){ var lineTop=H-40-lhM-Math.round(capM); top=Math.round(navH+(lineTop-navH-block-strapH)*.42+strapH); } // Anwar R12 (c): on the phone the block centres between the nav and the bottom lines; R15 (Anwar 2): weighted up to .42 under the two-deck bar, so the strategy line reads as the start of the page and the larger air sits under DARE
+      else if(comp===3){ top=Math.round(navH+(H-navH-block-strapH-under)/2+strapH); } } // R15 (Asif, 31 Oct: "the top text overlaps with logo"): the stack centred on the whole screen put the strategy line 29px under the logo at 1870x1000; it now centres in the band under the bar, so the line's cap top sits navH + 28px + 2.5 percent of L6 down, 33px clear of the bar and 58 of the logo at 1870
     var y=top+cap, out=[];
     rows.forEach(function(r,i){ if(i) y+=r.pitch; ctx.font=r.font; if('letterSpacing' in ctx) ctx.letterSpacing=r.ls+'px'; var sp=ctx.measureText(' ').width;
       var ws=r.words.map(function(w){ return {t:w.t,k:w.k,a:w.a||1,w:ctx.measureText(w.t).width}; }), rw=ws.reduce(function(a,w){return a+w.w},0)+sp*(ws.length-1);
@@ -111,7 +113,7 @@
       // the wall first, at half alpha and twice (rim + wall) wide: the plate's thickness seen inside the cut, in shadow; then the lip at full alpha over it. The shader reads the two levels
       r.lineWidth=(lay.hollow.rim+lay.hollow.wall)*2; r.strokeStyle='rgba(255,255,255,.5)';
       lay.rows.forEach(function(row){ r.font=row.font; if('letterSpacing' in r) r.letterSpacing=row.ls+'px'; row.toks.forEach(function(t){ if(t.k==='r') r.strokeText(t.t,t.x,row.y); }); });
-      r.lineWidth=lay.hollow.rim*2; r.strokeStyle='#fff';
+      r.lineWidth=2*Math.max(1,lay.hollow.rim*dpr)/dpr; r.strokeStyle='#fff';   // R15: the lip is one device pixel wide whatever the ratio (the rim's em value is under that); its brightness is uLip in the shader
       lay.rows.forEach(function(row){ r.font=row.font; if('letterSpacing' in r) r.letterSpacing=row.ls+'px'; row.toks.forEach(function(t){ if(t.k==='r') r.strokeText(t.t,t.x,row.y); }); });
       // destination-in wipes everything outside each shape it draws, so the cut words go onto one canvas first and trim the stroke in a single pass
       var fc=document.createElement('canvas'); fc.width=w; fc.height=h;
@@ -149,7 +151,7 @@
 
     var VS='attribute vec2 a;varying vec2 v;void main(){v=a*.5+.5;gl_Position=vec4(a,0.,1.);}';
     var FS=[
-      'precision highp float;varying vec2 v;uniform sampler2D uT,uV,uG;uniform vec2 uRes,uVid,uAnc;uniform float uP,uHas,uHasG,uSee;uniform vec4 uA,uB,uH,uGs;uniform vec3 uL,uGd;',
+      'precision highp float;varying vec2 v;uniform sampler2D uT,uV,uG;uniform vec2 uRes,uVid,uAnc;uniform float uP,uHas,uHasG,uSee,uLip,uEtch;uniform vec4 uA,uB,uH,uGs;uniform vec3 uL,uGd;',
       'float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}',
       // the plate hinged at its top edge: returns plate uv (y down), the ray depth, and the facing
       'vec4 plate(vec3 d,float ang,float tz,float ty){float W=uRes.x,H=uRes.y;vec3 p0=vec3(0.,H*.5+ty,uP+tz);float s=sin(ang),c=cos(ang);vec3 n=vec3(0.,s,c);vec3 vd=vec3(0.,c,-s);float den=dot(n,d);if(abs(den)<1e-5)return vec4(0.,0.,-1.,0.);float t=dot(n,p0)/den;if(t<=0.)return vec4(0.,0.,-1.,0.);vec3 q=t*d-p0;float r=dot(q,vd);return vec4((q.x+W*.5)/W,-r/H,t,den);}',
@@ -170,6 +172,9 @@
       // R13: the wall breathes. uGd is the swing (x, y in plate widths and heights) and the breath (z, scale about the centre), from ground.js; uGs maps the plate onto the padded texture
       ' vec2 gq=((m.xy-.5)/uGd.z+.5-uGd.xy)*uGs.xy+uGs.zw;vec3 steel=uHasG>.5?texture2D(uG,gq).rgb:vec3(.0706,.0627,.0471);',
       // the plate is not quite opaque (Asif, 30 Oct: "make the hero section black bit opaque so we see through bit of the video as well"): --plate-see of the street, at six tenths of its light, shows through the face; the cuts stay the brighter window
+      // R15: the mark's own grooves, combed into the wall, are read as a relief and lit from the left like the steel flame below (uL): the slope that faces the light catches a warm white, the slope away from it falls into shadow, so the pattern is a material of the plate and not a picture behind the words. The span is 1.5 device pixels either side; uEtch is --plate-etch
+      ' vec2 ge=1.5*uGs.xy/uRes;float gx=lum(texture2D(uG,gq+vec2(ge.x,0.)).rgb)-lum(texture2D(uG,gq-vec2(ge.x,0.)).rgb);float gy=lum(texture2D(uG,gq+vec2(0.,ge.y)).rgb)-lum(texture2D(uG,gq-vec2(0.,ge.y)).rgb);',
+      ' float rl=(-gx*uL.x+gy*uL.y)*uEtch*8.;steel=max(steel+mix(vec3(1.),vec3(.95,.92,.86),step(0.,rl))*rl,0.);',
       ' steel=mix(steel,raw*.6,uSee);',
       // the sheet's edge catches the light only once it starts to tilt; at rest the wall runs to the frame with no drawn border
       ' float e=min(min(m.x,1.-m.x)*uRes.x,min(m.y,1.-m.y)*uRes.y);steel+=vec3(.16,.16,.15)*(1.-smoothstep(0.,2.5,e))*smoothstep(0.,.05,uA.x);',
@@ -185,7 +190,7 @@
       // the cut's wall: the plate's thickness in shadow, one --hollow-wall wide just inside the lip, so the lip always has a dark neighbour whatever the film does
       ' pc=mix(pc,vec3(.006,.006,.0055)*(.7+.3*dif),wall);',
       // the lit lip of the cut: one rim wide, inside the edge, the plate's own white catching the same light as its face
-      ' pc=mix(pc,vec3(.97,.97,.96)*(.85+.15*dif),rim);',
+      ' pc=mix(pc,vec3(.97,.97,.96)*(.85+.15*dif),rim*uLip);',
       ' col=mix(col,pc,uA.w);}',
       // DARE: orange sprayed on its own plane, the last to lift
       'vec4 b=plate(d,uB.x,uB.y,uB.z);',
@@ -206,7 +211,7 @@
       gl.bindAttribLocation(prog,0,'a'); gl.linkProgram(prog); if(!gl.getProgramParameter(prog,gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
       gl.useProgram(prog);
       var b=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,b); gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW); gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);
-      ['uT','uV','uG','uRes','uVid','uAnc','uP','uHas','uHasG','uA','uB','uL','uH','uGs','uGd','uSee'].forEach(function(n){ U[n]=gl.getUniformLocation(prog,n); });
+      ['uT','uV','uG','uRes','uVid','uAnc','uP','uHas','uHasG','uA','uB','uL','uH','uGs','uGd','uSee','uLip','uEtch'].forEach(function(n){ U[n]=gl.getUniformLocation(prog,n); });
       texT=gl.createTexture(); texV=gl.createTexture(); texG=gl.createTexture();
       [texT,texV,texG].forEach(function(t){ gl.bindTexture(gl.TEXTURE_2D,t); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE); });
       gl.uniform1i(U.uT,0); gl.uniform1i(U.uV,1); gl.uniform1i(U.uG,2); gl.uniform1f(U.uHasG,0); gl.uniform4f(U.uGs,1,1,0,0); gl.uniform3f(U.uGd,0,0,1);
@@ -231,7 +236,7 @@
       var cv=host.querySelector('canvas'); dpr=Math.min(window.devicePixelRatio||1,2); if(W*dpr>3600) dpr=3600/W;
       cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr); gl.viewport(0,0,cv.width,cv.height);
       gl.uniform2f(U.uRes,cv.width,cv.height); gl.uniform1f(U.uP,1200*dpr);
-      var t=texture(), hk=lay.hollow; gl.uniform4f(U.uH,hk.soft*dpr,hk.a,hk.sat,hk.clear); gl.uniform1f(U.uSee,Math.min(.9,cssNum('--plate-see')));
+      var t=texture(), hk=lay.hollow; gl.uniform4f(U.uH,hk.soft*dpr,hk.a,hk.sat,hk.clear); gl.uniform1f(U.uSee,Math.min(.9,cssNum('--plate-see'))); gl.uniform1f(U.uLip,hk.lip); gl.uniform1f(U.uEtch,Math.max(0,cssNum('--plate-etch')));
       // uploaded as raw bytes, never as a canvas: a canvas upload would premultiply the rim's alpha into the cut's red and lose the cut wherever the rim is 0
       gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D,texT); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,false); gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,false); gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,t.w,t.h,0,gl.RGBA,gl.UNSIGNED_BYTE,new Uint8Array(t.data.buffer));
       uploadGround();
@@ -269,13 +274,15 @@
       el('rect',{x:0,y:0,width:W,height:H,fill:'#12100C',mask:'url(#plate-cut)'},svg);
       // R13: the picture rides the same three swings as the wall layer on every other page (ground.css .wall-x .wall-y .wall-s), drawn 2 percent over on every side so the swing never shows an edge; the mask stays on the still group outside them
       var gu=groundURL(); if(gu){ var ex=Math.ceil(W*.02), ey=Math.ceil(H*.02), gm=el('g',{mask:'url(#plate-cut)'},svg), gx=el('g',{class:'wall-x'},gm), gy=el('g',{class:'wall-y'},gx), gs=el('g',{class:'wall-s'},gy);
-        el('image',{href:gu,x:-ex,y:-ey,width:W+2*ex,height:H+2*ey,preserveAspectRatio:'xMaxYMin slice'},gs); }
+        // R15: the same etch as the shader, the nearest an SVG filter gets: a top-left emboss of the wall's grooves added back onto it at --plate-etch strength
+        var fl=el('filter',{id:'plate-etch','color-interpolation-filters':'sRGB'},defs); el('feConvolveMatrix',{order:3,kernelMatrix:'1 0 0 0 0 0 0 0 -1',divisor:1,bias:0,preserveAlpha:'true',result:'e'},fl); el('feComposite',{'in':'SourceGraphic',in2:'e',operator:'arithmetic',k1:0,k2:1,k3:(3*Math.max(0,cssNum('--plate-etch'))).toFixed(2),k4:0},fl);
+        el('image',{href:gu,x:-ex,y:-ey,width:W+2*ex,height:H+2*ey,preserveAspectRatio:'xMaxYMin slice',filter:'url(#plate-etch)'},gs); }
       // the hollow rule's rim: the cut words stroked at twice the rim and clipped to their own shapes, so the lip is one rim wide inside the edge
       var clip=el('clipPath',{id:'plate-cuts'},defs);
       lay.rows.forEach(function(r){ r.toks.forEach(function(t){ if(t.k==='r') text(clip,t.t,t.x,r.y,r.font,'#fff',r.ls); }); });
       var wall=el('g',{'clip-path':'url(#plate-cuts)',fill:'none',stroke:'#141413','stroke-width':(lay.hollow.rim+lay.hollow.wall)*2,'stroke-linejoin':'miter'},svg);
       lay.rows.forEach(function(r){ r.toks.forEach(function(t){ if(t.k==='r') text(wall,t.t,t.x,r.y,r.font,'none',r.ls); }); });
-      var lip=el('g',{'clip-path':'url(#plate-cuts)',fill:'none',stroke:'#F2F2F0','stroke-width':lay.hollow.rim*2,'stroke-linejoin':'miter'},svg);
+      var lip=el('g',{'clip-path':'url(#plate-cuts)',fill:'none',stroke:'#F2F2F0','stroke-opacity':lay.hollow.lip,'stroke-width':2*Math.max(1/(window.devicePixelRatio||1),lay.hollow.rim),'stroke-linejoin':'miter'},svg);   // R15: one device pixel at --hollow-lip white, as the shader draws it
       lay.rows.forEach(function(r){ r.toks.forEach(function(t){ if(t.k==='r') text(lip,t.t,t.x,r.y,r.font,'none',r.ls); }); });
       el('rect',{class:'edge',x:.5,y:.5,width:W-1,height:H-1,fill:'none',stroke:'rgba(242,242,240,.16)',opacity:0},svg);   // the edge shows only while the sheet tilts, as in the shader
       lay.rows.forEach(function(r){ r.toks.forEach(function(t){ if(t.k==='b') text(svg,t.t,t.x,r.y,r.font,'rgba(242,242,240,'+t.a+')',0); }); });
