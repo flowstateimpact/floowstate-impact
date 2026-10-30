@@ -41,3 +41,17 @@ html.has-wall.stuck .menu,html.has-wall .menu.open nav{background:var(--wall-bla
 
 /* the glow.css pages (work, what we do): the body was the black; the wall is the body now. The fixed top bar keeps its black once the page has moved. */
 html.has-wall .top.back{background:var(--wall-black)}
+
+/* the home (Anwar R13, question a): the plate wears the wall, the film and the ledger stay on flat black, and only the footer, the one piece
+   every page shares, opens onto the wall, so the home and the ten pages end on the same plaster. */
+html.has-wall body.type-a > main{background:var(--black)}
+
+/* the audit (Anwar R13, question b): the pattern card with its orange pencil line comes back, as an object laid on the wall, not a ground.
+   lighten drops the picture's own near-black into the plaster and keeps the card and the line. */
+html.has-wall.pg-audit #s3,html.has-wall .pg-audit #s3{position:relative;background:none}
+html.has-wall .pg-audit #s3 > .card{position:absolute;left:0;top:var(--at);width:var(--aw);height:calc(var(--aw) * .5582);background:url(media/textures/final/audit.jpg) left top/100% auto no-repeat;mix-blend-mode:lighten;pointer-events:none;z-index:0}
+html.has-wall .pg-audit #s3 > :not(.card){position:relative;z-index:1}
+@media (max-width:760px){html.has-wall .pg-audit #s3 > .card{top:auto;bottom:0;width:100vw;height:55.82vw;background-size:100vw auto}}
+
+/* the phone menu stamp (Anwar R13, the round 12 fault on ten more pages): an orange outline, so the orange headline stays the one orange mass */
+@media (max-width:760px){html.has-wall .menu .mstamp{background:transparent;color:var(--c);-webkit-text-fill-color:var(--c);box-shadow:inset 0 0 0 1.5px var(--orange)}html.has-wall .menu .mstamp::before{display:none}}

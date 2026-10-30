@@ -1,0 +1,7 @@
+{"out":"/Users/asiffarid/Documents/apps/flowstateimpact-site-glowup/glowup-renders/r13b","logName":"render-log",
+"shots":[
+{"url":"http://127.0.0.1:8791/index.html","file":"home-1440-top.png","w":1440,"h":900,"scroll":0,"wait":1500,"eval":"JSON.stringify({docW:document.documentElement.scrollWidth,wall:!!document.querySelector('.wall'),mode:window.__plate&&window.__plate.mode})"},
+{"url":"http://127.0.0.1:8791/index.html","file":"home-1440-foot.png","w":1440,"h":900,"scroll":9180,"wait":1500,"eval":"JSON.stringify({docW:document.documentElement.scrollWidth,mainBg:getComputedStyle(document.querySelector('main')).backgroundColor,footBg:getComputedStyle(document.querySelector('.foot')).backgroundColor})"},
+{"url":"http://127.0.0.1:8791/index.html","file":"home-390-foot.png","w":390,"h":844,"scroll":6618,"wait":1500,"eval":"JSON.stringify({docW:document.documentElement.scrollWidth})"},
+{"url":"http://127.0.0.1:8791/index.html","file":"home-1440-mid.png","w":1440,"h":900,"scroll":2600,"wait":1500,"eval":"JSON.stringify({docW:document.documentElement.scrollWidth})"}
+]}

@@ -30,8 +30,9 @@
   function now(){ var tl=document.timeline&&document.timeline.currentTime; return (tl!=null?tl:performance.now())/1000; }   // the CSS animations run on the document timeline; the plate reads the same clock
   window.__wall={at:at,now:now,figures:F,still:reduce||still};
 
-  /* the layer, on every page that carries it. The home's plate wears the wall itself (data-plate), so it gets no layer. */
-  if(document.querySelector('[data-plate]')||!doc.classList.contains('has-wall')) return;
+  /* the layer, on every page that carries it. The home's plate wears the wall itself (data-plate); since Anwar R13 the home carries the layer too,
+     painted over by its main, so only the home's footer stands on it, as on every other page. */
+  if(!doc.classList.contains('has-wall')) return;
   var wall=document.createElement('div'); wall.className='wall'; wall.setAttribute('aria-hidden','true');
   wall.innerHTML='<div class="wall-x"><div class="wall-y"><div class="wall-s"></div></div></div>';
   document.body.insertBefore(wall,document.body.firstChild);

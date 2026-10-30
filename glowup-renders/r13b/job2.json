@@ -1,0 +1,7 @@
+{"out":"/Users/asiffarid/Documents/apps/flowstateimpact-site-glowup/glowup-renders/r13b","logName":"render-log-2",
+"shots":[
+{"url":"http://127.0.0.1:8791/the-audit.html","file":"audit-1440-s3.png","w":1440,"h":900,"scroll":1200,"wait":6000,"eval":"JSON.stringify({docW:document.documentElement.scrollWidth,card:(()=>{const r=document.querySelector('#s3 .card').getBoundingClientRect();return [r.x,r.y,r.width,r.height]})()})"},
+{"url":"http://127.0.0.1:8791/the-audit.html","file":"audit-390-s3.png","w":390,"h":844,"scroll":1250,"wait":6000,"eval":"JSON.stringify({docW:document.documentElement.scrollWidth,card:(()=>{const r=document.querySelector('#s3 .card').getBoundingClientRect();return [r.x,r.y,r.width,r.height]})()})"},
+{"url":"http://127.0.0.1:8791/about.html","file":"about-390.png","w":390,"h":844,"scroll":0,"wait":6000,"eval":"JSON.stringify({docW:document.documentElement.scrollWidth})"},
+{"url":"http://127.0.0.1:8791/websites.html","file":"websites-390.png","w":390,"h":844,"scroll":0,"wait":6000,"eval":"JSON.stringify({docW:document.documentElement.scrollWidth})"}
+]}
