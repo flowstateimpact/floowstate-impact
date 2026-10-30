@@ -44,7 +44,7 @@ html.plate-still .scene .after .word{display:none}
   .type-a:not(.inner) .strip{flex-direction:column;align-items:flex-start;gap:0;padding:calc(var(--m) * 2) var(--m) calc(var(--m) * 2.4)}
   .type-a:not(.inner) .strip .s1w{width:84vw;height:auto;aspect-ratio:1920/804;z-index:3;box-shadow:0 40px 90px rgba(0,0,0,.6)}
   .type-a:not(.inner) .strip .s2{width:86vw;height:54vw;align-self:flex-end;margin-top:-6vw;z-index:2;box-shadow:0 40px 90px rgba(0,0,0,.6)}
-  .type-a:not(.inner) .strip .s2 img{object-position:50% 24%}
+  .type-a:not(.inner) .strip .s2 img{object-position:50% 45%}   /* Asif, 30 Oct: the tall portrait out, the wide meeting-room picture (houses-03) in; her face sits left of centre, the speaker's shoulder frames the right */
   .type-a:not(.inner) .strip .s3{width:90vw;height:43vw;margin-top:-6vw;z-index:1}
   .type-a:not(.inner) .strip .s3 img{object-position:50% 40%}
   .type-a:not(.inner) .block .pic{position:relative;left:auto;right:auto;top:auto;display:block;margin:0 0 calc(var(--m) * 1.1)}
@@ -118,3 +118,9 @@ html.plate-still .scene .after .word{display:none}
 }
 /* BRAND, halved with the rest, anchored to the right margin so the whole word stays on screen (it ran off the edge at 56vw) */
 .type-a .chhaya .word{left:auto;right:var(--m)}
+
+/* the home's picture on phones is wide too (Asif, 30 Oct: "wide not long"): full width at the picture's own 3 to 2 shape */
+@media (max-width:760px){.type-a:not(.inner) .strip .s2{width:100%;height:auto;aspect-ratio:1600/1064;align-self:stretch}}
+/* the meeting-room picture is pale where its caption sits; a low dark fade under the caption only, so the white words read */
+.type-a:not(.inner) .strip .s2::after{content:"";position:absolute;left:0;right:0;bottom:0;height:34%;background:linear-gradient(to top,rgba(10,9,8,.62),rgba(10,9,8,0));pointer-events:none;z-index:2}
+@media (max-width:760px){.type-a:not(.inner) .strip .s2::after{height:48%;background:linear-gradient(to top,rgba(10,9,8,.8),rgba(10,9,8,.35) 55%,rgba(10,9,8,0))}}
