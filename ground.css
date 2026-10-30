@@ -49,6 +49,7 @@ html.has-wall .top.back{background:var(--wall-black)}
 html.has-wall body.type-a > main{background:none}
 html.has-wall body.type-a .screen.chhaya{background:var(--black)}
 html.has-wall body.type-a .audit,html.has-wall body.type-a .ai,html.has-wall body.type-a .grow{background:none}
+html.has-wall .sec .lab{color:rgba(242,242,240,.6)}   /* Anwar R14 re-look, f4: the 11px eyebrow labels (AUDIT, AI SYSTEM, WHAT WE DO) measured 3.9 to 1 against the brightest plaster at .5; .6 lifts them past the 4.5 floor without changing their register */
 
 /* the audit (Anwar R13, question b): the pattern card with its orange pencil line comes back, as an object laid on the wall, not a ground.
    lighten drops the picture's own near-black into the plaster and keeps the card and the line. */
