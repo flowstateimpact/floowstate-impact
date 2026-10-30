@@ -1,0 +1,56 @@
+{
+ "record": "DaVinci Resolve project 'FSI Website Hero 2026-10', timelines 'hero-tiger-mix v2 desktop' and 'hero-tiger-mix v2 phone'",
+ "source": "/Users/asiffarid/Documents/apps/fsi-demo-mix-2026-10/source/heritage-in-motion-61s-1080p.mp4",
+ "fps": 24,
+ "frames": 264,
+ "order_by": "Rafiq, RAFIQ-HEROMIX.md",
+ "departures_from_rafiq": [
+  "tiger eye ends at 1282 not 1298: the eye is shut from 1275, so the loop cut on the blink; 20 frames, his floor",
+  "phone tiger eye kept centred: his -260 offset pushed the eye to the crop edge",
+  "phone zoom 1.343 inside the source's burned-in 804-row picture, so no black bands"
+ ],
+ "phone": "720x1280, scale to fill then zoom 1080/804",
+ "shots": [
+  {
+   "shot": "sunglasses",
+   "in_frame": 908,
+   "out_frame_excl": 940
+  },
+  {
+   "shot": "tiger bag on her back",
+   "in_frame": 352,
+   "out_frame_excl": 380
+  },
+  {
+   "shot": "lane walk, clean",
+   "in_frame": 384,
+   "out_frame_excl": 408
+  },
+  {
+   "shot": "painted tiger eye",
+   "in_frame": 1300,
+   "out_frame_excl": 1340
+  },
+  {
+   "shot": "boat",
+   "in_frame": 504,
+   "out_frame_excl": 540
+  },
+  {
+   "shot": "bag at dusk",
+   "in_frame": 1052,
+   "out_frame_excl": 1076
+  },
+  {
+   "shot": "tiger walks to camera",
+   "in_frame": 1140,
+   "out_frame_excl": 1200,
+   "note": "phone pan 80.6 at zoom 1.343 (window left 573 of 1920)"
+  },
+  {
+   "shot": "tiger eye, cut on the blink",
+   "in_frame": 1262,
+   "out_frame_excl": 1282
+  }
+ ]
+}
