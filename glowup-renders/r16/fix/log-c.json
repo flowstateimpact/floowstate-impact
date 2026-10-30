@@ -1,0 +1,17 @@
+[
+ {
+  "file": "websites-1440.png",
+  "errors": [],
+  "measure": "{\"docW\":1440,\"sw\":1440,\"bar\":\"top\",\"knav\":\"knav\",\"barB\":66,\"atLogo\":\"IMG.\",\"atRail\":\"SPAN.\",\"railX\":30,\"ask\":\"16.44px rgba(0, 0, 0, 0) difference\",\"links\":\"16.44px\",\"kinds\":\"flex\",\"pad\":\"60px\",\"totop\":false,\"backwork\":96}"
+ },
+ {
+  "file": "websites-1440-mid.png",
+  "errors": [],
+  "measure": "{\"docW\":1440,\"sw\":1440,\"bar\":\"top away\",\"knav\":\"knav away\",\"barB\":0,\"atLogo\":\"SECTION.sec dark table\",\"atRail\":\"SPAN.\",\"railX\":30,\"ask\":\"16.44px rgba(0, 0, 0, 0) difference\",\"links\":\"16.44px\",\"kinds\":\"flex\",\"pad\":\"60px\",\"totop\":false,\"backwork\":-2457}"
+ },
+ {
+  "file": "websites-390-mid.png",
+  "errors": [],
+  "measure": "{\"docW\":390,\"sw\":390,\"bar\":\"top away\",\"knav\":\"knav away\",\"barB\":0,\"atLogo\":\"A.world\",\"atRail\":null,\"railX\":20,\"ask\":\"14px rgba(0, 0, 0, 0) difference\",\"links\":\"14px\",\"kinds\":\"none\",\"pad\":\"80px\",\"totop\":false,\"backwork\":-2445}"
+ }
+]

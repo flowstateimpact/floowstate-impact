@@ -1,0 +1,17 @@
+[
+ {
+  "file": "websites-v1-1440.png",
+  "errors": [],
+  "measure": "{\"docW\":1440,\"fonts\":\"loaded\",\"h1\":\"Websites\",\"h1w\":1332}"
+ },
+ {
+  "file": "bar-chhaya-1440.png",
+  "errors": [],
+  "measure": "{\"docW\":1440,\"topRect\":[0,66],\"pos\":\"fixed\",\"z\":\"40\",\"op\":\"1\",\"vis\":\"visible\",\"cls\":\"top\",\"linksTop\":24,\"atPoint\":\"IMG.bed\",\"firstChild\":\"DIV.wall\",\"bodyPos\":\"static\",\"html\":\"has-wall\"}"
+ },
+ {
+  "file": "bar-chhaya-390.png",
+  "errors": [],
+  "measure": "{\"docW\":390,\"topRect\":[0,105],\"cls\":\"top\",\"atPoint\":\"IMG.bed\"}"
+ }
+]

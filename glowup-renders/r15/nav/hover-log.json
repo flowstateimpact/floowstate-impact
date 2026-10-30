@@ -1,0 +1,17 @@
+[
+ {
+  "file": "websites-v2-1440-peek.png",
+  "errors": [],
+  "measure": "{\"docW\":1440,\"peek\":\"has-wall peek\",\"a\":true}"
+ },
+ {
+  "file": "websites-v3-1440-hover.png",
+  "errors": [],
+  "measure": "{\"docW\":1440,\"a\":true,\"ind\":\"left: 123.188px; width: 29.9062px; opacity: 1;\"}"
+ },
+ {
+  "file": "bar-home-1440-hover.png",
+  "errors": [],
+  "measure": "{\"docW\":1440,\"a\":true,\"ind\":\"opacity: 1; left: 73.5px; width: 71.0312px;\"}"
+ }
+]

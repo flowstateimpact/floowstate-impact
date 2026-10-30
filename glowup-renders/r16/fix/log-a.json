@@ -1,0 +1,17 @@
+[
+ {
+  "file": "chhaya-1440-zoff.png",
+  "errors": [],
+  "measure": "{\"docW\":1440,\"sw\":1440,\"bar\":\"top\",\"knav\":\"knav\",\"barB\":66,\"atLogo\":\"IMG.bed\",\"atRail\":\"DIV.hero pic\",\"railX\":30,\"ask\":\"16.44px rgba(0, 0, 0, 0) normal\",\"links\":\"16.44px\",\"kinds\":\"flex\",\"pad\":\"60px\",\"totop\":false,\"backwork\":304}"
+ },
+ {
+  "file": "chhaya-1440.png",
+  "errors": [],
+  "measure": "{\"docW\":1440,\"sw\":1440,\"bar\":\"top\",\"knav\":\"knav wait\",\"barB\":66,\"atLogo\":\"IMG.\",\"atRail\":\"DIV.hero pic\",\"railX\":30,\"ask\":\"16.44px rgba(0, 0, 0, 0) normal\",\"links\":\"16.44px\",\"kinds\":\"flex\",\"pad\":\"60px\",\"totop\":false,\"backwork\":304}"
+ },
+ {
+  "file": "chhaya-1440-railforced.png",
+  "errors": [],
+  "measure": "{\"docW\":1440,\"sw\":1440,\"bar\":\"top\",\"knav\":\"knav\",\"barB\":66,\"atLogo\":\"IMG.\",\"atRail\":\"SPAN.\",\"railX\":30,\"ask\":\"16.44px rgba(0, 0, 0, 0) normal\",\"links\":\"16.44px\",\"kinds\":\"flex\",\"pad\":\"60px\",\"totop\":false,\"backwork\":304}"
+ }
+]

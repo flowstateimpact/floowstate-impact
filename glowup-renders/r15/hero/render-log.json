@@ -1,0 +1,22 @@
+[
+ {
+  "file": "hero-1440.png",
+  "errors": [],
+  "measure": "{\"docW\":1440,\"vw\":1440,\"navB\":78,\"logoB\":54,\"L6\":178,\"os\":53,\"capTop\":217,\"base\":721,\"who\":[[\"A strategy and design firm.\",40,177],[\"We shape the brand. You keep the AI we build.\",1400,860]],\"strapCapTop\":139,\"rim\":0.5,\"lip\":0.4,\"wall\":2.125,\"mode\":\"gl\",\"dpr\":1}"
+ },
+ {
+  "file": "hero-1870.png",
+  "errors": [],
+  "measure": "{\"docW\":1870,\"vw\":1870,\"navB\":79,\"logoB\":54,\"L6\":222,\"os\":67,\"capTop\":205,\"base\":835,\"who\":[[\"A strategy and design firm.\",40,161],[\"We shape the brand. You keep the AI we build.\",1830,960]],\"strapCapTop\":113,\"rim\":0.5,\"lip\":0.4,\"wall\":2.65625,\"mode\":\"gl\",\"dpr\":1}"
+ },
+ {
+  "file": "hero-390.png",
+  "errors": [],
+  "measure": "{\"docW\":390,\"vw\":390,\"navB\":124,\"logoB\":46,\"L6\":66,\"os\":20,\"capTop\":342,\"base\":587,\"who\":[[\"A strategy and design firm.\",20,312],[\"We shape the brand.\",370,780],[\"You keep the AI we build.\",370,804]],\"strapCapTop\":298,\"rim\":0.5,\"lip\":0.4,\"wall\":1,\"mode\":\"gl\",\"dpr\":1}"
+ },
+ {
+  "file": "hero-1440-reduce.png",
+  "errors": [],
+  "measure": "{\"docW\":1440,\"vw\":1440,\"navB\":78,\"logoB\":54,\"L6\":178,\"os\":53,\"capTop\":217,\"base\":721,\"who\":[[\"A strategy and design firm.\",40,177],[\"We shape the brand. You keep the AI we build.\",1400,860]],\"strapCapTop\":139,\"rim\":0.5,\"lip\":0.4,\"wall\":2.125,\"mode\":\"gl\",\"dpr\":1}"
+ }
+]

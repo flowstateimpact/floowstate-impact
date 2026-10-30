@@ -1,0 +1,32 @@
+/* journey/journey.css: the three journey prototypes, 31 Oct 2026, Nadir. Loads after the site's own sheets. Prototype, never published. */
+html{scroll-snap-type:none !important}   /* Lenis carries the weight; the snap would fight it */
+.scene.journey{height:calc(var(--sh) * 3)}
+.scene.journey .stage{background:var(--black)}
+/* the reel behind everything: muted loop, poster first paint. The lane film of the first chapter sits under it and comes up at the hand-over */
+.scene .reel{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;opacity:var(--reel,1)}
+.scene .bed{z-index:0}
+.scene .plate{z-index:2}
+.scene .after{z-index:3}
+/* the CSS plate (V2, V3 and the still fallback of V1): the thickness band under the face, the face as one picture, both inside a perspective wrapper */
+.cutbox{position:absolute;inset:0;perspective:1400px;perspective-origin:50% 50%}
+.cut{position:absolute;inset:0;transform-origin:var(--ox,50%) var(--oy,50%);will-change:transform,opacity}
+.cut canvas,.cut .lay{position:absolute;inset:0;width:100%;height:100%;display:block}
+.cut .band{transform:translate3d(var(--bx,3px),var(--by,4px),0)}
+/* V3: the plate in louvres */
+.louvres{position:absolute;inset:0;transform-style:preserve-3d}
+.louvre{position:absolute;left:0;right:0;transform-style:preserve-3d;backface-visibility:hidden;will-change:transform}
+.louvre .lay{position:absolute;left:0;right:0;height:var(--H);background-repeat:no-repeat;background-size:100% var(--H)}
+.louvre .lay.band{transform:translate3d(var(--bx,3px),var(--by,4px),0)}
+.hold{position:absolute;z-index:6;background:transparent;border:0;cursor:pointer;touch-action:none;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+.hold .arc{position:absolute;left:0;bottom:-6px;height:2px;width:100%;transform-origin:0 50%;transform:scaleX(0);background:var(--accent)}
+.hint{position:absolute;z-index:6;font-size:var(--L0);letter-spacing:.027em;color:var(--dim);pointer-events:none;transition:opacity .6s var(--ease)}
+.hint.gone{opacity:0}
+/* the sound mark: the one orange state while the reel plays with sound (V3) */
+.snd{position:absolute;z-index:6;right:var(--m);top:calc(var(--m) + 48px);width:10px;height:10px;border-radius:50%;background:var(--accent);opacity:0;transition:opacity .4s}
+.snd.on{opacity:1;box-shadow:0 0 0 6px rgba(226,127,34,.18)}
+/* the hand-over: the first chapter's word and caption arrive as the reel goes */
+.scene .after{opacity:var(--rev,0)}
+@media (prefers-reduced-motion:reduce){.scene.journey{height:var(--sh)}.scene .after{--rev:1}.scene .after .word{display:none}.scene .reel{opacity:1}}
+html.plate-still .scene.journey{height:var(--sh)}
+html.plate-still .scene .after{--rev:1}
+html.plate-still .scene .after .word{display:none}

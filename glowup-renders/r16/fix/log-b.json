@@ -1,0 +1,17 @@
+[
+ {
+  "file": "heritage-1440-zoff.png",
+  "errors": [],
+  "measure": "{\"docW\":1440,\"sw\":1440,\"bar\":\"top\",\"knav\":\"knav\",\"barB\":66,\"atLogo\":\"VIDEO.bed\",\"atRail\":\"DIV.hero pic\",\"railX\":30,\"ask\":\"16.44px rgba(0, 0, 0, 0) normal\",\"links\":\"16.44px\",\"kinds\":\"flex\",\"pad\":\"60px\",\"totop\":false,\"backwork\":132}"
+ },
+ {
+  "file": "heritage-1440.png",
+  "errors": [],
+  "measure": "{\"docW\":1440,\"sw\":1440,\"bar\":\"top\",\"knav\":\"knav wait\",\"barB\":66,\"atLogo\":\"IMG.\",\"atRail\":\"DIV.hero pic\",\"railX\":30,\"ask\":\"16.44px rgba(0, 0, 0, 0) normal\",\"links\":\"16.44px\",\"kinds\":\"flex\",\"pad\":\"60px\",\"totop\":false,\"backwork\":132}"
+ },
+ {
+  "file": "chhaya-390.png",
+  "errors": [],
+  "measure": "{\"docW\":390,\"sw\":390,\"bar\":\"top\",\"knav\":\"knav wait\",\"barB\":88,\"atLogo\":\"IMG.\",\"atRail\":\"H2.h2\",\"railX\":20,\"ask\":\"14px rgba(0, 0, 0, 0) normal\",\"links\":\"14px\",\"kinds\":\"none\",\"pad\":\"80px\",\"totop\":false,\"backwork\":282}"
+ }
+]

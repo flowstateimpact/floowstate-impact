@@ -1,0 +1,7 @@
+{"file":"hero-1280x720.png","errors":[],"measure":"{\"docW\":1280,\"vw\":1280,\"navB\":78,\"logoB\":54,\"L6\":142,\"os\":43,\"capTop\":177,\"base\":580,\"who\":[[\"A strategy and design firm.\",36,140],[\"We shape the brand. You keep the AI we build.\",1244,680]],\"strapCapTop\":109,\"rim\":0.5,\"lip\":0.4,\"wall\":1.70312,\"mode\":\"gl\",\"dpr\":1}"}
+Warning: Detected unsettled top-level await at file:///Users/asiffarid/Documents/apps/flowstateimpact-site-glowup/glowup-renders/tooling/type-render.mjs:82
+for (const s of job.shots) { const r = await shot(s); results.push(r); console.log(JSON.stringify(r)); }
+                                       ^
+
+
+

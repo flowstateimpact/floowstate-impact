@@ -1,0 +1,17 @@
+[
+ {
+  "file": "websites-390-back.png",
+  "errors": [],
+  "measure": "{\"docW\":390,\"sw\":390,\"bar\":\"top back\",\"knav\":\"knav back\",\"barB\":88,\"atLogo\":\"IMG.\",\"atRail\":\"SPAN.\",\"railX\":20,\"ask\":\"14px rgba(0, 0, 0, 0) normal\",\"links\":\"14px\",\"kinds\":\"none\",\"pad\":\"80px\",\"totop\":false,\"backwork\":-2257}"
+ },
+ {
+  "file": "work-1440-mid.png",
+  "errors": [],
+  "measure": "{\"docW\":1440,\"sw\":1440,\"bar\":\"top away\",\"knav\":\"knav away\",\"barB\":0,\"atLogo\":\"IMG.\",\"atRail\":\"SPAN.\",\"railX\":30,\"ask\":\"16.44px rgba(0, 0, 0, 0) difference\",\"links\":\"16.44px\",\"kinds\":\"flex\",\"pad\":null,\"totop\":false,\"backwork\":null}"
+ },
+ {
+  "file": "heritage-390.png",
+  "errors": [],
+  "measure": "{\"docW\":390,\"sw\":390,\"bar\":\"top\",\"knav\":\"knav wait\",\"barB\":88,\"atLogo\":\"IMG.\",\"atRail\":\"DIV.txt\",\"railX\":20,\"ask\":\"14px rgba(0, 0, 0, 0) normal\",\"links\":\"14px\",\"kinds\":\"none\",\"pad\":\"80px\",\"totop\":false,\"backwork\":154}"
+ }
+]

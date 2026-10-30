@@ -55,9 +55,12 @@ body:has(.pagehead .hero.pic) .top .ask{mix-blend-mode:normal}   /* on a photogr
   .pagehead .hero .bed{top:-60px;height:calc(100% + 60px)}
   .pagehead .hero.pic::after{top:-60px}
   [id]{scroll-margin-top:60px}
+  /* the Chhaya strip was anchored for the 96px header (site.css 450, 452) and slid 36px up behind the bar: re-anchored to 60 (Anwar R17 1) */
+  .pagehead .hero:has(> img.bed) .bed{top:calc(-60px - 8.125vw)}
+  .pagehead .hero:has(> img.bed){padding-top:calc(20vw - 60px)}
 }
-.pagehead .hero.pic::before{content:"";position:absolute;left:0;right:0;top:-96px;height:206px;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.5) 96px,rgba(0,0,0,0) 206px)}
-@media (max-width:760px){ .pagehead .hero.pic::before{top:-80px;height:190px;background:linear-gradient(180deg,rgba(0,0,0,.5) 80px,rgba(0,0,0,0) 190px)} }
+.pagehead .hero.pic::before{content:"";position:absolute;left:0;right:0;top:-96px;height:206px;z-index:-1;pointer-events:none;background:linear-gradient(180deg,rgba(0,0,0,.2) 96px,rgba(0,0,0,0) 206px)}
+@media (max-width:760px){ .pagehead .hero.pic::before{top:-80px;height:190px;background:linear-gradient(180deg,rgba(0,0,0,.2) 80px,rgba(0,0,0,0) 190px)} }
 
 /* ---- the in-page navigator on the six work pages, THE RAIL: Websites, Films, Pictures, and on a case page its kind and the next piece.
    A hairline the height of the three stations at the left edge, the words reading up in their fixed order, the current station's number

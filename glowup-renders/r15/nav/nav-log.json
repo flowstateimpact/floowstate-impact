@@ -1,0 +1,102 @@
+[
+ {
+  "file": "websites-v1-1440.png",
+  "errors": [],
+  "measure": "{\"docW\":1440,\"sw\":1440,\"bar\":\"top\",\"knav\":true,\"ind\":\"transition: none; left: 56.8281px; width: 52.3594px; opacity: 1;\"}"
+ },
+ {
+  "file": "websites-v1-390.png",
+  "errors": [],
+  "measure": "{\"docW\":390,\"sw\":390,\"bar\":\"top\",\"knav\":true,\"ind\":\"left: 0px; width: 48.1562px; opacity: 1;\"}"
+ },
+ {
+  "file": "websites-v1-1440-mid.png",
+  "errors": [],
+  "measure": "{\"docW\":1440,\"sw\":1440,\"bar\":\"top away\",\"knav\":true,\"ind\":\"left: 56.8281px; width: 52.3594px; opacity: 1;\"}"
+ },
+ {
+  "file": "websites-v2-1440.png",
+  "errors": [],
+  "measure": "{\"docW\":1440,\"sw\":1440,\"bar\":\"top\",\"knav\":true,\"ind\":\"left: 56.8281px; width: 52.3594px; opacity: 1;\"}"
+ },
+ {
+  "file": "websites-v2-390.png",
+  "errors": [],
+  "measure": "{\"docW\":390,\"sw\":390,\"bar\":\"top\",\"knav\":true,\"ind\":\"left: 0px; width: 48.1562px; opacity: 1;\"}"
+ },
+ {
+  "file": "websites-v2-1440-mid.png",
+  "errors": [],
+  "measure": "{\"docW\":1440,\"sw\":1440,\"bar\":\"top away\",\"knav\":true,\"ind\":\"left: 56.8281px; width: 52.3594px; opacity: 1;\"}"
+ },
+ {
+  "file": "websites-v3-1440.png",
+  "errors": [],
+  "measure": "{\"docW\":1440,\"sw\":1440,\"bar\":\"top\",\"knav\":true,\"ind\":\"left: 56.8281px; width: 52.3594px; opacity: 1;\"}"
+ },
+ {
+  "file": "websites-v3-390.png",
+  "errors": [],
+  "measure": "{\"docW\":390,\"sw\":390,\"bar\":\"top\",\"knav\":true,\"ind\":\"left: 0px; width: 48.1562px; opacity: 1;\"}"
+ },
+ {
+  "file": "websites-v3-1440-mid.png",
+  "errors": [],
+  "measure": "{\"docW\":1440,\"sw\":1440,\"bar\":\"top away\",\"knav\":true,\"ind\":\"left: 56.8281px; width: 52.3594px; opacity: 1;\"}"
+ },
+ {
+  "file": "websites-v2-1440-peek.png",
+  "errors": [],
+  "measure": "measure failed: eval failed: {\"exceptionId\":1,\"text\":\"Uncaught\",\"lineNumber\":0,\"columnNumber\":40,\"scriptId\":\"11\",\"exception\":{\"type\":\"object\",\"subtype\":\"error\",\"className\":\"SyntaxError\",\"description\":\"SyntaxError: missing ) after argument list\",\"objectId\":\"8747595573390170816.2.2\"}}"
+ },
+ {
+  "file": "websites-v3-1440-hover.png",
+  "errors": [],
+  "measure": "measure failed: eval failed: {\"exceptionId\":1,\"text\":\"Uncaught\",\"lineNumber\":0,\"columnNumber\":40,\"scriptId\":\"11\",\"exception\":{\"type\":\"object\",\"subtype\":\"error\",\"className\":\"SyntaxError\",\"description\":\"SyntaxError: missing ) after argument list\",\"objectId\":\"3192202935149627589.2.2\"}}"
+ },
+ {
+  "file": "bar-home-1440.png",
+  "errors": [],
+  "measure": "{\"docW\":1440,\"sw\":1440,\"bar\":\"top\",\"knav\":false,\"ind\":\"opacity: 0;\"}"
+ },
+ {
+  "file": "bar-home-390.png",
+  "errors": [],
+  "measure": "{\"docW\":390,\"sw\":390,\"bar\":\"top\",\"knav\":false,\"ind\":\"opacity: 0;\"}"
+ },
+ {
+  "file": "bar-home-1440-hover.png",
+  "errors": [],
+  "measure": "measure failed: eval failed: {\"exceptionId\":1,\"text\":\"Uncaught\",\"lineNumber\":0,\"columnNumber\":40,\"scriptId\":\"13\",\"exception\":{\"type\":\"object\",\"subtype\":\"error\",\"className\":\"SyntaxError\",\"description\":\"SyntaxError: missing ) after argument list\",\"objectId\":\"377412543355292937.2.2\"}}"
+ },
+ {
+  "file": "bar-chhaya-1440.png",
+  "errors": [],
+  "measure": "{\"docW\":1440,\"sw\":1440,\"bar\":\"top\",\"knav\":true,\"ind\":\"left: 0px; width: 29.8281px; opacity: 1;\"}"
+ },
+ {
+  "file": "bar-chhaya-390.png",
+  "errors": [],
+  "measure": "{\"docW\":390,\"sw\":390,\"bar\":\"top\",\"knav\":true,\"ind\":\"left: 0px; width: 27.4219px; opacity: 1;\"}"
+ },
+ {
+  "file": "bar-films-1440-back.png",
+  "errors": [],
+  "measure": "{\"docW\":1440,\"sw\":1440,\"bar\":\"top back\",\"knav\":true,\"ind\":\"left: 123.188px; width: 29.9062px; opacity: 1;\"}"
+ },
+ {
+  "file": "bar-about-1440-mid.png",
+  "errors": [],
+  "measure": "{\"docW\":1440,\"sw\":1440,\"bar\":\"top away\",\"knav\":false,\"ind\":\"left: 457.562px; width: 35.7031px; opacity: 1;\"}"
+ },
+ {
+  "file": "work-v3-1440.png",
+  "errors": [],
+  "measure": "{\"docW\":1440,\"sw\":1440,\"bar\":\"top\",\"knav\":true,\"ind\":\"left: 0px; width: 29.8281px; opacity: 1;\"}"
+ },
+ {
+  "file": "websites-v3-1440-reduce.png",
+  "errors": [],
+  "measure": "{\"docW\":1440,\"sw\":1440,\"bar\":\"top\",\"knav\":true,\"ind\":\"left: 56.8281px; width: 52.3594px; opacity: 1;\"}"
+ }
+]

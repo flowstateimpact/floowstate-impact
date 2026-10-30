@@ -1,0 +1,96 @@
+[
+ {
+  "name": "v1-1440-load",
+  "w": 1440,
+  "vw": 1440,
+  "y": 0,
+  "p": 0,
+  "mode": "gl",
+  "reel": {
+   "t": 3.622986,
+   "paused": false,
+   "ready": 4,
+   "muted": true
+  },
+  "errors": []
+ },
+ {
+  "name": "v1-1440-mid",
+  "w": 1440,
+  "vw": 1440,
+  "y": 756,
+  "p": 0.42,
+  "mode": "gl",
+  "reel": {
+   "t": 5.345367,
+   "paused": false,
+   "ready": 4,
+   "muted": true
+  },
+  "errors": []
+ },
+ {
+  "name": "v1-1440-handover",
+  "w": 1440,
+  "vw": 1440,
+  "y": 1620,
+  "p": 0.9,
+  "mode": "gl",
+  "reel": {
+   "t": 7.279678,
+   "paused": false,
+   "ready": 4,
+   "muted": true
+  },
+  "errors": []
+ },
+ {
+  "name": "v1-390-load",
+  "w": 390,
+  "vw": 390,
+  "y": 0,
+  "p": 0,
+  "mode": "gl",
+  "reel": {
+   "t": 3.340118,
+   "paused": false,
+   "ready": 4,
+   "muted": true
+  },
+  "errors": []
+ },
+ {
+  "name": "v1-390-mid",
+  "w": 390,
+  "vw": 390,
+  "y": 709,
+  "p": 0.4200236966824645,
+  "mode": "gl",
+  "reel": {
+   "t": 4.877784,
+   "paused": false,
+   "ready": 4,
+   "muted": true
+  },
+  "errors": []
+ },
+ {
+  "name": "v1-1440-reduced",
+  "w": 1440,
+  "vw": 1440,
+  "y": 0,
+  "p": 0,
+  "mode": "css",
+  "reel": {
+   "t": 4.240619,
+   "paused": false,
+   "ready": 4,
+   "muted": true
+  },
+  "errors": []
+ },
+ {
+  "name": "v1-weight",
+  "firstHTMLbytes": 12119
+ }
+]

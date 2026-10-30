@@ -1,0 +1,17 @@
+[
+ {
+  "file": "films-1440.png",
+  "errors": [],
+  "measure": "{\"docW\":1440,\"sw\":1440,\"bar\":\"top\",\"knav\":\"knav\",\"barB\":66,\"atLogo\":\"IMG.\",\"atRail\":\"SPAN.\",\"railX\":30,\"ask\":\"16.44px rgba(0, 0, 0, 0) difference\",\"links\":\"16.44px\",\"kinds\":\"flex\",\"pad\":\"60px\",\"totop\":false,\"backwork\":96}"
+ },
+ {
+  "file": "work-1440.png",
+  "errors": [],
+  "measure": "{\"docW\":1440,\"sw\":1440,\"bar\":\"top\",\"knav\":\"knav wait\",\"barB\":66,\"atLogo\":\"IMG.\",\"atRail\":\"VIDEO.bed\",\"railX\":30,\"ask\":\"16.44px rgba(0, 0, 0, 0) difference\",\"links\":\"16.44px\",\"kinds\":\"flex\",\"pad\":null,\"totop\":false,\"backwork\":null}"
+ },
+ {
+  "file": "home-390.png",
+  "errors": [],
+  "measure": "{\"docW\":390,\"sw\":390,\"bar\":\"top\",\"barB\":88,\"atLogo\":\"IMG.\",\"atRail\":null,\"railX\":null,\"ask\":\"14px rgba(0, 0, 0, 0) difference\",\"links\":\"14px\",\"kinds\":\"none\",\"pad\":null,\"totop\":false,\"backwork\":null}"
+ }
+]

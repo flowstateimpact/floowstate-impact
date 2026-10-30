@@ -1,0 +1,22 @@
+[
+ {
+  "file": "before-1440.png",
+  "errors": [],
+  "measure": "{\"docW\":1440,\"navB\":78,\"logo\":[40,24,155,54],\"L6\":178,\"os\":53,\"capTop\":187,\"who\":[[\"A strategy and design firm.\",40,147],[\"We shape the brand. You keep the AI we build.\",1400,860]],\"hollow\":{\"rim\":1.76562,\"wall\":2.125,\"soft\":0,\"dim\":1,\"sat\":1,\"a\":1,\"clear\":1},\"mode\":\"gl\",\"dpr\":1}"
+ },
+ {
+  "file": "before-1870.png",
+  "errors": [],
+  "measure": "{\"docW\":1870,\"navB\":79,\"logo\":[40,25,155,54],\"L6\":222,\"os\":67,\"capTop\":175,\"who\":[[\"A strategy and design firm.\",40,131],[\"We shape the brand. You keep the AI we build.\",1830,960]],\"hollow\":{\"rim\":2.21875,\"wall\":2.65625,\"soft\":0,\"dim\":1,\"sat\":1,\"a\":1,\"clear\":1},\"mode\":\"gl\"}"
+ },
+ {
+  "file": "before-1870x860.png",
+  "errors": [],
+  "measure": "measure failed: eval failed: {\"exceptionId\":1,\"text\":\"Uncaught\",\"lineNumber\":0,\"columnNumber\":380,\"scriptId\":\"12\",\"exception\":{\"type\":\"object\",\"subtype\":\"error\",\"className\":\"SyntaxError\",\"description\":\"SyntaxError: Unexpected end of input\",\"objectId\":\"1498885228202256723.2.2\"}}"
+ },
+ {
+  "file": "before-390.png",
+  "errors": [],
+  "measure": "{\"docW\":390,\"navB\":93,\"logo\":[20,16,135,46],\"L6\":66,\"os\":20,\"capTop\":326,\"who\":[[\"A strategy and design firm.\",20,296],[\"We shape the brand.\",370,780],[\"You keep the AI we build.\",370,804]],\"hollow\":{\"rim\":0.75,\"wall\":1,\"soft\":0,\"dim\":1,\"sat\":1,\"a\":1,\"clear\":1}}"
+ }
+]
