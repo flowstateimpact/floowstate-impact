@@ -36,17 +36,9 @@ html.plate-still .scene .after .word{display:none}
 .scene .bed.cutlit{filter:brightness(.6) contrast(.7) saturate(var(--hollow-sat)) blur(calc(var(--L6) * .06))}
 
 /* ---- the home's work, bigger (Asif via the chat, 28 Oct: every work picture at 1200px or more at 1440) ---- */
-/* the shelf of three becomes three sheets stepping down the wall, each tucked a hand's width under the one above, so each reads as laid on top of the next:
-   the film flush left, the portrait flush right, the website flush left again, three heights. The Chhaya screen is already the full width;
-   the SIM pack stays the small object laid on the billboard. The three reading blocks put their picture between the heading and the words,
+/* R14 (30 Oct): the stepping sheets of three widths are gone; the strip is one object per screen, below. The three reading blocks put their picture between the heading and the words,
    at three widths and three edges: the coat runs off the right edge, the tower off the left; Who has no picture */
 @media (min-width:761px){
-  .type-a:not(.inner) .strip{flex-direction:column;align-items:flex-start;gap:0;padding:calc(var(--m) * 2) var(--m) calc(var(--m) * 2.4)}
-  .type-a:not(.inner) .strip .s1w{width:84vw;height:auto;aspect-ratio:1920/804;z-index:3;box-shadow:0 40px 90px rgba(0,0,0,.6)}
-  .type-a:not(.inner) .strip .s2{width:86vw;height:54vw;align-self:flex-end;margin-top:-6vw;z-index:2;box-shadow:0 40px 90px rgba(0,0,0,.6)}
-  .type-a:not(.inner) .strip .s2 img{object-position:50% 45%}   /* Asif, 30 Oct: the tall portrait out, the wide meeting-room picture (houses-03) in; her face sits left of centre, the speaker's shoulder frames the right */
-  .type-a:not(.inner) .strip .s3{width:90vw;height:43vw;margin-top:-6vw;z-index:1}
-  .type-a:not(.inner) .strip .s3 img{object-position:50% 40%}
   .type-a:not(.inner) .block .pic{position:relative;left:auto;right:auto;top:auto;display:block;margin:0 0 calc(var(--m) * 1.1)}
   .type-a:not(.inner) .audit .pic{width:86vw;height:54vw;margin-left:auto;margin-right:calc(var(--m) * -1)}
   .type-a:not(.inner) .audit .pic img{object-position:50% 62%}
@@ -119,8 +111,36 @@ html.plate-still .scene .after .word{display:none}
 /* BRAND, halved with the rest, anchored to the right margin so the whole word stays on screen (it ran off the edge at 56vw) */
 .type-a .chhaya .word{left:auto;right:var(--m)}
 
-/* the home's picture on phones is wide too (Asif, 30 Oct: "wide not long"): full width at the picture's own 3 to 2 shape */
-@media (max-width:760px){.type-a:not(.inner) .strip .s2{width:100%;height:auto;aspect-ratio:1600/1064;align-self:stretch}}
-/* the meeting-room picture is pale where its caption sits; a low dark fade under the caption only, so the white words read */
-.type-a:not(.inner) .strip .s2::after{content:"";position:absolute;left:0;right:0;bottom:0;height:34%;background:linear-gradient(to top,rgba(10,9,8,.62),rgba(10,9,8,0));pointer-events:none;z-index:2}
-@media (max-width:760px){.type-a:not(.inner) .strip .s2::after{height:48%;background:linear-gradient(to top,rgba(10,9,8,.8),rgba(10,9,8,.35) 55%,rgba(10,9,8,0))}}
+/* ---- R14, 30 Oct 2026, Nadir: the home reads expensive (Nazar's references: Active Theory's object owning the frame, Wolff Olins's one object per screen) ---- */
+
+/* THE PLATE AT HERO SCALE: a whole screen between the hero and Chhaya, flat black, the mark3d plate across it. The plate's long edge is 71 percent of the
+   viewport at 1440 (the canvas fit 2.62 by 1.75, read by mark3d.js from data-fit) and 89 percent on the phone (2.25 by 1.75). One raking light from the left
+   (data-light), so the right wall of every cut catches and the face falls off toward the right; the plate turns 14 degrees about its vertical axis as the
+   screen scrolls past (data-turn), on top of its idle breathing and the pointer, so the light moves across a real thickness. One 14px line in the corner:
+   the two cities, already on the site. Never glass, never chrome: the blackened steel as it is in the footer, forty times the area */
+.plate-screen{position:relative;z-index:1;height:var(--sh);min-height:560px;overflow:hidden;background:var(--black)}
+.plate-screen .mark3d{position:absolute;inset:0;width:100%;height:100%;margin:0;aspect-ratio:auto;--pw:calc(min(100cqw / 2.62, 100cqh / 1.75) * 2.128)}   /* the CSS fallback plate (reduced motion, no WebGL) keeps the same width as the live one */
+.plate-screen .mark3d::before{background:linear-gradient(104deg,#2e2d2b 0%,#1a1a19 30%,#121211 58%,#0f0f0e 100%);box-shadow:inset 1px 1px 0 rgba(242,242,240,.16),inset -1px -1px 0 rgba(0,0,0,.7),3.6cqw 2.4cqw 3cqw -1cqw rgba(0,0,0,.4)}   /* the same light from the left on the still plate */
+.plate-screen .line{position:absolute;left:var(--m);bottom:var(--m);z-index:3;margin:0;font-size:14px;line-height:1.3;letter-spacing:.027em;color:var(--white);font-variant-ligatures:none}
+@media (max-width:760px){.plate-screen .mark3d{--pw:calc(min(100cqw / 2.25, 100cqh / 1.75) * 2.128)}}
+
+/* THE STRIP, ONE OBJECT PER SCREEN: each of the three (the film, the picture, the website) gets the whole viewport on flat black, the picture covering it;
+   the caption stays bottom left at 12px, two lines; a counter bottom right, 01 / 03, the current number the only orange on the screen (the film's play control
+   sits above it, the one thing you can touch). A low fade under the caption so the white words read on a pale picture; measured, never a band */
+.type-a:not(.inner) .strip{display:block;padding:0;gap:0;overflow:visible;background:var(--black)}
+.type-a:not(.inner) .strip .s1w,.type-a:not(.inner) .strip .s2,.type-a:not(.inner) .strip .s3{position:relative;display:block;width:100%;height:var(--sh);min-height:560px;margin:0;overflow:hidden;box-shadow:none;aspect-ratio:auto;align-self:auto;z-index:auto}
+.type-a:not(.inner) .strip .s1{position:absolute;inset:0;width:100%;height:100%}
+.type-a:not(.inner) .strip img,.type-a:not(.inner) .strip video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 50%}
+.type-a:not(.inner) .strip .s2 img{object-position:50% 42%}   /* Asif, 30 Oct: the wide meeting-room picture (houses-03); her face sits left of centre, the speaker's shoulder frames the right */
+.type-a:not(.inner) .strip .s3 img{object-position:50% 40%}
+.type-a:not(.inner) .strip .s1w::after,.type-a:not(.inner) .strip .s2::after,.type-a:not(.inner) .strip .s3::after{content:"";position:absolute;left:0;right:0;bottom:0;height:30%;background:linear-gradient(to top,rgba(10,9,8,.6),rgba(10,9,8,0));pointer-events:none;z-index:2}
+.type-a:not(.inner) .strip .cap{max-width:46ch}
+.type-a:not(.inner) .strip .cap{padding-right:calc(9ch + var(--m))}   /* the caption never runs under the counter (390, 30 Oct: "same light02 / 03") */
+.type-a:not(.inner) .strip .num{position:absolute;right:var(--m);bottom:calc(var(--m) + 2px);z-index:3;font-size:var(--L0);font-weight:500;letter-spacing:.08em;color:var(--white);font-variant-numeric:tabular-nums;pointer-events:none}
+.type-a:not(.inner) .strip .num b{font-weight:500;color:var(--accent)}
+.type-a:not(.inner) .strip .play{right:var(--m);bottom:calc(var(--m) + 36px)}
+@media (min-width:761px){.type-a:not(.inner) .strip > *{scroll-snap-align:start}}
+@media (max-width:760px){
+  .type-a:not(.inner) .strip .s1w::after,.type-a:not(.inner) .strip .s2::after,.type-a:not(.inner) .strip .s3::after{height:42%;background:linear-gradient(to top,rgba(10,9,8,.78),rgba(10,9,8,.3) 55%,rgba(10,9,8,0))}
+  .type-a:not(.inner) .strip .s1 video{object-position:52% 50%}
+}

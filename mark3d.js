@@ -235,7 +235,12 @@
     gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
     var U = {}; ["uS", "uRes", "uView", "uR", "uD", "uTime", "uL"].forEach(function (n) { U[n] = gl.getUniformLocation(p, n); });
     this.U = U;
-    var L = [-.3, .42, .86], l = Math.hypot(L[0], L[1], L[2]);
+    // R14 (30 Oct): a plate may carry its own fit, light and scroll turn in data attributes, so the hero-scale plate on the home
+    // (data-fit="2.62 1.75" data-fit-phone="2.25 1.75" data-light="-.78 .34 .53" data-turn="-14") is the same object under a raking light,
+    // turning by 14 degrees about its vertical axis as the screen scrolls past. Absent, every figure is what it was.
+    var ds = el.dataset || {}, nums = function (s, d) { var a = (s || "").trim().split(/[\s,]+/).map(Number); return a.length === d.length && a.every(isFinite) ? a : d; };
+    this.fit = nums(ds.fit, [2.62, 1.96]); this.fitPhone = nums(ds.fitPhone, this.fit); this.turn = parseFloat(ds.turn) || 0; this.clampY = 9 + Math.abs(this.turn) * .5;
+    var L = nums(ds.light, [-.3, .42, .86]), l = Math.hypot(L[0], L[1], L[2]);
     gl.uniform3f(U.uL, L[0] / l, L[1] / l, L[2] / l); gl.uniform1i(U.uS, 0);
     // it arrives a little tipped and lifted, then settles: the heft of something put down
     this.ax = spring(5 * DEG); this.ay = spring(-6 * DEG); this.d = spring(.42);
@@ -257,7 +262,8 @@
     this.w = this.cv.width = w; this.h = this.cv.height = h;
     this.gl.viewport(0, 0, w, h);
     // fit: room for the plate, its tilt and its shadow falling right and down
-    var s = Math.min(w / 2.62, h / 1.96);
+    var fit = (window.matchMedia && matchMedia("(max-width:760px)").matches) ? this.fitPhone : this.fit;
+    var s = Math.min(w / fit[0], h / fit[1]);
     this.gl.uniform2f(this.U.uRes, w, h); this.gl.uniform2f(this.U.uView, w / 2 / s, h / 2 / s);
     this.drawn = false; wake();
   };
@@ -271,13 +277,13 @@
     }
     // idle: it breathes just under notice, never perfectly still
     var bx = .55 * Math.sin(t * .29 + 1.3) + .25 * Math.sin(t * .71), by = .8 * Math.sin(t * .37) + .2 * Math.sin(t * .93 + 2);
-    this.ay.t = (px * 8 + by) * DEG;
+    this.ay.t = (px * 8 + by + (prog - .5) * this.turn) * DEG;
     this.ax.t = (py * 5.5 + (prog - .5) * 7 + bx) * DEG;
     this.d.t = .36 + .008 * Math.sin(t * .23);
     var n = Math.max(1, Math.ceil(dt / (1 / 120))), h = dt / n;
     for (var i = 0; i < n; i++) { stepSpring(this.ax, h); stepSpring(this.ay, h); stepSpring(this.d, h); }
     // the plate never touches the page: clamp the tilt so its lowest corner stays clear
-    var ax = Math.max(-9.5 * DEG, Math.min(9.5 * DEG, this.ax.x)), ay = Math.max(-9 * DEG, Math.min(9 * DEG, this.ay.x));
+    var cy = this.clampY * DEG, ax = Math.max(-9.5 * DEG, Math.min(9.5 * DEG, this.ax.x)), ay = Math.max(-cy, Math.min(cy, this.ay.x));
     var cx = Math.cos(ax), sx = Math.sin(ax), cy = Math.cos(ay), sy = Math.sin(ay);
     // R = Ry * Rx, column major. Pointer to the right turns the face toward it.
     var R = [cy, 0, -sy, sy * sx, cx, cy * sx, sy * cx, -sx, cy * cx];

@@ -42,9 +42,13 @@ html.has-wall.stuck .menu,html.has-wall .menu.open nav{background:var(--wall-bla
 /* the glow.css pages (work, what we do): the body was the black; the wall is the body now. The fixed top bar keeps its black once the page has moved. */
 html.has-wall .top.back{background:var(--wall-black)}
 
-/* the home (Anwar R13, question a): the plate wears the wall, the film and the ledger stay on flat black, and only the footer, the one piece
-   every page shares, opens onto the wall, so the home and the ten pages end on the same plaster. */
-html.has-wall body.type-a > main{background:var(--black)}
+/* the home, R14 (30 Oct; Nazar's rule, Wolff Olins's pacing): WALL UNDER WORDS, BLACK UNDER PICTURES. The main is open; the work screens (the hero's stage,
+   the plate screen, Chhaya, the three strip screens) paint their own flat black so client pictures and the plate are the only light; the text sections
+   (what we do, the audit, the AI system, who, team, the close) and the footer stand on the drifting plaster, and the three gradient grounds glow-a.css gave
+   the reading blocks go, because a site has one ground now. Measured R13: cream on the wall 13.5 to 15 to 1. */
+html.has-wall body.type-a > main{background:none}
+html.has-wall body.type-a .screen.chhaya{background:var(--black)}
+html.has-wall body.type-a .audit,html.has-wall body.type-a .ai,html.has-wall body.type-a .grow{background:none}
 
 /* the audit (Anwar R13, question b): the pattern card with its orange pencil line comes back, as an object laid on the wall, not a ground.
    lighten drops the picture's own near-black into the plaster and keeps the card and the line. */
