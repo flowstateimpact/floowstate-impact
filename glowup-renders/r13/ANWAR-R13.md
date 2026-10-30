@@ -36,3 +36,19 @@ Concluded: PASS. Not a fault: at 1.5 s the sheet catches the clip flood mid-flig
 Dimension and depth: type on a wall with real relief, paper in front of it. Character: a hand combed this. Signature: the crest. Uniqueness: nobody else's wall. Style: plaster, paper, cut cloth, no fourth surface. Bland no; trying too hard no; derivative no, for the reason in section 1.
 
 Receipt: 15 renders opened, source read at the lines named, nothing measured by code, no site file edited, no render taken.
+
+## R13 FIXES RE-LOOK (30 Oct: eight r13b renders, three 2x crops, the last three ground.css blocks, glow.css lines 11, 26 and 112, index.html lines 2, 28, 118 and 120)
+Packet: WHY and THE BAR present; MEMORY and TASTE absent.
+
+1. Home footer on the wall: PASS. Observed: the hero, film and ledger sit on #0B0B0B, the black glow.css line 26 gave the body before (measure: main rgb(11,11,11)); the footer opens onto the plaster at 1440 and 390 (footBg transparent). The seam is three things in order: flat black, the footer's own one-pixel hairline (glow.css line 112, there before this round), plaster. Concluded: the footer reads as a slab laid at the bottom, the same hard cut the paper sections make against the wall on every inner page. Nothing added, nothing glowing.
+
+2. Audit card: PASS at 1440; at 390 PASS on the part seen. Observed at 1440 (card 0, 80.5, 605 by 338): a dark pattern card with its punched hole, straight top, angled corner, the curved cut and the orange pencil line along it; the wall runs at full texture to its edge, no rectangle of the picture's black. The comb crests show faintly through the card, lighten letting the brighter ridges pass. Concluded: thin card stock on a raked wall, an object, not a patch. The faint show-through is the one tell; opaque is not reachable from this picture (keying its black is what lighten does; a luminance mask would leave the dark card near ten percent opaque). Door out, later: a cut-out PNG with alpha, normal blend. At 390 the render sat at scroll 1250, so the pinned bar hides the card's top 100px; the lower corner and a fragment of the line show bottom-left where the rule puts them. Not a block: the phone rule changes size and position only.
+
+3. Phone stamp outline: PASS. about and websites at 390: ASK FOR THE AUDIT as a cream word in an orange outline; the orange mass on each screen is one word, AND and WEBSITES.
+
+Ready to push: YES.
+
+Receipt: eight renders opened, three crops made with sips in the scratchpad, source read at the lines named, no site file edited, no render taken.
+
+Pictures tile re-look (30 Oct, home-1440-pic-c and home-390-pic-d, index.html line 63, the last two type-a.css rules): PASS. The wide 3 to 2 tile holds the strip's scatter at 1440 and sits full width on the phone; the low fade reads as shadow under the caption, not a band, and the white words sit clean at both widths. Ready to push still stands.
+Note, a pick not a CSS fix: of the three tiles this is the one captured rather than made (office coverage, the subject small, the out-of-focus red back the loudest thing and a near neighbour of the orange thread); CSS cannot crop it out, since cover trims top and bottom at 1440 and the phone shows the full frame. If the series holds a frame where the seated subject carries the picture alone, prefer it; otherwise this one ships.
