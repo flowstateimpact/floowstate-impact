@@ -49,7 +49,7 @@
 <!-- the plate at hero scale (R14, Nazar move 1): the studio's stencil plate, the one real object on the site, owns a whole screen under one raking light.
      The footer keeps its small plate as the callback. Reduced motion, no WebGL or no JS: the same plate stands still, lit by its CSS gradient -->
 <section class="plate-screen snap" aria-label="The studio's stencil plate">
-  <div class="mark3d" data-mark3d data-fit="2.62 1.75" data-fit-phone="2.25 1.75" data-back=".4" data-light="-.78 .34 .53" data-turn="-14" aria-hidden="true"><img class="mark3d-fallback" src="media/fsi-flame.svg" alt="" width="320" height="320"></div>
+  <div class="mark3d has-still" data-mark3d data-fit="2.62 1.75" data-fit-phone="2.25 1.75" data-back=".4" data-light="-.78 .34 .53" data-turn="-14" aria-hidden="true"><picture><source media="(max-width:760px)" srcset="media/plate-still-phone.webp"><img class="mark3d-fallback" src="media/plate-still.webp" alt="" width="1600" height="1069" decoding="async"></picture></div>   <!-- Anwar R14 b3: the still is the live plate baked at rest (glowup-renders/tooling/bake-plate.mjs), shown under reduced motion and before the first live frame -->
   <p class="who line">Dhaka · London</p>
 </section>
 

@@ -16,3 +16,8 @@
 .mark3d-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;opacity:0;transition:opacity .9s cubic-bezier(.22,.8,.2,1)}
 .mark3d.is-live .mark3d-canvas{opacity:1}
 .mark3d.is-live::before,.mark3d.is-live::after{opacity:0}
+/* a plate that carries a baked still of itself (class has-still, the home's hero-scale plate since R14): the picture is the still plate,
+   shown while motion is off and until the first live frame paints, then the live canvas takes over; the drawn fallback stays off */
+.mark3d.has-still .mark3d-fallback{opacity:1;transition:opacity .9s cubic-bezier(.22,.8,.2,1)}
+.mark3d.has-still.is-live .mark3d-fallback{opacity:0}
+.mark3d.has-still::before,.mark3d.has-still::after{display:none}

@@ -1,0 +1,11 @@
+<!doctype html><meta charset="utf-8"><title>bake the plate still</title>
+<link rel="stylesheet" href="/mark3d.css">
+<style>html,body{margin:0;background:transparent}body{width:100vw;height:100vh;overflow:hidden}.mark3d{position:absolute;inset:0;aspect-ratio:auto}</style>
+<script>
+// The still is the live plate at rest: no breathing, no pointer, no turn. mark3d.js breathes through Math.sin in its frame step,
+// so on this bake page alone Math.sin answers 0; the rotation then stays flat whatever the springs do, and the fit, light and
+// uBack figures come from the data attributes exactly as index.html carries them. Nothing in the site's own files changes for this.
+Math.sin = function(){ return 0; };
+</script>
+<div class="mark3d" data-mark3d data-fit="FIT" data-fit-phone="FIT" data-back=".4" data-light="-.78 .34 .53" aria-hidden="true"><img class="mark3d-fallback" src="/media/fsi-flame.svg" alt=""></div>
+<script src="/mark3d.js"></script>
