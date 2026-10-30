@@ -34,6 +34,46 @@
       "source": "/index-type-a.html",
       "destination": "/",
       "permanent": false
+    },
+    {
+      "source": "/index-a.html",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/index-c.html",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/index-cloth.html",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/index-type-b.html",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/index-type-c.html",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/what-we-do-type-a.html",
+      "destination": "/what-we-do.html",
+      "permanent": false
+    },
+    {
+      "source": "/what-we-do-type-b.html",
+      "destination": "/what-we-do.html",
+      "permanent": false
+    },
+    {
+      "source": "/what-we-do-type-c.html",
+      "destination": "/what-we-do.html",
+      "permanent": false
     }
   ]
 }
