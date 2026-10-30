@@ -49,7 +49,7 @@ html.has-wall .top.back{background:var(--wall-black)}
 html.has-wall body.type-a > main{background:none}
 html.has-wall body.type-a .screen.chhaya{background:var(--black)}
 html.has-wall body.type-a .audit,html.has-wall body.type-a .ai,html.has-wall body.type-a .grow{background:none}
-html.has-wall .sec .lab{color:rgba(242,242,240,.6)}   /* Anwar R14 re-look, f4: the 11px eyebrow labels (AUDIT, AI SYSTEM, WHAT WE DO) measured 3.9 to 1 against the brightest plaster at .5; .6 lifts them past the 4.5 floor without changing their register */
+html.has-wall .sec .lab{color:rgba(242,242,240,.7)}   /* Anwar R14 re-look, f4: the 11px eyebrow labels (AUDIT, AI SYSTEM, WHAT WE DO) measured 3.9 to 1 against the brightest plaster at .5. Measured by his method (shown and hidden renders, glyph = pixels at half ink or more, plaster = brightest 5 percent in the text box): .6 gave 4.1 to 4.4 at the 25th percentile, under his 4.5, .66 left AI SYSTEM at 4.2, .7 reads 4.7, 5.6, 4.7 on the three, without changing their register */
 
 /* the audit (Anwar R13, question b): the pattern card with its orange pencil line comes back, as an object laid on the wall, not a ground.
    lighten drops the picture's own near-black into the plaster and keeps the card and the line. */
