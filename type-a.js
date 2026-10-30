@@ -149,7 +149,7 @@
 
     var VS='attribute vec2 a;varying vec2 v;void main(){v=a*.5+.5;gl_Position=vec4(a,0.,1.);}';
     var FS=[
-      'precision highp float;varying vec2 v;uniform sampler2D uT,uV,uG;uniform vec2 uRes,uVid,uAnc;uniform float uP,uHas,uHasG;uniform vec4 uA,uB,uH,uGs;uniform vec3 uL,uGd;',
+      'precision highp float;varying vec2 v;uniform sampler2D uT,uV,uG;uniform vec2 uRes,uVid,uAnc;uniform float uP,uHas,uHasG,uSee;uniform vec4 uA,uB,uH,uGs;uniform vec3 uL,uGd;',
       'float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}',
       // the plate hinged at its top edge: returns plate uv (y down), the ray depth, and the facing
       'vec4 plate(vec3 d,float ang,float tz,float ty){float W=uRes.x,H=uRes.y;vec3 p0=vec3(0.,H*.5+ty,uP+tz);float s=sin(ang),c=cos(ang);vec3 n=vec3(0.,s,c);vec3 vd=vec3(0.,c,-s);float den=dot(n,d);if(abs(den)<1e-5)return vec4(0.,0.,-1.,0.);float t=dot(n,p0)/den;if(t<=0.)return vec4(0.,0.,-1.,0.);vec3 q=t*d-p0;float r=dot(q,vd);return vec4((q.x+W*.5)/W,-r/H,t,den);}',
@@ -169,6 +169,8 @@
       // the face is the wall itself: the combed plaster, unlit, sampled in plate space so it travels with the sheet as it hinges. No lamp on it; the light lives in the work
       // R13: the wall breathes. uGd is the swing (x, y in plate widths and heights) and the breath (z, scale about the centre), from ground.js; uGs maps the plate onto the padded texture
       ' vec2 gq=((m.xy-.5)/uGd.z+.5-uGd.xy)*uGs.xy+uGs.zw;vec3 steel=uHasG>.5?texture2D(uG,gq).rgb:vec3(.0706,.0627,.0471);',
+      // the plate is not quite opaque (Asif, 30 Oct: "make the hero section black bit opaque so we see through bit of the video as well"): --plate-see of the street, at six tenths of its light, shows through the face; the cuts stay the brighter window
+      ' steel=mix(steel,raw*.6,uSee);',
       // the sheet's edge catches the light only once it starts to tilt; at rest the wall runs to the frame with no drawn border
       ' float e=min(min(m.x,1.-m.x)*uRes.x,min(m.y,1.-m.y)*uRes.y);steel+=vec3(.16,.16,.15)*(1.-smoothstep(0.,2.5,e))*smoothstep(0.,.05,uA.x);',
       // inside a cut the plate's thickness throws a shadow onto the film at the cut's top left; it lengthens as the plate lifts away
@@ -204,7 +206,7 @@
       gl.bindAttribLocation(prog,0,'a'); gl.linkProgram(prog); if(!gl.getProgramParameter(prog,gl.LINK_STATUS)) throw new Error(gl.getProgramInfoLog(prog));
       gl.useProgram(prog);
       var b=gl.createBuffer(); gl.bindBuffer(gl.ARRAY_BUFFER,b); gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,3,-1,-1,3]),gl.STATIC_DRAW); gl.enableVertexAttribArray(0); gl.vertexAttribPointer(0,2,gl.FLOAT,false,0,0);
-      ['uT','uV','uG','uRes','uVid','uAnc','uP','uHas','uHasG','uA','uB','uL','uH','uGs','uGd'].forEach(function(n){ U[n]=gl.getUniformLocation(prog,n); });
+      ['uT','uV','uG','uRes','uVid','uAnc','uP','uHas','uHasG','uA','uB','uL','uH','uGs','uGd','uSee'].forEach(function(n){ U[n]=gl.getUniformLocation(prog,n); });
       texT=gl.createTexture(); texV=gl.createTexture(); texG=gl.createTexture();
       [texT,texV,texG].forEach(function(t){ gl.bindTexture(gl.TEXTURE_2D,t); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE); gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE); });
       gl.uniform1i(U.uT,0); gl.uniform1i(U.uV,1); gl.uniform1i(U.uG,2); gl.uniform1f(U.uHasG,0); gl.uniform4f(U.uGs,1,1,0,0); gl.uniform3f(U.uGd,0,0,1);
@@ -229,7 +231,7 @@
       var cv=host.querySelector('canvas'); dpr=Math.min(window.devicePixelRatio||1,2); if(W*dpr>3600) dpr=3600/W;
       cv.width=Math.round(W*dpr); cv.height=Math.round(H*dpr); gl.viewport(0,0,cv.width,cv.height);
       gl.uniform2f(U.uRes,cv.width,cv.height); gl.uniform1f(U.uP,1200*dpr);
-      var t=texture(), hk=lay.hollow; gl.uniform4f(U.uH,hk.soft*dpr,hk.a,hk.sat,hk.clear);
+      var t=texture(), hk=lay.hollow; gl.uniform4f(U.uH,hk.soft*dpr,hk.a,hk.sat,hk.clear); gl.uniform1f(U.uSee,Math.min(.9,cssNum('--plate-see')));
       // uploaded as raw bytes, never as a canvas: a canvas upload would premultiply the rim's alpha into the cut's red and lose the cut wherever the rim is 0
       gl.activeTexture(gl.TEXTURE0); gl.bindTexture(gl.TEXTURE_2D,texT); gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,false); gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL,false); gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,t.w,t.h,0,gl.RGBA,gl.UNSIGNED_BYTE,new Uint8Array(t.data.buffer));
       uploadGround();
@@ -260,7 +262,7 @@
       function el(n,at,par){ var e=document.createElementNS(NS,n); for(var k in at) e.setAttribute(k,at[k]); (par||null)&&par.appendChild(e); return e; }
       var svg=el('svg',{class:'sheet',viewBox:'0 0 '+W+' '+H,width:W,height:H,'aria-hidden':'true'},host);
       var defs=el('defs',{},svg), mask=el('mask',{id:'plate-cut',maskUnits:'userSpaceOnUse',x:0,y:0,width:W,height:H},defs);
-      el('rect',{x:0,y:0,width:W,height:H,fill:'#fff'},mask);
+      var see=Math.round(255*(1-Math.min(.9,cssNum('--plate-see')))); el('rect',{x:0,y:0,width:W,height:H,fill:'rgb('+see+','+see+','+see+')'},mask);   // the same see-through as the shader: a grey mask lets --plate-see of the film through the face
       function text(par,t,x,y,font,fill,ls){ var m=/^(\d+) ([\d.]+)px "(.+)"$/.exec(font);   /* the size may be fractional: --L6 is 17px + 8vw, 132.2px at 1440 */ var e=el('text',{x:x,y:y,fill:fill,'font-family':'"'+m[3]+'"','font-weight':m[1],'font-size':m[2],'letter-spacing':ls||0,'xml:space':'preserve'},par); e.textContent=t; return e; }
       lay.rows.forEach(function(r){ r.toks.forEach(function(t){ if(t.k==='r') text(mask,t.t,t.x,r.y,r.font,'#000',r.ls); }); });
       // the face: the unlit wall's own black under the plaster picture, both cut by the letters; the picture is re-read from --ground each time the sheet is drawn, so crossing 760px swaps desk and phone files
