@@ -7,13 +7,14 @@
   "project": "FSI Website Hero 2026-10",
   "timelines": [
    "hero-reel-loop v4 desktop",
-   "hero-reel-loop v4 phone r2"
+   "hero-reel-loop v5 phone"
   ],
   "kept_for_record": [
    "v1",
    "v2",
    "v3 (the chat's own cut)",
-   "v4 phone (Rafiq's first phone positions)"
+   "v4 phone (Rafiq's first phone positions)",
+   "v4 phone r2 (drizzle centred; Anwar R18 asked for a new phone framing)"
   ]
  },
  "frames_end_exclusive": [
@@ -25,11 +26,11 @@
    "phone_pan": -121.3
   },
   {
-   "shot": "drizzle, woman smiling",
+   "shot": "drizzle, craft in focus (phone re-panned to x 1420 by Rafiq R19: strands, tray, glove)",
    "in": 2314,
    "out": 2339,
-   "phone_subject_x": 960,
-   "phone_pan": 0.0
+   "phone_subject_x": 1420,
+   "phone_pan": -232.6
   },
   {
    "shot": "face, eyes up then closed (cut on closed eyes)",
@@ -108,5 +109,6 @@
   }
  },
  "checked": "cuts at output frames 31 56 116 133 169 237 271 303 329 on both sizes and no others; no bands; joins sheeted (sheet/joins-desktop-v4.png, joins-phone-v4.png); phone r2 closed eyes and singer checked (sheet/phone-v4r2-face-singer.png)",
- "ruled_by": "Rafiq (edit seat), glowup-renders/r18-reel/RAFIQ-REEL.md, incl. PHONE, ROUND 2"
+ "ruled_by": "Rafiq (edit seat), glowup-renders/r18-reel/RAFIQ-REEL.md, incl. PHONE, ROUND 2",
+ "checked_r19": "v5 phone: 346 frames, cuts at 31 56 116 133 169 237 271 303 329 as v4; drizzle edges 2314 and 2338 at x 1420 show no shop or face residue (glowup-renders/r19-films/sheet/reel-v5-phone-drizzle.png); web PSNR min 43.7"
 }

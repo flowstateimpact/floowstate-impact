@@ -1,12 +1,14 @@
 {
- "record": "DaVinci Resolve project 'FSI Website Hero 2026-10', timelines 'hero-tiger-mix v2 desktop' and 'hero-tiger-mix v2 phone'",
+ "record": "DaVinci Resolve project 'FSI Website Hero 2026-10', timelines 'hero-tiger-mix v3 desktop' and 'hero-tiger-mix v3 phone' (v1 and v2 kept for record)",
  "source": "/Users/asiffarid/Documents/apps/fsi-demo-mix-2026-10/source/heritage-in-motion-61s-1080p.mp4",
  "fps": 24,
- "frames": 264,
- "order_by": "Rafiq, RAFIQ-HEROMIX.md",
+ "frames": 208,
+ "order_by": "Rafiq, glowup-renders/r19-films/RAFIQ-R19.md (after Anwar R18: the merged tigers and the bag-at-dusk plume out)",
  "departures_from_rafiq": [
-  "tiger eye ends at 1282 not 1298: the eye is shut from 1275, so the loop cut on the blink; 20 frames, his floor",
-  "phone tiger eye kept centred: his -260 offset pushed the eye to the crop edge",
+  "tiger eye ends at 1282, kept from v2 (cut on the blink, 20 frames, his floor)",
+  "walk starts 1208 not 1195: on full frames the second tiger at the right fades away at 1201-1203 instead of leaving frame, and a tiger appears from behind the near tiger's left shoulder at 1208; from 1208 one near tiger walks to the lens with a second, separate, out-of-focus tiger walking behind at left. Inside his fallback (never later than 1222). Flag to Karim and Zayan as he asked: a generated-continuity fault in the source at 1201-1207",
+  "walk ends out 1236 (last frame 1235): 1235 is fully lit, shadow from 1237; his allowed extension",
+  "phone walk x 720 not 740: at 740 the lit near eye touched the left edge on the last frame; 720 is his stated fallback",
   "phone zoom 1.343 inside the source's burned-in 804-row picture, so no black bands"
  ],
  "phone": "720x1280, scale to fill then zoom 1080/804",
@@ -37,20 +39,16 @@
    "out_frame_excl": 540
   },
   {
-   "shot": "bag at dusk",
-   "in_frame": 1052,
-   "out_frame_excl": 1076
-  },
-  {
-   "shot": "tiger walks to camera",
-   "in_frame": 1140,
-   "out_frame_excl": 1200,
-   "note": "phone pan 80.6 at zoom 1.343 (window left 573 of 1920)"
+   "shot": "tiger walks into the lens",
+   "in_frame": 1208,
+   "out_frame_excl": 1236,
+   "note": "phone subject x 720, pan 120.7 at zoom 1.343"
   },
   {
    "shot": "tiger eye, cut on the blink",
    "in_frame": 1262,
    "out_frame_excl": 1282
   }
- ]
+ ],
+ "cuts_checked": "scene scan finds cuts at 32 60 84 124 160 188 only, both sizes; every join sheeted (glowup-renders/r19-films/sheet/tiger-v3-joins-*.png); web files 208 frames, PSNR min 42.2 desktop, 41.8 phone"
 }
