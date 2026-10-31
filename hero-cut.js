@@ -27,7 +27,7 @@
     var stencil='700 '+L6+'px "Bespoke Stencil"', mid='400 '+os+'px "General Sans"', ls=track*L6;
     var rows=[];
     st1.forEach(function(ws){ rows.push({font:stencil,size:L6,ls:ls,pitch:pitch,words:ws}); });
-    rows.push({font:mid,size:os,ls:0,pitch:os*1.25,words:[{t:'other',k:'b',a:.66},{t:'studios',k:'b',a:.66}],under:'last'});
+    rows.push({font:mid,size:os,ls:0,pitch:os*1.25,words:[{t:'other',k:'b',a:.66},{t:'firms',k:'b',a:.66}],under:'last'});
     st2.forEach(function(ws){ rows.push({font:stencil,size:L6,ls:ls,pitch:pitch,words:ws,align:'right'}); });
     var strap=wrap(mid,'A strategy and design firm.'.split(' ').map(function(t){return {t:t}})).map(function(ws){ return ws.map(function(w){return w.t}).join(' '); });
     var capM=.718*os, brk=24, lhM=os*1.2;
