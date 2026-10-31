@@ -1,23 +1,112 @@
 {
-  "film": "hero reel loop, from Highlight Reel 2025",
-  "source": "/Users/asiffarid/Documents/apps/fsi-website-2026-10/lumiere-films/Showreel/videos/Highlight Reel 2025.mp4",
-  "fps": 24,
-  "picture_area": "source rows 140-940 (burned-in bands above and below)",
-  "resolve": {"project": "FSI Website Hero 2026-10", "timelines": ["hero-reel-loop v3 desktop", "hero-reel-loop v3 phone"], "kept_for_record": ["v1 (Anwar's timecodes as written)", "v2 (no hands)"]},
-  "frames_end_exclusive": [
-    {"shot": "shop, woman in glasses (lit, first frame, poster)", "in": 2283, "out": 2314, "phone_pan": -121.3},
-    {"shot": "chocolate, woman smiling", "in": 2314, "out": 2339, "phone_pan": 0},
-    {"shot": "face, eyes up then closed", "in": 2339, "out": 2399, "phone_pan": 0},
-    {"shot": "chocolate bars, the master's own dissolve, garden walk", "in": 2399, "out": 2464, "phone_pan": 232.6},
-    {"shot": "Pavilion domes and flowers", "in": 2464, "out": 2500, "phone_pan": 0},
-    {"shot": "dancer at the window", "in": 2500, "out": 2568, "phone_pan": -141.6},
-    {"shot": "singer at the mic", "in": 2196, "out": 2217, "phone_pan": 0},
-    {"shot": "foot on the pedal", "in": 2217, "out": 2243, "phone_pan": 0},
-    {"shot": "hands on the keys (loop returns to the shop)", "in": 2243, "out": 2260, "phone_pan": 0}
+ "film": "hero reel loop, from Highlight Reel 2025",
+ "source": "/Users/asiffarid/Documents/apps/fsi-website-2026-10/lumiere-films/Showreel/videos/Highlight Reel 2025.mp4",
+ "fps": 24,
+ "picture_area": "source rows 140-940 (burned-in bands above and below)",
+ "resolve": {
+  "project": "FSI Website Hero 2026-10",
+  "timelines": [
+   "hero-reel-loop v4 desktop",
+   "hero-reel-loop v4 phone r2"
   ],
-  "total_frames": 349,
-  "departure_from_anwar_r17_s6": "his in 1:34.5 (frame 2268) is the dark wide pianist, shot 2260-2283; the shop starts at 2283. Followed his written intent (open on the lit shop, never in the dark; rest beat = singer and hands), dropped the dark pianist.",
-  "phone": "720x1280, zoom 1.35 to clear the bands, pan units = source px x 1.35 / 2.67",
-  "web": {"files": ["media/reel-loop.mp4", "media/reel-loop-phone.mp4", "media/reel-poster.jpg", "media/reel-poster-phone.jpg"], "x264_crf": 23, "psnr_min_db": {"desktop": 37.87, "phone": 38.68}, "bytes": {"desktop": 5716966, "phone": 3480185}},
-  "checked": "every join sheeted at both sizes (sheet/joins-desktop-v3.png, sheet/joins-phone-v3.png); scene detection finds exactly the 8 planned cuts; no bands (cropdetect)"
+  "kept_for_record": [
+   "v1",
+   "v2",
+   "v3 (the chat's own cut)",
+   "v4 phone (Rafiq's first phone positions)"
+  ]
+ },
+ "frames_end_exclusive": [
+  {
+   "shot": "shop, woman in glasses (lit, first frame, poster)",
+   "in": 2283,
+   "out": 2314,
+   "phone_subject_x": 1200,
+   "phone_pan": -121.3
+  },
+  {
+   "shot": "drizzle, woman smiling",
+   "in": 2314,
+   "out": 2339,
+   "phone_subject_x": 960,
+   "phone_pan": 0.0
+  },
+  {
+   "shot": "face, eyes up then closed (cut on closed eyes)",
+   "in": 2339,
+   "out": 2399,
+   "phone_subject_x": 830,
+   "phone_pan": 65.7
+  },
+  {
+   "shot": "chocolate bars (out before the master's dissolve at 2416)",
+   "in": 2399,
+   "out": 2416,
+   "phone_subject_x": 960,
+   "phone_pan": 0.0
+  },
+  {
+   "shot": "Pavilion domes and flowers",
+   "in": 2464,
+   "out": 2500,
+   "phone_subject_x": 960,
+   "phone_pan": 0.0
+  },
+  {
+   "shot": "dancer at the window",
+   "in": 2500,
+   "out": 2568,
+   "phone_subject_x": 1240,
+   "phone_pan": -141.6
+  },
+  {
+   "shot": "singer in stripes pointing at us (clean from 2579)",
+   "in": 2580,
+   "out": 2614,
+   "phone_subject_x": 970,
+   "phone_pan": -5.1
+  },
+  {
+   "shot": "pianist under the window light",
+   "in": 2145,
+   "out": 2177,
+   "phone_subject_x": 790,
+   "phone_pan": 86.0
+  },
+  {
+   "shot": "foot on the pedal",
+   "in": 2217,
+   "out": 2243,
+   "phone_subject_x": 960,
+   "phone_pan": 0.0
+  },
+  {
+   "shot": "hands on the keys (loop returns to the shop)",
+   "in": 2243,
+   "out": 2260,
+   "phone_subject_x": 960,
+   "phone_pan": 0.0
+  }
+ ],
+ "total_frames": 346,
+ "phone": "720x1280, zoom 1.35 to clear the bands, pan units = source px x 1.35 / 2.67",
+ "web": {
+  "files": [
+   "media/reel-loop.mp4",
+   "media/reel-loop-phone.mp4",
+   "media/reel-poster.jpg",
+   "media/reel-poster-phone.jpg"
+  ],
+  "x264_crf": 23,
+  "psnr_min_db": {
+   "desktop": 37.87,
+   "phone": 38.68
+  },
+  "bytes": {
+   "desktop": 5716966,
+   "phone": 3480185
+  }
+ },
+ "checked": "cuts at output frames 31 56 116 133 169 237 271 303 329 on both sizes and no others; no bands; joins sheeted (sheet/joins-desktop-v4.png, joins-phone-v4.png); phone r2 closed eyes and singer checked (sheet/phone-v4r2-face-singer.png)",
+ "ruled_by": "Rafiq (edit seat), glowup-renders/r18-reel/RAFIQ-REEL.md, incl. PHONE, ROUND 2"
 }
