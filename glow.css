@@ -105,6 +105,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 /* the hairline under Next runs to the plate's left edge, not its box (the plate sits 0.0939 of the box in from each side); on phones it ends at the plate's right edge */
 .foot .next{margin-right:calc(26vw * -0.0939)}
 @media (max-width:760px){.foot .next{margin-right:calc(60vw * 0.0939)}}
+.foot:not(:has(.mark3d)) .next{margin-right:0;grid-column:1 / -1}   /* R18 P3: the home footer lost its 3D tile; the link no longer tucks under it */
 
 /* the button line swaps: every letter of a changing line moves on its own; the old line clears before the new arrives */
 .rot{display:inline-grid;vertical-align:top}

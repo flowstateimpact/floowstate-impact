@@ -1,0 +1,44 @@
+/* hero-journey.css: the home hero as a journey (R18, 31 Oct 2026, Nadir). Loads after type-a.css. Journey V2's scene rules made live:
+   three screens of scroll, the reel behind the cut plate, the light spill, the hand-over, the word Pause. */
+html.journey-on{scroll-snap-type:none !important}        /* the scene is a scrubbed camera over two screens of scroll; a proximity snap pulls it back to the top */
+html.lenis,html.lenis body{height:auto}
+.lenis.lenis-smooth{scroll-behavior:auto !important}
+.lenis.lenis-stopped{overflow:hidden}
+
+.scene[data-journey]{height:calc(var(--sh) * 3)}
+.scene[data-journey] .stage{perspective:none}
+/* the reel behind the plate; the lane under it, shown only after the cut at .9 */
+.scene .reel{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:1;opacity:0}
+.scene.built .reel{opacity:1}                            /* until the plate is cut the stage shows its wall, never a bare film without the words */
+.scene[data-journey] .bed{z-index:0}
+/* the plate: band (thickness), face (the wall with the words cut out), spill (the film's light on the ridges), top (lip, print, DARE) */
+.cutbox{position:absolute;inset:0;perspective:1400px;perspective-origin:50% 50%}
+.cut{position:absolute;inset:0;transform-origin:50% 50%;will-change:transform,opacity}
+.cut .lay{position:absolute;inset:0;width:100%;height:100%;display:block;overflow:hidden}
+.cut .hj-band{will-change:transform,opacity}
+.cut .spill{position:absolute;left:0;top:0;width:100%;height:100%;display:block;transform-origin:0 0;mix-blend-mode:screen;opacity:var(--spill,.3);pointer-events:none}
+
+/* after the cut: FILM sits bottom left over the caption, on the strip's own low fade, so her face at the centre of the tiger mix stays clear */
+.scene[data-journey] .after::before{content:"";position:absolute;left:0;right:0;bottom:0;height:46%;background:linear-gradient(to top,rgba(10,9,8,.72),rgba(10,9,8,.28) 55%,rgba(10,9,8,0));pointer-events:none}
+.scene[data-journey] .after .word{left:var(--m);top:auto;bottom:calc(var(--m) + 58px)}
+@media (max-width:760px){
+  .scene[data-journey] .after .word{font-size:16vw;bottom:calc(var(--m) + 58px)}
+  .scene[data-journey] .after::before{height:40%}
+}
+
+/* the one control: the word, not an icon. Bottom left at load (free under WILL, the closing line owns the bottom right), bottom right after the cut */
+.hj-pause{position:absolute;z-index:6;left:var(--m);bottom:calc(var(--m) - 6px);margin:0;padding:6px 0;background:none;border:0;color:var(--white);font-family:"General Sans",system-ui,sans-serif;font-weight:500;font-size:var(--small);line-height:1;letter-spacing:.027em;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.hj-pause:hover,.hj-pause:focus-visible{text-decoration:underline;text-underline-offset:4px;text-decoration-color:var(--accent)}
+.scene.past .hj-pause,.scene.rev .hj-pause{left:auto;right:var(--m)}   /* P3: right from .82, when the caption comes up bottom left */
+
+/* reduced motion and still renders: one screen, the plate stands, the reel holds its first frame, the caption is reachable */
+@media (prefers-reduced-motion:reduce){
+  .scene[data-journey]{height:var(--sh)}
+  .scene[data-journey] .after{--rev:1}
+  .scene[data-journey] .after .word{display:none}
+  .hj-pause{display:none}
+}
+html.plate-still .scene[data-journey]{height:var(--sh)}
+html.plate-still .scene[data-journey] .after{--rev:1}
+html.plate-still .scene[data-journey] .after .word{display:none}
+html.plate-still .hj-pause{display:none}

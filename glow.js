@@ -72,7 +72,7 @@
     // 2b. the lane on home A: you walk into the picture, it does not come to you. The film settles from 1.06 to 1 as the screen arrives
     if(document.querySelector('.heritage .bed')){ gsap.fromTo('.heritage .bed',{scale:1.06},{scale:1,ease:'none',scrollTrigger:{trigger:'.heritage',start:'top bottom',end:'top top',scrub:true}}); }
     // 2c. the section words drift against the scroll as their screens pass
-    gsap.utils.toArray('.screen .word').forEach(function(w){ gsap.fromTo(w,{x:'3vw'},{x:'-3vw',ease:'none',scrollTrigger:{trigger:w.parentNode,start:'top bottom',end:'bottom top',scrub:true}}); });
+    gsap.utils.toArray('.screen .word').filter(function(w){ return !w.closest('[data-journey]'); }).forEach(function(w){   /* R18 P3: the hero journey's FILM is anchored to its caption, so it does not drift */ gsap.fromTo(w,{x:'3vw'},{x:'-3vw',ease:'none',scrollTrigger:{trigger:w.parentNode,start:'top bottom',end:'bottom top',scrub:true}}); });
     // 2d. the stencil service words arrive the way paint arrives: through the cut, once, as you reach them
     var words=gsap.utils.toArray('.svc .row .st');
     if(words.length){ gsap.set(words,{clipPath:'inset(-12% 100% -12% 0%)'});

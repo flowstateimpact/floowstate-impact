@@ -1,0 +1,12 @@
+[
+ {
+  "file": "r18-1440-footer.png",
+  "errors": [],
+  "measure": "measure failed: eval failed: {\"exceptionId\":1,\"text\":\"Uncaught\",\"lineNumber\":0,\"columnNumber\":169,\"scriptId\":\"15\",\"stackTrace\":{\"callFrames\":[{\"functionName\":\"\",\"scriptId\":\"15\",\"url\":\"\",\"lineNumber\":0,\"columnNumber\":169},{\"functionName\":\"\",\"scriptId\":\"15\",\"url\":\"\",\"lineNumber\":0,\"columnNumber\":317}]},\"exception\":{\"type\":\"object\",\"subtype\":\"error\",\"className\":\"TypeError\",\"description\":\"TypeError: Cannot read properties of null"
+ },
+ {
+  "file": "r18-390-footer.png",
+  "errors": [],
+  "measure": "measure failed: eval failed: {\"exceptionId\":1,\"text\":\"Uncaught\",\"lineNumber\":0,\"columnNumber\":169,\"scriptId\":\"15\",\"stackTrace\":{\"callFrames\":[{\"functionName\":\"\",\"scriptId\":\"15\",\"url\":\"\",\"lineNumber\":0,\"columnNumber\":169},{\"functionName\":\"\",\"scriptId\":\"15\",\"url\":\"\",\"lineNumber\":0,\"columnNumber\":317}]},\"exception\":{\"type\":\"object\",\"subtype\":\"error\",\"className\":\"TypeError\",\"description\":\"TypeError: Cannot read properties of null"
+ }
+]

@@ -1,0 +1,7 @@
+[
+ {
+  "file": "r18-1440-load.png",
+  "errors": [],
+  "measure": "{\"docW\":1440,\"iw\":1440,\"j\":{\"p\":0,\"mode\":\"journey\",\"past\":false,\"s\":1,\"S\":62.1,\"hole\":{\"x\":627.5,\"y\":453.5,\"r\":16.413999557495117},\"check\":[[\"WE\",0.01],[\"MAKE\",0.01],[\"THE\",0.01],[\"WORK\",0.02],[\"WILL\",0],[\"NOT\",0.01]]},\"reel\":[\"reel-loop.mp4\",false,4,\"visible\"],\"lane\":[\"lane.mp4\",true,0,\"hidden\",\"none\"],\"btn\":[\"Pause\",40,842,\"block\"]}"
+ }
+]
