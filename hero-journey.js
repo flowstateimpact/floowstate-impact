@@ -36,23 +36,44 @@
     J.past=past; label();
   }
 
-  /* the camera: screen(X) = P + (C - P) e + s (X - P), done as the viewBox so the glyph edges re-render as vectors at every zoom */
+  /* the camera: screen(X) = P + (C - P) e + s (X - P). R20: the vector plate is re-cut (viewBox) only at a few scale steps, each drawn a little AHEAD of the
+     camera (s0 up to s x LOD) into a box OVER larger than the frame on every side; between steps a compositor transform carries it down to the true scale,
+     so the zoom never upscales a raster (edges stay at least as sharp as a fresh cut) and the GPU re-rasterises the full plate a handful of times, not
+     every frame. A pause of SETTLE ms re-cuts at the exact scale, so a still frame is the vector cut itself. */
+  var LOD=1.3, OVER=.16, SETTLE=140, cam=null, settleT=0, lastS=1;
+  function camAt(e){ var W=lay.W,H=lay.H,s=1+e*(S-1); return {e:e,s:s,x:hole.x+(W/2-hole.x)*e-s*hole.x,y:hole.y+(H/2-hole.y)*e-s*hole.y}; }
+  function covers(c0,c){ var W=lay.W,H=lay.H,Mx=Math.round(W*OVER),My=Math.round(H*OVER),k=c.s/c0.s,ox=c.x-k*c0.x,oy=c.y-k*c0.y;
+    return k<=1+1e-9&&k>=1/LOD-1e-9&&ox-k*Mx<=.01&&ox+k*(W+Mx)>=W-.01&&oy-k*My<=.01&&oy+k*(H+My)>=H-.01; }
+  /* R20b: the viewBox is R19's to the digit (3 decimals over the frame); Chrome's edge anti-aliasing moves with the 4th decimal, so any other numbers for the
+     same camera differ from R19 by up to 96/255 along the curves. The overscan comes from the svg drawing past its own box (overflow visible), bounded by
+     a clip-path inset of minus OVER on each side, not from a bigger viewBox. */
+  function cutAt(c0){ var W=lay.W,H=lay.H;
+    var vb=(-c0.x/c0.s).toFixed(3)+' '+(-c0.y/c0.s).toFixed(3)+' '+(W/c0.s).toFixed(3)+' '+(H/c0.s).toFixed(3);
+    parts.all.forEach(function(g){ g.setAttribute('viewBox',vb); }); cam=c0; J.cuts=(J.cuts||0)+1; }
+  function lens(c,bx,by){ var k=c.s/cam.s,tx=c.x-k*cam.x,ty=c.y-k*cam.y, ks=k.toFixed(6);
+    var m='matrix('+ks+',0,0,'+ks+','+tx.toFixed(3)+','+ty.toFixed(3)+')';
+    parts.face.style.transform=parts.lip.style.transform=parts.top.style.transform=m;
+    parts.band.style.transform='matrix('+ks+',0,0,'+ks+','+(tx+bx).toFixed(3)+','+(ty+by).toFixed(3)+')'; }
+  function settle(){ settleT=0; if(!parts||!cam) return; var c=camAt(J.e); if(Math.abs(c.s-cam.s)>1e-9||Math.abs(c.x-cam.x)>1e-6){ cutAt(c); apply(J.p); } }
   function apply(p){
     after.style.setProperty('--rev',String(seg(p,.82,.9))); scene.classList.toggle('rev',p>=.82); handOver(p);   /* P3: .rev moves Pause right as the caption rises, it sat on the caption at .82 to .9 */
     if(!parts) return;
-    var W=lay.W,H=lay.H, e=ease(seg(p,0,.7)), s=1+e*(S-1), Tx=hole.x+(W/2-hole.x)*e-s*hole.x, Ty=hole.y+(H/2-hole.y)*e-s*hole.y, tilt=1-seg(p,0,.3);
-    var vb=(-Tx/s).toFixed(3)+' '+(-Ty/s).toFixed(3)+' '+(W/s).toFixed(3)+' '+(H/s).toFixed(3);
-    parts.all.forEach(function(g){ g.setAttribute('viewBox',vb); });
-    spill.style.transform='matrix('+s.toFixed(4)+',0,0,'+s.toFixed(4)+','+Tx.toFixed(2)+','+Ty.toFixed(2)+')';
+    var e=ease(seg(p,0,.7)), c=camAt(e), s=c.s, tilt=1-seg(p,0,.3);
+    if(!cam||!covers(cam,c)){
+      var ahead=null; if(cam&&s>lastS&&s<S){ var s0=Math.min(S,s*LOD); for(var i=0;i<3&&!ahead;i++){ var a=camAt((s0-1)/(S-1)); if(covers(a,c)) ahead=a; else s0=s+(s0-s)/2; } }
+      cutAt(ahead||c);
+    }
+    lastS=s; J.e=e; J.s=s; J.k=+(s/cam.s).toFixed(4);
+    if(cam.s!==s||cam.x!==c.x){ clearTimeout(settleT); settleT=setTimeout(settle,SETTLE); }
+    spill.style.transform='matrix('+s.toFixed(4)+',0,0,'+s.toFixed(4)+','+c.x.toFixed(2)+','+c.y.toFixed(2)+')';
     var fade=1-seg(p,.6,.72);
     parts.cut.style.transform='rotateX('+(-sy*2.2*tilt).toFixed(3)+'deg) rotateY('+(sx*2.6*tilt).toFixed(3)+'deg)';
     parts.cut.style.opacity=String(fade); parts.cut.style.visibility=fade>0?'visible':'hidden';
     parts.band.style.opacity=String(1-seg(p,.3,.38));   /* P3: was .35 to .5; a half-faded band read as grey veils over the film at .42, so it now clears in one short step as the camera passes through the wall */
-    parts.band.style.transform='translate3d('+((3+sx*T*.6)*s).toFixed(2)+'px,'+((4+sy*T*.5)*s).toFixed(2)+'px,0)';
+    lens(c,(3+sx*T*.6)*s,(4+sy*T*.5)*s);   /* the band's pointer offset, in screen px times s as before */
     var dark=seg(p,.15,.32);   /* R19: the wall drops into shadow as the camera enters, so the film is the brightest thing and the raster's staircase sinks; the spill goes with it */
     parts.wall.style.opacity=String(1-.75*dark); spill.style.opacity=String(SPILL*(1-dark));
-    parts.lip.style.opacity=String(lay.hollow.lip*(1-seg(p,.32,.40)));   /* R19: the lip fades before the zoom turns its rim into a pale glass band */
-    J.s=s; J.e=e;
+    parts.lip.style.opacity=String(lay.hollow.lip*(1-seg(p,.32,.40)));   /* R19: the lip fades before the zoom turns its rim into a pale glass band; R20: on its own layer, a compositor opacity */
   }
   function setP(v){ J.p=v; apply(v); }
 
@@ -81,9 +102,10 @@
       spill.style.setProperty('--spill',String(SPILL));
       tiny=document.createElement('canvas'); tiny.width=Math.max(4,Math.round(W/16)); tiny.height=Math.max(4,Math.round(H/16)); tctx=tiny.getContext('2d'); tctx.imageSmoothingEnabled=true;
       mask=Cut.spillMask(lay,wc,Q,REACH); lastT=-1;
-      cut.appendChild(pl.band); cut.appendChild(pl.face); cut.appendChild(spill); cut.appendChild(pl.top);
+      cut.appendChild(pl.band); cut.appendChild(pl.face); cut.appendChild(spill); cut.appendChild(pl.lip); cut.appendChild(pl.top);
+      var Mx=Math.round(W*OVER), My=Math.round(H*OVER); pl.all.forEach(function(g){ g.style.clipPath='inset('+(-My)+'px '+(-Mx)+'px)'; });   /* R20b: the overscan the camera draws ahead into (overflow visible in the CSS) */
       host.innerHTML=''; host.appendChild(box);
-      parts={cut:cut,band:pl.band,face:pl.face,top:pl.top,lip:pl.lip,wall:pl.wall,all:pl.all};
+      parts={cut:cut,band:pl.band,face:pl.face,top:pl.top,lip:pl.lip,wall:pl.wall,all:pl.all}; cam=null; lastS=1;
       scene.classList.add('built'); J.hole=hole; J.S=S; J.lay={W:W,H:H,L6:lay.L6,o:lay.o}; J.check=spacingCheck();
       apply(J.p); drawSpill();
     });

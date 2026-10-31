@@ -1,0 +1,98 @@
+[
+ {
+  "pass": 1,
+  "cold": true,
+  "info": {
+   "mode": "journey",
+   "lenis": true,
+   "docH": 11488,
+   "w": 1440,
+   "h": 900,
+   "dpr": 2,
+   "gl": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2 Ultra, Unspecified Version)"
+  },
+  "p0": 0,
+  "steps": 44,
+  "endP": 1,
+  "frames": 399,
+  "longest": 32.5,
+  "top5": [
+   32.5,
+   17.6,
+   17.6,
+   17.6,
+   17.6
+  ],
+  "over50": 0,
+  "over33": 0,
+  "over20": 1,
+  "median": 16.7,
+  "slow": [],
+  "loaf": [],
+  "errors": []
+ },
+ {
+  "pass": 2,
+  "cold": false,
+  "info": {
+   "mode": "journey",
+   "lenis": true,
+   "docH": 11488,
+   "w": 1440,
+   "h": 900,
+   "dpr": 2,
+   "gl": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2 Ultra, Unspecified Version)"
+  },
+  "p0": 0,
+  "steps": 44,
+  "endP": 1,
+  "frames": 399,
+  "longest": 17.7,
+  "top5": [
+   17.7,
+   17.7,
+   17.7,
+   17.7,
+   17.6
+  ],
+  "over50": 0,
+  "over33": 0,
+  "over20": 0,
+  "median": 16.7,
+  "slow": [],
+  "loaf": [],
+  "errors": []
+ },
+ {
+  "pass": 3,
+  "cold": false,
+  "info": {
+   "mode": "journey",
+   "lenis": true,
+   "docH": 11488,
+   "w": 1440,
+   "h": 900,
+   "dpr": 2,
+   "gl": "ANGLE (Apple, ANGLE Metal Renderer: Apple M2 Ultra, Unspecified Version)"
+  },
+  "p0": 0,
+  "steps": 44,
+  "endP": 1,
+  "frames": 397,
+  "longest": 32.5,
+  "top5": [
+   32.5,
+   17.8,
+   17.7,
+   17.7,
+   17.7
+  ],
+  "over50": 0,
+  "over33": 0,
+  "over20": 1,
+  "median": 16.7,
+  "slow": [],
+  "loaf": [],
+  "errors": []
+ }
+]

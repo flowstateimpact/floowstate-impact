@@ -15,7 +15,8 @@ html.lenis,html.lenis body{height:auto}
 .cutbox{position:absolute;inset:0;perspective:1400px;perspective-origin:50% 50%}
 .cut{position:absolute;inset:0;transform-origin:50% 50%;will-change:transform,opacity}
 .cut .lay{position:absolute;inset:0;width:100%;height:100%;display:block;overflow:hidden}
-.cut .hj-band{will-change:transform,opacity}
+.cut .lay{transform-origin:0 0;will-change:transform;overflow:visible}   /* R20: each plate layer is carried by a compositor transform between re-cuts; R20b: it draws past its box into the overscan, clipped by an inline clip-path inset */
+.cut .hj-band,.cut .hj-lip{will-change:transform,opacity}
 .cut .spill{position:absolute;left:0;top:0;width:100%;height:100%;display:block;transform-origin:0 0;mix-blend-mode:screen;opacity:var(--spill,.3);pointer-events:none}
 
 /* after the cut: FILM sits bottom left over the caption, on the strip's own low fade, so her face at the centre of the tiger mix stays clear */

@@ -1,0 +1,6 @@
+top check [[0,0,"journey"]] -> [0,0,"journey"]
+{"pass":1,"longest":32.5,"over50":0,"frames":399,"endP":1}
+top check [[0,0,"journey"]] -> [0,0,"journey"]
+{"pass":2,"longest":17.7,"over50":0,"frames":399,"endP":1}
+top check [[0,0,"journey"]] -> [0,0,"journey"]
+{"pass":3,"longest":32.5,"over50":0,"frames":397,"endP":1}

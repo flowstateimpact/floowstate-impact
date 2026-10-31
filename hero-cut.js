@@ -95,14 +95,16 @@
     var fg=el('g',{mask:'url(#hj-mask)',opacity:(1-see*.6).toFixed(3)},face); el('rect',{x:0,y:0,width:W,height:H,fill:'#12100C'},fg);   /* one opacity on the group: the rect and the wall each at .868 stacked to .983 and lost --plate-see */
     var im=el('image',{x:0,y:0,width:W,height:H,preserveAspectRatio:'none'},fg); im.setAttribute('href',wallURL);
     /* top: the lip inside every cut (the wide wall stroke at half, the rim at full, the group at --hollow-lip), the printed lines, DARE */
-    var top=svgRoot(lay,'lay hj-top'), td=el('defs',{},top), tc=el('clipPath',{id:'hj-clip-t'},td); cutText(tc,lay,{});
-    var lg=el('g',{'clip-path':'url(#hj-clip-t)',opacity:lay.hollow.lip},top), lk={fill:'none',stroke:'#F2F2F0','stroke-linejoin':'miter','stroke-miterlimit':3};
+    /* R20: the lip is its own layer under the printed lines, so its fade is a compositor opacity (same stacking, same pixels as the group opacity it replaces) */
+    var lip=svgRoot(lay,'lay hj-lip'), td=el('defs',{},lip), tc=el('clipPath',{id:'hj-clip-t'},td); cutText(tc,lay,{}); lip.style.opacity=String(lay.hollow.lip);
+    var top=svgRoot(lay,'lay hj-top');
+    var lg=el('g',{'clip-path':'url(#hj-clip-t)'},lip), lk={fill:'none',stroke:'#F2F2F0','stroke-linejoin':'miter','stroke-miterlimit':3};
     cutText(lg,lay,Object.assign({'stroke-width':(lay.hollow.rim+lay.hollow.wall)*2,'stroke-opacity':.5},lk));
     cutText(lg,lay,Object.assign({'stroke-width':2*Math.max(1,lay.hollow.rim*(Math.min(devicePixelRatio||1,2)))/Math.min(devicePixelRatio||1,2)},lk));
     lay.rows.forEach(function(r){ var f=fontOf(r.font); r.toks.forEach(function(t){ if(t.k==='r') return;
       var e=el('text',{x:t.x,y:r.y,'font-family':f.f,'font-weight':f.w,'font-size':f.s,'letter-spacing':r.ls,fill:t.k==='g'?'#E27F22':'#F2F2F0','fill-opacity':t.k==='g'?1:t.a},top); e.textContent=t.t; }); });
     lay.who.forEach(function(wd){ var f=fontOf(wd.font), e=el('text',{x:wd.x,y:wd.y,'font-family':f.f,'font-weight':f.w,'font-size':f.s,'text-anchor':wd.align==='right'?'end':'start',fill:'#F2F2F0','fill-opacity':wd.a},top); e.textContent=wd.t; });
-    return {band:band,face:face,top:top,lip:lg,wall:im,all:[band,face,top]};   /* R19: lip and wall returned so the journey can fade them (Anwar R18 fixes 1 and 2) */
+    return {band:band,face:face,lip:lip,top:top,wall:im,all:[band,face,lip,top]};   /* R19: lip and wall returned so the journey can fade them; R20: the lip is the hj-lip svg itself */
   }
 
   /* the camera's way in: the thickest point of the O's cut stroke (two-pass chamfer distance inside the cut), and that point's clear radius */
