@@ -36,9 +36,8 @@ html.lenis,html.lenis body{height:auto}
   .scene[data-journey]{height:var(--sh)}
   .scene[data-journey] .after{--rev:1}
   .scene[data-journey] .after .word{display:none}
-  .hj-pause{display:none}
 }
 html.plate-still .scene[data-journey]{height:var(--sh)}
 html.plate-still .scene[data-journey] .after{--rev:1}
 html.plate-still .scene[data-journey] .after .word{display:none}
-html.plate-still .hj-pause{display:none}
+html.plate-still.plate-render .hj-pause{display:none}   /* R19: a full-page render only; a reduced-motion visitor keeps Play */

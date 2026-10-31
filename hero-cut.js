@@ -102,7 +102,7 @@
     lay.rows.forEach(function(r){ var f=fontOf(r.font); r.toks.forEach(function(t){ if(t.k==='r') return;
       var e=el('text',{x:t.x,y:r.y,'font-family':f.f,'font-weight':f.w,'font-size':f.s,'letter-spacing':r.ls,fill:t.k==='g'?'#E27F22':'#F2F2F0','fill-opacity':t.k==='g'?1:t.a},top); e.textContent=t.t; }); });
     lay.who.forEach(function(wd){ var f=fontOf(wd.font), e=el('text',{x:wd.x,y:wd.y,'font-family':f.f,'font-weight':f.w,'font-size':f.s,'text-anchor':wd.align==='right'?'end':'start',fill:'#F2F2F0','fill-opacity':wd.a},top); e.textContent=wd.t; });
-    return {band:band,face:face,top:top,all:[band,face,top]};
+    return {band:band,face:face,top:top,lip:lg,wall:im,all:[band,face,top]};   /* R19: lip and wall returned so the journey can fade them (Anwar R18 fixes 1 and 2) */
   }
 
   /* the camera's way in: the thickest point of the O's cut stroke (two-pass chamfer distance inside the cut), and that point's clear radius */

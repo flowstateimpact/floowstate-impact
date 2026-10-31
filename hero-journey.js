@@ -23,6 +23,7 @@
   if(reduce||still){ reel.removeAttribute('autoplay'); reel.pause(); }
   function label(){ var v=cur(), on=!v.paused; btn.textContent=on?'Pause':'Play'; btn.setAttribute('aria-label',on?'Pause the film':'Play the film'); }
   [reel,lane].forEach(function(v){ v.addEventListener('play',label); v.addEventListener('pause',label); });
+  reel.addEventListener('play',function(){ if(J.mode!=='still') return; (function loop(){ if(reel.paused||J.mode!=='still') return; drawSpill(); requestAnimationFrame(loop); })(); });   /* R19: in reduced motion the spill follows the reel only while it plays */
   btn.addEventListener('click',function(){ var v=cur(); if(v.paused){ userPaused=false; v.play().catch(function(){}); } else { userPaused=true; v.pause(); } label(); });
   function want(v){ if(!userPaused&&seen&&!reduce&&!still) v.play().catch(function(){}); }
   if('IntersectionObserver' in window&&!still) new IntersectionObserver(function(es){ seen=es[0].isIntersecting; if(seen) want(cur()); else cur().pause(); },{threshold:0}).observe(stage);
@@ -48,6 +49,9 @@
     parts.cut.style.opacity=String(fade); parts.cut.style.visibility=fade>0?'visible':'hidden';
     parts.band.style.opacity=String(1-seg(p,.3,.38));   /* P3: was .35 to .5; a half-faded band read as grey veils over the film at .42, so it now clears in one short step as the camera passes through the wall */
     parts.band.style.transform='translate3d('+((3+sx*T*.6)*s).toFixed(2)+'px,'+((4+sy*T*.5)*s).toFixed(2)+'px,0)';
+    var dark=seg(p,.15,.32);   /* R19: the wall drops into shadow as the camera enters, so the film is the brightest thing and the raster's staircase sinks; the spill goes with it */
+    parts.wall.style.opacity=String(1-.75*dark); spill.style.opacity=String(SPILL*(1-dark));
+    parts.lip.style.opacity=String(lay.hollow.lip*(1-seg(p,.32,.40)));   /* R19: the lip fades before the zoom turns its rim into a pale glass band */
     J.s=s; J.e=e;
   }
   function setP(v){ J.p=v; apply(v); }
@@ -79,7 +83,7 @@
       mask=Cut.spillMask(lay,wc,Q,REACH); lastT=-1;
       cut.appendChild(pl.band); cut.appendChild(pl.face); cut.appendChild(spill); cut.appendChild(pl.top);
       host.innerHTML=''; host.appendChild(box);
-      parts={cut:cut,band:pl.band,face:pl.face,top:pl.top,all:pl.all};
+      parts={cut:cut,band:pl.band,face:pl.face,top:pl.top,lip:pl.lip,wall:pl.wall,all:pl.all};
       scene.classList.add('built'); J.hole=hole; J.S=S; J.lay={W:W,H:H,L6:lay.L6,o:lay.o}; J.check=spacingCheck();
       apply(J.p); drawSpill();
     });
@@ -93,7 +97,7 @@
   function tick(){ if(ptr.has&&J.p<.35){ var nx=sx+(ptr.x-sx)*.06, ny=sy+(ptr.y-sy)*.06; if(Math.abs(nx-sx)+Math.abs(ny-sy)>1e-4){ sx=nx; sy=ny; apply(J.p); } } drawSpill(); requestAnimationFrame(tick); }
 
   function start(){
-    if(reduce||still||!window.gsap||!window.ScrollTrigger){ root.classList.add('plate-still'); J.mode='still'; setP(0); label(); return; }
+    if(reduce||still||!window.gsap||!window.ScrollTrigger){ root.classList.add('plate-still'); if(still) root.classList.add('plate-render'); J.mode='still'; setP(0); label(); return; }   /* R19: only a full-page render (full=) hides the word; a reduced-motion visitor sees Play */
     root.classList.add('journey-on'); gsap.registerPlugin(ScrollTrigger);
     if(window.Lenis&&!render){ var lenis=new Lenis({lerp:.09,wheelMultiplier:.9}); lenis.on('scroll',ScrollTrigger.update); gsap.ticker.add(function(t){ lenis.raf(t*1000); }); gsap.ticker.lagSmoothing(0); J.lenis=true; }
     ScrollTrigger.create({trigger:scene,start:'top top',end:'bottom bottom',scrub:true,onUpdate:function(st){ setP(st.progress); }});

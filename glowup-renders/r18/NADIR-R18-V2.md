@@ -1,3 +1,28 @@
+# R19 PART 4: Anwar R18 hero fixes 1 to 3 and the smoothness check (31 Oct 2026, Nadir, Opus)
+
+Status: fixes built, eight frames at 0 errors, smoothness measured. Nothing committed, nothing pushed, media/ untouched. Files edited: hero-cut.js, hero-journey.js, hero-journey.css, glowup-renders/r18/job/mk.py.
+
+## The fixes, and what the frame shows now
+1. Lip fades .32 to .40. hero-cut.js:105 returns the lip group as lip; hero-journey.js:54 sets its opacity to lay.hollow.lip x (1 - seg(p,.32,.40)). r18-1440-p42: film to the dark edge, no pale band (lip opacity 0). r18-390-mid: the chocolate fills the frame, no pale arc. r18-1440-p30: rim still at full (lip .4, the load value).
+2. Wall and spill into shadow .15 to .32. hero-cut.js:105 returns the wall image as wall; hero-journey.js:52-53 wall opacity 1 - .75 x seg, spill .3 x (1 - seg). r18-1440-p30: walls either side near black (wall .34, spill .035), faint diagonal comb, the dome film the brightest thing. r18-1440-p20: wall .78, comb clearly visible and still soft-stepped at 6.7x zoom; at p .10 the segment has not started, so the comb reads as at load.
+3. Reduced motion shows Play. hero-journey.css: the @media hide deleted; line 43 now html.plate-still.plate-render .hj-pause. hero-journey.js:100 adds plate-render only when still (the full= page render). Kept Anwar's if(still), not "render=1 too": the reduce frame is render=1, so that would hide Play. r18-1440-reduce: "Play" bottom left, 12px = --small. Press test (headless, reduced motion): Play, paused at 0 s; one press: Pause, reel playing at 1.5 s; second press: Play, paused; scrollY 0 and viewBox unchanged throughout. Extra, hero-journey.js:26: in reduced motion the light spill follows the reel only while it plays (no scroll, no zoom).
+- Pause size: computed 12px = --small at 1440 and 390 (the button box is 24px with its padding). No change needed.
+
+## Smoothness (headless Chrome, Lenis on, no render=1, wheel events through the protocol, two passes top to footer, frames between p .1 and .7)
+- 1440x900, real GPU, run 1: pass 1 longest 150 ms at p .19, 3 frames over 50 ms; pass 2 longest 16.8 ms, 0 over 50.
+- 1440x900, real GPU, run 2 with long-animation-frame logging: both passes longest 16.8 ms, 0 over 50, no long frame logged. The run 1 spike did not repeat and has no attribution: read as a cold first pass, not hero-journey.js (script is about 500 ms across 28 s of scrolling).
+- 390x844 dpr 2, real GPU: longest 50.0 ms on both passes, 0 over 50, 2 to 3 frames over 33 ms; median 16.5 to 16.7 ms.
+- Software GL (swiftshader): median 66 to 183 ms, CPU drawing, not a laptop; not the verdict.
+- Not done: a real Chrome window and the Performance panel on a laptop GPU.
+
+## Renders (all 0 console errors, docW = screen)
+r18-1440-load, r18-1440-p20 (new key in mk.py), r18-1440-p30, r18-1440-p42, r18-390-load, r18-390-mid, r18-1440-reduce, r18-1440-p92. Each looked at. mk.py's eval now reports wall, lip and spill opacity and the button's size.
+
+## Self-grade
+Fixes 1 to 3 each proven by a named frame: yes. Check 4 has numbers: yes, headless only. What must not change: load frames unchanged (opacities 1 / .4 / .3 at p 0), DARE the only orange, T 7.48 and 2.77, band fade .3 to .38, hard cut at .9, lane preload none at load, Pause a word, FILM bottom left clear of her face at p92. Etch and --plate-see not touched.
+
+---
+
 # R18 PART 3: V2 HERO FINISHED, NINE FRAMES LOOKED AT (Nadir, Opus, 31 Oct 2026)
 Status: six steps done. Nothing committed or pushed, media/ untouched, no ffmpeg, labels still placeholders.
 
