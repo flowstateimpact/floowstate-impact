@@ -1051,3 +1051,5 @@ html.past .dock{border-color:#000}
 [data-swap=settle] .rot .rl.on i{top:0;transition-delay:calc(280ms + var(--j) * 18ms)}
 [data-swap=settle] .rot .rl.was i{top:.25em;transition-duration:.18s,.22s}
 @media (prefers-reduced-motion:reduce){ .rl i{transition:none} }
+/* Audit heading figures: Bespoke Stencil 700 draws old-style digits only (530 vs cap 700), so digits in a heading are set at cap height. Anwar 7 Nov: pass. */
+.h2 i.n{font-style:normal;font-size:1.32em;line-height:0}
