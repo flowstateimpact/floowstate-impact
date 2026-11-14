@@ -11,6 +11,16 @@
       "permanent": false
     },
     {
+      "source": "/the-audit.html",
+      "destination": "https://linktr.ee/flowstateimpact",
+      "permanent": false
+    },
+    {
+      "source": "/the-audit",
+      "destination": "https://linktr.ee/flowstateimpact",
+      "permanent": false
+    },
+    {
       "source": "/case-heritage.html",
       "destination": "/heritage-in-motion.html",
       "permanent": false
