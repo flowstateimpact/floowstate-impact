@@ -9,7 +9,7 @@ wwd = (W/'what-we-do.html').read_text()
 
 WHO = '<p class="who"><b>A strategy and design firm, working from both.</b><span class="dim">Dhaka · London</span><span class="dim">We shape the brand. You keep the AI we build.</span></p>'
 LANE = re.search(r'  <video class="bed" id="lane".*?</video>\n', home, re.S).group(0)
-CAP = '  <a class="cap" href="heritage-in-motion.html"><span class="lab">Heritage in Motion</span><span class="ln">Dhaka dressing Dhaka.</span></a>\n'
+CAP = '  <a class="cap" href="heritage-in-motion.html"><span class="lab">Heritage in Motion</span></a>\n'
 PLAY = re.search(r'  <button class="play" data-for="lane".*?</button>\n', home, re.S).group(0)
 
 HERO_A = f'''<!-- screens one and two: the plate. The letters are holes cut in a black steel plate; the lane film plays behind it and is seen only through the cuts.
